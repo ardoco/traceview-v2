@@ -1,11 +1,9 @@
 'use client';
 
 import { ReactNode } from "react";
-import Link from "next/link";
 import { Dot } from "@/components/icons/dot";
 import { usePathname } from "next/navigation";
 import PipelineStepTitle from "@/components/inputPipeline/PipelineStepTitle";
-import HorizontalLine from "@/components/icons/HorizontalLine";
 import NavigationButtons from "@/components/inputPipeline/navigationButtons";
 
 interface PipelineLayoutProps {
@@ -13,10 +11,7 @@ interface PipelineLayoutProps {
 }
 
 /**
- * This component is used for all pages that are part of the multi-part form. It is a specific layout for steps with progression bar.
- * It is made of the three links (progress steps) that direct to each step of the form, a child component (the content of the current step) and the navigation buttons
- * @param children
- * @constructor
+ * Multi-step progress layout for the upload process.
  */
 export const PipelineLayout = ({ children }: PipelineLayoutProps) => {
     const pathname = usePathname();
@@ -32,54 +27,65 @@ export const PipelineLayout = ({ children }: PipelineLayoutProps) => {
     // Find the active step index
     const activeStep = stepPaths.indexOf(pathname);
     const link_back = activeStep === 0 ? "/" : stepPaths[activeStep - 1];
-    const link_to_next = activeStep === stepPaths.length? "/view" : stepPaths[activeStep + 1];
+    const link_to_next = activeStep === stepPaths.length - 1 ? "/view" : stepPaths[activeStep + 1];
+
+    const filteredStepPaths = stepPaths.slice(0, stepPaths.length - 1);
 
     return (
-        <div className="flex flex-col justify-between items-center min-h-[300px] w-[70%] sm:w-[80%] mx-auto p-6">
-            {/* Horizontal pipeline steps */}
-            <div className="flex items-center justify-between px-6 py-4 w-full border-b-2 border-blue-200 border-dashed">
-                {/* Step for the file upload */}
-                <Link href="/upload/step-01-file-upload">
-                    <div className="flex flex-col items-center gap-2">
-                        <Dot active={activeStep >= 0} />
-                        <PipelineStepTitle active={activeStep === 0} title="Step 0" />
+        <div className="flex flex-col justify-between items-center min-h-[300px] w-full max-w-4xl mx-auto px-6">
+            {/* Multi-step progress bar */}
+            <div className="relative flex flex-col items-center w-full">
+                {/* Step Dots and Bars */}
+                <div className="flex items-center justify-between w-10/12">
+                    {filteredStepPaths.map((step, index) => (
+                        <div key={index} className="flex items-center w-full">
+                            {/* Dot */}
+                            <Dot active={index <= activeStep} />
+
+                            {/* Line (only for steps that are not the last dot) */}
+                            {index < stepPaths.length - 1 && (
+                                <div
+                                    className={`h-1 w-full ${
+                                        index < activeStep ? "bg-blue-500" : "bg-gray-300"
+                                    }`}
+                                />
+                            )}
+                        </div>
+                    ))}
+                    {/*last dot*/}
+                    <div className="justify-end">
+                        <Dot active={activeStep === stepPaths.length - 1} />
                     </div>
-                </Link>
 
-                <HorizontalLine active={activeStep >= 1}/>
+                </div>
 
-                {/* Step for project details */}
-                <Link href="/upload/step-02-project-info">
-                    <div className="flex flex-col items-center gap-2">
-                        <Dot active={activeStep >= 1} />
-                        <PipelineStepTitle active={activeStep === 1} title="Step 1" />
-                    </div>
-                </Link>
-
-                <HorizontalLine active={activeStep >= 2}/>
-
-                {/* Step for configuration file */}
-                <Link href="/upload/step-03-configuration">
-                    <div className="flex flex-col items-center gap-2">
-                        <Dot active={activeStep >= 2} />
-                        <PipelineStepTitle active={activeStep === 2} title="Step 2" />
-                    </div>
-                </Link>
-
-                <HorizontalLine active={activeStep >= 3}/>
-
-                {/* Summary step */}
-                <Link href="/upload/summary">
-                    <div className="flex flex-col items-center gap-2">
-                        <Dot active={activeStep >= 3} />
-                        <PipelineStepTitle active={activeStep === 3} title="Step 3" />
-                    </div>
-                </Link>
+                {/* Step Titles */}
+                <div className="flex items-center justify-between w-11/12 mt-2">
+                    {stepPaths.map((step, index) => (
+                        <div
+                            key={index}
+                            className="relative flex flex-col items-center min-w-[80px] text-center"
+                        >
+                            <PipelineStepTitle
+                                active={index === activeStep}
+                                title={`Step ${index}`}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Content form */}
-            <form className=" content-center flex w-full mt-8">{children}</form>
-            <NavigationButtons link_back={link_back} link_to_next={link_to_next} finish={activeStep === 3}/>
+            <form className="content-center flex w-full mt-8">{children}</form>
+
+            {/* Navigation Buttons */}
+            <div className="flex justify-between w-full mt-4">
+                <NavigationButtons
+                    link_back={link_back}
+                    link_to_next={link_to_next}
+                    finish={activeStep === stepPaths.length - 1}
+                />
+            </div>
         </div>
     );
 };
