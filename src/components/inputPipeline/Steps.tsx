@@ -1,15 +1,14 @@
-import NavigationButtons, {NavigationButtonsProps} from "@/components/inputPipeline/navigationButtons";
+'use client';
 
-interface StepProps extends NavigationButtonsProps{
-    children: React.ReactNode
+interface StepProps {
+    children: React.ReactNode;
 }
 
-export default function Step({children, link_back, link_to_next, finish}: StepProps) {
+export default function Step({children}: StepProps) {
     return (
-        <div className='flex flex-col justify-between min-h-[200px] sm:w-[100%]'>
-            {/*pass various types of input through the children prop*/}
-            {children}
-            <NavigationButtons link_back={link_back} link_to_next={link_to_next} finish={finish} />
+        <div className="content-center flex flex-col gap-8 w-[82%] sm:w-[100%]">
+            {/* Pass various types of input through the children prop */}
+            <div className="w-full">{children}</div>
         </div>
-    )
+    );
 }

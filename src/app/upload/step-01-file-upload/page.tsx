@@ -10,8 +10,8 @@ export default function newUploadProject() {
     return (
         <Layout>
             <PipelineLayout>
-                <Step link_back="/" link_to_next="/upload/step-02-project-info">
-                    <div className={"flex flex-col gap-4"}>
+                <Step>
+                    <div className={"flex-col"}>
                         <h1>Upload project files! </h1>
                         <DragAndDrop/>
                     </div>

@@ -1,4 +1,8 @@
-export default function HorizontalLine(active: boolean) {
+interface HorizontalLineProps {
+    active: boolean
+}
+
+export default function HorizontalLine({active}: HorizontalLineProps) {
     return (
         <div
             className={`h-[4px] w-[30px] ml-2 rounded ${

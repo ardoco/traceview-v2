@@ -44,9 +44,9 @@ export default function DragAndDrop() {
     };
 
     return (
-        <>
+        <div className={'flex-grow'}>
             <div
-                className={`border-2 border-dashed w-10/12 p-5 m-24 text-center ${
+                className={`content-center border-2 border-dashed w-full p-5 mx-auto text-center ${
                     dragActive ? "border-blue-700" : "bordder-blue-300"
                 }`}
                 onDragEnter={handleDrag}
@@ -81,7 +81,7 @@ export default function DragAndDrop() {
                     </ul>
                 </div>
             )}
-        </>
+        </div>
     );
 
 }

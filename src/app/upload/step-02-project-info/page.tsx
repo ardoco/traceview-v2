@@ -8,7 +8,7 @@ export default function newUploadProject() {
     return (
         <Layout>
             <PipelineLayout>
-                <Step link_back="/upload/step-01-file-upload" link_to_next="/upload/step-03-configuration">
+                <Step>
                     <div className={"flex flex-col gap-4"}>
                         <h1>Enter Project Data </h1>
                         <RadioInput/>
