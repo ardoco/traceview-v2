@@ -41,6 +41,7 @@ const MultiOptionSelect: React.FC = () => {
         <div className="flex flex-col gap-2">
             {options.map((option) => (
                 <button
+                    type="button"
                     key={option.value}
                     onClick={() => handleOptionClick(option)}
                     disabled={!option.condition}
