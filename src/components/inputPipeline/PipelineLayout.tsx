@@ -39,41 +39,41 @@ export const PipelineLayout = ({ children }: PipelineLayoutProps) => {
                 <div className="flex items-center justify-between w-10/12">
                     {filteredStepPaths.map((step, index) => (
                         <div key={index} className="flex items-center w-full">
-                            {/* Dot */}
-                            <Dot active={index <= activeStep} />
+                                {/* Dot */}
+                                <Dot active={index <= activeStep} />
 
-                            {/* Line (only for steps that are not the last dot) */}
-                            {index < stepPaths.length - 1 && (
-                                <div
-                                    className={`h-1 w-full ${
-                                        index < activeStep ? "bg-blue-500" : "bg-gray-300"
-                                    }`}
-                                />
-                            )}
+                                {/* Line (only for steps that are not the last dot) */}
+                                {index < stepPaths.length - 1 && (
+                                    <div
+                                        className={`h-1 w-full ${
+                                            index < activeStep ? "bg-blue-500" : "bg-gray-300"
+                                        }`}
+                                    />
+                                )}
+                            </div>
+                        ))}
+                        {/*last dot*/}
+                        <div className="justify-end">
+                            <Dot active={activeStep === stepPaths.length - 1} />
                         </div>
-                    ))}
-                    {/*last dot*/}
-                    <div className="justify-end">
-                        <Dot active={activeStep === stepPaths.length - 1} />
+
                     </div>
 
+                    {/* Step Titles */}
+                    <div className="flex items-center justify-between w-11/12 mt-2">
+                        {stepPaths.map((step, index) => (
+                            <div
+                                key={index}
+                                className="relative flex flex-col items-center min-w-[80px] text-center"
+                            >
+                                <PipelineStepTitle
+                                    active={index === activeStep}
+                                    title={`Step ${index}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
-
-                {/* Step Titles */}
-                <div className="flex items-center justify-between w-11/12 mt-2">
-                    {stepPaths.map((step, index) => (
-                        <div
-                            key={index}
-                            className="relative flex flex-col items-center min-w-[80px] text-center"
-                        >
-                            <PipelineStepTitle
-                                active={index === activeStep}
-                                title={`Step ${index}`}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </div>
 
             {/* Content form */}
             <form className="content-center flex w-full mt-8">{children}</form>

@@ -1,10 +1,10 @@
-// ProjectFormContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
 
 interface FormData {
     projectName: string;
     selectedTraceLinkType: string | null;
-    files: File[];
+    files: UploadedFile[];
 }
 
 interface FormContextProps {
