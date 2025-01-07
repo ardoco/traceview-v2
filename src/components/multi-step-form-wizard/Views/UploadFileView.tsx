@@ -1,14 +1,13 @@
-import {FileType} from "@/components/drag-and-drop/FileListItem";
-import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
+import { FileType } from "@/components/drag-and-drop/FileListItem";
+import { useFormContext } from "@/components/multi-step-form-wizard/ProjectFormContext";
 import DragAndDrop from "@/components/drag-and-drop/drag-and-drop";
 import FileListDragDrop from "@/components/drag-and-drop/FileListDragDrop";
+import Validation from "@/components/multi-step-form-wizard/Validation";
 
-export default function UploadFileView() {
+function UploadFileView() {
     const { formData, updateFormData } = useFormContext();
 
     const addFiles = (newFiles: FileList) => {
-
-        // Convert FileList to Array and filter out already added files
         const newUploadedFiles = Array.from(newFiles).filter(
             (file) => !formData.files.some((uploadedFile) => uploadedFile.file.name === file.name)
         );
@@ -19,16 +18,19 @@ export default function UploadFileView() {
             fileType: FileType.None,
         }));
 
-        // Update form data
         updateFormData({ files: [...formData.files, ...updatedFiles] });
+
+        console.log(formData);// Pass errors to parent component
     };
+
+
 
     return (
         <div className="flex-col">
-            <DragAndDrop handleFilesChange={addFiles}/>
-            <FileListDragDrop
-                files={formData.files}
-            />
+            <DragAndDrop handleFilesChangeAction={addFiles} />
+            <FileListDragDrop files={formData.files} />
         </div>
-    )
+    );
 }
+
+export default UploadFileView;

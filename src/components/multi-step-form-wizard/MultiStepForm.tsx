@@ -7,39 +7,58 @@ import { redirect } from "next/navigation";
 import PipelineLayout from "@/components/multi-step-form-wizard/PipelineLayout";
 import PipelineStepper from "@/components/multi-step-form-wizard/PipelineStepper";
 import Step from "../inputPipeline/Steps";
+import Validation from "@/components/multi-step-form-wizard/Validation";
+import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
 
 interface Step {
     stepperLabel: string;
     title: string;
     description: string;
+    validation: () => string[]
 }
 
 function MultiStepForm() {
-    const { formData, updateFormData } = useFormContext();
+    const { formData } = useFormContext();
     const [currentStep, setCurrentStep] = useState(0);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const steps: Step[] = [
         {
-            stepperLabel: 'Upload Files',
-            title: 'Upload the Project Files',
-            description: 'Upload the project files for the project. For each file select the corresponding file type.',
+            stepperLabel: "Upload Files",
+            title: "Upload the Project Files",
+            description:
+                "Upload the project files for the project. For each file, select the corresponding file type.",
+            validation: () => Validation.validateFiles(formData.projectName, formData.selectedTraceLinkType, formData.files),
         },
         {
-            stepperLabel: 'Project Details',
-            title: 'Project Details',
-            description: 'Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve.',
+            stepperLabel: "Project Details",
+            title: "Project Details",
+            description:
+                "Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve.",
+            validation: () => Validation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType, formData.files),
         },
         {
-            stepperLabel: 'Summary',
-            title: 'Summary',
-            description: 'In case you want to change any of the data you provided, go back to the corresponding step and modify the data there, before calculating the traceLinks.',
+            stepperLabel: "Summary",
+            title: "Summary",
+            description:
+                "Review the data you provided. If changes are required, return to the corresponding step and modify before calculating the traceLinks.",
+            validation: () => Validation.validateSummary(formData.projectName, formData.selectedTraceLinkType, formData.files),
         },
     ];
 
-    const nextStep = () => {
+    let errors = steps[currentStep].validation();
+
+    const nextStep = async () => {
         if (currentStep === steps.length - 1) {
-            handleSubmit();
-            redirect('/view');
+            let summary_validation = steps[currentStep].validation()
+            if (summary_validation && summary_validation.length > 0) {
+                return
+            } else {
+                setLoading(true);
+                await handleSubmit();
+                setLoading(false);
+                redirect("/view");
+            }
         } else {
             setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
         }
@@ -47,7 +66,7 @@ function MultiStepForm() {
 
     const prevStep = () => {
         if (currentStep === 0) {
-            redirect('/');
+            redirect("/");
         } else {
             setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
         }
@@ -55,9 +74,9 @@ function MultiStepForm() {
 
     const handleSubmit = async () => {
         try {
-            console.log('Data submitted successfully:', formData);
+            console.log("Data submitted successfully:", formData);
         } catch (error) {
-            console.error('Error submitting data:', error);
+            console.error("Error submitting data:", error);
         }
     };
 
@@ -73,19 +92,34 @@ function MultiStepForm() {
 
             <div className="content-center flex flex-col w-full mt-8">
                 <Step>
-                    <h2 className="text-3xl bg-clip-text text-transparent text-blue-600 mb-4">
+                    {/* Heading */}
+                    <h2 className="text-3xl font-bold text-black mb-4">
                         {steps[currentStep].title}
                     </h2>
-                    <p className="text-base leading-relaxed text-gray-700 mb-8">
+                    {/* Description */}
+                    <p className="text-base leading-relaxed text-black-700 mb-8">
                         {steps[currentStep].description}
                     </p>
 
-                    {currentStep === 0 && <UploadFileView />}
+                    {/* Step-specific components */}
+                    {currentStep === 0 && <UploadFileView/>}
                     {currentStep === 1 && <ProjectInfoView />}
                     {currentStep === 2 && <SummaryView />}
+
+                    {/* Error messages */}
+                    {errors.length > 0 && (
+                        <div className="mt-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+                            {errors.map((error, index) => (
+                                <p key={index} className="text-sm">
+                                    {error}
+                                </p>
+                            ))}
+                        </div>
+                    )}
                 </Step>
             </div>
 
+            {/* Navigation buttons */}
             <div className="flex justify-between w-full mt-8">
                 <button
                     onClick={prevStep}
@@ -95,9 +129,16 @@ function MultiStepForm() {
                 </button>
                 <button
                     onClick={nextStep}
-                    className="px-6 py-3 bg-blue-600 rounded-lg text-lg font-medium text-white hover:bg-blue-500 transition duration-300"
+                    disabled={loading}
+                    className={`px-6 py-3 rounded-lg text-lg font-medium text-white transition duration-300 ${
+                        loading
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-blue-600 hover:bg-blue-500"
+                    }`}
                 >
-                    {currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
+                    {currentStep === steps.length - 1
+                        ? "Calculate TraceLinks"
+                        : "Next"}
                 </button>
             </div>
         </PipelineLayout>

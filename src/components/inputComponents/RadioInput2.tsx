@@ -1,5 +1,7 @@
 import React from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
+import {FileType} from "@/components/drag-and-drop/FileListItem";
 
 interface Option {
     value: string;
@@ -13,37 +15,44 @@ interface MultiOptionSelectWithInfoProps {
     handleOptionChange: (value: string) => void; // Callback when selection changes
 }
 
-export const options: Option[] = [
-    {
-        value: "sad-sam",
-        label: "SAD-SAM",
-        info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Software Architecture Model (SAM)",
-        condition: true,
-    },
-    {
-        value: "sad-code",
-        label: "SAD-Code",
-        info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Code",
-        condition: false,
-    },
-    {
-        value: "sam-code",
-        label: "SAM-Code",
-        info: "Finds traceLinks between the Software Architecture Model (SAM) and the uploaded Code",
-        condition: true,
-    },
-    {
-        value: "sad-sam-code",
-        label: "SAD-SAM-Code",
-        info: "Finds transitive traceLinks between SAD and the Code via SAM",
-        condition: false,
-    },
-];
-
 export function MultiOptionSelectWithInfo({
                                               selectedValue,
                                               handleOptionChange,
                                           }: MultiOptionSelectWithInfoProps) {
+    const { formData, updateFormData } = useFormContext();
+
+    const options: Option[] = [
+        {
+            value: "sad-sam",
+            label: "SAD-SAM",
+            info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Software Architecture Model (SAM)",
+            condition: formData.files.some(file => file.fileType === FileType.Architecture_Documentation) &&
+                formData.files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML),
+        },
+        {
+            value: "sad-code",
+            label: "SAD-Code",
+            info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Code",
+            condition: formData.files.some(file => file.fileType === FileType.Architecture_Documentation) &&
+                formData.files.some(file => file.fileType === FileType.Code_Model),
+        },
+        {
+            value: "sam-code",
+            label: "SAM-Code",
+            info: "Finds traceLinks between the Software Architecture Model (SAM) and the uploaded Code",
+            condition: formData.files.some(file => file.fileType === FileType.Code_Model) &&
+                formData.files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML),
+        },
+        {
+            value: "sad-sam-code",
+            label: "SAD-SAM-Code",
+            info: "Finds transitive traceLinks between SAD and the Code via SAM",
+            condition: formData.files.some(file => file.fileType === FileType.Architecture_Documentation) &&
+                formData.files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML) &&
+                formData.files.some(file => file.fileType === FileType.Code_Model),
+        },
+    ];
+
     return (
         <div className="space-y-3">
             {options.map((option) => (

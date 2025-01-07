@@ -1,6 +1,7 @@
 import FileListItem from "@/components/drag-and-drop/FileListItem";
 import { UploadedFile } from "@/components/drag-and-drop/FileListItem";
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
+import Validation from "@/components/multi-step-form-wizard/Validation";
 
 interface FileListDragDropProps {
     files: UploadedFile[];
@@ -18,6 +19,7 @@ export default function FileListDragDrop({ files}: FileListDragDropProps) {
                     uploadedFile.fileType !== deletedFile.fileType
             ),
         });
+
     };
 
     return (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@headlessui/react";
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
+import Validation from "@/components/multi-step-form-wizard/Validation";
 
 export enum FileType {
     Architecture_Documentation = "Architecture Documentation",
@@ -31,7 +32,7 @@ export default function FileListItem({
                                          index,
                                          file,
                                          fileType,
-                                         onDelete
+                                         onDelete,
                                      }: FileListItemProps) {
 
     const { formData, updateFormData } = useFormContext();

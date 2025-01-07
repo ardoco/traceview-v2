@@ -5,6 +5,7 @@ interface FormData {
     projectName: string;
     selectedTraceLinkType: string | null;
     files: UploadedFile[];
+    errors: string[]
 }
 
 interface FormContextProps {
@@ -27,6 +28,7 @@ export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         projectName: '',
         selectedTraceLinkType: null,
         files: [],
+        errors: []
     });
 
     const updateFormData = (updatedData: Partial<FormData>) => {

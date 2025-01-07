@@ -26,7 +26,7 @@ export default function newUploadProject() {
                 <Step>
                     <div className={"flex-col"}>
                         <h1>Upload project files! </h1>
-                        <DragAndDrop handleFilesChange={addFiles}/>
+                        <DragAndDrop handleFilesChangeAction={addFiles}/>
                         <FileListDragDrop files={files} onDelete={deleteFile}/>
                     </div>
                 </Step>

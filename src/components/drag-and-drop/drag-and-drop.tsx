@@ -3,10 +3,10 @@
 import { ChangeEvent, DragEvent, useRef, useState } from "react";
 
 interface DragAndDropProps {
-    handleFilesChange: (files: FileList) => void;
+    handleFilesChangeAction: (files: FileList) => void;
 }
 
-export default function DragAndDrop({handleFilesChange}: DragAndDropProps) {
+export default function DragAndDrop({handleFilesChangeAction}: DragAndDropProps) {
     const [dragActive, setDragActive] = useState(false);
     const [files, setFiles] = useState<File[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -26,23 +26,23 @@ export default function DragAndDrop({handleFilesChange}: DragAndDropProps) {
         event.stopPropagation();
         setDragActive(false);
         if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
-            handleFilesChange(event.dataTransfer.files);
+            handleFilesChangeAction(event.dataTransfer.files);
         }
     };
 
 
-    const uploadFiles = async () => {
-        const formData = new FormData();
-        files.forEach((file) => {
-            formData.append("files", file);
-        });
-
-        try {
-            console.log(formData);
-        } catch (error) {
-            console.error("Error uploading files:", error);
-        }
-    };
+    // const uploadFiles = async () => {
+    //     const formData = new FormData();
+    //     files.forEach((file) => {
+    //         formData.append("files", file);
+    //     });
+    //
+    //     try {
+    //         console.log(formData);
+    //     } catch (error) {
+    //         console.error("Error uploading files:", error);
+    //     }
+    // };
 
     return (
         <div className={'flex-grow'}>
@@ -61,7 +61,7 @@ export default function DragAndDrop({handleFilesChange}: DragAndDropProps) {
                 ref={inputRef}
                 multiple
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    e.target.files && handleFilesChange(e.target.files)
+                    e.target.files && handleFilesChangeAction(e.target.files)
                 }
             />
             <p>Drag and drop files here or</p>

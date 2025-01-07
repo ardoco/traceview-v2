@@ -30,7 +30,7 @@ export default function PipelineStepper({steps, currentStep, onStepChange}: Pipe
                         {/* Line */}
                         <div
                             className={`h-1 w-full ${
-                                index < currentStep ? "bg-blue-500" : "bg-gray-300"
+                                index < currentStep ? "bg-maigruen" : "bg-black-900"
                             }`}
                         />
                     </div>
