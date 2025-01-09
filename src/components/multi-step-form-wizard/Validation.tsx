@@ -17,26 +17,32 @@ export default class Validation {
             console.log(uploadedFiles);
         }
 
-        // Count occurrences of each file type
-        const fileTypeCount = uploadedFiles.reduce((acc, file) => {
-            acc[file.fileType] = (acc[file.fileType] || 0) + 1;
-            return acc;
-        }, {} as { [key in FileType]: number });
+        // Create a map to count occurrences of each file type
+        const fileTypeCount = new Map<FileType, number>();
 
-        // Special rule for Architecture Model files
-        if (
-            (fileTypeCount[FileType.Architecture_Model_UML]) +
-            (fileTypeCount[FileType.Architecture_Model_PCM]) > 1
-        ) {
+        // Count occurrences of each file type
+        uploadedFiles.forEach((file) => {
+            fileTypeCount.set(file.fileType, (fileTypeCount.get(file.fileType) || 0) + 1);
+        });
+
+        // Special rule: Ensure no more than one Architecture Model file (PCM/UML)
+        const architectureModelCount =
+            (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) +
+            (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
+
+        if (architectureModelCount > 1) {
             errors.push("Please upload no more than one file of type PCM/UML to avoid ambiguities.");
         }
 
-        // General rule for other file types
-        for (const [fileType, count] of Object.entries(fileTypeCount)) {
-            if (count > 1 && ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM].includes(fileType as FileType)) {
+        // General rule: No more than one file of other types
+        fileTypeCount.forEach((count, fileType) => {
+            if (
+                count > 1 &&
+                ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)
+            ) {
                 errors.push(`Only one file of type ${fileType} can be uploaded.`);
             }
-        }
+        });
         return errors;
     }
 
@@ -72,7 +78,7 @@ export default class Validation {
         // Generate summary message
         if (stepsWithErrors.length == 1) {
             errors.push(`You need to resolve the problems at Step ${stepsWithErrors[0]} before you can proceed.`);
-        } else {
+        } else if (stepsWithErrors.length > 1) {
             let last_step = stepsWithErrors[stepsWithErrors.length - 1];
             let first_steps = stepsWithErrors.slice(0, stepsWithErrors.length - 1)
             errors.push(`You need to resolve the problems at ${first_steps.join(",")} and ${last_step} before you can proceed.`);

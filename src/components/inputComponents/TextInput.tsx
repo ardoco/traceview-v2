@@ -13,7 +13,7 @@ export default function TextInput({ placeholderText, value, onChange }: TextInpu
             value={value}
             onChange={onChange}
             placeholder={placeholderText}
-            className="w-full p-3 border border-blue-500 rounded-lg shadow-sm text-sm focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
+            className="w-full p-3 border border-blue-500 rounded-lg shadow-xs text-sm focus:ring-2 focus:ring-blue-600 focus:outline-hidden transition-all"
         />
     );
 }

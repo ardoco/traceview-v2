@@ -1,14 +1,15 @@
-import { useFormContext } from "@/components/multi-step-form-wizard/ProjectFormContext";
-import { useState } from "react";
+import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
+import {useState} from "react";
 import UploadFileView from "@/components/multi-step-form-wizard/Views/UploadFileView";
 import ProjectInfoView from "@/components/multi-step-form-wizard/Views/ProjectInfoView";
 import SummaryView from "@/components/multi-step-form-wizard/Views/SummaryView";
-import { redirect } from "next/navigation";
+import {redirect} from "next/navigation";
 import PipelineLayout from "@/components/multi-step-form-wizard/PipelineLayout";
 import PipelineStepper from "@/components/multi-step-form-wizard/PipelineStepper";
 import Step from "../inputPipeline/Steps";
 import Validation from "@/components/multi-step-form-wizard/Validation";
 import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
+import Button from "@/components/Button";
 
 interface Step {
     stepperLabel: string;
@@ -18,7 +19,7 @@ interface Step {
 }
 
 function MultiStepForm() {
-    const { formData } = useFormContext();
+    const {formData} = useFormContext();
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -81,7 +82,6 @@ function MultiStepForm() {
     };
 
 
-
     return (
         <PipelineLayout>
             <PipelineStepper
@@ -103,12 +103,12 @@ function MultiStepForm() {
 
                     {/* Step-specific components */}
                     {currentStep === 0 && <UploadFileView/>}
-                    {currentStep === 1 && <ProjectInfoView />}
-                    {currentStep === 2 && <SummaryView />}
+                    {currentStep === 1 && <ProjectInfoView/>}
+                    {currentStep === 2 && <SummaryView/>}
 
                     {/* Error messages */}
                     {errors.length > 0 && (
-                        <div className="mt-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">
+                        <div className="mt-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-sm">
                             {errors.map((error, index) => (
                                 <p key={index} className="text-sm">
                                     {error}
@@ -121,25 +121,16 @@ function MultiStepForm() {
 
             {/* Navigation buttons */}
             <div className="flex justify-between w-full mt-8">
-                <button
-                    onClick={prevStep}
-                    className="px-6 py-3 border-2 border-blue-400 rounded-lg text-lg font-medium text-blue-600 hover:bg-blue-100 transition duration-300"
-                >
-                    {currentStep === 0 ? "Exit" : "Back"}
-                </button>
-                <button
-                    onClick={nextStep}
-                    disabled={loading}
-                    className={`px-6 py-3 rounded-lg text-lg font-medium text-white transition duration-300 ${
-                        loading
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-500"
-                    }`}
-                >
-                    {currentStep === steps.length - 1
+                <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
+                <Button
+                    text={currentStep === steps.length - 1
                         ? "Calculate TraceLinks"
                         : "Next"}
-                </button>
+                    onButtonClicked={nextStep}
+                    disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+                >
+
+                </Button>
             </div>
         </PipelineLayout>
     );

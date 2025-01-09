@@ -45,10 +45,10 @@ export default function DragAndDrop({handleFilesChangeAction}: DragAndDropProps)
     // };
 
     return (
-        <div className={'flex-grow'}>
+        <div className={'grow'}>
             <div
-                className={`content-center border-2 border-dashed w-full p-5 mx-auto text-center ${
-                    dragActive ? "border-blue-700" : "bordder-blue-300"
+                className={`rounded-lg content-center border-2 border-dashed w-full p-5 mx-auto text-center ${
+                    dragActive ? "border-blau" : "bordder-blau-300"
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}

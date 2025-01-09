@@ -5,7 +5,7 @@ import MultiStepForm from "@/components/multi-step-form-wizard/MultiStepForm";
 
 export default function startNewProject() {
     return(
-        <div>
+        <div className="bg-white z-1 relative">
             <FormProvider>
                 <MultiStepForm/>
             </FormProvider>

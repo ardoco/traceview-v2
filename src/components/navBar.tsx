@@ -20,7 +20,7 @@ interface ArDoCoLogoProps {
 
 export function ArDoCoLogo({ size }: ArDoCoLogoProps) {
     return (
-        <Link href="/" className="-m-1.5 p-1.5">
+        <Link href="/" className="-ml-3 p-1.5 pl-7.5 pt-6 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75%">
             <span className="sr-only">ArDoCo Logo</span>
             <img
                 alt="ArDoCo Logo"
@@ -37,7 +37,7 @@ export default function Navbar() {
 
     return (
         <header className="fixed inset-x-0 top-0 z-50 bg-transparent">
-            <nav aria-label="Global" className="flex items-center justify-between p-6 lg:px-8">
+            <nav aria-label="Global" className="flex items-center justify-between p-3 lg:px-8 h-24">
                 {/* Logo */}
                 <div className="flex lg:flex-1">
                     <ArDoCoLogo size={12} />
@@ -48,7 +48,7 @@ export default function Navbar() {
                     <button
                         type="button"
                         onClick={() => setMobileMenuOpen(true)}
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
                     >
                         <span className="sr-only">Open main menu</span>
                         <Bars3Icon aria-hidden="true" className="h-6 w-6" />
@@ -58,7 +58,7 @@ export default function Navbar() {
                 {/* Desktop Navigation */}
                 <div className="hidden lg:flex lg:gap-x-12">
                     {navigation.map((item) => (
-                        <a key={item.name} href={item.href} className="text-sm font-semibold text-gray-900">
+                        <a key={item.name} href={item.href} className="text-sm font-semibold text-white">
                             {item.name}
                         </a>
                     ))}

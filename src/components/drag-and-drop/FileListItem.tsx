@@ -50,7 +50,7 @@ export default function FileListItem({
 
 
     return (
-        <div className="flex flex-row items-center w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 shadow-sm bg-white">
+        <div className="flex flex-row items-center w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 shadow-xs bg-white mt-2">
             <div
                 className="flex-1 truncate text-sm font-medium text-gray-700"
                 title={file.name}
@@ -62,7 +62,7 @@ export default function FileListItem({
                 <select
                     value={fileType}
                     onChange={(e) => onFileTypeChange(convertStringToFileType(e.target.value))}
-                    className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-xs focus:ring-blue-500 focus:border-blue-500"
                 >
                     <option value={FileType.None} disabled>
                         {FileType.None}

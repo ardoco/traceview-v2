@@ -25,12 +25,12 @@ export default function PipelineStepper({steps, currentStep, onStepChange}: Pipe
                         className="flex items-center w-full"
                         onClick={() => onStepChange(index)}
                     >
-                        <Dot active={index <= currentStep}/>
+                        <Dot active={index <= currentStep} passed={index < currentStep}/>
 
                         {/* Line */}
                         <div
                             className={`h-1 w-full ${
-                                index < currentStep ? "bg-maigruen" : "bg-black-900"
+                                index <= currentStep - 1 ? index < currentStep - 1 ? "bg-blau" : "bg-gradient-to-r from-blau to-gruen" : "bg-black-900"
                             }`}
                         />
                     </div>

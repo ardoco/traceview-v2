@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
 import {FileType} from "@/components/drag-and-drop/FileListItem";
@@ -11,7 +11,7 @@ interface Option {
 }
 
 interface MultiOptionSelectWithInfoProps {
-    selectedValue?: string; // Current selected value
+    selectedValue: string | null; // Current selected value
     handleOptionChange: (value: string) => void; // Callback when selection changes
 }
 
@@ -22,6 +22,14 @@ export function MultiOptionSelectWithInfo({
     const { formData, updateFormData } = useFormContext();
 
     const options: Option[] = [
+        {
+            value: "sad-sam-code",
+            label: "SAD-SAM-Code",
+            info: "Finds transitive traceLinks between SAD and the Code via SAM",
+            condition: formData.files.some(file => file.fileType === FileType.Architecture_Documentation) &&
+                formData.files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML) &&
+                formData.files.some(file => file.fileType === FileType.Code_Model),
+        },
         {
             value: "sad-sam",
             label: "SAD-SAM",
@@ -43,15 +51,17 @@ export function MultiOptionSelectWithInfo({
             condition: formData.files.some(file => file.fileType === FileType.Code_Model) &&
                 formData.files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML),
         },
-        {
-            value: "sad-sam-code",
-            label: "SAD-SAM-Code",
-            info: "Finds transitive traceLinks between SAD and the Code via SAM",
-            condition: formData.files.some(file => file.fileType === FileType.Architecture_Documentation) &&
-                formData.files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML) &&
-                formData.files.some(file => file.fileType === FileType.Code_Model),
-        },
     ];
+
+    // Automatically preselect the first valid option if no option is selected
+    useEffect(() => {
+        if (selectedValue === null) {
+            const preselectedOption = options.find((option) => option.condition);
+            if (preselectedOption) {
+                handleOptionChange(preselectedOption.value);
+            }
+        }
+    }, [selectedValue, options, handleOptionChange]);
 
     return (
         <div className="space-y-3">
@@ -86,7 +96,7 @@ export function MultiOptionSelectWithInfo({
                             <InformationCircleIcon aria-label="Info about this option" aria-hidden="true"
                                                    className="size-6 text-blue-500 cursor-pointer"/>
                             <div
-                                className="absolute left-6 top-1 hidden group-hover:block bg-white text-black border border-gray-300 p-2 rounded shadow-md z-10 w-96">
+                                className="absolute left-6 top-1 hidden group-hover:block bg-white text-black border border-gray-300 p-2 rounded-sm shadow-md z-10 w-96">
                                 {option.info}
                             </div>
                         </div>

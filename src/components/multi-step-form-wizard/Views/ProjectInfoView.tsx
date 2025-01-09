@@ -6,7 +6,7 @@ export default function ProjectInfoView() {
     const { formData, updateFormData } = useFormContext();
 
     return (
-        <div className="grid grid-cols-[30%,70%] gap-x-4 gap-y-6 items-center">
+        <div className="grid grid-cols-[30%_70%] gap-x-4 gap-y-6 items-center">
             <label className="font-medium text-gray-700">Enter Project Name</label>
 
             <TextInput
@@ -16,7 +16,7 @@ export default function ProjectInfoView() {
             />
             <label className=" font-medium text-gray-700 mt-6 mb-4">Select TraceLink Type</label>
             <MultiOptionSelectWithInfo
-                selectedValue={formData.selectedTraceLinkType || undefined}
+                selectedValue={formData.selectedTraceLinkType}
                 handleOptionChange={(value) => updateFormData({selectedTraceLinkType: value})}
             />
         </div>

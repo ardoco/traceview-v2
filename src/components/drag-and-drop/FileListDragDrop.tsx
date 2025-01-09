@@ -25,7 +25,7 @@ export default function FileListDragDrop({ files}: FileListDragDropProps) {
     return (
         <div>
             {(files ?? []).length > 0 && (
-                <div>
+                <div className="mt-6">
                     <h4>Selected Files:</h4>
                     <ul>
                         {files.map((uploadedFile, index) => (

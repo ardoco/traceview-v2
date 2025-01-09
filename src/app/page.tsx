@@ -4,7 +4,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 // Main Home Component
 export default function Home() {
     return (
-        <div className="h-full overflow-y-scroll">
+        <div className="h-full z-1 relative">
             <HeroSection />
             <AboutSection />
         </div>
@@ -14,13 +14,13 @@ export default function Home() {
 // Hero Section Component
 function HeroSection() {
     return (
-        <div className="flex justify-center items-center h-5/6 bg-gradient-to-b from-gruen via-blau-700 to-95%">
+        <div className="flex justify-center items-center h-5/6">
             <div className="relative isolate px-6 pt-14 lg:px-8">
-                <BackgroundBlur position="top" />
+                {/*<BackgroundBlur position="top" />*/}
                 <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
                     <HeroContent />
                 </div>
-                <BackgroundBlur position="bottom" />
+                {/*<BackgroundBlur position="bottom" />*/}
             </div>
         </div>
     );
@@ -36,7 +36,7 @@ function HeroContent() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
                 <Link
                     href="/new-project"
-                    className="rounded-md bg-cerulean-600 px-3.5 py-2.5 text-sm font-semibold text-black shadow-sm hover:text-white hover:bg-lila-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-cerulean-600 px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:text-white hover:bg-lila-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                     Start
                 </Link>
@@ -71,7 +71,7 @@ function BackgroundBlur({ position }: { position: "top" | "bottom" }) {
             }}
         >
             <div
-                className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-dark_magenta-600 to-jordy_blue-400 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+                className="relative left-[calc(50%-11rem)] aspect-1155/678 w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-dark_magenta-600 to-jordy_blue-400 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
             />
         </div>
     );
