@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { Button } from "@headlessui/react";
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
-import Validation from "@/components/multi-step-form-wizard/Validation";
+import Dropdown from "@/components/inputComponents/Dropdown";
 
 export enum FileType {
-    Architecture_Documentation = "Architecture Documentation",
-    Architecture_Model_UML = "Architecture Model - UML",
-    Architecture_Model_PCM = "Architecture Model - PCM",
+    Architecture_Documentation = "Documentation",
+    Architecture_Model_UML = "UML",
+    Architecture_Model_PCM = "PCM",
     Code_Model = "Code Model",
     None = "Select file type",
 }
@@ -38,6 +37,9 @@ export default function FileListItem({
     const { formData, updateFormData } = useFormContext();
 
     const onFileTypeChange = (newType: FileType) => {
+
+        console.log(newType);
+
         // Create a shallow copy of the files array
         const updatedFiles = [...formData.files];
 
@@ -59,20 +61,12 @@ export default function FileListItem({
             </div>
 
             <div className="flex-1 mx-4">
-                <select
-                    value={fileType}
-                    onChange={(e) => onFileTypeChange(convertStringToFileType(e.target.value))}
-                    className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-xs focus:ring-blue-500 focus:border-blue-500"
-                >
-                    <option value={FileType.None} disabled>
-                        {FileType.None}
-                    </option>
-                    {Object.values(FileType).filter((type) => type !== FileType.None).map((type) => (
-                        <option key={type} value={type}>
-                            {type}
-                        </option>
-                    ))}
-                </select>
+                <Dropdown<FileType>
+                    options={Object.values(FileType)}
+                    selectedValue={fileType}
+                    onChange={onFileTypeChange}
+                    placeholder={FileType.None}
+                />
             </div>
 
             <Button

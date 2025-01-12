@@ -9,7 +9,7 @@ export default function LoadingScreen() {
                     <div className="w-12 h-12 border-4 border-t-red-500 border-gray-200 rounded-full animate-spin delay-400"></div>
                 </div>
                 {/* Loading Text */}
-                <p className="mt-4 text-white text-lg">Loading, please wait...</p>
+                <p className="mt-4 text-white text-lg">Loading, this might take a view minutes...</p>
             </div>
         </div>
     );

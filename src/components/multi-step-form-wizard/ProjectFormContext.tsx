@@ -13,6 +13,10 @@ interface FormContextProps {
     updateFormData: (updatedData: Partial<FormData>) => void;
 }
 
+interface FormProviderProps {
+    children: React.ReactNode;
+}
+
 const FormContext = createContext<FormContextProps | undefined>(undefined);
 
 export const useFormContext = () => {
@@ -23,7 +27,7 @@ export const useFormContext = () => {
     return context;
 };
 
-export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export function FormProvider({ children}:FormProviderProps) {
     const [formData, setFormData] = useState<FormData>({
         projectName: '',
         selectedTraceLinkType: null,

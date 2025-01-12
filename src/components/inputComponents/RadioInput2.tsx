@@ -70,8 +70,8 @@ export function MultiOptionSelectWithInfo({
                     key={option.value}
                     className={`flex items-center gap-3 p-3 border rounded-lg ${
                         option.condition
-                            ? "border-blue-500 hover:shadow-md hover:border-blue-600 cursor-pointer"
-                            : "border-gray-300 cursor-not-allowed opacity-50"
+                            ? "shadow-xs border-gray-200 hover:shadow-md hover:border-blau-600 cursor-pointer checked:border-blau-500"
+                            : "border-gray-100 cursor-not-allowed opacity-50"
                     }`}
                 >
                     {/* Radio Input */}
@@ -82,7 +82,7 @@ export function MultiOptionSelectWithInfo({
                         checked={selectedValue === option.value}
                         onChange={() => handleOptionChange(option.value)}
                         disabled={!option.condition}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                        className="h-4 w-4 text-blau-500 focus:ring-blau-500"
                     />
 
                         <span
@@ -94,7 +94,7 @@ export function MultiOptionSelectWithInfo({
                         </span>
                         <div className="relative group">
                             <InformationCircleIcon aria-label="Info about this option" aria-hidden="true"
-                                                   className="size-6 text-blue-500 cursor-pointer"/>
+                                                   className="size-6 text-blau-500 cursor-pointer"/>
                             <div
                                 className="absolute left-6 top-1 hidden group-hover:block bg-white text-black border border-gray-300 p-2 rounded-sm shadow-md z-10 w-96">
                                 {option.info}

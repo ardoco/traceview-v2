@@ -10,6 +10,7 @@ import Step from "../inputPipeline/Steps";
 import Validation from "@/components/multi-step-form-wizard/Validation";
 import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
 import Button from "@/components/Button";
+import fetchArDoCoAPI from "@/components/callArDoCoAPI";
 
 interface Step {
     stepperLabel: string;
@@ -21,7 +22,7 @@ interface Step {
 function MultiStepForm() {
     const {formData} = useFormContext();
     const [currentStep, setCurrentStep] = useState(0);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
 
     const steps: Step[] = [
         {
@@ -55,10 +56,9 @@ function MultiStepForm() {
             if (summary_validation && summary_validation.length > 0) {
                 return
             } else {
-                setLoading(true);
-                await handleSubmit();
-                setLoading(false);
-                redirect("/view");
+                let result = await handleSubmit();
+                console.log(result);
+                redirect(`/view/${result.requestId}?type=${formData.selectedTraceLinkType}`);
             }
         } else {
             setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
@@ -74,11 +74,16 @@ function MultiStepForm() {
     };
 
     const handleSubmit = async () => {
+        let jsonResult = null
+        setLoading(true);
         try {
+            jsonResult = await fetchArDoCoAPI(formData.projectName, formData.selectedTraceLinkType, formData.files)
             console.log("Data submitted successfully:", formData);
         } catch (error) {
             console.error("Error submitting data:", error);
+            setLoading(false);
         }
+        return jsonResult;
     };
 
 
