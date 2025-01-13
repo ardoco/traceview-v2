@@ -1,24 +1,7 @@
 import { Button } from "@headlessui/react";
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
 import Dropdown from "@/components/inputComponents/Dropdown";
-
-export enum FileType {
-    Architecture_Documentation = "Documentation",
-    Architecture_Model_UML = "UML",
-    Architecture_Model_PCM = "PCM",
-    Code_Model = "Code Model",
-    None = "Select file type",
-}
-
-export function convertStringToFileType(value: string): FileType {
-    return (Object.values(FileType) as Array<string>).includes(value) ? (value as FileType) : FileType.None;
-}
-
-
-export interface UploadedFile {
-    file: File;
-    fileType: FileType;
-}
+import {FileType} from "@/components/dataTypes/FileType";
 
 interface FileListItemProps {
     index: number;
@@ -37,8 +20,6 @@ export default function FileListItem({
     const { formData, updateFormData } = useFormContext();
 
     const onFileTypeChange = (newType: FileType) => {
-
-        console.log(newType);
 
         // Create a shallow copy of the files array
         const updatedFiles = [...formData.files];
@@ -63,7 +44,7 @@ export default function FileListItem({
             <div className="flex-1 mx-4">
                 <Dropdown<FileType>
                     options={Object.values(FileType)}
-                    selectedValue={fileType}
+                    selectedValue={fileType? fileType : FileType.None}
                     onChange={onFileTypeChange}
                     placeholder={FileType.None}
                 />

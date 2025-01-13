@@ -8,7 +8,6 @@ import PipelineLayout from "@/components/multi-step-form-wizard/PipelineLayout";
 import PipelineStepper from "@/components/multi-step-form-wizard/PipelineStepper";
 import Step from "../inputPipeline/Steps";
 import Validation from "@/components/multi-step-form-wizard/Validation";
-import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
 import Button from "@/components/Button";
 import fetchArDoCoAPI from "@/components/callArDoCoAPI";
 

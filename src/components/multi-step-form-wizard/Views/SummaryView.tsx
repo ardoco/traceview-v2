@@ -1,5 +1,5 @@
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
-import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
+import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
 export default function SummaryView() {
     const { formData, updateFormData } = useFormContext();
@@ -10,7 +10,7 @@ export default function SummaryView() {
                     <span className="font-bold">Project Name:</span> {formData.projectName}
                 </p>
                 <p className="text-sm font-medium text-gray-700 mb-4">
-                    <span className="font-bold">Selected TraceLink Type:</span> {formData.selectedTraceLinkType}
+                    <span className="font-bold">Selected TraceLink Type:</span> {formData.selectedTraceLinkType? formData.selectedTraceLinkType.name: "None"}
                 </p>
                 <h3 className="text-md font-semibold text-gray-800 mb-2">Files:</h3>
                 <div>

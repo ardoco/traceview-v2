@@ -1,8 +1,7 @@
-import { FileType } from "@/components/drag-and-drop/FileListItem";
 import { useFormContext } from "@/components/multi-step-form-wizard/ProjectFormContext";
 import DragAndDrop from "@/components/drag-and-drop/drag-and-drop";
 import FileListDragDrop from "@/components/drag-and-drop/FileListDragDrop";
-import Validation from "@/components/multi-step-form-wizard/Validation";
+import {FileType} from "@/components/dataTypes/FileType";
 
 function UploadFileView() {
     const { formData, updateFormData } = useFormContext();

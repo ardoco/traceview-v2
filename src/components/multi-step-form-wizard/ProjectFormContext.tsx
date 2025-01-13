@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import {UploadedFile} from "@/components/drag-and-drop/FileListItem";
+import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
 interface FormData {
     projectName: string;
-    selectedTraceLinkType: string | null;
+    selectedTraceLinkType: TraceLinkType | null;
     files: UploadedFile[];
     errors: string[]
 }
@@ -40,6 +41,7 @@ export function FormProvider({ children}:FormProviderProps) {
             ...prevData,
             ...updatedData,
         }));
+        console.log(formData);
     };
 
     return (

@@ -1,5 +1,6 @@
-import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
-import {FileType, UploadedFile} from "@/components/drag-and-drop/FileListItem";
+import {FileType} from "@/components/dataTypes/FileType";
+import {UploadedFile} from "@/components/dataTypes/UploadedFile";
+
 
 export default class Validation {
 

@@ -3,8 +3,7 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import {useParams} from "next/navigation";
 import React, {useEffect, useState, useCallback} from "react";
-import MultiColumnView from "@/components/MultiColumnView";
-import {Panel, PanelGroup, PanelResizeHandle} from "react-resizable-panels";
+import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 
 // Utility function for polling the API
 const pollForResult = async (id: string, maxRetries: number): Promise<any> => {
@@ -79,31 +78,3 @@ function ErrorDisplay({message, onRetry}: { message: string; onRetry: () => void
         </div>
     );
 }
-
-// Result Display Component
-function ResultDisplay({result}: { result: any }) {
-    return (
-        <div className="bg-white z-1 relative h-full">
-            <PanelGroup direction="horizontal" className="h-full">
-                <Panel minSize={10} className="h-full overflow-y-auto" style={{overflowY: "auto", overflowX: "auto"}}>
-                    <h2>Result Details:</h2>
-                    <pre>{JSON.stringify(result, null, 2)}</pre>
-                </Panel>
-                <PanelResizeHandle className="w-1 bg-black"/>
-                <Panel minSize={10} className="h-full overflow-y-auto">
-                    <h2>Post Details:</h2>
-                    <p><strong>Title:</strong> {result.title}</p>
-                    <p><strong>Body:</strong> {result.body}</p>
-                </Panel>
-                <PanelResizeHandle className="w-1 bg-black"/>
-                <Panel minSize={10} className="h-full overflow-y-auto" collapsible collapsedSize={0}>
-                    <h2>Post Details:</h2>
-                    <p><strong>Title:</strong> {result.title}</p>
-                    <p><strong>Body:</strong> {result.body}</p>
-                </Panel>
-            </PanelGroup>
-        </div>
-    );
-}
-
-

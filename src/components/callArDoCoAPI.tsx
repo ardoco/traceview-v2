@@ -1,8 +1,12 @@
-import {FileType, UploadedFile} from "@/components/drag-and-drop/FileListItem";
+
 
 
 //this function calls the ArDoCo REST Api and returns
-export default async function fetchArDoCoAPI (projectName:string, selectedTraceLinkType:string | null, uploadedFiles: UploadedFile[]) {
+import {FileType} from "@/components/dataTypes/FileType";
+import {UploadedFile} from "@/components/dataTypes/UploadedFile";
+import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+
+export default async function fetchArDoCoAPI (projectName:string, selectedTraceLinkType:TraceLinkType | null, uploadedFiles: UploadedFile[]) {
     console.log("Submitted data: ", projectName, selectedTraceLinkType, uploadedFiles);
 
     let result = null
@@ -12,7 +16,7 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
     }
 
     try {
-        const apiEndpoint = `/api/${selectedTraceLinkType.toLowerCase()}/start`;
+        const apiEndpoint = `/api/${selectedTraceLinkType.name.toLowerCase()}/start`;
         const requestData = new FormData();
         requestData.append("projectName", projectName);
 
@@ -22,8 +26,8 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
 
 
         // create different form data depending on the selected tracelinktype
-        switch (selectedTraceLinkType) {
-            case 'sad-sam-code':
+        switch (selectedTraceLinkType.name) {
+            case 'SAD-SAM-Code':
                 inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
                 inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
                 inputArchitectureFile = findFile(
@@ -41,7 +45,7 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
                 requestData.append("architectureModelType", inputArchitectureFile.fileType);
                 break;
 
-            case 'sad-code':
+            case 'SAD-Code':
                 inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
                 inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
 
@@ -53,7 +57,7 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
                 requestData.append("inputText", inputTextFile.file);
                 break;
 
-            case 'sam-code':
+            case 'SAM-Code':
                 inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
                 inputArchitectureFile = findFile(
                     uploadedFiles,
@@ -69,7 +73,7 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
                 requestData.append("architectureModelType", inputArchitectureFile.fileType);
                 break;
 
-            case 'sad-sam':
+            case 'SAD-SAM':
                 inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
                 inputArchitectureFile = findFile(
                     uploadedFiles,
