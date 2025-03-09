@@ -1,13 +1,13 @@
 import React from "react";
 
 interface DisplayRawJsonTracelinksProps {
-    JSONResult: string;
+    JSONResult?: string;
 }
 
 export default function DisplayRawJsonTracelinks({JSONResult}: DisplayRawJsonTracelinksProps) {
     return (
         <div>
-            <pre>{JSON.stringify(JSONResult, null, 2)}</pre>
+            <pre>{JSONResult != null ? JSON.stringify(JSONResult, null, 2) : "Loading"}</pre>
         </div>
     )
 }

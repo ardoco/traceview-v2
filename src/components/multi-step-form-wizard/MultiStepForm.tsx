@@ -1,3 +1,5 @@
+'use client'
+
 import {useFormContext} from "@/components/multi-step-form-wizard/ProjectFormContext";
 import {useState} from "react";
 import UploadFileView from "@/components/multi-step-form-wizard/Views/UploadFileView";
@@ -29,21 +31,21 @@ function MultiStepForm() {
             title: "Upload the Project Files",
             description:
                 "Upload the project files for the project. For each file, select the corresponding file type.",
-            validation: () => Validation.validateFiles(formData.projectName, formData.selectedTraceLinkType, formData.files),
+            validation: () => Validation.validateFiles(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
         },
         {
             stepperLabel: "Project Details",
             title: "Project Details",
             description:
                 "Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve.",
-            validation: () => Validation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType, formData.files),
+            validation: () => Validation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
         },
         {
             stepperLabel: "Summary",
             title: "Summary",
             description:
                 "Review the data you provided. If changes are required, return to the corresponding step and modify before calculating the traceLinks.",
-            validation: () => Validation.validateSummary(formData.projectName, formData.selectedTraceLinkType, formData.files),
+            validation: () => Validation.validateSummary(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
         },
     ];
 
@@ -57,7 +59,8 @@ function MultiStepForm() {
             } else {
                 let result = await handleSubmit();
                 console.log(result);
-                redirect(`/view/${result.requestId}?type=${formData.selectedTraceLinkType}`);
+                const encodedId = encodeURIComponent(result.requestId);
+                redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}`);
             }
         } else {
             setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));

@@ -1,3 +1,4 @@
+import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 
 export enum ResultViewOptions {
     Raw_JSON = "Raw JSON",

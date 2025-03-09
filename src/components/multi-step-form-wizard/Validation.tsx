@@ -7,7 +7,6 @@ export default class Validation {
     // validates everything relevant for the file upload view.
     static validateFiles(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]) {
         let errors: string[] = [];
-        console.log(uploadedFiles);
 
         if (!uploadedFiles || uploadedFiles.length < 2) {
             errors.push("Please upload at least two files.");
@@ -15,7 +14,6 @@ export default class Validation {
 
         if (uploadedFiles.some((file) => file.fileType === FileType.None)) {
             errors.push("Please select a file type for each file.");
-            console.log(uploadedFiles);
         }
 
         // Create a map to count occurrences of each file type

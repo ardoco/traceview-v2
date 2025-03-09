@@ -24,7 +24,13 @@ export default function DragAndDrop({handleFilesChangeAction}: DragAndDropProps)
     const handleDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
+        const fileHandlesPromises = [...event.dataTransfer.items]
+            .filter((item) => item.kind === 'file')
+        // @ts-ignore
+            .map((item) => item.getAsFileSystemHandle());
+        console.log(fileHandlesPromises);
         setDragActive(false);
+        console.log(event.dataTransfer?.items);
         if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
             handleFilesChangeAction(event.dataTransfer.files);
         }
