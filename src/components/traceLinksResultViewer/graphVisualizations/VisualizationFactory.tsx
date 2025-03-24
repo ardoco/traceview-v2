@@ -1,12 +1,14 @@
 
 import { CodeModelTreeVisualization } from "./CodeModelTreeVisualization";
 import { HighlightingVisualization } from "./HighlightingVisualization";
-import { NLHighlightingVisualization } from "./DocumentationHighlightingVisualization";
 import { UMLHighlightingVisualization } from "./UMLHighlightingVisualization";
 import {parseNLTXT} from "@/components/traceLinksResultViewer/util/parser/DocumentationParser";
 import {parseUML} from "@/components/traceLinksResultViewer/util/parser/UMLParser";
 import {parseCodeFromACM} from "@/components/traceLinksResultViewer/util/parser/ACMparser";
 import {Style} from "@/components/traceLinksResultViewer/graphVisualizations/style";
+import NLHighlightingVisualization
+    from "@/components/traceLinksResultViewer/graphVisualizations/DocumentationHighlightingVisualization";
+import {JSX} from "react";
 
 /**
  * This file has been taken from the TraceView project.
@@ -56,16 +58,17 @@ export class VisualizationFactory {
         visualizationType: VisualizationType,
         data: string[],
         style: Style,
-    ): (vp: HTMLElement) => HighlightingVisualization {
+    ): (JSX.Element) |((vp: HTMLElement) => HighlightingVisualization) {
         if (visualizationType == VisualizationType.NL) {
             const sentences = parseNLTXT(data[0]);
-            return (vp: HTMLElement) =>
-                new NLHighlightingVisualization(
-                    vp,
-                    sentences,
-                    VisualizationFactory.NLVIS_TITLE,
-                    style,
-                );
+            // return (vp: HTMLElement) =>
+            //     new NLHighlightingVisualization(
+            //         vp,
+            //         sentences,
+            //         VisualizationFactory.NLVIS_TITLE,
+            //         style,
+            //     );
+            return <NLHighlightingVisualization sentences={sentences} style={style} title={VisualizationFactory.NLVIS_TITLE} />;
         } else if (visualizationType == VisualizationType.UML) {
             const uml = parseUML(data[0]);
             return (vp: HTMLElement) =>

@@ -39,7 +39,7 @@ export default function ResultView({ id, collapsible, JSONResult, displayOptions
         >
             <div className="sticky top-0 flex bg-white">
                 <Select value={selectedView} onChange={(e) => handleOptionChange(e.target.value as ResultViewOptions)}
-                        className="border-none flex-grow">
+                        className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:border-gruen ">
                     {displayOptions.map((option) => (
                         <option key={option} value={option}>
                             {option}

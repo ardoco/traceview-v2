@@ -58,8 +58,9 @@ export class CodeModelTreeVisualization extends SvgbasedHighlightingVisualizatio
         return edge ? edge.source : null;
       });
     const root: d3.HierarchyNode<Node> = stratify(nodes);
+    // viewport.scrollTop = this.svgHeight / 4;
+    // viewport.scrollLeft = this.svgWidth / 4;
     viewport.scrollTop = this.svgHeight / 4;
-    viewport.scrollLeft = this.svgWidth / 4;
     (viewport.firstChild as HTMLElement).style.backgroundColor =
       this.style.getPaperColor();
     const treeLayout = d3

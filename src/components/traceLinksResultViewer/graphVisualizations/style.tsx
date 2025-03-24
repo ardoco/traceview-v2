@@ -93,17 +93,24 @@ export class ButtonStyle {
  */
 export class Style {
     public static readonly ARDOCO = new Style(
-        "var(--ardoco-color)",
-        "var(--ardoco-selectable-text-color)",
-        "var(--ardoco-not-selectable-text-color)",
-        "var(--ardoco-background-color)",
-        "var(--ardoco-paper-color)",
-        "var(--ardoco-header-color)",
-        "var(--ardoco-border-color)",
+        "purple",
+        "black",//"var(--ardoco-selectable-text-color)",
+        "grey",
+        // "var(--ardoco-background-color)",
+        // "var(--ardoco-paper-color)",
+        // "var(--ardoco-header-color)",
+        // "var(--ardoco-border-color)",
+        "green",
+        "white",
+        "blue",
+        "limegreen",
         {
-            backgroundColor: "var(--ardoco-button-background-color)",
-            hoverBackgroundColor: "var(--ardoco-button-hover-background-color)",
-            downBackgroundColor: "var(--ardoco-button-down-background-color)",
+            // backgroundColor: "var(--ardoco-button-background-color)",
+            // hoverBackgroundColor: "var(--ardoco-button-hover-background-color)",
+            // downBackgroundColor: "var(--ardoco-button-down-background-color)",
+            backgroundColor: "purple",
+            hoverBackgroundColor: "blue",
+            downBackgroundColor: "red",
         },
     );
 
@@ -186,7 +193,8 @@ export class Style {
     }
 
     public getHoverColor(): string {
-        return this.getButtonStyle().getButtonColor();
+        return "pink"
+        // return this.getButtonStyle().getButtonColor();
     }
 
     /**

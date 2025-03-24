@@ -88,8 +88,8 @@ export default function NewUploadProject() {
 // Loading Banner
 function LoadingBanner() {
     return (
-        <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-b border-gray-300 animate-fade-in">
-            ⏳ Generating Trace-Links, please wait...
+        <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
+            Generating Trace-Links, please wait...
         </div>
     );
 }
