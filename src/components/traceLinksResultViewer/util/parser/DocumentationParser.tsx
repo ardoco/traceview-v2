@@ -1,7 +1,7 @@
-import {NLSentence} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/DocumentationSentence";
+import {Sentence} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/DocumentationSentence";
 
-export function parseNLTXT(content: string): NLSentence[] {
-    let sentences: NLSentence[] = [];
+export function parseNLTXT(content: string): Sentence[] {
+    let sentences: Sentence[] = [];
     let lines = content.split("\n");
     let lineIndex: number = 0;
     for (let line of lines) {
@@ -9,7 +9,7 @@ export function parseNLTXT(content: string): NLSentence[] {
         if (line.trim().length === 0) {
             continue;
         }
-        sentences.push(new NLSentence(line, "" + lineIndex));
+        sentences.push(new Sentence(line, "" + lineIndex));
     }
     return sentences;
 }

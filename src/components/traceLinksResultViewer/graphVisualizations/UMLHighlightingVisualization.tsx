@@ -67,7 +67,7 @@ export class UMLHighlightingVisualization extends SvgbasedHighlightingVisualizat
     console.log("Creating UMLHighlightingVisualization");
     super(viewport, 2000, 2000, name, style);
     this.showEdgeLabels = true;
-    this.userCanNotDragNodes = true;
+    this.userCanNotDragNodes = false;
     this.nodes = [];
     for (let element of model.getElements()) {
       if (!element.isInterface()) {

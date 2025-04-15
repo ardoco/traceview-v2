@@ -2,7 +2,7 @@
 import {PanelGroup, PanelResizeHandle} from "react-resizable-panels";
 import ResultView from "@/components/traceLinksResultViewer/ResultViewer";
 import {ResultViewOptions} from "@/components/dataTypes/ResultViewOptions";
-import React, {Suspense, useState} from "react";
+import React, {Suspense, useEffect, useState} from "react";
 import DisplayDocumentation from "@/components/traceLinksResultViewer/views/Documentation";
 import DisplayCodeModel from "@/components/traceLinksResultViewer/views/CodeModel";
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/ArchitectureModel";
@@ -10,6 +10,8 @@ import DisplayRawJsonTracelinks from "@/components/traceLinksResultViewer/views/
 import {Button, Dialog, Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
+import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/util/parser/TraceLinkParser";
 
 interface ResultDisplayProps {
     result: any;
@@ -30,9 +32,21 @@ export function ResultDisplay({result, id, traceLinkType}:ResultDisplayProps) {
         [ResultViewOptions.Raw_JSON]: <DisplayRawJsonTracelinks JSONResult={result} />,
     };
 
+    // Use context for highlighting & trace link storage
+
     // Limit the panels to 3 or 2 based on the `showThreePanels` state
     const optionsToDisplay:ResultViewOptions[] = showThreePanels ? displayOptions.slice(0, 3) : displayOptions.slice(0, 2);
 
+
+    // useEffect(() => {
+    //     if (result) {
+    //         // Step 1: Parse the trace links
+    //         if (result?.traceLinks) {
+    //             const parsedTraceLinks = parseTraceLinksFromJSON(JSON.stringify(result.traceLinks));
+    //             setTracelinks(parsedTraceLinks); // Step 2: Store in context
+    //         }
+    //     }
+    // }, [result]);
 
     return (
         <div className="bg-white z-1 relative h-full">

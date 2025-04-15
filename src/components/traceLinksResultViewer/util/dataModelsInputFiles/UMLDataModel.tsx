@@ -24,18 +24,13 @@ export abstract class UMLAbstractComponent {
     constructor(
         identifier: string,
         name: string,
-        operations: { identifier: string; name: string }[],
+        operations: UML2Operation[],
     ) {
         this.identifier = identifier;
         this.name = name;
         this.extendz = [];
         this.uses = [];
-        this.operations = [];
-        for (let operation of operations) {
-            this.operations.push(
-                new UML2Operation(operation.identifier, operation.name),
-            );
-        }
+        this.operations = operations;
         this.children = [];
     }
 
@@ -90,7 +85,7 @@ export class UMLInterface extends UMLAbstractComponent {
     constructor(
         identifier: string,
         name: string,
-        operations: { identifier: string; name: string }[],
+        operations: UML2Operation[],
     ) {
         super(identifier, name, operations);
     }

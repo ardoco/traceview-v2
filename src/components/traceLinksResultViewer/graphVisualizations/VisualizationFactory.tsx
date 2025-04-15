@@ -3,7 +3,8 @@ import { CodeModelTreeVisualization } from "./CodeModelTreeVisualization";
 import { HighlightingVisualization } from "./HighlightingVisualization";
 import { UMLHighlightingVisualization } from "./UMLHighlightingVisualization";
 import {parseNLTXT} from "@/components/traceLinksResultViewer/util/parser/DocumentationParser";
-import {parseUML} from "@/components/traceLinksResultViewer/util/parser/UMLParser";
+import parseUML from "@/components/traceLinksResultViewer/util/parser/UMLParser2";
+//import {parseUML} from "@/components/traceLinksResultViewer/util/parser/UMLParser";
 import {parseCodeFromACM} from "@/components/traceLinksResultViewer/util/parser/ACMparser";
 import {Style} from "@/components/traceLinksResultViewer/graphVisualizations/style";
 import NLHighlightingVisualization
@@ -68,7 +69,7 @@ export class VisualizationFactory {
             //         VisualizationFactory.NLVIS_TITLE,
             //         style,
             //     );
-            return <NLHighlightingVisualization sentences={sentences} style={style} title={VisualizationFactory.NLVIS_TITLE} />;
+            return <NLHighlightingVisualization sentences={sentences}/>;
         } else if (visualizationType == VisualizationType.UML) {
             const uml = parseUML(data[0]);
             return (vp: HTMLElement) =>

@@ -159,14 +159,19 @@ export class CodeModelTreeVisualization extends SvgbasedHighlightingVisualizatio
       .selectAll(".node")
       .on("mouseover", (event, d: any) => {
         tooltip.style("visibility", "visible").text(this.getName(d.id));
+        // todo: highlight node
+        d3.select(event.target)
+            .attr("fill", "black"); // Lighter grey color for hover effect
       })
       .on("mousemove", (event) => {
         tooltip
           .style("top", event.pageY - 10 + "px")
           .style("left", event.pageX + 10 + "px");
       })
-      .on("mouseout", () => {
+      .on("mouseout", (event, d: any) => {
         tooltip.style("visibility", "hidden");
+        d3.select(event.target)
+            .attr("fill", "grey");
       });
 
     // Add legend as a separate HTML element within the "split-vis-half-container" element

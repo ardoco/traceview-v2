@@ -9,6 +9,10 @@ import {
     VisualizationType
 } from "@/components/traceLinksResultViewer/graphVisualizations/VisualizationFactory";
 import { Style } from "@/components/traceLinksResultViewer/graphVisualizations/style";
+import {UMLModel} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/UMLDataModel";
+import parseUML from "@/components/traceLinksResultViewer/util/parser/UMLParser2";
+import UMLDiagramVisualization from "@/components/traceLinksResultViewer/graphVisualizations/UMLDiagramVisualization";
+import parseUMLModel from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -19,6 +23,7 @@ export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocu
     const [projectFile, setProjectFile] = useState<UploadedFile | null>(null);
     const [fileContent, setFileContent] = useState<string | null>(null);
     const [container, setContainer] = useState<HTMLDivElement | null>(document.createElement("div"));
+    const [umlModel, setUMLModel] = useState<UMLModel|null>(null); // TODO: Define the type for UMLModel
 
     useEffect(() => { // Load the architecture model file on component mount
         loadProjectFile(id, FileType.Architecture_Model_UML).then((result) => {
@@ -32,7 +37,6 @@ export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocu
     useEffect(() => {
         console.log(fileContent);
         if (fileContent && container) {
-            console.log("hi");
             const factory = new VisualizationFactory();
             const style = Style.ARDOCO;
 
@@ -40,11 +44,20 @@ export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocu
                 const visualizationGenerator = factory.fabricateVisualization(VisualizationType.UML, [fileContent], style);
                 // @ts-ignore
                 visualizationGenerator(container);
+                const parsedUMLModel = parseUMLModel(fileContent);
+                console.log("parsedUMLModel", parsedUMLModel);
             } catch (e) {
                 console.error(e);
             }
         }
     }, [fileContent, container]);
+
+    // useEffect(() => {
+    //     if (fileContent) {
+    //         setUMLModel(parseUML(fileContent));
+    //
+    //     }
+    // }, [fileContent]);
 
     return (
         <div>
@@ -56,6 +69,12 @@ export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocu
                 </div>
             )}
         </div>
+        // <div>
+        //     {umlModel && (
+        //
+        //     <UMLDiagramVisualization umlModel={umlModel}/>
+        //         )}
+        // </div>
     );
 }
 

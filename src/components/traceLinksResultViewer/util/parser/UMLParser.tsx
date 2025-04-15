@@ -1,8 +1,10 @@
 import {
+    UML2Operation,
     UMLComponent,
     UMLInterface,
     UMLModel
 } from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/UMLDataModel";
+import {max} from "d3";
 
 /**
  * This file has been taken from the repository https://github.com/ArDoCo/TraceView.
@@ -16,6 +18,7 @@ enum TokenType {
     OPEN,
     CLOSE,
     ATTRIBUTE,
+    ATTRIBUTE_CLOSE
 }
 
 /**
@@ -56,6 +59,7 @@ function lex(content: string): Token[] {
             }
         }
     }
+    console.log("tokens", tokens)
     return tokens;
 }
 
@@ -86,6 +90,7 @@ function parseLeaf(
         }
         index++;
     }
+    console.log("attributes in parse leaf", attributes)
     return [index, attributes];
 }
 
@@ -95,10 +100,7 @@ function parseLeaf(
  * @param index  The index of the current token
  * @returns A tuple containing the new index and the parsed operation's identifier and name
  */
-function parseOwnedOperation(
-    tokens: Token[],
-    index: number,
-): [number, { identifier: string; name: string }] {
+function parseOwnedOperation(tokens: Token[], index: number,): [number, { identifier: string; name: string }] {
     let content = parseLeaf(tokens, index);
     index = content[0];
     let attributes = content[1];
@@ -125,6 +127,7 @@ function parseInterfaceRealization(
             attributes.size,
         );
     }
+    console.log("attributes in parser",attributes)
     let identifier = attributes.get("xmi:id");
     let sourceId = attributes.get("client");
     let targetId = attributes.get("supplier");
@@ -240,6 +243,7 @@ export function parseUML(content: string): UMLModel {
                     i++;
                     let newIndexAndResult = parseUsage(tokens, i);
                     i = newIndexAndResult[0];
+                    console.log("useage", newIndexAndResult[1])
                     usages.push(newIndexAndResult[1]);
                 } else {
                     throw new Error(
@@ -257,9 +261,15 @@ export function parseUML(content: string): UMLModel {
             const name = attributes.get("name");
             if (identifier && name) {
                 if (type == "uml:Interface") {
+                    let operation_uml = operations.map((operation) => {
+                        return new UML2Operation(
+                            operation.identifier,
+                            operation.name,
+                        );
+                    })
                     interfaces.set(
                         identifier,
-                        new UMLInterface(identifier, name, operations),
+                        new UMLInterface(identifier, name, operation_uml),
                     );
                 } else if (type == "uml:Component") {
                     components.set(identifier, new UMLComponent(identifier, name));
@@ -279,6 +289,10 @@ export function parseUML(content: string): UMLModel {
             );
         }
     }
+
+    console.log("interfaceRealizations", interfaceRealizations)
+    console.log("usages", usages)
+
     for (let interfaceRealization of interfaceRealizations) {
         const child = components.get(interfaceRealization.child);
         const parent = interfaces.get(interfaceRealization.parent);
@@ -308,6 +322,10 @@ export function parseUML(content: string): UMLModel {
             );
         }
     }
+    //console.log("interfaceRealizations", interfaceRealizations);
+    console.log("interfaces", interfaces.values());
+    console.log("components", components.values());
+
     return new UMLModel(
         Array.from(components.values()),
         Array.from(interfaces.values()),

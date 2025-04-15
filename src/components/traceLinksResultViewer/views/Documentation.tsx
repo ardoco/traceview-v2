@@ -9,6 +9,10 @@ import {
     VisualizationType
 } from "@/components/traceLinksResultViewer/graphVisualizations/VisualizationFactory";
 import {Style} from "@/components/traceLinksResultViewer/graphVisualizations/style";
+import {parseNLTXT} from "@/components/traceLinksResultViewer/util/parser/DocumentationParser";
+import NLHighlightingVisualization
+    from "@/components/traceLinksResultViewer/graphVisualizations/DocumentationHighlightingVisualization";
+import {Sentence} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/DocumentationSentence";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -18,7 +22,8 @@ interface DisplayDocumentationProps {
 export default function DisplayDocumentation({JSONResult, id}: DisplayDocumentationProps) {
     const [projectFile, setProjectFile] = useState<UploadedFile | null>();
     const [fileContent, setFileContent] = useState<string | null>();
-    const [visualizationComponent, setVisualizationComponent] = useState<JSX.Element | null>(null);
+    //const [visualizationComponent, setVisualizationComponent] = useState<JSX.Element | null>(null);
+    const [sentences, setSentences] = useState<Sentence[]>([]);
 
 
     useEffect(() => {
@@ -30,31 +35,22 @@ export default function DisplayDocumentation({JSONResult, id}: DisplayDocumentat
         });
     }, [id]);
 
-    // if (!projectFile) {
-    //     return <div>No file to display.</div>
-    // }
-
-    // return (
-    //     <div className="whitespace-pre">
-    //         {fileContent}
-    //     </div>
-    // )
-
     useEffect(() => {
         if (fileContent) {
             const factory = new VisualizationFactory();
             const style = Style.ARDOCO;
-            const visualization = factory.fabricateVisualization(VisualizationType.NL, [fileContent], style);
-
-            if (React.isValidElement(visualization)) {
-                setVisualizationComponent(visualization);
-            }
+            //const visualization = factory.fabricateVisualization(VisualizationType.NL, [fileContent], style);
+            setSentences(parseNLTXT(fileContent));
         }
     }, [fileContent]);
 
+
+
     return (
         <div className="w-full h-full">
-            {visualizationComponent ? visualizationComponent : <div>Loading visualization...</div>}
+            <NLHighlightingVisualization sentences={sentences} />;
+            {/*{visualizationComponent ? visualizationComponent : <div>Loading visualization...</div>}*/}
+
         </div>
     );
 }
