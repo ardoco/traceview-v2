@@ -81,6 +81,7 @@ export class VisualizationFactory {
                 );
         } else if (visualizationType == VisualizationType.CODE) {
             const codeModel = parseCodeFromACM(data[0]);
+            console.log("code model", codeModel)
             return (vp: HTMLElement) =>
                 new CodeModelTreeVisualization(
                     vp,

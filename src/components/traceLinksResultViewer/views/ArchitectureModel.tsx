@@ -1,56 +1,58 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
-import { FileType } from "@/components/dataTypes/FileType";
-import { UploadedFile } from "@/components/dataTypes/UploadedFile";
-import { loadProjectFile } from "@/components/callArDoCoAPI";
+import React, {useEffect, useState} from "react";
+import {FileType} from "@/components/dataTypes/FileType";
+import {UploadedFile} from "@/components/dataTypes/UploadedFile";
+import {loadProjectFile} from "@/components/callArDoCoAPI";
 import {
     VisualizationFactory,
     VisualizationType
 } from "@/components/traceLinksResultViewer/graphVisualizations/VisualizationFactory";
-import { Style } from "@/components/traceLinksResultViewer/graphVisualizations/style";
+import {Style} from "@/components/traceLinksResultViewer/graphVisualizations/style";
 import {UMLModel} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/UMLDataModel";
 import parseUML from "@/components/traceLinksResultViewer/util/parser/UMLParser2";
 import UMLDiagramVisualization from "@/components/traceLinksResultViewer/graphVisualizations/UMLDiagramVisualization";
-import parseUMLModel from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
+import parseUMLModel, {AbstractComponent, Edge} from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
+import UMLViewer from "@/components/traceLinksResultViewer/graphVisualizations/umlViewer/UMLViewer";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
     id: string;
 }
 
-export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocumentationProps) {
+export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocumentationProps) {
     const [projectFile, setProjectFile] = useState<UploadedFile | null>(null);
     const [fileContent, setFileContent] = useState<string | null>(null);
-    const [container, setContainer] = useState<HTMLDivElement | null>(document.createElement("div"));
-    const [umlModel, setUMLModel] = useState<UMLModel|null>(null); // TODO: Define the type for UMLModel
+    //const [container, setContainer] = useState<HTMLDivElement | null>(document.createElement("div"));
+    const [umlModel, setUMLModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null); // TODO: Define the type for UMLModel
 
     useEffect(() => { // Load the architecture model file on component mount
         loadProjectFile(id, FileType.Architecture_Model_UML).then((result) => {
             setProjectFile(result);
             result?.file.text().then((text) => {
                 setFileContent(text);
+                const parsedUMLModel = parseUMLModel(text);
+                setUMLModel(parsedUMLModel);
             });
         });
     }, [id]);
 
-    useEffect(() => {
-        console.log(fileContent);
-        if (fileContent && container) {
-            const factory = new VisualizationFactory();
-            const style = Style.ARDOCO;
-
-            try {
-                const visualizationGenerator = factory.fabricateVisualization(VisualizationType.UML, [fileContent], style);
-                // @ts-ignore
-                visualizationGenerator(container);
-                const parsedUMLModel = parseUMLModel(fileContent);
-                console.log("parsedUMLModel", parsedUMLModel);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    }, [fileContent, container]);
+    // useEffect(() => {
+    //     if (fileContent && container) {
+    //         const factory = new VisualizationFactory();
+    //         const style = Style.ARDOCO;
+    //
+    //         try {
+    //             const visualizationGenerator = factory.fabricateVisualization(VisualizationType.UML, [fileContent], style);
+    //             // @ts-ignore
+    //             visualizationGenerator(container);
+    //             const parsedUMLModel = parseUMLModel(fileContent);
+    //             console.log("parsedUMLModel", parsedUMLModel);
+    //         } catch (e) {
+    //             console.error(e);
+    //         }
+    //     }
+    // }, [fileContent, container]);
 
     // useEffect(() => {
     //     if (fileContent) {
@@ -60,9 +62,9 @@ export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocu
     // }, [fileContent]);
 
     return (
-        <div>
-            {container ? (
-                <div key={fileContent} ref={setContainer} className="w-full h-full" />
+        <div className="w-full h-full">
+            {umlModel ? (
+                <UMLViewer umlComponents={umlModel.components} umlEdges={umlModel.edges}/>
             ) : (
                 <div className="whitespace-pre">
                     {fileContent}
@@ -77,8 +79,6 @@ export default function DisplayArchitectureModel({ JSONResult, id }: DisplayDocu
         // </div>
     );
 }
-
-
 
 
 // 'use client'

@@ -5,16 +5,13 @@ import { ColorProvider } from '@/components/traceLinksResultViewer/util/ColorPro
 import {TraceLink} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/TraceLink";
 
 interface HighlightContextType {
-    tracelinks: TraceLink[];
-    highlightedTraceLinks: Set<TraceLink>;
-    setTracelinks: (tracelinks: TraceLink[]) => void;
+    highlightedTraceLinks: TraceLink[];
     highlightElement: (id: string, type: string) => void;
-    subscribe: (callback: () => void) => void;
-    unsubscribe: (callback: () => void) => void;
 }
 
 interface HighlightProviderProps {
     children: React.ReactNode;
+    traceLinks: TraceLink[];
 }
 
 const HighlightContext = createContext<HighlightContextType | undefined>(undefined);
@@ -27,59 +24,34 @@ export const useHighlightContext = () => {
     return context;
 };
 
-export const HighlightProvider: React.FC<HighlightProviderProps> = ({ children }) => {
-    const [tracelinks, setTracelinksState] = useState<TraceLink[]>([]);
-    const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<Set<TraceLink>>(new Set());
-    const [observers, setObservers] = useState<(() => void)[]>([]);
+export function HighlightProvider({ children, traceLinks }: HighlightProviderProps) {
+    const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const colorProvider = new ColorProvider();
     const highlightColor = "#8ca0d0"; // Single highlight color
 
-    const subscribe = (callback: () => void) => {
-        if (!observers.includes(callback)) {
-            setObservers((prev) => [...prev, callback]);
-        }
-
-    };
-
-    const unsubscribe = (callback: () => void) => {
-        setObservers((prev) => prev.filter((cb) => cb !== callback));
-    };
-
-    const notify = () => {
-        observers.forEach((callback) => callback());
-    };
-
     const highlightElement = (id: string, type: string) => {
         let matchingTraceLinks: TraceLink[] = [];
-        console.log(id, type)
-        if (type === 'sentenceId') {
-            matchingTraceLinks = tracelinks.filter((link) => link.sentenceId + 1 == id);
-        } else if (type === 'modelElementId') {
-            matchingTraceLinks = tracelinks.filter((link) => link.modelElementId === id);
-        } else if (type === 'codeElementId') {
-            matchingTraceLinks = tracelinks.filter((link) => link.codeElementId === id);
+        console.log(id, type, traceLinks)
+        for (const traceLink of traceLinks) {
+            if (type === 'sentenceId' && traceLink.sentenceId == id) {
+                console.log("found", traceLink);
+                matchingTraceLinks.push(traceLink);
+            } else if (type === 'modelElementId' && traceLink.modelElementId === id) {
+                console.log("found", traceLink);
+                matchingTraceLinks.push(traceLink);
+            } else if (type === 'codeElementId' && traceLink.codeElementId === id) {
+                console.log("found", traceLink);
+                matchingTraceLinks.push(traceLink);
+            }
         }
-        console.log("matched tracelinks ",matchingTraceLinks)
-
-        if (matchingTraceLinks.length === 0) {
-            setHighlightedTraceLinks(new Set<TraceLink>());
-            notify();
-            return;
-        }
-
-        setHighlightedTraceLinks(new Set(matchingTraceLinks));
-        notify();
+        setHighlightedTraceLinks(matchingTraceLinks);
     };
 
     return (
         <HighlightContext.Provider
             value={{
-                tracelinks,
                 highlightedTraceLinks,
-                setTracelinks: setTracelinksState,
                 highlightElement,
-                subscribe,
-                unsubscribe,
             }}
         >
             {children}

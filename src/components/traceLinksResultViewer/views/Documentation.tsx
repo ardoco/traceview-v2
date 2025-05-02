@@ -13,6 +13,7 @@ import {parseNLTXT} from "@/components/traceLinksResultViewer/util/parser/Docume
 import NLHighlightingVisualization
     from "@/components/traceLinksResultViewer/graphVisualizations/DocumentationHighlightingVisualization";
 import {Sentence} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/DocumentationSentence";
+import {useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -47,10 +48,26 @@ export default function DisplayDocumentation({JSONResult, id}: DisplayDocumentat
 
 
     return (
-        <div className="w-full h-full">
-            <NLHighlightingVisualization sentences={sentences} />;
+        <div className="w-full h-full space-y-2">
+            {sentences.map((sentence, index) => <SentenceView sentence={sentence} index={index} key={index}/>)}
             {/*{visualizationComponent ? visualizationComponent : <div>Loading visualization...</div>}*/}
+        </div>
+    );
+}
 
+function SentenceView({sentence, index}: { sentence: Sentence, index: number }) {
+    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+
+    return (
+        <div
+            className={`flex items-center p-2 rounded-lg transition cursor-pointer 
+                ${highlightedTraceLinks.some(traceLink => traceLink.sentenceId == index.toString()) ? "bg-yellow-300" : "bg-white"}
+                hover:bg-gray-200
+              `}
+            onClick={() => highlightElement(index.toString(), "sentenceId")}
+        >
+            <span className="mr-3 font-bold text-gray-600">{index}.</span>
+            <p className="flex-1 text-black">{sentence.getContent()}</p>
         </div>
     );
 }

@@ -40,7 +40,7 @@ export class CodeModelTreeVisualization extends SvgbasedHighlightingVisualizatio
     const edges: Edge[] = [];
     this.nodeIdRemapping = new Map<string, string>();
     const contractSingleParentAndChild = true;
-    for (let rootPackage of codeModel.getRootPackages()) {
+    for (let rootPackage of codeModel.getChildPackages()) {
       rootPackage.setIdToPath("");
       CodeModelTreeVisualization.traverseAndAddNodesAndEdges(
         rootPackage,
@@ -292,17 +292,17 @@ export class CodeModelTreeVisualization extends SvgbasedHighlightingVisualizatio
     let localPrefix = pack.name;
     while (
       contractSingleParentAndChild &&
-      localPack.getSubPackages().length === 1 &&
+      localPack.getChildPackages().length === 1 &&
       localPack.getCompilationUnits().length === 0
     ) {
-      localPack = localPack.getSubPackages()[0];
+      localPack = localPack.getChildPackages()[0];
       localPrefix += "/" + localPack.name;
     }
     if (parentId != null) {
       edges.push({ source: parentId, target: localPack.id, label: "" });
     }
     nodes.push({ id: localPack.id, label: localPrefix, isPackage: true });
-    for (let subPackage of localPack.getSubPackages()) {
+    for (let subPackage of localPack.getChildPackages()) {
       CodeModelTreeVisualization.traverseAndAddNodesAndEdges(
         subPackage,
         localPack.id,

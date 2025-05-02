@@ -4,27 +4,27 @@ import React, { useEffect, useRef, useState } from "react";
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {loadProjectFile} from "@/components/callArDoCoAPI";
-import {
-    VisualizationFactory,
-    VisualizationType
-} from "@/components/traceLinksResultViewer/graphVisualizations/VisualizationFactory";
-import {Style} from "@/components/traceLinksResultViewer/graphVisualizations/style";
+import {CodeModelVisualization} from "@/components/traceLinksResultViewer/graphVisualizations/CodeModelVisualization";
+import {parseCodeFromACM2} from "@/components/traceLinksResultViewer/util/parser/ACMparser2";
+import {CodeModelUnit} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/ACMDataModel";
 
-interface DisplayDocumentationProps {
+interface DisplayCodeModelProps {
     JSONResult: any;
     id: string;
 }
 
-export default function DisplayDocumentation({JSONResult, id}: DisplayDocumentationProps) {
+export default function DisplayCodeModel({JSONResult, id}: DisplayCodeModelProps) {
     const [projectFile, setProjectFile] = useState<UploadedFile | null>();
     const [fileContent, setFileContent] = useState<string | null>();
     const visualizationContainerRef = useRef<HTMLDivElement>(null);
+    const [codeModel, setCodeModel] = useState<CodeModelUnit | any>(null);
 
     useEffect(() => {
         loadProjectFile(id, FileType.Code_Model).then((result) => {
             setProjectFile(result);
             result?.file.text().then((text) => {
                 setFileContent(text);
+                initializeCodeModel(text);
             });
         });
     }, []);
@@ -38,20 +38,53 @@ export default function DisplayDocumentation({JSONResult, id}: DisplayDocumentat
     //         {fileContent}
     //     </div>
     // )
-    useEffect(() => {
-        if (fileContent && visualizationContainerRef.current) {
-            const factory = new VisualizationFactory();
-            const style = Style.ARDOCO;
-            const visualizationGenerator = factory.fabricateVisualization(VisualizationType.CODE, [fileContent], style);
+    // useEffect(() => {
+    //     if (fileContent && visualizationContainerRef.current) {
+    //         const factory = new VisualizationFactory();
+    //         const style = Style.ARDOCO;
+    //         const parsedCodeModel = parseCodeFromACM(fileContent);
+    //         console.log("parsedCodeModel1", parsedCodeModel);
+    //         const parsedCodeModel2 = parseCodeFromACM2(fileContent);
+    //         console.log("parsedCodeModel2", parsedCodeModel2);
+    //         setCodeModel(parsedCodeModel);
+    //
+    //         const visualizationGenerator = factory.fabricateVisualization(VisualizationType.CODE, [fileContent], style);
+    //
+    //         // @ts-ignore
+    //         visualizationGenerator(visualizationContainerRef.current);
+    //     }
+    // }, []);
 
-            // @ts-ignore
-            visualizationGenerator(visualizationContainerRef.current);
-        }
-    }, [fileContent]);
+    function initializeCodeModel(content: string | null) {
+        //if (!content || !visualizationContainerRef.current) return;
+
+        // const factory = new VisualizationFactory();
+        // const style = Style.ARDOCO;
+
+        // const parsedCodeModel = parseCodeFromACM(content? content : "");
+        // console.log("parsedCodeModel1", parsedCodeModel);
+
+        const parsedCodeModel2 = parseCodeFromACM2(content? content : "");
+        console.log("parsedCodeModel2", parsedCodeModel2);
+
+        setCodeModel(parsedCodeModel2);
+
+        //const visualizationGenerator = factory.fabricateVisualization(VisualizationType.CODE, [content], style);
+        // @ts-ignore
+        //visualizationGenerator(visualizationContainerRef.current);
+    }
 
     return (
-        <div>
-            <div ref={visualizationContainerRef} className="w-full h-full" />
+
+        <div className="w-full h-full">
+            {codeModel ? (
+                <CodeModelVisualization codeModel={codeModel}/>
+            ) : (
+                <div className="whitespace-pre">
+                    {fileContent}
+                </div>
+            )}
         </div>
+
     );
 }

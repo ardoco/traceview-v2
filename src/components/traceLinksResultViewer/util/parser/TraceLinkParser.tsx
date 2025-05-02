@@ -22,9 +22,6 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
 
   try {
 
-    console.log(data)
-    console.log(data['traceLinkType'])
-
 
     // Ensure the traceLinks property exists
     const traceLinksData: TraceLink[] = data.traceLinks || [];
@@ -63,7 +60,6 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
       traceLinks = traceLinksData.map((entry:any) => {
         const sentenceId = entry.sentenceNumber;
         const modelElementId = entry.modelElementUid;
-        console.log(sentenceId, modelElementId)
         return new TraceLink(sentenceId, modelElementId, "");
       });
 

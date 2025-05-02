@@ -1,14 +1,15 @@
 'use client';
 
 import LoadingScreen from "@/components/LoadingScreen";
-import { useParams, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { ResultDisplay } from "@/components/traceLinksResultViewer/ResultDisplay";
-import { TraceLinkTypes } from "@/components/dataTypes/TraceLinkTypes";
+import {useParams, useSearchParams} from "next/navigation";
+import React, {useEffect, useState} from "react";
+import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
+import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import Button from "@/components/Button";
 import {HighlightProvider, useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/util/parser/TraceLinkParser";
 import {apiResolver} from "next/dist/server/api-utils/node/api-resolver";
+import {TraceLink} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/TraceLink";
 
 // Utility function for polling the API
 const pollForResult = async (id: string, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
@@ -41,15 +42,15 @@ const pollForResult = async (id: string, maxSeconds: number = 240, intervalSecon
 // Main Component
 // Main Component
 export default function NewUploadProject() {
-    const { id } = useParams<{ id: string }>(); // Get the `id` from the path
+    const {id} = useParams<{ id: string }>(); // Get the `id` from the path
     const searchParams = useSearchParams();
     const type = searchParams.get("type"); // Get the `type` from the query params
 
     const [loading, setLoading] = useState(true);
+    const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [result, setResult] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const [retryAllowed, setRetryAllowed] = useState(false);
-    const { setTracelinks, highlightElement } = useHighlightContext();
 
 
     const traceLinkType = TraceLinkTypes[type || "SAD-SAM-Code"] ?? TraceLinkTypes["SAD-SAM-Code"];
@@ -64,7 +65,7 @@ export default function NewUploadProject() {
             const response = await pollForResult(id, 240); // Poll for up to 4 minutes
             setResult(response);
             const parsedTraceLinks = parseTraceLinksFromJSON(response);
-            setTracelinks(parsedTraceLinks); // Step 2: Store in context
+            setTraceLinks(parsedTraceLinks); // Step 2: Store in context
             console.log("Parsed Trace Links:", parsedTraceLinks);
 
 
@@ -82,11 +83,13 @@ export default function NewUploadProject() {
     }, [id]);
 
     return (
-            <>
-                {loading && <LoadingBanner />}
-                {error && <ErrorDisplay message={error} onRetry={fetchResult} retryAllowed={retryAllowed} />}
-                <ResultDisplay result={result} id={uriDecodedId} traceLinkType={traceLinkType} />
-            </>
+        <>
+            {loading && <LoadingBanner/>}
+            {error && <ErrorDisplay message={error} onRetry={fetchResult} retryAllowed={retryAllowed}/>}
+            <HighlightProvider traceLinks={traceLinks}>
+                <ResultDisplay result={result} id={uriDecodedId} traceLinkType={traceLinkType}/>
+            </HighlightProvider>
+        </>
     );
 }
 
@@ -101,7 +104,11 @@ function LoadingBanner() {
 }
 
 
-function ErrorDisplay({ message, onRetry, retryAllowed }: { message: string; onRetry: () => void; retryAllowed: boolean }) {
+function ErrorDisplay({message, onRetry, retryAllowed}: {
+    message: string;
+    onRetry: () => void;
+    retryAllowed: boolean
+}) {
     return (
         <div className="relative bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-2xl shadow-lg text-center w-80">
@@ -112,7 +119,7 @@ function ErrorDisplay({ message, onRetry, retryAllowed }: { message: string; onR
                         text="Retry"
                         onButtonClicked={onRetry}
                         disabled={false}
-                        />
+                    />
                 )}
             </div>
         </div>
