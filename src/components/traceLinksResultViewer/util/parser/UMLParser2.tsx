@@ -20,7 +20,6 @@ export default function parseUML(rawXML: string): any {
 
     const parser = new XMLParser(options);
     const jsonObj = parser.parse(rawXML);
-    console.log("jsonObj", jsonObj)
 
     // parse to UML Data Model
     const components: UMLComponent[] = [];
@@ -51,18 +50,13 @@ export default function parseUML(rawXML: string): any {
             let umlComponent = new UMLComponent(id, name);
             components.push(umlComponent);
 
-            console.log(element["packagedElement"])
-
             // If this component has a `packagedElement`, add child components
             if (element["packagedElement"]) {
                 const usageOfElement = Array.isArray(element["packagedElement"])
                     ? element["packagedElement"]
                     : [element["packagedElement"]];
 
-                console.log("after", element["packagedElement"])
-
                 for (const usage of usageOfElement) {
-                    console.log("usage", usage)
                     usages.push([usage["@_client"], usage["@_supplier"]]); // Store the child-parent relationship
                 }
             }
@@ -81,7 +75,6 @@ export default function parseUML(rawXML: string): any {
 
 
     // Handle interface realizations
-    console.log("interfaceRealizations", interfaceRealizations);
     for (const [componentId, interfaceId] of interfaceRealizations) {
         const component = components.find((comp) => comp.getIdentifier() === componentId);
         const implementedInterface = interfaces.find((iface) => iface.getIdentifier() === interfaceId);
@@ -94,7 +87,6 @@ export default function parseUML(rawXML: string): any {
     }
 
     // handle usages
-    console.log("usages", usages)
     for (const [childId, parentId] of usages) {
         const childComponent = components.find((comp) => comp.getIdentifier() === childId);
         const parentComponent = interfaces.find((comp) => comp.getIdentifier() === parentId);

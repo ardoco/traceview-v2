@@ -13,7 +13,6 @@ interface Node extends d3.SimulationNodeDatum {
 interface Edge extends d3.SimulationLinkDatum<Node>{
     source: string;
     target: string;
-    label: string
     type: "uses" | "extends";
 }
 

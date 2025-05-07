@@ -59,7 +59,6 @@ function lex(content: string): Token[] {
             }
         }
     }
-    console.log("tokens", tokens)
     return tokens;
 }
 
@@ -90,7 +89,6 @@ function parseLeaf(
         }
         index++;
     }
-    console.log("attributes in parse leaf", attributes)
     return [index, attributes];
 }
 
@@ -127,7 +125,6 @@ function parseInterfaceRealization(
             attributes.size,
         );
     }
-    console.log("attributes in parser",attributes)
     let identifier = attributes.get("xmi:id");
     let sourceId = attributes.get("client");
     let targetId = attributes.get("supplier");
@@ -243,7 +240,6 @@ export function parseUML(content: string): UMLModel {
                     i++;
                     let newIndexAndResult = parseUsage(tokens, i);
                     i = newIndexAndResult[0];
-                    console.log("useage", newIndexAndResult[1])
                     usages.push(newIndexAndResult[1]);
                 } else {
                     throw new Error(
@@ -290,9 +286,6 @@ export function parseUML(content: string): UMLModel {
         }
     }
 
-    console.log("interfaceRealizations", interfaceRealizations)
-    console.log("usages", usages)
-
     for (let interfaceRealization of interfaceRealizations) {
         const child = components.get(interfaceRealization.child);
         const parent = interfaces.get(interfaceRealization.parent);
@@ -322,9 +315,9 @@ export function parseUML(content: string): UMLModel {
             );
         }
     }
-    //console.log("interfaceRealizations", interfaceRealizations);
-    console.log("interfaces", interfaces.values());
-    console.log("components", components.values());
+
+    // console.log("interfaces", interfaces.values());
+    // console.log("components", components.values());
 
     return new UMLModel(
         Array.from(components.values()),

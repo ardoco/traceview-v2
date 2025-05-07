@@ -1,14 +1,14 @@
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import * as d3 from "d3";
 
-class Operation {
+export class Operation {
     constructor(
         public id: string,
         public name: string
     ) {}
 }
 
-class Attribute {
+export class Attribute {
     constructor(
         public id: string,
         public name: string,
@@ -16,15 +16,17 @@ class Attribute {
     ) {}
 }
 
-class AbstractComponent {
+export class AbstractComponent {
     constructor(
         public id: string,
         public name: string,
-        public type: string // "uml:Component" | "uml:Interface" | "uml:Class" | ...
+        public type: string, // "uml:Component" | "uml:Interface" | "uml:Class" | ...
+        public x?: number,
+        public y?: number
     ) {}
 }
 
-class Package extends AbstractComponent {
+export class Package extends AbstractComponent {
     public components: AbstractComponent[] = [];
     constructor(id: string, name: string, components: AbstractComponent[]) {
         super(id, name, "uml:Package");
@@ -32,7 +34,7 @@ class Package extends AbstractComponent {
     }
 }
 
-class Interface extends AbstractComponent {
+export class Interface extends AbstractComponent {
     public ownedOperations: Operation[] = [];
     constructor(id: string, name: string, operations: Operation[]) {
         super(id, name, "uml:Interface");
@@ -40,7 +42,7 @@ class Interface extends AbstractComponent {
     }
 }
 
-class UMLClass extends AbstractComponent {
+export class UMLClass extends AbstractComponent {
     public attributes: Attribute[] = [];
     public operations: Operation[] = [];
     constructor(id: string, name: string, attributes: Attribute[], operations: Operation[]) {
@@ -50,7 +52,7 @@ class UMLClass extends AbstractComponent {
     }
 }
 
-class Component extends AbstractComponent {
+export class Component extends AbstractComponent {
     public attributes: Attribute[] = [];
     public operations: Operation[] = [];
     constructor(id: string, name: string, attributes: Attribute[], operations: Operation[]) {
@@ -60,7 +62,7 @@ class Component extends AbstractComponent {
     }
 }
 
-class Edge {
+export class Edge {
     constructor(
         public source: string,
         public target: string,

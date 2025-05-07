@@ -37,29 +37,6 @@ export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocume
         });
     }, [id]);
 
-    // useEffect(() => {
-    //     if (fileContent && container) {
-    //         const factory = new VisualizationFactory();
-    //         const style = Style.ARDOCO;
-    //
-    //         try {
-    //             const visualizationGenerator = factory.fabricateVisualization(VisualizationType.UML, [fileContent], style);
-    //             // @ts-ignore
-    //             visualizationGenerator(container);
-    //             const parsedUMLModel = parseUMLModel(fileContent);
-    //             console.log("parsedUMLModel", parsedUMLModel);
-    //         } catch (e) {
-    //             console.error(e);
-    //         }
-    //     }
-    // }, [fileContent, container]);
-
-    // useEffect(() => {
-    //     if (fileContent) {
-    //         setUMLModel(parseUML(fileContent));
-    //
-    //     }
-    // }, [fileContent]);
 
     return (
         <div className="w-full" style={{height: "calc(100% - 40px)"}}>
