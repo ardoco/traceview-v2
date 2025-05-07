@@ -14,6 +14,7 @@ import NLHighlightingVisualization
     from "@/components/traceLinksResultViewer/graphVisualizations/DocumentationHighlightingVisualization";
 import {Sentence} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/DocumentationSentence";
 import {useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
+import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -61,13 +62,21 @@ function SentenceView({sentence, index}: { sentence: Sentence, index: number }) 
     return (
         <div
             className={`flex items-center p-2 rounded-lg transition cursor-pointer 
-                ${highlightedTraceLinks.some(traceLink => traceLink.sentenceId == index.toString()) ? "bg-yellow-300" : "bg-white"}
+                ${highlightedTraceLinks.some(traceLink => traceLink.sentenceId == index) ? "bg-yellow-300" : "bg-white"}
                 hover:bg-gray-200
               `}
-            onClick={() => highlightElement(index.toString(), "sentenceId")}
+            onClick={() => highlightElement(index, "sentenceId")}
         >
             <span className="mr-3 font-bold text-gray-600">{index}.</span>
             <p className="flex-1 text-black">{sentence.getContent()}</p>
+
+            <TooltipInstruction
+                title="Instructions"
+                position="bottom-right"
+                instructions={[
+                    { keyCombo: "Click", description: "Highlight TraceLink from TraceLInks" },
+                ]}
+            />
         </div>
     );
 }

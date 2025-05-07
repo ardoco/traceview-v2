@@ -32,7 +32,7 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
 
     if (traceLinkType === 'SAD_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceId = entry.sentenceNumber;
+        const sentenceId = parseInt(entry.sentenceNumber);
         const codeCompilationUnit = entry.codeCompilationUnit; // TODO: substitute with id
         // const modelElementId = entry.modelElementId;
         // new TraceLink(sentenceId, "", codeElementId);
@@ -42,12 +42,12 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
       traceLinks = traceLinksData.map((entry:any) => {
         const modelElementId = entry.modelElementId;
         const codeElementId = entry.codeElementId;
-        return new TraceLink("", modelElementId, codeElementId);
+        return new TraceLink(null, modelElementId, codeElementId);
       });
 
     } else if (traceLinkType === 'SAD_SAM_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceId = entry.sentenceNumber;
+        const sentenceId = parseInt(entry.sentenceNumber);
         const codeCompilationUnit = entry.codeCompilationUnit; // TODO: substitute with id
         const modelElementId = "" // TODO: substitute with id
         // const modelElementId = entry.modelElementId;
@@ -58,7 +58,7 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
 
     } else if (traceLinkType === 'SAD_SAM') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceId = entry.sentenceNumber;
+        const sentenceId = parseInt(entry.sentenceNumber);
         const modelElementId = entry.modelElementUid;
         return new TraceLink(sentenceId, modelElementId, "");
       });

@@ -7,6 +7,7 @@ import {loadProjectFile} from "@/components/callArDoCoAPI";
 import {CodeModelVisualization} from "@/components/traceLinksResultViewer/graphVisualizations/CodeModelVisualization";
 import {parseCodeFromACM2} from "@/components/traceLinksResultViewer/util/parser/ACMparser2";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/ACMDataModel";
+import ACMViewer from "@/components/traceLinksResultViewer/graphVisualizations/acmViewer/ACMViewer";
 
 interface DisplayCodeModelProps {
     JSONResult: any;
@@ -74,11 +75,25 @@ export default function DisplayCodeModel({JSONResult, id}: DisplayCodeModelProps
         //visualizationGenerator(visualizationContainerRef.current);
     }
 
-    return (
+    /*return (
 
-        <div className="w-full h-full">
+        <div className="w-full" style={{height: "calc(100% - 40px)"}}>
             {codeModel ? (
                 <CodeModelVisualization codeModel={codeModel}/>
+            ) : (
+                <div className="whitespace-pre">
+                    {fileContent}
+                </div>
+            )}
+        </div>
+
+    );*/
+
+    return (
+
+        <div className="w-full" style={{height: "calc(100% - 40px)"}}>
+            {codeModel ? (
+                <ACMViewer codeModel={codeModel}/>
             ) : (
                 <div className="whitespace-pre">
                     {fileContent}

@@ -29,7 +29,7 @@ export function ResultDisplay({result, id, traceLinkType}:ResultDisplayProps) {
         [ResultViewOptions.Documentation]: <DisplayDocumentation JSONResult={result} id={id} />,
         [ResultViewOptions.Code_Model]: <DisplayCodeModel JSONResult={result} id={id} />,
         [ResultViewOptions.Architecture_Model]: <DisplayArchitectureModel JSONResult={result} id={id} />,
-        [ResultViewOptions.Raw_JSON]: <DisplayRawJsonTracelinks JSONResult={result} />,
+        [ResultViewOptions.Raw_JSON]: <DisplayRawJsonTracelinks JSONResult={result} traceLinkType={traceLinkType} />,
     };
 
     // Use context for highlighting & trace link storage
@@ -73,6 +73,7 @@ export function ResultDisplay({result, id, traceLinkType}:ResultDisplayProps) {
                             defaultView={resultViewOption}
                             setSelectedDialogView={setSelectedDialogView}
                             id={id}
+                            traceLinkType={traceLinkType}
                         />
                         {/* Render a PanelResizeHandle between panels, if necessary */}
                         {index !== optionsToDisplay.length - 1 && <PanelResizeHandle className="w-0.5 bg-gruen" />}

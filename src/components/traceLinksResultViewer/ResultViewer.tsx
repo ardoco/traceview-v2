@@ -11,6 +11,7 @@ import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {FileType} from "@/components/dataTypes/FileType";
 import {Dialog, Select, Button} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";
+import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 
 interface ResultViewProps {
     id: string;
@@ -19,9 +20,10 @@ interface ResultViewProps {
     displayOptions: ResultViewOptions[];
     defaultView: ResultViewOptions;
     setSelectedDialogView: (value: ResultViewOptions | null) => void;
+    traceLinkType:TraceLinkType;
 }
 
-export default function ResultView({ id, collapsible, JSONResult, displayOptions, defaultView, setSelectedDialogView }: ResultViewProps) {
+export default function ResultView({ id, collapsible, JSONResult, displayOptions, defaultView, setSelectedDialogView, traceLinkType }: ResultViewProps) {
     const [selectedView, setSelectedView] = useState(defaultView);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -37,6 +39,7 @@ export default function ResultView({ id, collapsible, JSONResult, displayOptions
             collapsible={collapsible} // Use the input prop here
             collapsedSize={0}
         >
+            {/*drop down*/}
             <div className="sticky top-0 flex bg-white">
                 <Select value={selectedView} onChange={(e) => handleOptionChange(e.target.value as ResultViewOptions)}
                         className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:border-gruen ">
@@ -56,13 +59,13 @@ export default function ResultView({ id, collapsible, JSONResult, displayOptions
                 <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation JSONResult={JSONResult} id={id}/></Suspense>}
             {selectedView === ResultViewOptions.Code_Model && <DisplayCodeModel JSONResult={JSONResult} id={id}/>}
             {selectedView === ResultViewOptions.Architecture_Model && <DisplayArchitectureModel JSONResult={JSONResult} id={id}/>}
-        {selectedView === ResultViewOptions.Raw_JSON && <DisplayRawJsonTracelinks JSONResult={JSONResult}/>}
+        {selectedView === ResultViewOptions.Raw_JSON && <DisplayRawJsonTracelinks JSONResult={JSONResult} traceLinkType={traceLinkType}/>}
 
             <Dialog onClose={() => setIsOpen(false)} open={isOpen} className="bg-white fixed top-0 left-0 w-full h-full overflow-y-auto z-1000">
                 {selectedView === ResultViewOptions.Documentation && <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation JSONResult={JSONResult} id={id}/></Suspense>}
                 {selectedView === ResultViewOptions.Code_Model && <DisplayCodeModel JSONResult={JSONResult} id={id}/>}
                 {selectedView === ResultViewOptions.Architecture_Model && <DisplayArchitectureModel JSONResult={JSONResult} id={id}/>}
-                {selectedView === ResultViewOptions.Raw_JSON && <DisplayRawJsonTracelinks JSONResult={JSONResult}/>}
+                {selectedView === ResultViewOptions.Raw_JSON && <DisplayRawJsonTracelinks JSONResult={JSONResult} traceLinkType={traceLinkType}/>}
             </Dialog>
         </Panel>
     );

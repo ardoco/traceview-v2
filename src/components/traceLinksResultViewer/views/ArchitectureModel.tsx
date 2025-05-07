@@ -62,7 +62,7 @@ export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocume
     // }, [fileContent]);
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full" style={{height: "calc(100% - 40px)"}}>
             {umlModel ? (
                 <UMLViewer umlComponents={umlModel.components} umlEdges={umlModel.edges}/>
             ) : (

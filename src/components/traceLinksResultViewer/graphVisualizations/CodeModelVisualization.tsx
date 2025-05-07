@@ -1,9 +1,10 @@
 'use client'
 
 import * as d3 from "d3";
-import React, { useEffect, useRef } from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import { CodeModelUnit } from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/ACMDataModel";
 import {useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
+import {HierarchyNode} from "d3";
 
 interface CodeModelVisualizationProps {
     codeModel: CodeModelUnit;
@@ -12,6 +13,9 @@ interface CodeModelVisualizationProps {
 export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
     const highlightedNodeIdRef = useRef<string | null>(null); // useRef instead of useState to avoid re-renders
+    const rootRef = useRef<HierarchyNode<CodeModelUnit> | null>(null);
+
+
     const { highlightedTraceLinks, highlightElement } = useHighlightContext();
 
     // Tree layout spacing constants
@@ -21,15 +25,84 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
     const width = 2000;
     const height = 2000;
 
+    function expandPathToNode(node: HierarchyNode<CodeModelUnit>) {
+        let current = node;
+        while (current.parent) {
+            current.parent.children = current.parent._children;
+            current = current.parent;
+        }
+    }
+
+
+    const highlightPathToRoot = useCallback((event: any, d: any) => {
+        const previouslyHighlighted = highlightedNodeIdRef.current;
+
+        // Reset styles for all nodes and links
+        d3.selectAll("circle").attr("fill", (d: any) => d._children ? "#555" : "#999")
+            .attr("r", 4)
+
+        d3.selectAll("text").style("fill", "black").style("font-weight", "normal");
+        d3.selectAll("path").attr("stroke", "#555").attr("stroke-width", 1.5).attr("stroke-opacity", 0.4);
+
+        if (previouslyHighlighted === d.id) {
+            highlightedNodeIdRef.current = null;
+            return;
+        }
+
+        // Save newly highlighted node
+        highlightedNodeIdRef.current = d.id;
+
+        // Expand the path to the node
+        expandPathToNode(d);
+
+        // get path to from the current to the root
+        const pathToRoot = [];
+        let current = d;
+        while (current) {
+            pathToRoot.push(current);
+            current = current.parent;
+        }
+
+        d3.select(`#node-${d.id} circle`).attr("r",6)
+
+        pathToRoot.forEach(node => {
+            // Highlight circle
+            d3.select(`#node-${node.id} circle`)
+                .attr("fill", "#4664aa") // blau-500
+
+            // Highlight text
+            d3.select(`#node-${node.id} text`)
+                .style("fill", "#4664aa")
+                .style("font-weight", "bold");
+
+            // Highlight link to parent
+            if (node.parent) {
+                d3.select(`#link-${node.parent.id}-${node.id}`)
+                    .attr("stroke", "#4664aa")
+                    .attr("stroke-width", 3)
+                    .attr("stroke-opacity", 1);
+            }
+        }   );
+    },[])
+
+    const highlightNodeById = useCallback((nodeId:string | null, root:HierarchyNode<CodeModelUnit>) => {
+        const rootNode = root.descendants().find(d => d.id === nodeId);
+        if (rootNode) {
+            highlightPathToRoot(null, rootNode);
+        }
+    }, []);
+
     useEffect(() => {
         if (!codeModel || !svgRef.current) return;
 
         // Step 1: Convert the data into a d3 hierarchy
-        const root = d3.hierarchy(codeModel, d => d.children);
+        const root:HierarchyNode<CodeModelUnit> = d3.hierarchy(codeModel, d => d.children);
 
         // Set initial positions for animation
         root.x0 = dy / 2;
         root.y0 = 0;
+
+        rootRef.current = root;
 
         // Step 2: Prepare layout generators
         const tree = d3.tree<CodeModelUnit>().nodeSize([dx, dy]);
@@ -74,61 +147,6 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
                 })
         );
 
-        function highlightNodeById(nodeId:string | null) {
-            const rootNode = root.descendants().find(d => d.id === nodeId);
-            if (rootNode) {
-                highlightPathToRoot(null, rootNode);
-            }
-        }
-
-        function highlightPathToRoot(event: any, d: any) {
-            const previouslyHighlighted = highlightedNodeIdRef.current;
-
-            // Reset styles for all nodes and links
-            d3.selectAll("circle").attr("fill", (d: any) => d._children ? "#555" : "#999")
-                .attr("r", 4)
-
-            d3.selectAll("text").style("fill", "black").style("font-weight", "normal");
-            d3.selectAll("path").attr("stroke", "#555").attr("stroke-width", 1.5).attr("stroke-opacity", 0.4);
-
-            if (previouslyHighlighted === d.id) {
-                highlightedNodeIdRef.current = null;
-                return;
-            }
-
-            // Save newly highlighted node
-            highlightedNodeIdRef.current = d.id;
-
-            // get path to from the current to the root
-            const pathToRoot = [];
-            let current = d;
-            while (current) {
-                pathToRoot.push(current);
-                current = current.parent;
-            }
-
-            d3.select(`#node-${d.id} circle`).attr("r",6)
-
-            pathToRoot.forEach(node => {
-                // Highlight circle
-                d3.select(`#node-${node.id} circle`)
-                    .attr("fill", "#4664aa") // blau-500
-
-                // Highlight text
-                d3.select(`#node-${node.id} text`)
-                    .style("fill", "#4664aa")
-                    .style("font-weight", "bold");
-
-                // Highlight link to parent
-                if (node.parent) {
-                    d3.select(`#link-${node.parent.id}-${node.id}`)
-                        .attr("stroke", "#4664aa")
-                        .attr("stroke-width", 3)
-                        .attr("stroke-opacity", 1);
-                }
-            });
-        }
-
         // Step 5: Define update/render logic
         function update(event: any, source: any) {
             const duration = event?.altKey ? 2500 : 250;
@@ -137,6 +155,10 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
             tree(root);
             const nodes = root.descendants().reverse();
             const links = root.links();
+
+            console.log("tree", tree)
+            console.log("nodes", nodes)
+            console.log("links", links)
 
             // Compute height based on node positions
             let left = root;
@@ -252,27 +274,16 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
 
             // Un-highlight if currently highlighted node becomes hidden
             if (highlightedNodeIdRef.current !== null) {
-                highlightNodeById(highlightedNodeIdRef.current);
+                highlightNodeById(highlightedNodeIdRef.current, root);
             }
 
         }
 
         root.descendants().forEach((d, i) => {
-            d.id = i;
+            d.id = d.data.id ?? i;
             d._children = d.children;
             if (d.depth > 1) d.children = null;
         });
-
-        // root.eachBefore(d => {
-        //     d._children = d.children;
-        //     if (d.height > 2) {
-        //
-        //         d.children = null; // Collapse nodes with height > 2
-        //     }
-        //     d.id = Math.random().toString();
-        //     d._children = d.children;
-        //     // Optional: d.children = null; // Collapse everything initially
-        // });
 
         update(null, root);
 
@@ -280,21 +291,27 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
 
     }, [codeModel]);
 
+    useEffect(() => {
+        if (!svgRef.current || !highlightedTraceLinks.length) return;
+
+        // Assuming you only highlight the first matched trace link for now
+        const firstTraceLink = highlightedTraceLinks[0];
+        const targetCodeElementId = firstTraceLink.codeElementId;
+        const nodeId = `node-${targetCodeElementId}`; // Match format used in D3 ids
+
+        // Remove the 'node-' prefix in D3 before comparing if needed
+        console.log(nodeId, d3.selectAll("g"))
+        const d3Node = d3.select(nodeId);
+        if (!d3Node.empty()) {
+            const allNodes = d3.selectAll("circle").attr("r", 4).attr("fill", "#999");
+            highlightNodeById(targetCodeElementId, rootRef.current);
+        }
+    }, [highlightedTraceLinks]);
+
+
     return (
         <div className="relative w-full h-full">
-            <svg ref={svgRef} style={{ width: "100%", height: "100%" }} />
 
-            {/*tooltip*/}
-            <div className="sticky bottom-4 right-4 z-10 group">
-                <div className="w-6 h-6 rounded-full bg-gray-300 text-black text-center cursor-pointer">
-                    ?
-                </div>
-                <div className="absolute bottom-8 right-0 w-64 text-sm text-white bg-black bg-opacity-80 p-3 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <strong className="block font-semibold">Instructions</strong>
-                    <div><kbd className="font-mono">Click</kbd>: Highlight path to root</div>
-                    <div><kbd className="font-mono">Ctrl + Click</kbd>: Collapse/Expand node</div>
-                </div>
-            </div>
         </div>
         )
 

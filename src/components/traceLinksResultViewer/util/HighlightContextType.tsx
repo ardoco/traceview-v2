@@ -1,12 +1,14 @@
 'use client'
 
-import React, { createContext, useContext, useState } from 'react';
-import { ColorProvider } from '@/components/traceLinksResultViewer/util/ColorProvider';
+import React, {createContext, useContext, useState} from 'react';
+import {ColorProvider} from '@/components/traceLinksResultViewer/util/ColorProvider';
 import {TraceLink} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/TraceLink";
 
 interface HighlightContextType {
     highlightedTraceLinks: TraceLink[];
-    highlightElement: (id: string, type: string) => void;
+    highlightElement: (id: number| string | null, type: string) => void;
+    highlightSingleTraceLink: (traceLinks:TraceLink) => void;
+    traceLinks:TraceLink[];
 }
 
 interface HighlightProviderProps {
@@ -24,16 +26,20 @@ export const useHighlightContext = () => {
     return context;
 };
 
-export function HighlightProvider({ children, traceLinks }: HighlightProviderProps) {
+export function HighlightProvider({children, traceLinks}: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const colorProvider = new ColorProvider();
     const highlightColor = "#8ca0d0"; // Single highlight color
 
-    const highlightElement = (id: string, type: string) => {
+    const highlightElement = (id: number| string | null, type: string) => {
+        if (id === null) {
+            setHighlightedTraceLinks([]);
+            return;
+        }
         let matchingTraceLinks: TraceLink[] = [];
         console.log(id, type, traceLinks)
         for (const traceLink of traceLinks) {
-            if (type === 'sentenceId' && traceLink.sentenceId == id) {
+            if (type === 'sentenceId' && traceLink.sentenceId && traceLink.sentenceId === id) {
                 console.log("found", traceLink);
                 matchingTraceLinks.push(traceLink);
             } else if (type === 'modelElementId' && traceLink.modelElementId === id) {
@@ -47,11 +53,17 @@ export function HighlightProvider({ children, traceLinks }: HighlightProviderPro
         setHighlightedTraceLinks(matchingTraceLinks);
     };
 
+    const highlightSingleTraceLink = (traceLinks:TraceLink) =>{
+        setHighlightedTraceLinks([traceLinks]);
+    }
+
     return (
         <HighlightContext.Provider
             value={{
                 highlightedTraceLinks,
                 highlightElement,
+                highlightSingleTraceLink,
+                traceLinks,
             }}
         >
             {children}

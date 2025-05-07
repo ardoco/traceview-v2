@@ -1,11 +1,9 @@
-
-
 export class TraceLink {
-    sentenceId: string;
+    sentenceId: number | null;
     modelElementId: string;
     codeElementId: string;
 
-    constructor(sentenceId: string, modelElementId: string, codeElementId: string) {
+    constructor(sentenceId: number | null, modelElementId: string, codeElementId: string) {
         this.sentenceId = sentenceId;
         this.modelElementId = modelElementId;
         this.codeElementId = codeElementId;
