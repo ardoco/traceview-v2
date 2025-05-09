@@ -55,20 +55,29 @@ export class UMLClass extends AbstractComponent {
 export class Component extends AbstractComponent {
     public attributes: Attribute[] = [];
     public operations: Operation[] = [];
-    constructor(id: string, name: string, attributes: Attribute[], operations: Operation[]) {
+    public usages: string[] = [];
+    public providedInterfaces: string[] = [];
+    constructor(id: string, name: string, attributes: Attribute[], operations: Operation[], usages:string[], providedInterfaces:string[]) {
         super(id, name, "uml:Component");
         this.attributes = attributes;
         this.operations = operations;
+        this.usages = usages;
+        this.providedInterfaces = providedInterfaces;
     }
 }
 
 export class Edge {
     constructor(
-        public source: string,
-        public target: string,
+        public client: string,
+        public supplier: string,
         public type: string, // "uml:Generalization" | "uml:InterfaceRealization" | "uml:Usage" | ...
-        public label?: string
+        public usedInterface?: Interface, // Optional: for interface edges
     ) {}
+}
+
+export interface EdgeTypes {
+    usages: Edge[];
+    providedInterfaces: Edge[];
 }
 
 export default function parseUMLModel(rawXML: string): { components: AbstractComponent[]; edges: Edge[] } {
@@ -92,13 +101,37 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
         components.push(...packagedElements);
     }
 
+    edges = getTransitiveEdges(edges, components);
+
+
     return { components, edges };
+}
+
+function getTransitiveEdges(edges:Edge[], components:AbstractComponent[]): Edge[] {
+
+    const usages: Edge[] = edges.filter((edge) => edge.type === "uml:Usage");
+    const providedInterfaces: Edge[] = edges.filter((edge) => edge.type === "uml:InterfaceRealization");
+    const otherEdges: Edge[] = edges.filter((edge) => edge.type !== "uml:Usage" && edge.type !== "uml:InterfaceRealization");
+    const umlComponentsMap = new Map<string, AbstractComponent>();
+    components.forEach((comp) => {
+        umlComponentsMap.set(comp.id, comp);
+    });
+
+    const final: Edge[] = otherEdges;
+    providedInterfaces.forEach((providedHalfEdge => {
+        usages.forEach((usageHalfEdge => {
+            if (providedHalfEdge.supplier === usageHalfEdge.supplier && umlComponentsMap.get(usageHalfEdge.supplier)?.type === "uml:Interface") {
+                final.push(new Edge(usageHalfEdge.client, providedHalfEdge.client, usageHalfEdge.type, umlComponentsMap.get(usageHalfEdge.supplier) as Interface));
+            }
+        }))
+    }))
+    return final;
 }
 
 function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[] {
     const type = element["@_xmi:type"];
 
-    addEdges(element, edges);
+    const addedEdges:EdgeTypes = addEdges(element, edges);
 
     // Process element based on its type
     switch (type) {
@@ -117,7 +150,9 @@ function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[]
                     element["@_xmi:id"],
                     element["@_name"],
                     extractAttributes(element),
-                    extractOperations(element)
+                    extractOperations(element),
+                    addedEdges.usages.map((usage) => usage.supplier),
+                    addedEdges.providedInterfaces.map((providedInterface) => providedInterface.supplier)
                 )];
 
         case "uml:Interface":
@@ -154,10 +189,15 @@ function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[]
     return [];
 }
 
-function addEdges(element: any, edges:Edge[]) {
+function addEdges(element: any, edges:Edge[]): EdgeTypes {
+    const usages = extractUsage(element);
+    const providedInterfaces = extractInterfaceRealizations(element);
+
     edges.push(...extractGeneralizations(element));
-    edges.push(...extractInterfaceRealizations(element));
-    edges.push(...extractUsage(element));
+    edges.push(...providedInterfaces);
+    edges.push(...usages);
+
+    return {usages:usages, providedInterfaces:providedInterfaces} as EdgeTypes;
 }
 
 function extractOperations(element: any): Operation[] {
@@ -192,8 +232,8 @@ function extractGeneralizations(element: any): Edge[] {
     if (element["generalization"]) {
         const gens = Array.isArray(element["generalization"]) ? element["generalization"] : [element["generalization"]];
         generalizations = gens.map((gen: any) => ({
-            source: element["@_xmi:id"], // specification: e.g. Elephant
-            target: gen["general"], // generalization: e.g. Mammal
+            client: element["@_xmi:id"], // specification: e.g. Elephant
+            supplier: gen["general"], // generalization: e.g. Mammal
             type: "uml:Generalization",
         }));
     }
@@ -205,8 +245,8 @@ function extractInterfaceRealizations(element: any): Edge[] {
     if (element["interfaceRealization"]) {
         const irs = Array.isArray(element["interfaceRealization"]) ? element["interfaceRealization"] : [element["interfaceRealization"]];
         interfaceRealizations = irs.map((interfaceRealization: any) => ({
-            source: interfaceRealization["@_client"], // client realizes supplied interface
-            target: interfaceRealization["@_supplier"], // id of the supplied interface
+            client: interfaceRealization["@_client"], // client realizes supplied interface
+            supplier: interfaceRealization["@_supplier"], // id of the supplied interface
             type: "uml:InterfaceRealization",
         }));
     }
@@ -220,8 +260,8 @@ function extractUsage(element: any): Edge[] {
         usages = usagesArray
             .filter((el: any) => el["@_xmi:type"] === "uml:Usage")
             .map((usage: any) => ({
-                source: usage["@_client"], // element that uses the target component
-                target: usage["@_supplier"], // id of the component that is being used
+                client: usage["@_client"], // element that uses the target component
+                supplier: usage["@_supplier"], // id of the component that is being used
                 type: "uml:Usage",
             }));
     }

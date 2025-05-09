@@ -37,7 +37,7 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
             return;
         }
         let matchingTraceLinks: TraceLink[] = [];
-        console.log(id, type, traceLinks)
+
         for (const traceLink of traceLinks) {
             if (type === 'sentenceId' && traceLink.sentenceId && traceLink.sentenceId === id) {
                 console.log("found", traceLink);
@@ -50,6 +50,7 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 matchingTraceLinks.push(traceLink);
             }
         }
+        console.log("matched tracelinks :", id, type, traceLinks)
         setHighlightedTraceLinks(matchingTraceLinks);
     };
 

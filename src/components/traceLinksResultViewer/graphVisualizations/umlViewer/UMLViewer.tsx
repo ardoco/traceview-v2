@@ -22,8 +22,8 @@ export default function UMLViewer({umlComponents, umlEdges}: UMLViewerProps) {
     const positions = useForceLayout(umlComponents, umlEdges);
     return (
         <div className="relative w-full h-full bg-gray-100 overflow-auto">
-            {umlEdges.map((edge, index) => <UMLRelationshipView from={positions[edge.source]}
-                                                                to={positions[edge.target]} type={edge.type} key={index}/>)}
+            {umlEdges.map((edge, index) => <UMLRelationshipView from={positions[edge.client]}
+                                                                to={positions[edge.supplier]} type={edge.type} key={index}/>)}
             {umlComponents.map((component, index) => {
                 switch (component.type) {
                     case "uml:Class":
