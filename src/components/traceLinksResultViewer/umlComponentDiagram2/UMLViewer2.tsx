@@ -4,7 +4,10 @@ import UMLEdge from "@/components/traceLinksResultViewer/umlComponentDiagram2/UM
 import UMLNode from "@/components/traceLinksResultViewer/umlComponentDiagram2/UMLComponentNode";
 import {forceCenter, forceLink, forceManyBody, forceSimulation, select} from "d3";
 import * as d3 from "d3";
-import {InterfaceAnchor} from "@/components/traceLinksResultViewer/umlComponentDiagram2/InterfaceAnchor";
+import {
+    FacingDirection,
+    InterfaceAnchor
+} from "@/components/traceLinksResultViewer/umlComponentDiagram2/InterfaceAnchor";
 
 
 interface UMLViewerProps {
@@ -17,7 +20,6 @@ export interface Position {
     y: number;
 }
 
-
 export default function UMLViewer2({ umlComponents, umlEdges }: UMLViewerProps) {
     const svgRef = useRef<SVGSVGElement |null >(null);
     const zoomRef = useRef<SVGGElement | null >(null);
@@ -27,21 +29,9 @@ export default function UMLViewer2({ umlComponents, umlEdges }: UMLViewerProps) 
 
     const [anchorsReady, setAnchorsReady] = useState(false);
 
-    const addAnchors = (anchors: InterfaceAnchor[], componentId: string) => {
-        setInterfaceAnchors((prev) => {
-            const updated = { ...prev, [componentId]: anchors };
-            // Check if all anchors are registered
-            if (Object.keys(updated).length === umlComponentsFiltered.length) {
-                setAnchorsReady(true);
-            }
-            return updated;
-        });
-    };
-
     function isComponent(comp: AbstractComponent): comp is Component {
         return comp.type === "uml:Component";
     }
-
     const umlComponentsFiltered: Component[] = umlComponents.filter(isComponent);
 
     const umlComponentsMap = new Map<string, AbstractComponent>();
@@ -74,6 +64,7 @@ export default function UMLViewer2({ umlComponents, umlEdges }: UMLViewerProps) 
         const svg = d3.select(svgRef.current);
         const g = d3.select(zoomRef.current);
 
+        // @ts-ignore
         svg.call(
             d3.zoom()
                 .on("zoom", (event) => {
@@ -82,20 +73,36 @@ export default function UMLViewer2({ umlComponents, umlEdges }: UMLViewerProps) 
         );
     }, []);
 
+    useEffect(() => {
+        const anchorMap: { [componentId: string]: InterfaceAnchor[] } = {};
+        umlComponentsFiltered.forEach((component) => {
+            const position = positions[component.id];
+            if (position) {
+                anchorMap[component.id] = calculateAnchorsForComponent(component, position, umlComponentsMap);
+            }
+        });
+        setInterfaceAnchors(anchorMap);
+        setAnchorsReady(true);
+    }, [positions]);
+
 
     return (
         <div className={"relative w-full h-full bg-white overflow-auto"}>
         <svg ref={svgRef}  style={{width: "100%", height: "100%"}} viewBox="-500 -500 2000 2000">
             <g ref={zoomRef}>
-                {/* Render Edges First */}
-                {/*{umlEdges.map((edge, i) => (*/}
-                {/*    <UMLEdge*/}
-                {/*        key={i}*/}
-                {/*        edge={edge}*/}
-                {/*        source={{x: positions[edge.source]?.x, y: positions[edge.source]?.y}}*/}
-                {/*        target={{x: positions[edge.target]?.x, y: positions[edge.target]?.y}}*/}
-                {/*    />*/}
-                {/*))}*/}
+
+
+
+                {/* Render Components */}
+                {umlComponentsFiltered.map((comp) => (
+                    <UMLNode
+                        key={comp.id}
+                        component={comp}
+                        position={{x: positions[comp.id]?.x ?? 0, y: positions[comp.id]?.y ?? 0}}
+                        interfacePositions={interfaceAnchors[comp.id] ?? []}
+                    />
+                ))}
+
                 {anchorsReady &&
                     processedEdges.map((edge, i) => (
                         <UMLEdge
@@ -105,17 +112,6 @@ export default function UMLViewer2({ umlComponents, umlEdges }: UMLViewerProps) 
                             target={edge.targetPosition}
                         />
                     ))}
-
-                {/* Render Components */}
-                {umlComponentsFiltered.map((comp) => (
-                    <UMLNode
-                        key={comp.id}
-                        component={comp}
-                        position={{x: positions[comp.id]?.x ?? 0, y: positions[comp.id]?.y ?? 0}}
-                        addAnchors={addAnchors}
-                        umlComponentsMap={umlComponentsMap}
-                    />
-                ))}
             </g>
         </svg>
         </div>
@@ -157,4 +153,73 @@ const useForceLayout = (nodes: AbstractComponent[], edges: Edge[]) => {
     return positions;
 }
 
+function calculateAnchorsForComponent(component: Component, position: Position, umlComponentsMap: Map<string, AbstractComponent>): InterfaceAnchor[] {
+    const boxWidth = 140;
+    const boxHeight = 70;
+    const lollipopRadius = 6;
+    const lollipopLineLength = 6;
 
+    const totalInterfaces = component.providedInterfaces.length + component.usages.length;
+    const quotient = Math.floor(totalInterfaces / 4);
+    const remainder = totalInterfaces % 4;
+    const interfacesPerSide = [quotient, quotient, quotient, quotient];
+    for (let i = 0; i < remainder; i++) interfacesPerSide[i]++;
+
+    const directions = [FacingDirection.UP, FacingDirection.DOWN, FacingDirection.LEFT, FacingDirection.RIGHT];
+    const stepSizes = [
+        [boxWidth / (interfacesPerSide[0] + 1), 0],
+        [boxWidth / (interfacesPerSide[1] + 1), 0],
+        [0, boxHeight / (interfacesPerSide[2] + 1)],
+        [0, boxHeight / (interfacesPerSide[3] + 1)],
+    ];
+    const relativeOffsets = [
+        [0, 0],
+        [0, boxHeight],
+        [0, 0],
+        [boxWidth, 0],
+    ];
+
+    const positionsOnBox: InterfaceAnchor[] = [];
+
+    let interfaceIndex = 0;
+    for (let side = 0; side < 4; side++) {
+        const stepSize = stepSizes[side];
+        for (let j = 0; j < interfacesPerSide[side]; j++) {
+            const x = position.x + stepSize[0] * (j + 1) + relativeOffsets[side][0];
+            const y = position.y + stepSize[1] * (j + 1) + relativeOffsets[side][1];
+            const direction = directions[side];
+
+            const isProvided = interfaceIndex < component.providedInterfaces.length;
+            const interfaceId = isProvided
+                ? component.providedInterfaces[interfaceIndex]
+                : component.usages[interfaceIndex - component.providedInterfaces.length];
+
+            const endpoint = getLollipopEndPoint(x, y, direction, lollipopRadius, lollipopLineLength);
+
+            positionsOnBox.push({
+                id: component.id,
+                type: isProvided ? "provided" : "required",
+                position: endpoint,
+                facingDirection: direction,
+                interface: umlComponentsMap.get(interfaceId) ?? component,
+            });
+
+            interfaceIndex++;
+        }
+    }
+
+    return positionsOnBox;
+}
+
+function getLollipopEndPoint(x: number, y: number, direction: FacingDirection, radiusLollipop: number, lineLength: number): Position {
+    switch (direction) {
+        case FacingDirection.LEFT:
+            return { x: x - lineLength - 2*radiusLollipop , y };
+        case FacingDirection.RIGHT:
+            return { x: x + lineLength + 2*radiusLollipop, y };
+        case FacingDirection.UP:
+            return { x, y: y - lineLength - 2*radiusLollipop };
+        case FacingDirection.DOWN:
+            return { x, y: y + lineLength + 2*radiusLollipop };
+    }
+}
