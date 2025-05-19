@@ -14,6 +14,7 @@ import parseUML from "@/components/traceLinksResultViewer/util/parser/UMLParser2
 import UMLDiagramVisualization from "@/components/traceLinksResultViewer/graphVisualizations/UMLDiagramVisualization";
 import parseUMLModel, {AbstractComponent, Edge} from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
 import UMLViewer from "@/components/traceLinksResultViewer/graphVisualizations/umlViewer/UMLViewer";
+import UMLViewer2 from "@/components/traceLinksResultViewer/umlComponentDiagram2/UMLViewer2";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -41,7 +42,7 @@ export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocume
     return (
         <div className="w-full" style={{height: "calc(100% - 40px)"}}>
             {umlModel ? (
-                <UMLViewer umlComponents={umlModel.components} umlEdges={umlModel.edges}/>
+                <UMLViewer2 umlComponents={umlModel.components} umlEdges={umlModel.edges}/>
             ) : (
                 <div className="whitespace-pre">
                     {fileContent}

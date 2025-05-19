@@ -1,13 +1,17 @@
-import React, {useEffect, useRef, useState} from "react";
-import {AbstractComponent, Component, Interface} from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
-import {Position} from "@/components/traceLinksResultViewer/umlComponentDiagram2/UMLViewer2";
-import {
-    FacingDirection,
-    InterfaceAnchor,
-    ProvidedLollipop, RequiredLollipop
-} from "@/components/traceLinksResultViewer/umlComponentDiagram2/InterfaceAnchor";
-import {useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
+import React, { useRef } from "react";
+import { Component } from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
+import { Position } from "@/components/traceLinksResultViewer/umlComponentDiagram2/UMLViewer2";
+import { InterfaceAnchor } from "@/components/traceLinksResultViewer/umlComponentDiagram2/InterfaceAnchor";
+import { useHighlightContext } from "@/components/traceLinksResultViewer/util/HighlightContextType";
 
+// --- Utility to measure text width ---
+function measureTextWidth(text: string, font: string): number {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return 0;
+    context.font = font;
+    return context.measureText(text).width;
+}
 
 interface UMLNodeProps {
     component: Component;
@@ -15,87 +19,212 @@ interface UMLNodeProps {
     interfacePositions: InterfaceAnchor[];
 }
 
-export default function UMLNode({ component, position, interfacePositions }: UMLNodeProps) {
+function wrapText(text: string, maxWidth: number, font: string): string[] {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return [text];
+    context.font = font;
+
+    const measure = (s: string) => context.measureText(s).width;
+
+    const parts = text.split(/(?=[A-Z])/g); // split on camel case
+    const lines: string[] = [];
+    let currentLine = "";
+
+    for (const part of parts) {
+        const tentative = currentLine === "" ? part : `${currentLine}${part}`;
+        const width = measure(tentative);
+
+        if (width <= maxWidth) {
+            currentLine = tentative;
+        } else {
+            if (currentLine !== "") {
+                lines.push(currentLine);
+                currentLine = "";
+            }
+
+            // check if part itself is too long
+            if (measure(part) <= maxWidth) {
+                currentLine = part;
+            } else {
+                // force split the long part
+                let chunk = "";
+                for (const char of part) {
+                    const testChunk = chunk + char;
+                    if (measure(testChunk) > maxWidth) {
+                        lines.push(chunk);
+                        chunk = char;
+                    } else {
+                        chunk = testChunk;
+                    }
+                }
+                currentLine = chunk;
+            }
+        }
+    }
+
+    if (currentLine !== "") {
+        lines.push(currentLine);
+    }
+
+    return lines;
+}
+
+export default function UMLNode({ component, position }: UMLNodeProps) {
     const { x: posX, y: posY } = position;
+    const { highlightElement, highlightedTraceLinks } = useHighlightContext();
 
-    const [textWidth, setTextWidth] = useState(140); // default width
-    const textRef = useRef<SVGTextElement>(null);
-    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
-
-    const padding = 20;
+    const fontSize = 12;
+    const fontFamily = "sans-serif";
     const lineHeight = 16;
+    const padding = 20;
+    const maxWidth = 200;
+    const minWidth = 140;
 
-    const boxHeight = 70;
-    const boxWidth = 140;
+    const font = `${fontSize}px ${fontFamily}`;
 
-    const lollipopRadius = 6;
-    const lollipopLineLength = 6;
+    // --- Wrap text into multiple lines ---
+    const textLines = wrapText(component.name, maxWidth - padding, font);
+
+    const widestLine = Math.max(...textLines.map(line => measureTextWidth(line, font)));
+    const calculatedWidth = Math.min(Math.max(widestLine + padding, minWidth), maxWidth);
+    const calculatedHeight = 40 + textLines.length * lineHeight; // 40 for <<component>>#
+
+    // vertically center the text
+    const totalTextHeight = (1 + textLines.length) * lineHeight;
+    const startY = (calculatedHeight - totalTextHeight) / 2;
+
+    const isHighlighted = highlightedTraceLinks.some(
+        traceLink => traceLink.modelElementId === component.id
+    );
 
     return (
+        <g
+            transform={`translate(${posX}, ${posY})`}
+            onClick={(event) => {
+                event.stopPropagation();
+                console.log("name", component.id, "type", typeof component.id);
+                highlightElement(component.id ?? null, "modelElementId");
+            }}
+        >
+            {component.name}
 
-        <g transform={`translate(${posX}, ${posY})`}
-           onClick={event => {
-               console.log(component.id);
-               event.stopPropagation();
-               highlightElement(component.id?? null, "codeElementId");
-           }}>
             <rect
-                width={boxWidth}
-                height={boxHeight}
-                fill={highlightedTraceLinks.some(traceLink => traceLink.codeElementId == component.id) ?"#fde68a" : "#ffffff"}
-                stroke="#4b5563"/>
+                width={calculatedWidth}
+                height={calculatedHeight}
+                fill={isHighlighted ? "#fde047" : "#ffffff"}
+                stroke="#4b5563"
+            />
             <text
-                ref={textRef}
-                x={boxWidth / 2}
-                y={boxHeight / 2 - 2}
+                x={calculatedWidth / 2}
+                y={lineHeight}
                 textAnchor="middle"
-                fontSize="12">
+                fontSize={fontSize}
+            >
                 {"<<component>>"}
             </text>
-            <text
-                x={boxWidth / 2}
-                y={boxHeight / 2 + 14}
-                textAnchor="middle"
-                fontWeight="bold"
-                fontSize="12"
-                fontFamily="sans-serif"
-            >
-                {component.name}
-            </text>
+
+            {textLines.map((line, index) => (
+                <text
+                    key={index}
+                    x={calculatedWidth / 2}
+                    y={lineHeight * (2 + index) + 6} // start second line below <<component>>
+                    textAnchor="middle"
+                    fontSize={fontSize}
+                    fontFamily={fontFamily}
+                    fontWeight="bold"
+                >
+                    {line}
+                </text>
+            ))}
 
             {/* UML component symbol (top-right corner) */}
-            <g transform={`translate(${boxWidth - 16}, 6)`}>
+            <g transform={`translate(${calculatedWidth - 16}, 6)`}>
                 <rect width={10} height={14} fill="white" stroke="black" />
                 <rect y={2} x={-4} width={8} height={3} fill="white" stroke="black" />
                 <rect y={7} x={-4} width={8} height={3} fill="white" stroke="black" />
             </g>
-
-            {/* TODO: notify UMLViewer about the positions of the lollypops, name interfaces*/}
-
-            {interfacePositions.map((anchor, i) =>
-                anchor.type === "provided" ? (
-                    <ProvidedLollipop
-                        key={`p-${i}`}
-                        x={anchor.position.x - posX }
-                        y={anchor.position.y - posY}
-                        facingDirection={anchor.facingDirection}
-                        usedInterface={anchor.interface as Interface}
-                        radius={lollipopRadius}
-                        lineLength={lollipopLineLength}
-                    />
-                ) : (
-                    <RequiredLollipop
-                        key={`r-${i}`}
-                        x={anchor.position.x - posX }
-                        y={anchor.position.y - posY }
-                        facingDirection={anchor.facingDirection}
-                        usedInterface={anchor.interface as Interface}
-                        radius={lollipopRadius}
-                        lineLength={lollipopLineLength}
-                    />
-                )
-            )}
-
         </g>
     );
 }
+
+
+// version where text of a component is truncated if it is too long
+// export default function UMLNode({ component, position }: UMLNodeProps) {
+//     const { x: posX, y: posY } = position;
+//     const { highlightElement, highlightedTraceLinks } = useHighlightContext();
+//
+//     const fontSize = 12;
+//     const fontFamily = "sans-serif";
+//     const padding = 20;
+//     const maxWidth = 200;
+//     const minWidth = 140;
+//     const boxHeight = 70;
+//
+//     // --- One-time width and name calculation ---
+//     const fullTextWidth = measureTextWidth(component.name, `${fontSize}px ${fontFamily}`) + padding;
+//     const calculatedWidth = Math.min(Math.max(fullTextWidth, minWidth), maxWidth);
+//
+//     let displayName = component.name;
+//     if (fullTextWidth > maxWidth) {
+//         // Truncate with ellipsis
+//         let truncated = component.name;
+//         while (measureTextWidth(truncated + "...", `${fontSize}px ${fontFamily}`) + padding > maxWidth && truncated.length > 0) {
+//             truncated = truncated.slice(0, -1);
+//         }
+//         displayName = truncated + "...";
+//     }
+//
+//     const isTruncated = displayName !== component.name;
+//
+//     return (
+//         <g
+//             transform={`translate(${posX}, ${posY})`}
+//             onClick={(event) => {
+//                 console.log(component.id);
+//                 event.stopPropagation();
+//                 highlightElement(component.id ?? null, "codeElementId");
+//             }}
+//         >
+//             <title>{isTruncated ? component.name : ""}</title>
+//
+//             <rect
+//                 width={calculatedWidth}
+//                 height={boxHeight}
+//                 fill={
+//                     highlightedTraceLinks.some(
+//                         (traceLink) => traceLink.codeElementId === component.id
+//                     )
+//                         ? "#fde68a"
+//                         : "#ffffff"
+//                 }
+//                 stroke="#4b5563"
+//             />
+//             <text
+//                 x={calculatedWidth / 2}
+//                 y={boxHeight / 2 - 2}
+//                 textAnchor="middle"
+//                 fontSize={fontSize}
+//             >
+//                 {"<<component>>"}
+//             </text>
+//             <text
+//                 x={calculatedWidth / 2}
+//                 y={boxHeight / 2 + 14}
+//                 textAnchor="middle"
+//                 fontWeight="bold"
+//                 fontSize={fontSize}
+//                 fontFamily={fontFamily}
+//             >
+//                 {displayName}
+//             </text>
+//
+//             {/* UML component symbol (top-right corner) */}
+//             <g transform={`translate(${calculatedWidth - 16}, 6)`}>
+//                 <rect width={10} height={14} fill="white" stroke="black" />
+//                 <rect y={2} x={-4} width={8} height={3} fill="white" stroke="black" />
+//                 <rect y={7} x={-4} width={8} height={3} fill="white" stroke="black" />
+//             </g>
+//         </g>
+//     );
+// }

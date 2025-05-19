@@ -39,13 +39,13 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
         let matchingTraceLinks: TraceLink[] = [];
 
         for (const traceLink of traceLinks) {
-            if (type === 'sentenceId' && traceLink.sentenceId && traceLink.sentenceId == id) {
+            if (type == 'sentenceId' && traceLink.sentenceId && traceLink.sentenceId == id) {
                 console.log("found", traceLink);
                 matchingTraceLinks.push(traceLink);
-            } else if (type === 'modelElementId' && traceLink.modelElementId == id) {
+            } else if (type == 'modelElementId' && traceLink.modelElementId == id) {
                 console.log("found", traceLink);
                 matchingTraceLinks.push(traceLink);
-            } else if (type === 'codeElementId' && traceLink.codeElementId == id) {
+            } else if (type == 'codeElementId' && traceLink.codeElementId == id) {
                 console.log("found", traceLink);
                 matchingTraceLinks.push(traceLink);
             }

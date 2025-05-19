@@ -6,6 +6,12 @@ export class Operation {
         public id: string,
         public name: string
     ) {}
+    equals(other: Operation): boolean {
+        return (
+            this.id === other.id &&
+            this.name === other.name
+        );
+    }
 }
 
 export class Attribute {
@@ -14,9 +20,17 @@ export class Attribute {
         public name: string,
         public type: string // e.g. "String", "int"
     ) {}
+
+    equals(other: Attribute): boolean {
+        return (
+            this.id === other.id &&
+            this.name === other.name &&
+            this.type === other.type
+        );
+    }
 }
 
-export class AbstractComponent {
+export abstract class AbstractComponent {
     constructor(
         public id: string,
         public name: string,
@@ -24,6 +38,8 @@ export class AbstractComponent {
         public x?: number,
         public y?: number
     ) {}
+
+    abstract equals(other: AbstractComponent): boolean;
 }
 
 export class Package extends AbstractComponent {
@@ -32,6 +48,16 @@ export class Package extends AbstractComponent {
         super(id, name, "uml:Package");
         this.components = components;
     }
+
+    equals(other: AbstractComponent): boolean {
+        return (
+            other instanceof Package &&
+            this.id === other.id &&
+            this.name === other.name &&
+            this.components.length === other.components.length &&
+            this.components.every((comp, i) => comp.id === other.components[i].id)
+        );
+    }
 }
 
 export class Interface extends AbstractComponent {
@@ -39,6 +65,16 @@ export class Interface extends AbstractComponent {
     constructor(id: string, name: string, operations: Operation[]) {
         super(id, name, "uml:Interface");
         this.ownedOperations = operations;
+    }
+
+    equals(other: AbstractComponent): boolean {
+        return (
+            other instanceof Interface &&
+            this.id === other.id &&
+            this.name === other.name &&
+            this.ownedOperations.length === other.ownedOperations.length &&
+            this.ownedOperations.every((op, i) => op.id === other.ownedOperations[i].id)
+        );
     }
 }
 
@@ -49,6 +85,16 @@ export class UMLClass extends AbstractComponent {
         super(id, name, "uml:Class");
         this.attributes = attributes;
         this.operations = operations;
+    }
+
+    equals(other: AbstractComponent): boolean {
+        return (
+            other instanceof UMLClass &&
+            this.id === other.id &&
+            this.name === other.name &&
+            this.attributes.length === other.attributes.length &&
+            this.operations.length === other.operations.length
+        );
     }
 }
 
@@ -64,6 +110,14 @@ export class Component extends AbstractComponent {
         this.usages = usages;
         this.providedInterfaces = providedInterfaces;
     }
+
+    equals(other: AbstractComponent): boolean {
+        return (
+            other instanceof Component &&
+            this.id === other.id &&
+            this.name === other.name
+        );
+    }
 }
 
 export class Edge {
@@ -73,11 +127,31 @@ export class Edge {
         public type: string, // "uml:Generalization" | "uml:InterfaceRealization" | "uml:Usage" | ...
         public usedInterface?: Interface, // Optional: for interface edges
     ) {}
+
+    equals(other: Edge): boolean {
+        return (
+            this.client === other.client &&
+            this.supplier === other.supplier &&
+            this.type === other.type
+        );
+    }
 }
 
 export interface EdgeTypes {
     usages: Edge[];
     providedInterfaces: Edge[];
+}
+
+function removeDuplicatesWithEquals<T extends AbstractComponent>(items: T[]): T[] {
+    const result: T[] = [];
+
+    for (const item of items) {
+        if (!result.some(existing => existing.equals(item))) {
+            result.push(item);
+        }
+    }
+
+    return result;
 }
 
 export default function parseUMLModel(rawXML: string): { components: AbstractComponent[]; edges: Edge[] } {
@@ -101,7 +175,25 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
         components.push(...packagedElements);
     }
 
-    edges = getTransitiveEdges(edges, components);
+    //edges = getTransitiveEdges(edges, components);
+
+    // add used Interface
+    for (const edge of edges) {
+        if (edge.type == "uml:InterfaceRealization" || edge.type == "uml:Usage") {
+            const supplierComponent = components.find(comp => comp.id === edge.supplier);
+            if (supplierComponent && supplierComponent instanceof Interface) {
+                edge.usedInterface = supplierComponent;
+            }
+        }
+    }
+
+    // remove duplicates
+    components = removeDuplicatesWithEquals(components);
+
+    // remove duplicate edges
+    edges = edges.filter((edge, index, self) =>
+        index === self.findIndex((e) => e.equals(edge)) // Check if the edge is the first occurrence
+    );
 
 
     return { components, edges };
@@ -204,10 +296,9 @@ function extractOperations(element: any): Operation[] {
     let operations: Operation[] = [];
     if (element["ownedOperation"]) {
         const ops = Array.isArray(element["ownedOperation"]) ? element["ownedOperation"] : [element["ownedOperation"]];
-        operations = ops.map((operation: any) => ({
-            id: operation["@_xmi:id"],
-            name: operation["@_name"],
-        }));
+        operations = ops.map((operation: any) =>
+            new Operation(operation["@_xmi:id"], operation["@_name"] || "Unnamed")
+        );
     }
     return operations;
 }
@@ -217,11 +308,13 @@ function extractAttributes(element: any): Attribute[] {
     let attributes: Attribute[] = [];
     if (element["ownedAttribute"]) {
         const attrs = Array.isArray(element["ownedAttribute"]) ? element["ownedAttribute"] : [element["ownedAttribute"]];
-        attributes = attrs.map((attr: any) => ({
-            id: attr["@_xmi:id"],
-            name: attr["@_name"],
-            type: attr["@_type"] ? attr["@_type"]["@_href"] || attr["@_type"]["@_xmi:idref"] : "Unknown",
-        }));
+        attributes = attrs.map((attr: any) =>
+            new Attribute(
+                attr["@_xmi:id"],
+                attr["@_name"] || "Unnamed",
+                attr["@_type"] || "Unknown"
+            )
+        );
     }
     return attributes;
 }
@@ -231,11 +324,13 @@ function extractGeneralizations(element: any): Edge[] {
     let generalizations: Edge[] = [];
     if (element["generalization"]) {
         const gens = Array.isArray(element["generalization"]) ? element["generalization"] : [element["generalization"]];
-        generalizations = gens.map((gen: any) => ({
-            client: element["@_xmi:id"], // specification: e.g. Elephant
-            supplier: gen["general"], // generalization: e.g. Mammal
-            type: "uml:Generalization",
-        }));
+        generalizations = gens.map((gen: any) =>
+            new Edge(
+                element["@_xmi:id"], // specification: e.g. Elephant
+                gen["general"], // generalization: e.g. Mammal
+                "uml:Generalization"
+            )
+        );
     }
     return generalizations;
 }
@@ -244,11 +339,15 @@ function extractInterfaceRealizations(element: any): Edge[] {
     let interfaceRealizations: Edge[] = [];
     if (element["interfaceRealization"]) {
         const irs = Array.isArray(element["interfaceRealization"]) ? element["interfaceRealization"] : [element["interfaceRealization"]];
-        interfaceRealizations = irs.map((interfaceRealization: any) => ({
-            client: interfaceRealization["@_client"], // client realizes supplied interface
-            supplier: interfaceRealization["@_supplier"], // id of the supplied interface
-            type: "uml:InterfaceRealization",
-        }));
+
+
+        interfaceRealizations = irs.map((interfaceRealization: any) =>
+            new Edge(
+                interfaceRealization["@_client"], // client realizes supplied interface
+                interfaceRealization["@_supplier"], // id of the supplied interface
+                "uml:InterfaceRealization"
+            )
+        );
     }
     return interfaceRealizations;
 }
@@ -259,11 +358,13 @@ function extractUsage(element: any): Edge[] {
         const usagesArray = Array.isArray(element["packagedElement"]) ? element["packagedElement"] : [element["packagedElement"]];
         usages = usagesArray
             .filter((el: any) => el["@_xmi:type"] === "uml:Usage")
-            .map((usage: any) => ({
-                client: usage["@_client"], // element that uses the target component
-                supplier: usage["@_supplier"], // id of the component that is being used
-                type: "uml:Usage",
-            }));
+            .map((usage: any) =>
+                new Edge(
+                usage["@_client"], // element that uses the target component
+                usage["@_supplier"], // id of the component that is being used
+                "uml:Usage" // type of the edge
+                )
+            );
     }
     return usages;
 }
