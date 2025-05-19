@@ -4,17 +4,9 @@ import React, {useEffect, useState} from "react";
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {loadProjectFile} from "@/components/callArDoCoAPI";
-import {
-    VisualizationFactory,
-    VisualizationType
-} from "@/components/traceLinksResultViewer/graphVisualizations/VisualizationFactory";
-import {Style} from "@/components/traceLinksResultViewer/graphVisualizations/style";
-import {UMLModel} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/UMLDataModel";
-import parseUML from "@/components/traceLinksResultViewer/util/parser/UMLParser2";
-import UMLDiagramVisualization from "@/components/traceLinksResultViewer/graphVisualizations/UMLDiagramVisualization";
 import parseUMLModel, {AbstractComponent, Edge} from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
-import UMLViewer from "@/components/traceLinksResultViewer/graphVisualizations/umlViewer/UMLViewer";
 import UMLViewer2 from "@/components/traceLinksResultViewer/umlComponentDiagram2/UMLViewer2";
+import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -22,14 +14,11 @@ interface DisplayDocumentationProps {
 }
 
 export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocumentationProps) {
-    const [projectFile, setProjectFile] = useState<UploadedFile | null>(null);
     const [fileContent, setFileContent] = useState<string | null>(null);
-    //const [container, setContainer] = useState<HTMLDivElement | null>(document.createElement("div"));
     const [umlModel, setUMLModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null); // TODO: Define the type for UMLModel
 
     useEffect(() => { // Load the architecture model file on component mount
         loadProjectFile(id, FileType.Architecture_Model_UML).then((result) => {
-            setProjectFile(result);
             result?.file.text().then((text) => {
                 setFileContent(text);
                 const parsedUMLModel = parseUMLModel(text);
@@ -40,7 +29,7 @@ export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocume
 
 
     return (
-        <div className="w-full" style={{height: "calc(100% - 40px)"}}>
+        <div className="relative w-full" style={{height: "calc(100% - 40px)"}}>
             {umlModel ? (
                 <UMLViewer2 umlComponents={umlModel.components} umlEdges={umlModel.edges}/>
             ) : (
@@ -48,6 +37,15 @@ export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocume
                     {fileContent}
                 </div>
             )}
+
+            <TooltipInstruction
+                title="Instructions"
+                instructions={[
+                    { keyCombo: "Click", description: "Highlight traceLinks" },
+                    { keyCombo: "Hover over interface's name", description: "display details" },
+                ]}
+            />
+
         </div>
         // <div>
         //     {umlModel && (
