@@ -73,6 +73,7 @@ export function parseCodeFromACM2(content: string): CodeModelUnit {
           : interfaces.get(contentId)!,
       );
     }
+    //console.log("codecompilationunit", codecompilationunit.name, codecompilationunit.pathElements, `${codecompilationunit.pathElements.join("/")}/${codecompilationunit.name}.${codecompilationunit.extension}`);
     codeCompilationUnits.set(
       codecompilationunit.id,
       new CodeModelUnit(
@@ -80,6 +81,7 @@ export function parseCodeFromACM2(content: string): CodeModelUnit {
         codecompilationunit.name + "." + codecompilationunit.extension,
         "CodeCompilationUnit",
         content,
+          `${codecompilationunit.pathElements.join("/")}/${codecompilationunit.name}.${codecompilationunit.extension}`
       ),
     );
     // if the code compilation unit itself has a parent, add it to the list of leaf packages
@@ -87,6 +89,7 @@ export function parseCodeFromACM2(content: string): CodeModelUnit {
       leafPackageIds.add(codecompilationunit.parentId);
     }
   }
+
   // TODO: Why cant I use the codeCompilationUnits which have  a parentId == null directly?
   for (let leafId of leafPackageIds) {
     let head = json.codeItemRepository.repository[leafId];
@@ -97,6 +100,7 @@ export function parseCodeFromACM2(content: string): CodeModelUnit {
     }
     rootPackageIds.add(head.id);
   }
+
 
   // for each compilation unit and CodePackage, add the children  codecompilation and codepackage parents.
   // for the code packages create a new ACM packag
@@ -114,35 +118,37 @@ export function parseCodeFromACM2(content: string): CodeModelUnit {
         throw "unexpected type";
       }
     }
-    return new CodeModelUnit(pack.id, pack.name, "CodePackage", childPackages.concat(compilationUnits));
+    console.log("pack", pack)
+    return new CodeModelUnit(pack.id, pack.name, "CodePackage", childPackages.concat(compilationUnits), );
   }
   let rootPackages = [];
   for (let rootId of rootPackageIds) {
     const root = json.codeItemRepository.repository[rootId];
     rootPackages.push(recursivelyParsePackage(root));
   }
+  console.log("rootPackages", rootPackages);
 
 
 
 
-  // merge codePackages which only contain one child. new name = current name + "." + child.name
-  function mergeCodePackages(node: CodeModelUnit): CodeModelUnit {
-    if (node.children.length == 1 && node.type == "CodePackage") {
-      const child = node.children[0];
-      node.name = node.name + "/" + child.name;
-      node.type = child.type;
-      node.children = child.children;
-      mergeCodePackages(node);
-    } else {
-      for (const child of node.children) {
-        mergeCodePackages(child);
-      }
-    }
-    return node;
-  }
-    rootPackages.forEach((rootPackage) => {
-        mergeCodePackages(rootPackage);
-    });
+  // // merge codePackages which only contain one child. new name = current name + "." + child.name
+  // function mergeCodePackages(node: CodeModelUnit): CodeModelUnit {
+  //   if (node.children.length == 1 && node.type == "CodePackage") {
+  //     const child = node.children[0];
+  //     node.name = node.name + "/" + child.name;
+  //     node.type = child.type;
+  //     node.children = child.children;
+  //     mergeCodePackages(node);
+  //   } else {
+  //     for (const child of node.children) {
+  //       mergeCodePackages(child);
+  //     }
+  //   }
+  //   return node;
+  // }
+  //   rootPackages.forEach((rootPackage) => {
+  //       mergeCodePackages(rootPackage);
+  //   });
 
   let root
   if (rootPackages.length > 1) {
@@ -151,5 +157,29 @@ export function parseCodeFromACM2(content: string): CodeModelUnit {
     root = rootPackages[0];
   }
 
+  setCodeModelUnitPaths(root);
+
+    console.log("root", root);
+
   return root;
+}
+
+
+
+/**
+ * Recursively sets the path for each CodeModelUnit in the tree.
+ * @param node Current node in the tree
+ * @param parentPath Path accumulated from the root to the parent node
+ */
+export function setCodeModelUnitPaths(node: CodeModelUnit, parentPath: string = ""): void {
+    const separator = node.type === "CodeCompilationUnit" ? "" : "/"; // no slash for file itself
+    // Set the path for the current node
+    if (!node.path ) {
+      node.path = parentPath ? `${parentPath}${separator}${node.name}` : node.name;
+    }
+
+
+    for (const child of node.children) {
+        setCodeModelUnitPaths(child, node.path);
+    }
 }

@@ -4,12 +4,14 @@ export class CodeModelUnit {
   name: string;
   type: string; // e.g. "ClassUnit", "InterfaceUnit", "ControlElement", "CodeCompilationUnit", "CodePackage"
   children: CodeModelUnit[];
+  path?: string;
 
-  constructor(id: string, name: string, type: string, children: CodeModelUnit[]) {
+  constructor(id: string, name: string, type: string, children: CodeModelUnit[], path?: string) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.children = children;
+    this.path = path;
   }
 
   addChild(child: CodeModelUnit) {

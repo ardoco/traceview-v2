@@ -94,6 +94,7 @@ export default function DisplayCodeModel({JSONResult, id}: DisplayCodeModelProps
         <div className="w-full" style={{height: "calc(100% - 40px)"}}>
             {codeModel ? (
                 <ACMViewer codeModel={codeModel}/>
+                //<CodeModelVisualization codeModel={codeModel}/>
             ) : (
                 <div className="whitespace-pre">
                     {fileContent}

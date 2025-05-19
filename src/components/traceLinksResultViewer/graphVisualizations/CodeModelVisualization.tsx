@@ -34,63 +34,9 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
     }
 
 
-    const highlightPathToRoot = useCallback((event: any, d: any) => {
-        const previouslyHighlighted = highlightedNodeIdRef.current;
 
-        // Reset styles for all nodes and links
-        d3.selectAll("circle").attr("fill", (d: any) => d._children ? "#555" : "#999")
-            .attr("r", 4)
 
-        d3.selectAll("text").style("fill", "black").style("font-weight", "normal");
-        d3.selectAll("path").attr("stroke", "#555").attr("stroke-width", 1.5).attr("stroke-opacity", 0.4);
 
-        if (previouslyHighlighted === d.id) {
-            highlightedNodeIdRef.current = null;
-            return;
-        }
-
-        // Save newly highlighted node
-        highlightedNodeIdRef.current = d.id;
-
-        // Expand the path to the node
-        expandPathToNode(d);
-
-        // get path to from the current to the root
-        const pathToRoot = [];
-        let current = d;
-        while (current) {
-            pathToRoot.push(current);
-            current = current.parent;
-        }
-
-        d3.select(`#node-${d.id} circle`).attr("r",6)
-
-        pathToRoot.forEach(node => {
-            // Highlight circle
-            d3.select(`#node-${node.id} circle`)
-                .attr("fill", "#4664aa") // blau-500
-
-            // Highlight text
-            d3.select(`#node-${node.id} text`)
-                .style("fill", "#4664aa")
-                .style("font-weight", "bold");
-
-            // Highlight link to parent
-            if (node.parent) {
-                d3.select(`#link-${node.parent.id}-${node.id}`)
-                    .attr("stroke", "#4664aa")
-                    .attr("stroke-width", 3)
-                    .attr("stroke-opacity", 1);
-            }
-        }   );
-    },[])
-
-    const highlightNodeById = useCallback((nodeId:string | null, root:HierarchyNode<CodeModelUnit>) => {
-        const rootNode = root.descendants().find(d => d.id === nodeId);
-        if (rootNode) {
-            highlightPathToRoot(null, rootNode);
-        }
-    }, []);
 
     useEffect(() => {
         if (!codeModel || !svgRef.current) return;
@@ -176,11 +122,11 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
 
             // ----- NODES -----
             const node = gNode.selectAll("g")
-                .data(nodes, (d: any) => d.id || (d.id = Math.floor(Math.random() * 4000).toString()));
+                .data(nodes, (d: any) =>`node-${d.data.path}` || (d.id = Math.floor(Math.random() * 4000).toString()));
 
             // ENTER
             const nodeEnter = node.enter().append("g")
-                .attr("id", d => `node-${d.id}`)
+                .attr("id", d => `node-${d.data.path}`)
                 .attr("transform", () => `translate(${source.y0},${source.x0})`)
                 .attr("fill-opacity", 0)
                 .attr("stroke-opacity", 0)
@@ -189,9 +135,74 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
                         // collapse/expand the node
                         d.children = d.children ? null : d._children;
                         update(event, d);
+                        update(event, d);
                     } else {
                         // highlight the node
-                        highlightPathToRoot(event, d);
+                        const previouslyHighlighted = highlightedNodeIdRef.current;
+
+                        // Reset styles for all nodes and links
+                        // Reset all nodes
+                        d3.selectAll("g.node").each(function (d: any) {
+                            d3.select(this).select("circle")
+                                .attr("fill", d._children ? "#555" : "#999")
+                                .attr("r", 4);
+
+                            d3.select(this).select("text")
+                                .style("fill", "black")
+                                .style("font-weight", "normal");
+                        });
+
+                        // Reset all links
+                        d3.selectAll("path.link").each(function (d: any) {
+                            d3.select(this)
+                                .attr("stroke", "#555")
+                                .attr("stroke-width", 1.5)
+                                .attr("stroke-opacity", 0.4);
+                        });
+
+
+                        if (previouslyHighlighted === d.id) {
+                            highlightedNodeIdRef.current = null;
+                            return;
+                        }
+
+                        // Save newly highlighted node
+                        highlightedNodeIdRef.current = d.id;
+                        highlightElement(d.data.path , "codeElementId");
+                        console.log(highlightedTraceLinks, d.data.path,d )
+
+                        // Expand the path to the node
+                        expandPathToNode(d);
+
+                        // get path to from the current to the root
+                        const pathToRoot = [];
+                        let current = d;
+                        while (current) {
+                            pathToRoot.push(current);
+                            current = current.parent;
+                        }
+
+                        d3.select(`#node-${d.id} circle`).attr("r",6)
+
+                        pathToRoot.forEach(node => {
+                            // Highlight circle
+                            d3.select(`#node-${node.id} circle`)
+                                .attr("fill", "#4664aa") // blau-500
+
+                            // Highlight text
+                            d3.select(`#node-${node.id} text`)
+                                .style("fill", "#4664aa")
+                                .style("font-weight", "bold");
+
+                            // Highlight link to parent
+                            if (node.parent) {
+                                d3.select(`#link-${node.parent.id}-${node.id}`)
+                                    .attr("stroke", "#4664aa")
+                                    .attr("stroke-width", 3)
+                                    .attr("stroke-opacity", 1);
+                            }
+                        }   );
+                        update(event, d);
                     }
                 })
                 .on("mouseover", (event, d) => {
@@ -272,10 +283,10 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
                 d.y0 = d.y;
             });
 
-            // Un-highlight if currently highlighted node becomes hidden
-            if (highlightedNodeIdRef.current !== null) {
-                highlightNodeById(highlightedNodeIdRef.current, root);
-            }
+            // // Un-highlight if currently highlighted node becomes hidden
+            // if (highlightedNodeIdRef.current !== null) {
+            //     highlightNodeById(highlightedNodeIdRef.current, root);
+            // }
 
         }
 
@@ -291,27 +302,27 @@ export function CodeModelVisualization({ codeModel }: CodeModelVisualizationProp
 
     }, [codeModel]);
 
-    useEffect(() => {
-        if (!svgRef.current || !highlightedTraceLinks.length) return;
-
-        // Assuming you only highlight the first matched trace link for now
-        const firstTraceLink = highlightedTraceLinks[0];
-        const targetCodeElementId = firstTraceLink.codeElementId;
-        const nodeId = `node-${targetCodeElementId}`; // Match format used in D3 ids
-
-        // Remove the 'node-' prefix in D3 before comparing if needed
-        console.log(nodeId, d3.selectAll("g"))
-        const d3Node = d3.select(nodeId);
-        if (!d3Node.empty()) {
-            const allNodes = d3.selectAll("circle").attr("r", 4).attr("fill", "#999");
-            highlightNodeById(targetCodeElementId, rootRef.current);
-        }
-    }, [highlightedTraceLinks]);
+    // useEffect(() => {
+    //     if (!svgRef.current || !highlightedTraceLinks.length) return;
+    //
+    //     // Assuming you only highlight the first matched trace link for now
+    //     const firstTraceLink = highlightedTraceLinks[0];
+    //     const targetCodeElementId = firstTraceLink.codeElementId;
+    //     const nodeId = `node-${targetCodeElementId}`; // Match format used in D3 ids
+    //
+    //     // Remove the 'node-' prefix in D3 before comparing if needed
+    //     console.log(nodeId, d3.selectAll("g"))
+    //     const d3Node = d3.select(nodeId);
+    //     if (!d3Node.empty()) {
+    //         const allNodes = d3.selectAll("circle").attr("r", 4).attr("fill", "#999");
+    //         highlightNodeById(targetCodeElementId, rootRef?.current);
+    //     }
+    // }, [highlightedTraceLinks]);
 
 
     return (
         <div className="relative w-full h-full">
-
+            <svg ref={svgRef} style={{ width: "100%", height: "100%" }} />
         </div>
         )
 

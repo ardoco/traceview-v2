@@ -72,7 +72,7 @@ export default function UMLViewer2({ umlComponents, umlEdges }: UMLViewerProps) 
 
 
     return (
-        <div className={"relative w-full h-full bg-white overflow-auto"}>
+        <div className={"relative w-full h-full bg-white overflow-hidden"}>
         <svg ref={svgRef}  style={{width: "100%", height: "100%"}} viewBox="-500 -500 2000 2000">
             <g ref={zoomRef}>
 
