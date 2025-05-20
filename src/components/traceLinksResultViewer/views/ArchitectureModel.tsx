@@ -7,6 +7,7 @@ import {loadProjectFile} from "@/components/callArDoCoAPI";
 import parseUMLModel, {AbstractComponent, Edge} from "@/components/traceLinksResultViewer/util/parser/UMLParser3";
 import UMLViewer2 from "@/components/traceLinksResultViewer/umlComponentDiagram2/UMLViewer2";
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
+import {parsePCM} from "@/components/traceLinksResultViewer/util/parser/PCMparser";
 
 interface DisplayDocumentationProps {
     JSONResult: any;
@@ -15,23 +16,51 @@ interface DisplayDocumentationProps {
 
 export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocumentationProps) {
     const [fileContent, setFileContent] = useState<string | null>(null);
-    const [umlModel, setUMLModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null); // TODO: Define the type for UMLModel
+    const [architectureModel, setArchitectureModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null); // TODO: Define the type for UMLModel
+    //
+    // useEffect(() => { // Load the architecture model file on component mount
+    //     loadProjectFile(id, FileType.Architecture_Model_UML).then((result) => {
+    //         result?.file.text().then((text) => {
+    //             setFileContent(text);
+    //             const parsedUMLModel = parseUMLModel(text);
+    //             setArchitectureModel(parsedUMLModel);
+    //         });
+    //     });
+    // }, [id]);
 
-    useEffect(() => { // Load the architecture model file on component mount
-        loadProjectFile(id, FileType.Architecture_Model_UML).then((result) => {
-            result?.file.text().then((text) => {
-                setFileContent(text);
-                const parsedUMLModel = parseUMLModel(text);
-                setUMLModel(parsedUMLModel);
-            });
-        });
+    useEffect(() => {
+        async function loadModel() {
+            const result = await loadProjectFile(id, FileType.Architecture_Model_UML); // fallback type
+
+            if (!result) return;
+
+            const text = await result.file.text();
+            setFileContent(text);
+
+            switch (result.fileType) {
+                case FileType.Architecture_Model_UML:
+                    const parsedUML = parseUMLModel(text);
+                    setArchitectureModel(parsedUML);
+                    break;
+
+                case FileType.Architecture_Model_PCM:
+                    const parsedPCM = parsePCM(text);
+                    setArchitectureModel(parsedPCM);
+                    break;
+
+                default:
+                    console.warn("Unknown architecture model file type:", result.fileType);
+            }
+        }
+
+        loadModel();
     }, [id]);
 
 
     return (
         <div className="relative w-full" style={{height: "calc(100% - 40px)"}}>
-            {umlModel ? (
-                <UMLViewer2 umlComponents={umlModel.components} umlEdges={umlModel.edges}/>
+            {architectureModel ? (
+                <UMLViewer2 umlComponents={architectureModel.components} umlEdges={architectureModel.edges}/>
             ) : (
                 <div className="whitespace-pre">
                     {fileContent}
@@ -47,12 +76,6 @@ export default function DisplayArchitectureModel({JSONResult, id}: DisplayDocume
             />
 
         </div>
-        // <div>
-        //     {umlModel && (
-        //
-        //     <UMLDiagramVisualization umlModel={umlModel}/>
-        //         )}
-        // </div>
     );
 }
 
