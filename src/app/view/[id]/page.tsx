@@ -1,15 +1,13 @@
 'use client';
 
-import LoadingScreen from "@/components/LoadingScreen";
 import {useParams, useSearchParams} from "next/navigation";
 import React, {useEffect, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import Button from "@/components/Button";
-import {HighlightProvider, useHighlightContext} from "@/components/traceLinksResultViewer/util/HighlightContextType";
-import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/util/parser/TraceLinkParser";
-import {apiResolver} from "next/dist/server/api-utils/node/api-resolver";
-import {TraceLink} from "@/components/traceLinksResultViewer/util/dataModelsInputFiles/TraceLink";
+import {HighlightProvider} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
+import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 
 // Utility function for polling the API
 const pollForResult = async (id: string, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
@@ -39,7 +37,6 @@ const pollForResult = async (id: string, maxSeconds: number = 240, intervalSecon
     throw new Error("The result is still processing. Please try again.");
 };
 
-// Main Component
 // Main Component
 export default function NewUploadProject() {
     const {id} = useParams<{ id: string }>(); // Get the `id` from the path
@@ -102,7 +99,6 @@ function LoadingBanner() {
         </div>
     );
 }
-
 
 function ErrorDisplay({message, onRetry, retryAllowed}: {
     message: string;

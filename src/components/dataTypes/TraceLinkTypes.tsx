@@ -1,6 +1,6 @@
 import { FileType } from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
-import {ResultViewOptions} from "@/components/dataTypes/ResultViewOptions";
+import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 
 
 export interface TraceLinkType {
@@ -8,7 +8,7 @@ export interface TraceLinkType {
     info: string; // Additional information about the option
     checkCondition: (uploadedFiles: UploadedFile[]) => boolean; // Determines if the option is selectable
     providedFiles: FileType[]; // The file types that are provided when this option is selected
-    resultViewOptions: ResultViewOptions[]; // The options for the result view
+    resultViewOptions: ResultPanelType[]; // The options for the result view
 }
 
 export const TraceLinkTypes: Record<string, TraceLinkType> = {
@@ -18,7 +18,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-        resultViewOptions: [ResultViewOptions.Raw_JSON, ResultViewOptions.Code_Model, ResultViewOptions.Architecture_Model, ResultViewOptions.Documentation],
+        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
 
     },
     "SAD-SAM": {
@@ -27,7 +27,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML],
-        resultViewOptions: [ResultViewOptions.Raw_JSON, ResultViewOptions.Architecture_Model, ResultViewOptions.Documentation],
+        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
     },
     "SAD-Code": {
         name: "SAD-Code",
@@ -35,7 +35,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Code_Model],
-        resultViewOptions: [ResultViewOptions.Raw_JSON, ResultViewOptions.Code_Model, ResultViewOptions.Documentation],
+        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Documentation],
     },
     "SAM-Code": {
         name: "SAM-Code",
@@ -43,7 +43,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-        resultViewOptions: [ResultViewOptions.Raw_JSON, ResultViewOptions.Code_Model, ResultViewOptions.Architecture_Model],
+        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Architecture_Model],
     },
 };
 

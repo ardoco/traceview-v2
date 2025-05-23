@@ -1,63 +1,74 @@
-'use client';
+import React, {useEffect} from "react";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import {getTraceLinkTypes, TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
-import React, { useState, useMemo } from "react";
-
-interface Option {
-    value: string;
-    label: string;
-    condition: boolean; // Determines if the option is selectable
+interface MultiOptionSelectWithInfoProps {
+    selectedValue: TraceLinkType | null; // Current selected value
+    handleOptionChange: (value: TraceLinkType) => void; // Callback when selection changes
+    checkCanBeSelected: (option: TraceLinkType) => boolean; // Function to check if an option is disabled
+    uploadedFiles: UploadedFile[]; // The uploaded files
 }
 
-const MultiOptionSelect: React.FC = () => {
-    const options = useMemo(
-        () => [
-            { value: "sad-sam", label: "Sad-Sam", condition: true },
-            { value: "sad-code", label: "Sad-Code", condition: false },
-            { value: "sam-code", label: "Sam-Code", condition: true },
-            { value: "sad-sam-code", label: "Sad-Sam-Code", condition: false },
-        ],
-        []
-    );
+export default function MultiOptionSelectWithInfo({
+                                              selectedValue,
+                                              handleOptionChange,
+                                              checkCanBeSelected,
+                                              uploadedFiles,
+                                          }: MultiOptionSelectWithInfoProps) {
+    const traceLinkTypes = getTraceLinkTypes();
 
-    const getFirstSelectableOption = () => {
-        const firstSelectableOption = options.find((option) => option.condition);
-        return firstSelectableOption ? firstSelectableOption.value : null;
-    };
-
-    const [selectedOption, setSelectedOption] = useState<string | null>(
-        getFirstSelectableOption()
-    );
-
-    const handleOptionClick = (option: Option) => {
-        if (option.condition) {
-            setSelectedOption(option.value);
-            console.log("Selected option updated to:", option.value);
+    // Automatically preselect the first valid option if no option is selected
+    useEffect(() => {
+        if (selectedValue === null) {
+            const preselectedOption = traceLinkTypes.find((option) => option.checkCondition(uploadedFiles));
+            if (preselectedOption) {
+                handleOptionChange(preselectedOption);
+                selectedValue = preselectedOption;
+            }
         }
-    };
-
-    console.log("Component rendered, selectedOption:", selectedOption);
+    }, []);
 
     return (
-        <div className="flex flex-col gap-2">
-            {options.map((option) => (
-                <button
-                    type="button"
-                    key={option.value}
-                    onClick={() => handleOptionClick(option)}
-                    disabled={!option.condition}
-                    className={`px-4 py-2 border rounded ${
-                        option.condition
-                            ? selectedOption === option.value
-                                ? "bg-blue-500 text-white"
-                                : "bg-gray-100 text-black"
-                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        <div className="space-y-3">
+            {traceLinkTypes.map((traceLinkType) => (
+                <label
+                    key={traceLinkType.name}
+                    className={`flex items-center gap-3 p-3 border rounded-lg ${
+                        checkCanBeSelected(traceLinkType)
+                            ? "shadow-xs border-gray-200 hover:shadow-md hover:border-blau-600 cursor-pointer checked:border-blau-500"
+                            : "border-gray-100 cursor-not-allowed opacity-50"
                     }`}
                 >
-                    {option.label}
-                </button>
+                    {/* Radio Input */}
+                    <input
+                        type="radio"
+                        name="multi-option-select"
+                        value={traceLinkType.name}
+                        checked={selectedValue?.name === traceLinkType.name}
+                        onChange={() => handleOptionChange(traceLinkType)}
+                        disabled={!checkCanBeSelected(traceLinkType)}
+                        className="h-4 w-4 text-blau-500 focus:ring-blau-500"
+                    />
+
+                        <span
+                            className={`block text-sm font-medium ${
+                                checkCanBeSelected(traceLinkType) ? "text-gray-800" : "text-gray-400"
+                            }`}
+                        >
+                            {traceLinkType.name}
+                        </span>
+                        <div className="relative group">
+                            <InformationCircleIcon aria-label="Info about this option" aria-hidden="true"
+                                                   className="size-6 text-blau-500 cursor-pointer"/>
+                            <div
+                                className="absolute left-6 top-1 hidden group-hover:block bg-white text-black border border-gray-300 p-2 rounded-sm shadow-md z-10 w-96">
+                                {traceLinkType.info}
+                            </div>
+                        </div>
+
+                </label>
             ))}
         </div>
     );
-};
-
-export default MultiOptionSelect;
+}
