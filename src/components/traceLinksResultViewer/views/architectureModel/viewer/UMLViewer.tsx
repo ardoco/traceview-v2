@@ -1,8 +1,7 @@
-import React, {useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
+import * as d3 from "d3";
 import UMLEdge from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLEdge";
 import UMLNode from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLComponentNode";
-import {forceCenter, forceLink, forceManyBody, forceSimulation, select} from "d3";
-import * as d3 from "d3";
 import UMLInterfaceNode from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLInterface";
 import {
     AbstractComponent,
@@ -10,7 +9,6 @@ import {
     Edge,
     Interface
 } from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
-
 
 interface UMLViewerProps {
     umlComponents: AbstractComponent[];
@@ -23,41 +21,32 @@ export interface Position {
 }
 
 export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
-    const svgRef = useRef<SVGSVGElement |null >(null);
-    const zoomRef = useRef<SVGGElement | null >(null);
+    const svgRef = useRef<SVGSVGElement>(null!);
+    const zoomRef = useRef<SVGGElement | null>(null);
+    const [tooltip, setTooltip] = useState<{ x: number; y: number; content: React.ReactNode } | null>(null);
 
-    const [tooltip, setTooltip] = useState<{
-        x: number;
-        y: number;
-        content: React.ReactNode;
-    } | null>(null);
+    const isComponent = (comp: AbstractComponent): comp is Component => comp.type === "uml:Component";
+    const isInterface = (comp: AbstractComponent): comp is Interface => comp.type === "uml:Interface";
 
-    const positions = useForceLayout(umlComponents, umlEdges);
+    const {
+        processedComponents,
+        processedEdges,
+        passThroughInterfaceMap,
+        interfaceProvidedCounts,
+        interfaceUsedCounts,
+        singleInterfaces
+    } = useMemo(() => processUMLData(umlComponents, umlEdges), [umlComponents, umlEdges]);
 
-    function isComponent(comp: AbstractComponent): comp is Component {
-        return comp.type === "uml:Component";
-    }
-
-    function isInterface(comp: AbstractComponent): comp is Interface {
-        return comp.type === "uml:Interface";
-    }
-
-    const umlComponentsFiltered: Component[] = umlComponents.filter(isComponent);
-    const umlInterfacesFiltered: Interface[] = umlComponents.filter(isInterface) as Interface[];
-
-    const umlComponentsMap = new Map<string, AbstractComponent>();
-    umlComponents.forEach((comp) => {
-        umlComponentsMap.set(comp.id, comp);
-    });
-
+    const positions = useForceLayout(processedComponents, processedEdges);
 
     useEffect(() => {
-        const svg = d3.select(svgRef.current);
-        const g = d3.select(zoomRef.current);
+        if (!svgRef.current || !zoomRef.current) return;
 
-        // @ts-ignore
+        const svg = d3.select<SVGSVGElement, unknown>(svgRef.current);
+        const g = d3.select<SVGGElement, unknown>(zoomRef.current);
+
         svg.call(
-            d3.zoom()
+            d3.zoom<SVGSVGElement, unknown>()
                 .on("zoom", (event) => {
                     g.attr("transform", event.transform);
                 })
@@ -65,46 +54,58 @@ export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
     }, []);
 
 
+    const umlInterfacesFilteredForRendering = umlComponents.filter(isInterface).filter(iface => {
+        return !passThroughInterfaceMap.has(iface.id) && !singleInterfaces.has(iface.id);
+    });
+
     return (
-        <div className={"relative w-full h-full bg-white overflow-hidden"}>
-        <svg ref={svgRef}  style={{width: "100%", height: "100%"}} viewBox="-500 -500 2000 2000">
-            <g ref={zoomRef}>
+        <div className="relative w-full h-full">
+            <svg ref={svgRef} className="w-full h-full border rounded" style={{ userSelect: "none" }}>
+                <g ref={zoomRef}>
+                    {processedEdges.map((edge, index) => {
+                        const clientNode = positions[edge.client];
+                        const supplierNode = positions[edge.supplier];
 
+                        let isShortLink = false;
+                        if (edge.usedInterface) {
+                            const { id } = edge.usedInterface;
+                            const providedCount = interfaceProvidedCounts.get(id) || 0;
+                            const usedCount = interfaceUsedCounts.get(id) || 0;
+                            isShortLink = (providedCount === 1 && usedCount === 0) || (providedCount === 0 && usedCount === 1);
+                        }
 
-                {umlEdges.map((edge, i) => (
-                    <UMLEdge
-                        key={i}
-                        edge={edge}
-                        client={positions[edge.client] ?? {x: 0, y: 0}}
-                        supplier={positions[edge.supplier] ?? {x: 0, y: 0}}
-                        svgRef={svgRef}
-                        setTooltip={setTooltip}
-                    />
-                ))}
+                        return clientNode && supplierNode ? (
+                            <UMLEdge
+                                key={index}
+                                edge={edge}
+                                client={clientNode}
+                                supplier={supplierNode}
+                                svgRef={svgRef}
+                                setTooltip={setTooltip}
+                                isShortLink={isShortLink}
+                            />
+                        ) : null;
+                    })}
 
-                {/* Render Components */}
-                {umlComponentsFiltered.map((comp) => (
-                    <UMLNode
-                        key={comp.id}
-                        component={comp}
-                        position={{x: positions[comp.id]?.x ?? 0, y: positions[comp.id]?.y ?? 0}}
-                    />
-                ))}
+                    {processedComponents.filter(isComponent).map(comp => {
+                        const pos = positions[comp.id];
+                        return pos ? <UMLNode key={comp.id} component={comp} position={pos} /> : null;
+                    })}
 
-                {/* Render Interfaces */}
-                {umlInterfacesFiltered.map((iface) => (
-                    <UMLInterfaceNode
-                        key={iface.id}
-                        usedInterface={iface}
-                        position={{x: positions[iface.id]?.x ?? 0, y: positions[iface.id]?.y ?? 0}}
-                        setTooltip={setTooltip}
-                        svgRef={svgRef}
-                    />
-                ))}
-
-            </g>
-        </svg>
-
+                    {umlInterfacesFilteredForRendering.map(iface => {
+                        const pos = positions[iface.id];
+                        return pos ? (
+                            <UMLInterfaceNode
+                                key={iface.id}
+                                usedInterface={iface}
+                                position={pos}
+                                setTooltip={setTooltip}
+                                svgRef={svgRef}
+                            />
+                        ) : null;
+                    })}
+                </g>
+            </svg>
             {tooltip && (
                 <div
                     style={{
@@ -120,8 +121,7 @@ export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
                         pointerEvents: 'none',
                         maxWidth: 240,
                         fontFamily: 'sans-serif',
-                    }}
-                >
+                    }}>
                     {tooltip.content}
                 </div>
             )}
@@ -129,7 +129,73 @@ export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
     );
 }
 
-const useForceLayout = (nodes: AbstractComponent[], edges: Edge[]) => {
+function processUMLData(umlComponents: AbstractComponent[], umlEdges: Edge[]) {
+    const componentMap = new Map(umlComponents.map(c => [c.id, c]));
+    const interfaceProvidedCounts = new Map<string, number>();
+    const interfaceUsedCounts = new Map<string, number>();
+    const interfaceProvidingComponent = new Map<string, string>();
+    const interfaceUsingComponent = new Map<string, string>();
+    const virtualEdges: Edge[] = [];
+    const passThroughInterfaces = new Set<string>();
+    const singleInterfaces = new Set<string>();
+
+    umlEdges.forEach(edge => {
+        const supplier = componentMap.get(edge.supplier);
+        if (supplier instanceof Interface) {
+            if (edge.type === "uml:InterfaceRealization") {
+                interfaceProvidedCounts.set(supplier.id, (interfaceProvidedCounts.get(supplier.id) || 0) + 1);
+                interfaceProvidingComponent.set(supplier.id, edge.client);
+            } else if (edge.type === "uml:Usage") {
+                interfaceUsedCounts.set(supplier.id, (interfaceUsedCounts.get(supplier.id) || 0) + 1);
+                interfaceUsingComponent.set(supplier.id, edge.client);
+            }
+        }
+    });
+
+    const filteredComponents = umlComponents.filter(comp => {
+        if (comp instanceof Interface) {
+            const providedCount = interfaceProvidedCounts.get(comp.id) || 0;
+            const usedCount = interfaceUsedCounts.get(comp.id) || 0;
+
+            if (providedCount === 1 && usedCount === 1) {
+                const providerId = interfaceProvidingComponent.get(comp.id);
+                const userId = interfaceUsingComponent.get(comp.id);
+                if (providerId && userId) {
+                    virtualEdges.push(new Edge(providerId, userId, "virtual:mergedEdge", comp));
+                    passThroughInterfaces.add(comp.id);
+                    return false;
+                }
+            } else if ((providedCount === 1 && usedCount === 0) || (providedCount === 0 && usedCount === 1)) {
+                singleInterfaces.add(comp.id);
+            }
+        }
+        return true;
+    });
+
+    const finalEdges = umlEdges.filter(edge => {
+        const supplier = componentMap.get(edge.supplier);
+        return !(supplier instanceof Interface && passThroughInterfaces.has(supplier.id));
+    }).concat(virtualEdges);
+
+    const passThroughInterfaceMap = new Map<string, Interface>();
+    passThroughInterfaces.forEach(id => {
+        const iface = componentMap.get(id);
+        if (iface instanceof Interface) {
+            passThroughInterfaceMap.set(id, iface);
+        }
+    });
+
+    return {
+        processedComponents: filteredComponents,
+        processedEdges: finalEdges,
+        passThroughInterfaceMap,
+        interfaceProvidedCounts,
+        interfaceUsedCounts,
+        singleInterfaces
+    };
+}
+
+function useForceLayout(nodes: AbstractComponent[], edges: Edge[]) {
     const [positions, setPositions] = useState<{ [id: string]: { x: number; y: number } }>({});
 
     useEffect(() => {
@@ -139,28 +205,29 @@ const useForceLayout = (nodes: AbstractComponent[], edges: Edge[]) => {
             source: d.client,
             target: d.supplier
         }));
-        console.log("similinks", simLinks);
-        console.log("edges", edges);
 
-        const simulation = forceSimulation(simNodes as any)
-            .force('link', forceLink(simLinks)
+        const simulation = d3.forceSimulation(simNodes as any)
+            .force('link', d3.forceLink(simLinks)
                 .id((d: any) => d.id)
                 .distance(200)
-                .strength(1))
-            .force('charge', forceManyBody().strength(-400))
-            .force('collision', d3.forceCollide().radius(() => 100).strength(1.2))
-            .force('x', d3.forceX().strength(0.05))
-            .force('y', d3.forceY().strength(0.05))
-            .force('center', forceCenter(window.innerWidth / 2, window.innerHeight / 2))
+                .strength(2))
+            .force('charge', d3.forceManyBody().strength(-400))
+            .force('collision', d3.forceCollide().radius(() => 120).strength(1.2))
+            .force('x', d3.forceX(window.innerWidth / 2).strength(0.05))
+            .force('y', d3.forceY(window.innerHeight / 2).strength(0.05))
+            .force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
             .on('tick', () => {
                 const updated = {} as any;
                 simNodes.forEach(node => {
-                    updated[node.id] = {x: node.x!, y: node.y!};
+                    updated[node.id] = { x: node.x, y: node.y };
                 });
                 setPositions(updated);
             });
 
-        return () => (simulation.stop() as never);
+        // Cleanup simulation on unmount
+        return () => {
+            simulation.stop();
+        };
     }, [nodes, edges]);
 
     return positions;

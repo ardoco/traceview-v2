@@ -81,7 +81,7 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
 
     const font = `${fontSize}px ${fontFamily}`;
 
-    // --- Wrap text into multiple lines ---
+    // Wrap text into multiple lines
     const textLines = wrapText(component.name, maxWidth - padding, font);
 
     const widestLine = Math.max(...textLines.map(line => measureTextWidth(line, font)));
@@ -97,7 +97,6 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
             transform={`translate(${posX}, ${posY})`}
             onClick={(event) => {
                 event.stopPropagation();
-                console.log("name", component.id, "type", typeof component.id);
                 highlightElement(component.id ?? null, "modelElementId");
             }}
         >

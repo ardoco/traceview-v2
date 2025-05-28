@@ -125,20 +125,18 @@ export class Component extends AbstractComponent {
     }
 }
 
+export type EdgeType =
+    | "uml:Generalization"
+    | "uml:InterfaceRealization"
+    | "uml:Usage"
+    | "virtual:mergedEdge";
+
 export class Edge {
     constructor(
         public client: string,
         public supplier: string,
-        public type: string, // "uml:Generalization" | "uml:InterfaceRealization" | "uml:Usage" | ...
-        public usedInterface?: Interface, // Optional: for interface edges
+        public type: EdgeType,
+        public usedInterface?: Interface | null, // Optional: for interface edges
     ) {
-    }
-
-    equals(other: Edge): boolean {
-        return (
-            this.client === other.client &&
-            this.supplier === other.supplier &&
-            this.type === other.type
-        );
     }
 }

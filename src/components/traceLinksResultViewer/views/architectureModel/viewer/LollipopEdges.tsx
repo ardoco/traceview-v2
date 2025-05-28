@@ -4,11 +4,12 @@ export interface LollipopProps {
     facingVector: { x: number; y: number };
     radius?: number;
     lineLength?: number;
+    strokeColor?: string;
+    strokeWidth?: number;
 }
 
-export function ProvidedLollipop({x, y, facingVector, lineLength = 6, radius = 6}: LollipopProps) {
+export function ProvidedLollipop({x, y, facingVector, lineLength = 6, radius = 6, strokeColor="black", strokeWidth=1.5}: LollipopProps) {
     const fillColor = "white";
-    const strokeColor = "black";
 
     const norm = Math.hypot(facingVector.x, facingVector.y);
     const dx = (facingVector.x / norm) * lineLength;
@@ -25,7 +26,7 @@ export function ProvidedLollipop({x, y, facingVector, lineLength = 6, radius = 6
                 x2={x + dx}
                 y2={y + dy}
                 stroke={strokeColor}
-
+                strokeWidth={strokeWidth}
             />
             <circle
                 cx={cx}
@@ -33,14 +34,13 @@ export function ProvidedLollipop({x, y, facingVector, lineLength = 6, radius = 6
                 r={radius}
                 fill={fillColor}
                 stroke={strokeColor}
+                strokeWidth={strokeWidth}
             />
         </g>
     );
 }
 
-export function RequiredLollipop({x, y, facingVector, lineLength = 6, radius = 6,}: LollipopProps) {
-    const strokeColor = "black";
-
+export function RequiredLollipop({x, y, facingVector, lineLength = 6, radius = 6, strokeColor="black", strokeWidth=1.5}: LollipopProps) {
     const norm = Math.hypot(facingVector.x, facingVector.y);
     const ux = facingVector.x / norm;
     const uy = facingVector.y / norm;
@@ -63,6 +63,7 @@ export function RequiredLollipop({x, y, facingVector, lineLength = 6, radius = 6
                 x2={x + dx}
                 y2={y + dy}
                 stroke={strokeColor}
+                strokeWidth={strokeWidth}
             />
 
             {/* Half-circle Path (open away from line) */}
@@ -74,6 +75,7 @@ export function RequiredLollipop({x, y, facingVector, lineLength = 6, radius = 6
                 transform={`rotate(${angleDeg + 90}, ${arcCenterX}, ${arcCenterY})`}
                 fill="none"
                 stroke={strokeColor}
+                strokeWidth={strokeWidth}
             />
         </g>
     );

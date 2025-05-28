@@ -51,20 +51,22 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     // add used Interface
     for (const edge of edges) {
         if (edge.type == "uml:InterfaceRealization" || edge.type == "uml:Usage") {
-            const supplierComponent = components.find(comp => comp.id === edge.supplier);
+            const supplierComponent = components.find(comp => comp.id == edge.supplier);
             if (supplierComponent && supplierComponent instanceof Interface) {
                 edge.usedInterface = supplierComponent;
             }
         }
     }
 
+    console.log(edges)
+
     // remove duplicates
     components = removeDuplicatesWithEquals(components);
 
-    // remove duplicate edges
-    edges = edges.filter((edge, index, self) =>
-        index === self.findIndex((e) => e.equals(edge)) // Check if the edge is the first occurrence
-    );
+    // // remove duplicate edges
+    // edges = edges.filter((edge, index, self) =>
+    //     index === self.findIndex((e) => e.equals(edge)) // Check if the edge is the first occurrence
+    // );
 
     return { components, edges };
 }
