@@ -13,42 +13,88 @@ import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 export default function DisplayArchitectureModel({JSONResult, id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>(null);
     const [architectureModel, setArchitectureModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
+    const [error, setError] = useState<string | null>(null); // Added error state
+    const [isMounted, setIsMounted] = useState<boolean>(false); // Track if component has mounted
 
     useEffect(() => {
+        setIsMounted(true); // Set to true once component mounts on client
+    }, []);
+
+    useEffect(() => {
+        // Only run loadModel if the component has mounted on the client
+        if (!isMounted || !id) {
+            if (id) setIsLoading(false); // If no id, or not mounted, stop loading if id was present
+            return;
+        }
+
         async function loadModel() {
-            const result = await loadProjectFile(id, FileType.Architecture_Model_UML); // fallback type
+            setIsLoading(true);
+            setError(null);
+            try {
+                // Ensure loadProjectFile is only called client-side
+                if (typeof window !== "undefined") {
+                    const result = await loadProjectFile(id, FileType.Architecture_Model_UML); // fallback type
 
-            if (!result) return;
+                    if (!result) {
+                        console.warn("No project file found for ID:", id);
+                        setArchitectureModel(null);
+                        setFileContent(null);
+                        setIsLoading(false);
+                        return;
+                    }
 
-            const text = await result.file.text();
-            setFileContent(text);
+                    const text = await result.file.text();
+                    setFileContent(text); // Keep for potential raw display if parsing fails
 
-            switch (result.fileType) {
-                case FileType.Architecture_Model_UML:
-                    const parsedUML = parseUMLModel(text);
-                    setArchitectureModel(parsedUML);
-                    break;
-
-                case FileType.Architecture_Model_PCM:
-                    const parsedPCM = parsePCM(text);
-                    setArchitectureModel(parsedPCM);
-                    break;
-
-                default:
-                    console.warn("Unknown architecture model file type:", result.fileType);
+                    let parsedModel = null;
+                    switch (result.fileType) {
+                        case FileType.Architecture_Model_UML:
+                            parsedModel = parseUMLModel(text);
+                            break;
+                        case FileType.Architecture_Model_PCM:
+                            parsedModel = parsePCM(text);
+                            break;
+                        default:
+                            console.warn("Unknown architecture model file type:", result.fileType);
+                            setError(`Unknown architecture model file type: ${result.fileType}`);
+                    }
+                    setArchitectureModel(parsedModel);
+                } else {
+                    // This case should ideally not be hit if isMounted is true,
+                    // but as a safeguard:
+                    console.warn("loadModel called on server, skipping ClientFileStorage.");
+                }
+            } catch (e: any) {
+                console.error("Failed to load or parse architecture model:", e);
+                setError(`Failed to load model: ${e.message}`);
+                setArchitectureModel(null);
+            } finally {
+                setIsLoading(false);
             }
         }
         loadModel();
-    }, [id]);
+    }, [id, isMounted]); // Rerun when id or isMounted changes
 
+
+    // Initial render (server and first client render before useEffect runs)
+    // should be consistent. If not mounted, or loading, show a placeholder.
+    if (!isMounted || isLoading) {
+        return <div className="flex justify-center items-center h-full">Loading architecture model...</div>;
+    }
+
+    if (error) {
+        return <div className="text-red-500 p-4">Error: {error}</div>;
+    }
 
     return (
         <div className="relative w-full" style={{height: "calc(100% - 40px)"}}>
             {architectureModel ? (
                 <UMLViewer umlComponents={architectureModel.components} umlEdges={architectureModel.edges}/>
             ) : (
-                <div className="whitespace-pre">
-                    {fileContent}
+                // Display raw file content or a "not found" message if model is null but not loading and no error
+                <div className="whitespace-pre p-4">
+                    {fileContent ? `Could not parse model. Raw content:\n\n${fileContent}` : "Architecture model not found or could not be loaded."}
                 </div>
             )}
 
@@ -59,7 +105,6 @@ export default function DisplayArchitectureModel({JSONResult, id}: ViewProps) {
                     { keyCombo: "Hover over interface's name", description: "display details" },
                 ]}
             />
-
         </div>
     );
 }

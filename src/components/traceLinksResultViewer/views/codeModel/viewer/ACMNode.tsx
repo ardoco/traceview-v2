@@ -1,3 +1,5 @@
+'use client'
+
 import {HierarchyNode} from "d3";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";

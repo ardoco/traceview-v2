@@ -1,4 +1,6 @@
 // Result Display Component
+'use client'
+
 import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import React, {useState} from "react";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";

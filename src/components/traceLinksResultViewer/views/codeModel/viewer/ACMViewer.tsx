@@ -1,3 +1,5 @@
+'use client'
+
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {hierarchy, linkHorizontal, select, tree} from "d3";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";

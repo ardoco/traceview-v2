@@ -1,3 +1,5 @@
+'use client'
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";

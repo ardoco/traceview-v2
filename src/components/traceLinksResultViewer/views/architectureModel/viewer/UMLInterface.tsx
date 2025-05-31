@@ -1,3 +1,5 @@
+'use client'
+
 import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 import React, {useState} from "react";
 import {

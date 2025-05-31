@@ -13,15 +13,63 @@ import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 
 export default function DisplayDocumentation({JSONResult, id}: ViewProps) {
     const [sentences, setSentences] = useState<Sentence[]>([]);
-
+    const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
+    const [error, setError] = useState<string | null>(null); // Added error state
+    const [isMounted, setIsMounted] = useState<boolean>(false); // Track if component has mounted
 
     useEffect(() => {
-        loadProjectFile(id, FileType.Architecture_Documentation).then((result) => {
-            result?.file.text().then((text) => {
-                setSentences(parseDocumentationText(text));
-            });
-        });
-    }, [id]);
+        setIsMounted(true); // Set to true once component mounts on client
+    }, []);
+
+    useEffect(() => {
+        // Only run loadModel if the component has mounted on the client
+        if (!isMounted || !id) {
+            if (id) setIsLoading(false); // If no id, or not mounted, stop loading if id was present
+            return;
+        }
+
+        async function loadModel() {
+            setIsLoading(true);
+            setError(null);
+            try {
+                // Ensure loadProjectFile is only called client-side
+                if (typeof window !== "undefined") {
+                    const result = await loadProjectFile(id, FileType.Architecture_Documentation);
+
+                    if (!result) {
+                        console.warn("No project file found for ID:", id);
+                        setSentences([]);
+                        setIsLoading(false);
+                        return;
+                    }
+
+                    const text = await result.file.text();
+                    setSentences(parseDocumentationText(text));
+                } else {
+                    // This case should ideally not be hit if isMounted is true,
+                    // but as a safeguard:
+                    console.warn("loadModel called on server, skipping ClientFileStorage.");
+                }
+            } catch (e: any) {
+                console.error("Failed to load or parse architecture model:", e);
+                setError(`Failed to load model: ${e.message}`);
+                setSentences([]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        loadModel();
+    }, [id, isMounted]); // Re-run when id or isMounted changes
+
+    // Initial render (server and first client render before useEffect runs)
+    // should be consistent. If not mounted, or loading, show a placeholder.
+    if (!isMounted || isLoading) {
+        return <div className="flex justify-center items-center h-full">Loading architecture model...</div>;
+    }
+
+    if (error) {
+        return <div className="text-red-500 p-4">Error: {error}</div>;
+    }
 
     return (
         <div className="relative w-full h-full space-y-2">

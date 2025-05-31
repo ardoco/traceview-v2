@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import * as d3 from "d3";
 import UMLEdge from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLEdge";

@@ -1,3 +1,5 @@
+'use client'
+
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {FileType} from "@/components/dataTypes/FileType";
 

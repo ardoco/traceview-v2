@@ -1,3 +1,5 @@
+'use client'
+
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";

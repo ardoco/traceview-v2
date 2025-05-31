@@ -1,3 +1,5 @@
+'use client';
+
 import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/Documentation";
 import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModel";
 import {Button, Dialog, Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";

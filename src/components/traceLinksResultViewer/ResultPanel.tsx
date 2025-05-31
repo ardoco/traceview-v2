@@ -1,14 +1,12 @@
+'use client'
 
 import {Panel} from "react-resizable-panels";
-import Dropdown from "@/components/inputComponents/Dropdown";
 import React, {Suspense, useState} from "react";
 import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/Documentation";
 import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModel";
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
 import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
 import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
-import {UploadedFile} from "@/components/dataTypes/UploadedFile";
-import {FileType} from "@/components/dataTypes/FileType";
 import {Dialog, Select, Button} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
