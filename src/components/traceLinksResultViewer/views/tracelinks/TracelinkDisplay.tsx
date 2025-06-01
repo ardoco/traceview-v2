@@ -23,7 +23,7 @@ interface TraceLinkViewProps {
  * @returns {JSX.Element} The rendered component displaying the trace links.
  */
 export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkViewProps) {
-    const { traceLinks} = useHighlightContext();
+    const { traceLinks, highlightedTraceLinks} = useHighlightContext();
     const [sortedTraceLinks, setSortedTraceLinks] = useState<TraceLink[]>(traceLinks);
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
 
@@ -66,11 +66,25 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
      */
     const handleSortChange = useCallback((method: string) => {
         setSelectedSortMethod(method);
-        const sorter = sortMethods[method as keyof typeof sortMethods];
-        if (sorter) {
-            setSortedTraceLinks([...traceLinks].sort(sorter));
+        const highlightedSorted = highlightedTraceLinks;
+        const nonHighlightedSorted = traceLinks.filter(link => !highlightedSorted.includes(link));
+
+        if (selectedSortMethod !== "Sort By" ) {
+            const sorter = sortMethods[method as keyof typeof sortMethods];
+            highlightedSorted.sort(sorter);
+            nonHighlightedSorted.sort(sorter);
+
+            //setSortedTraceLinks([...traceLinks].sort(sorter));
         }
-    }, [traceLinks, sortMethods]);
+        // Combine highlighted and non-highlighted links
+        setSortedTraceLinks([...highlightedSorted, ...nonHighlightedSorted]);
+    }, [traceLinks, sortMethods, highlightedTraceLinks, selectedSortMethod]);
+
+    // Re-sort whenever traceLinks or highlights change.
+    useEffect(() => {
+        handleSortChange(selectedSortMethod);
+
+    }, [traceLinks, highlightedTraceLinks, selectedSortMethod, handleSortChange]);
 
     return (
         <div className="p-2">
