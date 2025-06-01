@@ -62,7 +62,7 @@ export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
 
     return (
         <div className="relative w-full h-full">
-            <svg ref={svgRef} className="w-full h-full border rounded" style={{ userSelect: "none" }}>
+            <svg ref={svgRef} style={{width: "100%", height: "100%"}} viewBox={"-10 -10 600 800"}>
                 <g ref={zoomRef}>
                     {processedEdges.map((edge, index) => {
                         const clientNode = positions[edge.client];

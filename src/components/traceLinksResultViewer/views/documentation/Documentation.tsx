@@ -72,8 +72,10 @@ export default function DisplayDocumentation({JSONResult, id}: ViewProps) {
     }
 
     return (
-        <div className="relative w-full h-full space-y-2">
-            {sentences.map((sentence, index) => <SentenceView sentence={sentence} index={index} key={index}/>)}
+        <div className="relative" style={{height: "calc(100% - 40px)"}}>
+            <ul className={"space-y-2 max-h-full overflow-y-auto"}>
+                {sentences.map((sentence, index) => <SentenceView sentence={sentence} index={index} key={index}/>)}
+            </ul>
 
             <TooltipInstruction
                 title="Instructions"
