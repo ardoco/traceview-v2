@@ -9,6 +9,7 @@ interface HighlightContextType {
     highlightSingleTraceLink: (traceLinks:TraceLink) => void;
     traceLinks:TraceLink[];
     highlightingColor: string;
+    showNoTraceLinksMessage: boolean;
 }
 
 interface HighlightProviderProps {
@@ -28,6 +29,7 @@ export const useHighlightContext = () => {
 
 export function HighlightProvider({children, traceLinks}: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
+    const [showNoTraceLinksMessage, setShowNoTraceLinksMessage] = useState(false);
 
     const highlightingColor = "#fde047"; // Highlight color
 
@@ -37,6 +39,7 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
             return;
         }
         let matchingTraceLinks: TraceLink[] = [];
+        console.log(id, typeof id, traceLinks[0].sentenceId, typeof traceLinks[0].sentenceId);
 
         for (const traceLink of traceLinks) {
             if (type == 'sentenceId' && traceLink.sentenceId && traceLink.sentenceId == id) {
@@ -50,6 +53,17 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 matchingTraceLinks.push(traceLink);
             }
         }
+
+        if (matchingTraceLinks.length === 0) {
+            setShowNoTraceLinksMessage(false);
+            requestAnimationFrame(() => {
+                setShowNoTraceLinksMessage(true);
+            });
+            setTimeout(() => {
+                setShowNoTraceLinksMessage(false);
+            }, 2000);
+        }
+
         console.log("matched tracelinks :", id, type, matchingTraceLinks, traceLinks)
         setHighlightedTraceLinks(matchingTraceLinks);
     };
@@ -66,6 +80,7 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 highlightSingleTraceLink,
                 traceLinks,
                 highlightingColor,
+                showNoTraceLinksMessage
             }}
         >
             {children}

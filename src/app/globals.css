@@ -78,3 +78,17 @@
     border-color: var(--color-gray-200, currentColor);
   }
 }
+
+@keyframes fade-in-out-vibrate {
+  0% { opacity: 0; transform: translateY(0px) }
+  5% { opacity: 1; transform: translateY(0) rotate(-1deg); }
+  10% { transform: translateY(0) rotate(1deg); }
+  15% { transform: translateY(0) rotate(-1deg); }
+  20% { transform: translateY(0) rotate(0deg); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(0px) }
+}
+
+.animate-fade-in-out-vibrate {
+  animation: fade-in-out-vibrate 2s ease-in-out forwards;
+}

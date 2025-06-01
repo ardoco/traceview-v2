@@ -18,9 +18,10 @@ export function TraceLinkItem ({link, showCode, showModel, showSentence}:TraceLi
     return (
         <li
             className={`p-2 border rounded cursor-pointer ${
-                highlightedTraceLinks.includes(link) ? highlightingColor : "hover:bg-gray-100"
+                highlightedTraceLinks.includes(link) ? "" : "hover:bg-gray-100"
             }`}
             onClick={() => highlightSingleTraceLink(link)}
+            style={{backgroundColor: highlightedTraceLinks.includes(link) ? highlightingColor : "transparent"}}
         >
             {showCode && (
                 <div className={"truncate"} title={link.codeElementId}>
