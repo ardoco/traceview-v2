@@ -1,0 +1,60 @@
+import {Dot} from "@/components/icons/dot";
+import StepTitle from "@/components/multiStepForm/stepProgressBar/StepTitle";
+
+interface StepperProps {
+    steps: string[];
+    currentStep: number;
+    onStepChange: (step: number) => void;
+}
+
+/**
+ * This is the multi-step progress bar
+ */
+export default function Stepper({steps, currentStep, onStepChange}: StepperProps) {
+
+    return (
+        <div className="relative flex flex-col items-center w-full">
+            {/* Step Dots and Bars */}
+            <div className="flex items-center justify-between w-10/12">
+                {Array.from({length: steps.length - 1}, (_, index) => (
+                    <div
+                        key={index}
+                        className="flex items-center w-full"
+                        onClick={() => onStepChange(index)}
+                    >
+                        <Dot active={index <= currentStep} passed={index < currentStep}/>
+
+                        {/* Line */}
+                        <div
+                            className={`h-1 w-full ${
+                                index <= currentStep - 1 ? index < currentStep - 1 ? "bg-blau" : "bg-gradient-to-r from-blau to-gruen" : "bg-black-900"
+                            }`}
+                        />
+                    </div>
+                ))}
+
+                {/*last dot*/}
+                <div className="justify-end" onClick={() => onStepChange(steps.length - 1)}>
+                    <Dot active={currentStep === steps.length - 1}/>
+                </div>
+
+            </div>
+
+            {/* Step Titles */}
+            <div className="flex items-center justify-between w-11/12 mt-2">
+                {steps.map((step, index) => (
+                    <div
+                        key={index}
+                        className="relative flex flex-col items-center min-w-[80px] text-center"
+                        onClick={() => onStepChange(index)}
+                    >
+                        <StepTitle
+                            active={index === currentStep}
+                            title={step}
+                        />
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}

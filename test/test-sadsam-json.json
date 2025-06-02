@@ -1,0 +1,253 @@
+{
+  "requestId": "SadSamResult:ji7b258c6c-56b2-30a5-8cca-a1fb80b5547b",
+  "status": "OK",
+  "message": "The result is ready.",
+  "traceLinkType": "SAD_SAM",
+  "traceLinks": [
+    {
+      "sentenceNumber": 3,
+      "modelElementUid": "_0e5u8FkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 4,
+      "modelElementUid": "_0e5u8FkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 4,
+      "modelElementUid": "_s0aIcFkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 5,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 5,
+      "modelElementUid": "_0e5u8FkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 7,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 8,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 9,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 11,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 12,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 13,
+      "modelElementUid": "_0e5u8FkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 14,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 17,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 24,
+      "modelElementUid": "_XuNf4FkJEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 27,
+      "modelElementUid": "_4yx-8FkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 33,
+      "modelElementUid": "_4yx-8FkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 36,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 43,
+      "modelElementUid": "_6sergFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 44,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 44,
+      "modelElementUid": "_6sergFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 45,
+      "modelElementUid": "_RDHFIFwPEeyiuNx_RO7j-Q",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 46,
+      "modelElementUid": "_RDHFIFwPEeyiuNx_RO7j-Q",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 48,
+      "modelElementUid": "_XuNf4FkJEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 49,
+      "modelElementUid": "_XuNf4FkJEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 51,
+      "modelElementUid": "_XuNf4FkJEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 54,
+      "modelElementUid": "_9wZIcFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 55,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 56,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 57,
+      "modelElementUid": "_XuNf4FkJEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 57,
+      "modelElementUid": "_6sergFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 57,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 58,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 59,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 60,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 62,
+      "modelElementUid": "_s0aIcFkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 63,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 64,
+      "modelElementUid": "_s0aIcFkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 64,
+      "modelElementUid": "_oN4CMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 65,
+      "modelElementUid": "_oN4CMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 65,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 67,
+      "modelElementUid": "_s0aIcFkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 69,
+      "modelElementUid": "_nwrCMFwPEeyiuNx_RO7j-Q",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 70,
+      "modelElementUid": "_s0aIcFkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 70,
+      "modelElementUid": "_yGgUMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 71,
+      "modelElementUid": "_s0aIcFkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 75,
+      "modelElementUid": "_4yx-8FkHEeyewPSmlgszyA",
+      "confidence": 0.8
+    },
+    {
+      "sentenceNumber": 76,
+      "modelElementUid": "_6sergFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 77,
+      "modelElementUid": "_2BgxMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    },
+    {
+      "sentenceNumber": 78,
+      "modelElementUid": "_2BgxMFkHEeyewPSmlgszyA",
+      "confidence": 1
+    }
+  ]
+}

@@ -1,3 +1,94 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --color-gruen-100: #001b15;
+  --color-gruen-200: #00352a;
+  --color-gruen-300: #005040;
+  --color-gruen-400: #006a55;
+  --color-gruen-500: #00876c;
+  --color-gruen-600: #00d0a6;
+  --color-gruen-700: #1dffd2;
+  --color-gruen-800: #68ffe1;
+  --color-gruen-900: #b4fff0;
+  --color-gruen: #00876c;
+
+  --color-blau-100: #0e1422;
+  --color-blau-200: #1c2844;
+  --color-blau-300: #2a3c66;
+  --color-blau-400: #385088;
+  --color-blau-500: #4664aa;
+  --color-blau-600: #6581c0;
+  --color-blau-700: #8ca0d0;
+  --color-blau-800: #b2c0e0;
+  --color-blau-900: #d9dfef;
+  --color-blau: #4664aa;
+
+  --color-black-100: #000000;
+  --color-black-200: #000000;
+  --color-black-300: #000000;
+  --color-black-400: #000000;
+  --color-black-500: #000000;
+  --color-black-600: #333333;
+  --color-black-700: #666666;
+  --color-black-800: #999999;
+  --color-black-900: #cccccc;
+  --color-black: #000000;
+
+  --color-maigruen-100: #182100;
+  --color-maigruen-200: #304100;
+  --color-maigruen-300: #486200;
+  --color-maigruen-400: #608300;
+  --color-maigruen-500: #77a200;
+  --color-maigruen-600: #abe900;
+  --color-maigruen-700: #c8ff2f;
+  --color-maigruen-800: #daff74;
+  --color-maigruen-900: #edffba;
+  --color-maigruen: #77a200;
+
+  --color-lila-100: #200319;
+  --color-lila-200: #410631;
+  --color-lila-300: #610a4a;
+  --color-lila-400: #820d63;
+  --color-lila-500: #a3107c;
+  --color-lila-600: #df16a9;
+  --color-lila-700: #ed4ac2;
+  --color-lila-800: #f386d6;
+  --color-lila-900: #f9c3eb;
+  --color-lila: #a3107c;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@keyframes fade-in-out-vibrate {
+  0% { opacity: 0; transform: translateY(0px) }
+  5% { opacity: 1; transform: translateY(0) rotate(-1deg); }
+  10% { transform: translateY(0) rotate(1deg); }
+  15% { transform: translateY(0) rotate(-1deg); }
+  20% { transform: translateY(0) rotate(0deg); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(0px) }
+}
+
+.animate-fade-in-out-vibrate {
+  animation: fade-in-out-vibrate 2s ease-in-out forwards;
+}
