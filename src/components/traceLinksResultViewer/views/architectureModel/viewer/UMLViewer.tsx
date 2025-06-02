@@ -39,7 +39,7 @@ export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
         singleInterfaces
     } = useMemo(() => processUMLData(umlComponents, umlEdges), [umlComponents, umlEdges]);
 
-    const positions = useForceLayout(processedComponents, processedEdges);
+    const { positions, viewBox } = useForceLayout(processedComponents, processedEdges);
 
     useEffect(() => {
         if (!svgRef.current || !zoomRef.current) return;
@@ -62,7 +62,7 @@ export default function UMLViewer({ umlComponents, umlEdges }: UMLViewerProps) {
 
     return (
         <div className="relative w-full h-full">
-            <svg ref={svgRef} style={{width: "100%", height: "100%"}} viewBox={"-10 -10 600 800"}>
+            <svg ref={svgRef} style={{width: "100%", height: "100%"}} viewBox={viewBox|| "-10 -10 600 800"}>
                 <g ref={zoomRef}>
                     {processedEdges.map((edge, index) => {
                         const clientNode = positions[edge.client];
@@ -197,8 +197,9 @@ function processUMLData(umlComponents: AbstractComponent[], umlEdges: Edge[]) {
     };
 }
 
-function useForceLayout(nodes: AbstractComponent[], edges: Edge[]) {
+function useForceLayout(nodes: AbstractComponent[], edges: Edge[]) : { positions: { [id: string]: { x: number; y: number } }; viewBox: string} {
     const [positions, setPositions] = useState<{ [id: string]: { x: number; y: number } }>({});
+    const [viewBox, setViewBox] = useState<string>("-10 -10 600 800");
 
     useEffect(() => {
         const simNodes = nodes.map(d => ({...d}));
@@ -224,6 +225,38 @@ function useForceLayout(nodes: AbstractComponent[], edges: Edge[]) {
                     updated[node.id] = { x: node.x, y: node.y };
                 });
                 setPositions(updated);
+            })
+            .on('end', () => {
+
+                // calculate bounding box
+                const xCoords = simNodes
+                    .map(node => node.x)
+                    .filter((x): x is number => typeof x === "number");
+                const yCoords = simNodes
+                    .map(node => node.y)
+                    .filter((y): y is number => typeof y === "number");
+
+                if (xCoords.length === 0 || yCoords.length === 0) {
+                    console.warn("No nodes found for bounding box calculation.");
+                    return;
+                }
+
+                const minX = Math.min(...xCoords);
+                const maxX = Math.max(...xCoords);
+                const minY = Math.min(...yCoords);
+                const maxY = Math.max(...yCoords);
+
+                const paddingX = (maxX - minX) * 0.2;
+                const paddingY = (maxY - minY) * 0.2;
+
+                const vb = [
+                    minX - paddingX,
+                    minY - paddingY,
+                    (maxX - minX) + 2 * paddingX,
+                    (maxY - minY) + 2 * paddingY
+                ].join(' ');
+
+                setViewBox(vb);
             });
 
         // Cleanup simulation on unmount
@@ -232,5 +265,5 @@ function useForceLayout(nodes: AbstractComponent[], edges: Edge[]) {
         };
     }, [nodes, edges]);
 
-    return positions;
+    return { positions, viewBox };
 }

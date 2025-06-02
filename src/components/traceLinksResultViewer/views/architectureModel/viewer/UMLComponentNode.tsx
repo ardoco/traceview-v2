@@ -1,4 +1,4 @@
-import React, from "react";
+import React from "react";
 import { Position } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 import { useHighlightContext } from "@/components/traceLinksResultViewer/views/HighlightContextType";
 import {Component} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
