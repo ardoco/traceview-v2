@@ -12,8 +12,11 @@ const inter = Inter({subsets: ['latin']});
 
 
 export const metadata: Metadata = { // those metadatas are the ones that are used for every page in the application. They can be overridden on a page by page basis.
-    title: 'traceview2 demo project',
+    title: ' ArDoCo TraceView 2',
     description: 'This is a demo project',
+    icons: {
+        icon: '/ardoco-logo.png',
+    }
 }
 
 export default function RootLayout({
