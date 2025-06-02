@@ -1,7 +1,6 @@
 'use client';
 
 import Link from "next/link";
-import Image from 'next/image';
 import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Dialog, DialogPanel } from "@headlessui/react";
@@ -15,17 +14,36 @@ const navigation = [
 
 // Component for the ArDoCo logo
 interface ArDoCoLogoProps {
+    /** Corresponds to keys in sizeClassMap (e.g., 8, 10, 12) */
     size: number;
 }
 
+// Mapping for image sizes to ensure Tailwind JIT picks them up
+const imageSizeMap: { [key: number]: string } = {
+    8: "h-8 w-auto",
+    9: "h-9 w-auto",
+    10: "h-10 w-auto",
+    11: "h-11 w-auto",
+    12: "h-12 w-auto",
+    13: "h-13 w-auto",
+    14: "h-14 w-auto",
+    15: "h-15 w-auto",
+    16: "h-16 w-auto", 
+};
+
 export function ArDoCoLogo({ size }: ArDoCoLogoProps) {
+    const imageClasses = imageSizeMap[size] || imageSizeMap[10];
+
     return (
-        <Link href="/" className="-ml-3 p-1.5 pl-7.5 pt-6 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75%">
+        <Link
+            href="/"
+            className={`-ml-3 p-1.5 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75% flex items-center justify-center`}
+        >
             <span className="sr-only">ArDoCo Logo</span>
             <img
                 alt="ArDoCo Logo"
-                src="/ardoco-logo.png"
-                className={`h-${size} w-auto`}
+                src="/ardoco-logo.png" // Assumes ardoco-logo.png is in the public folder
+                className={imageClasses}
             />
         </Link>
     );
@@ -40,7 +58,7 @@ export default function NavBar() {
             <nav aria-label="Global" className="flex items-center justify-between p-3 lg:px-8 h-24">
                 {/* Logo */}
                 <div className="flex lg:flex-1">
-                    <ArDoCoLogo size={12} />
+                    <ArDoCoLogo size={16} />
                 </div>
 
                 {/* Mobile Menu Button */}

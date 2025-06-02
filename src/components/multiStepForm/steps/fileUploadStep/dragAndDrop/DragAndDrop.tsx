@@ -23,13 +23,7 @@ export default function DragAndDrop({handleFilesChangeAction}: DragAndDropProps)
     const handleDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
-        const fileHandlesPromises = [...event.dataTransfer.items]
-            .filter((item) => item.kind === 'file')
-        // @ts-ignore
-            .map((item) => item.getAsFileSystemHandle());
-        console.log(fileHandlesPromises);
         setDragActive(false);
-        console.log(event.dataTransfer?.items);
         if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
             handleFilesChangeAction(event.dataTransfer.files);
         }
@@ -39,7 +33,7 @@ export default function DragAndDrop({handleFilesChangeAction}: DragAndDropProps)
         <div className={'grow'}>
             <div
                 className={`rounded-lg content-center border-2 border-dashed w-full p-5 mx-auto text-center ${
-                    dragActive ? "border-blau" : "border-blau-300"
+                    dragActive ? "border-blau-400" : "border-black-800"
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
