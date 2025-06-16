@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import {FileType} from "@/components/dataTypes/FileType";
-import {parseCodeFromACM} from "@/components/traceLinksResultViewer/views/codeModel/parser/ACMParser";
+import {parseACMFile} from "@/components/traceLinksResultViewer/views/codeModel/parser/ACMParser";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 import ACMViewer from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer";
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
@@ -49,7 +49,8 @@ export default function DisplayCodeModel({JSONResult, id}: ViewProps) {
 
                     // init code model
                     if (text) {
-                        const parsedCodeModel2 = parseCodeFromACM(text);
+                        //const parsedCodeModel2 = parseCodeFromACM(text);
+                        const parsedCodeModel2 = parseACMFile(text);
                         setCodeModel(parsedCodeModel2);
                     }
                  else {
@@ -82,6 +83,7 @@ export default function DisplayCodeModel({JSONResult, id}: ViewProps) {
     return (
 
         <div className=" relative w-full" style={{height: "calc(100% - 40px)"}}>
+
             {codeModel ? (
                 <ACMViewer codeModel={codeModel}/>
 

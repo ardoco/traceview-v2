@@ -7,7 +7,7 @@ export class CodeModelUnit {
   name: string;
   type: string; // e.g. "ClassUnit", "InterfaceUnit", "ControlElement", "CodeCompilationUnit", "CodePackage"
   children: CodeModelUnit[];
-  path?: string;
+  path: string;
 
   /**
    * Constructs a new instance of the CodeModelUnit class.
@@ -23,7 +23,7 @@ export class CodeModelUnit {
     this.name = name;
     this.type = type;
     this.children = children;
-    this.path = path;
+    this.path = path || "";
   }
 
 }

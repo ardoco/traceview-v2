@@ -30,6 +30,7 @@ const dx = 10; // vertical space between nodes
 const dy = 200; // horizontal space between levels
 
 export default function ACMViewer({codeModel}: ACMViewerProps) {
+    console.log("codeModel", codeModel);
     const svgRef = useRef<SVGSVGElement | null>(null);
     const zoomRef = useRef<SVGGElement | null>(null);
 
