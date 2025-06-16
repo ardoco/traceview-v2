@@ -30,9 +30,10 @@ const dx = 10; // vertical space between nodes
 const dy = 200; // horizontal space between levels
 
 export default function ACMViewer({codeModel}: ACMViewerProps) {
-    console.log("codeModel", codeModel);
     const svgRef = useRef<SVGSVGElement | null>(null);
     const zoomRef = useRef<SVGGElement | null>(null);
+
+    const copyExpandedTree = useRef<CustomHierarchyNode | null>(null);
 
     const [treeDataState, setTreeDataState] = useState<CustomHierarchyNode>(() => {
         const root = d3.hierarchy<HierarchyData>(codeModel, d => d.children);
@@ -43,6 +44,8 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
             const d = dAny as CustomHierarchyNode;
             d.id = d.data.id;
         });
+
+        copyExpandedTree.current = root.copy() as CustomHierarchyNode;
 
         function collapseAllDeeper(node: CustomHierarchyNode) {
             if (node.children) {
@@ -82,7 +85,23 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
         return enhanceNode(layout);
     }, [treeDataState]);
 
+    const layoutedTreeRootStatic: ACMLayoutNode = useMemo(() => {
+        const layout = d3.tree<HierarchyData>().nodeSize([dx, dy])(copyExpandedTree.current!);
+
+        function enhanceNode(node: d3.HierarchyPointNode<HierarchyData>): ACMLayoutNode {
+            const acmLayoutNode = node as ACMLayoutNode;
+            acmLayoutNode.id = node.data.id; // Set id from original data
+
+            if (acmLayoutNode.children) {
+                acmLayoutNode.children = acmLayoutNode.children.map(child => enhanceNode(child as d3.HierarchyPointNode<HierarchyData>)) as ACMLayoutNode[];
+            }
+            return acmLayoutNode;
+        }
+        return enhanceNode(layout);
+    }, [treeDataState]);
+
     const nodes: ACMLayoutNode[] = useMemo(() => layoutedTreeRoot.descendants(), [layoutedTreeRoot]);
+    const nodes_all: ACMLayoutNode[] =  useMemo(() => layoutedTreeRootStatic.descendants(), [layoutedTreeRootStatic]);
 
     const links = useMemo(() => {
         return layoutedTreeRoot.links() as unknown as d3.HierarchyPointLink<ACMLayoutNode>[];
@@ -98,12 +117,13 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
 
     const highlightedPaths = useMemo(() => {
         const paths = new Set<string>();
-        if (highlightedTraceLinks.length > 0 && nodes.length > 0) {
+        if (highlightedTraceLinks.length > 0 && nodes_all.length > 0) {
             for (const traceLink of highlightedTraceLinks) {
-                const matchingNode = nodes.find(n =>
+                const matchingNode = nodes_all.find(n =>
                     traceLink.codeElementId === n.data.path ||
                     (n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
                 );
+                console.log(matchingNode)
 
                 let current: ACMLayoutNode | null | undefined = matchingNode;
                 while (current && current.parent) {
@@ -115,7 +135,7 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
             }
         }
         return paths;
-    }, [highlightedTraceLinks, nodes]);
+    }, [highlightedTraceLinks, nodes_all]);
 
 
     function getAllNodesForBBox(root: ACMLayoutNode): ACMLayoutNode[] {
@@ -189,21 +209,28 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
     useEffect(() => {
         if (!highlightedTraceLinks.length) return;
 
-        const allDataNodes = treeDataState.descendants();
+        // const allDataNodes = nodes_all;
+        // const ancestors = layoutedTreeRootStatic.ancestors()
 
         for (const traceLink of highlightedTraceLinks) {
-            let current: CustomHierarchyNode | undefined = allDataNodes.find(n =>
+            const current = layoutedTreeRootStatic.find(n =>
                 n.data.path === traceLink.codeElementId ||
-                (n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
-            ) as CustomHierarchyNode | undefined;
-            while (current && current.parent) {
-                const parentNode = current.parent as CustomHierarchyNode;
-                if (parentNode._children) {
-                    parentNode.children = parentNode._children;
-                    parentNode._children = undefined;
+                (!!n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
+            );
+            if (!current) continue;
+            const ancestor_ids = current.ancestors().map(n => (n as CustomHierarchyNode).id);
+            for (const anchestor_id of ancestor_ids.reverse()) {
+                const ancestorNode = nodes.find(n => n.id === anchestor_id);
+                if (ancestorNode) {
+                    // expand the ancestor node if it is collapsed
+                    if (ancestorNode._children && ancestorNode.children === undefined) {
+                        ancestorNode.children = ancestorNode._children;
+                        ancestorNode._children = undefined;
+                    }
+
                 }
-                current = parentNode;
             }
+
         }
         // Force re-render by creating a new reference
         setTreeDataState(Object.assign(Object.create(Object.getPrototypeOf(treeDataState)), treeDataState));
