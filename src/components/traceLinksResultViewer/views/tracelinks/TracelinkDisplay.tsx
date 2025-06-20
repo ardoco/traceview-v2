@@ -26,6 +26,7 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
     const { traceLinks, highlightedTraceLinks} = useHighlightContext();
     const [sortedTraceLinks, setSortedTraceLinks] = useState<TraceLink[]>(traceLinks);
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
+    const [prioritizeHighlights, setPrioritizeHighlights] = useState(false);
 
     const showCode = useMemo(() => traceLinkType.name !== "SAD-SAM", [traceLinkType.name]);
     const showModel = useMemo(() => traceLinkType.name !== "SAD-Code", [traceLinkType.name]);
@@ -66,45 +67,66 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
      */
     const handleSortChange = useCallback((method: string) => {
         setSelectedSortMethod(method);
-        const highlightedSorted = highlightedTraceLinks;
-        const nonHighlightedSorted = traceLinks.filter(link => !highlightedSorted.includes(link));
+        let linksToSort = [...traceLinks];
 
-        if (selectedSortMethod !== "Sort By" ) {
+        if (method !== "Sort By") {
             const sorter = sortMethods[method as keyof typeof sortMethods];
-            highlightedSorted.sort(sorter);
-            nonHighlightedSorted.sort(sorter);
-
-            //setSortedTraceLinks([...traceLinks].sort(sorter));
+            linksToSort.sort(sorter);
         }
-        // Combine highlighted and non-highlighted links
-        setSortedTraceLinks([...highlightedSorted, ...nonHighlightedSorted]);
-    }, [traceLinks, sortMethods, highlightedTraceLinks, selectedSortMethod]);
+
+        if (prioritizeHighlights) {
+            const highlightedSorted = linksToSort.filter(link => highlightedTraceLinks.includes(link));
+            const nonHighlightedSorted = linksToSort.filter(link => !highlightedTraceLinks.includes(link));
+            setSortedTraceLinks([...highlightedSorted, ...nonHighlightedSorted]);
+        } else {
+            setSortedTraceLinks(linksToSort);
+        }
+    }, [traceLinks, sortMethods, highlightedTraceLinks, prioritizeHighlights]);
 
     // Re-sort whenever traceLinks or highlights change.
     useEffect(() => {
         handleSortChange(selectedSortMethod);
-
-    }, [traceLinks, highlightedTraceLinks, selectedSortMethod, handleSortChange]);
+    }, [traceLinks, selectedSortMethod, handleSortChange]);
 
     return (
         <div className="p-2">
             {/* Sticky header for type and sort control */}
-            <div className="sticky top-10 flex justify-between items-center bg-white pb-4 z-10"> {/* Added z-10 for layering */}
-                <div>
-                    <strong>Type: </strong>{traceLinkType.name}
+            <div className="sticky top-10 flex justify-between items-start bg-white pb-5 z-10 border-b pt-2 px-2">
+
+                <div className="flex justify-between items-center flex-wrap gap-4 w-full">
+                    <div className="text-sm font-medium">
+                        <strong>Type:</strong> {traceLinkType.name}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <label className="text-sm text-gray-600">Sort by:</label>
+
+                        <select
+                            value={selectedSortMethod}
+                            onChange={(e) => handleSortChange(e.target.value)}
+                            className={`border rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                        >
+                            <option value="None">None</option>
+                            {availableSortOptions.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+
+                        <button
+                            className={`h-8 rounded px-3 py-1 text-sm transition-colors border ${
+                                prioritizeHighlights
+                                    ? "border-gruen text-gruen bg-gruen/10 font-semibold"
+                                    : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                            onClick={() => setPrioritizeHighlights((prev) => !prev)}
+                        >
+                            {prioritizeHighlights ? "Highlight ↑" : "Highlight ↓"}
+                        </button>
+                    </div>
                 </div>
-                <Select
-                    value={selectedSortMethod}
-                    onChange={(e) => handleSortChange(e.target.value)}
-                    className="border rounded px-1 py-1 pr-8 focus:ring-2 focus:border-gruen focus:outline-none relative"
-                >
-                    <option disabled value="Sort By">Sort By</option> {/* Set disabled option value */}
-                    {availableSortOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </Select>
+
             </div>
 
             {isLoading ? (
@@ -113,7 +135,7 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
                 </div>
             ) : (
                 <ul className="space-y-2">
-                    {sortedTraceLinks.map((link, idx) => (
+                {sortedTraceLinks.map((link, idx) => (
                         <TraceLinkItem
                             key={idx}
                             link={link}

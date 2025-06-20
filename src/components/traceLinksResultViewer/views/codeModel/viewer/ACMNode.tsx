@@ -16,7 +16,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
 
     // Note: node.data.path can be null, ensure null checks if using startsWith directly
     const isHighlightedByTraceLink = highlightedTraceLinks.some(traceLink =>
-        node.data.path && traceLink.codeElementId.startsWith(node.data.path)
+        node.data.path && traceLink.codeElementId === node.data.id
     );
 
 

@@ -120,9 +120,7 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
         if (highlightedTraceLinks.length > 0 && nodes_all.length > 0) {
             for (const traceLink of highlightedTraceLinks) {
                 const matchingNode = nodes_all.find(n =>
-                    traceLink.codeElementId === n.data.path ||
-                    (n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
-                );
+                    traceLink.codeElementId === n.data.id);
                 console.log(matchingNode)
 
                 let current: ACMLayoutNode | null | undefined = matchingNode;
@@ -209,14 +207,13 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
     useEffect(() => {
         if (!highlightedTraceLinks.length) return;
 
-        // const allDataNodes = nodes_all;
-        // const ancestors = layoutedTreeRootStatic.ancestors()
-
         for (const traceLink of highlightedTraceLinks) {
+            // const current = layoutedTreeRootStatic.find(n =>
+            //     n.data.path === traceLink.codeElementId ||
+            //     (!!n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
+            // );
             const current = layoutedTreeRootStatic.find(n =>
-                n.data.path === traceLink.codeElementId ||
-                (!!n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
-            );
+                n.data.id === traceLink.codeElementId);
             if (!current) continue;
             const ancestor_ids = current.ancestors().map(n => (n as CustomHierarchyNode).id);
             for (const anchestor_id of ancestor_ids.reverse()) {
@@ -227,10 +224,8 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
                         ancestorNode.children = ancestorNode._children;
                         ancestorNode._children = undefined;
                     }
-
                 }
             }
-
         }
         // Force re-render by creating a new reference
         setTreeDataState(Object.assign(Object.create(Object.getPrototypeOf(treeDataState)), treeDataState));

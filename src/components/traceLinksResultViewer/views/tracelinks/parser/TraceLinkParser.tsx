@@ -11,10 +11,8 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
     if (traceLinkType === 'SAD_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
         const sentenceId = parseInt(entry.sentenceNumber);
-        const codeCompilationUnit = entry.codeCompilationUnit; // TODO: substitute with id
-        // const modelElementId = entry.modelElementId;
-        // new TraceLink(sentenceId, "", codeElementId);
-        return new TraceLink(sentenceId, "", codeCompilationUnit);
+        const codeElementId = entry.codeElementId;
+        return new TraceLink(sentenceId, "", codeElementId);
       });
     } else if (traceLinkType === 'SAM_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
@@ -26,18 +24,15 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
     } else if (traceLinkType === 'SAD_SAM_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
         const sentenceId = parseInt(entry.sentenceNumber);
-        const codeCompilationUnit = entry.codeCompilationUnit; // TODO: substitute with id
-        const modelElementId = "" // TODO: substitute with id
-        // const modelElementId = entry.modelElementId;
-        // const codeElementId = entry.codeElementId;
-        // return new TraceLink(sentenceId, modelElementId, codeElementId);
-        return new TraceLink(sentenceId, modelElementId, codeCompilationUnit);
+        const modelElementId = entry.modelElementId;
+        const codeElementId = entry.codeElementId;
+        return new TraceLink(sentenceId, modelElementId, codeElementId);
       });
 
     } else if (traceLinkType === 'SAD_SAM') {
       traceLinks = traceLinksData.map((entry:any) => {
         const sentenceId = parseInt(entry.sentenceNumber);
-        const modelElementId = entry.modelElementUid;
+        const modelElementId = entry.modelElementId;
         return new TraceLink(sentenceId, modelElementId, "");
       });
 
