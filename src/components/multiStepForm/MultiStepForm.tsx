@@ -13,6 +13,7 @@ import FormValidation from "@/components/multiStepForm/FormValidation";
 import Button from "@/components/Button";
 import fetchArDoCoAPI from "@/util/ArdocoApi";
 import {storeProjectFiles} from "@/util/ClientFileStorage";
+import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
 
 interface Step {
     stepperLabel: string;
@@ -40,6 +41,14 @@ function MultiStepForm() {
             description:
                 "Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve.",
             validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
+        },
+        {
+            stepperLabel: "Configuration",
+            title: "Configure ArDoCo",
+            description:
+                "Review and adjust the default configuration for finding traceLinks if desired, else proceed with defaults.",
+            validation: () => [], // For now, no specific validation for this step.
+                                  // You might add validation here if specific configuration values are required.
         },
         {
             stepperLabel: "Summary",
@@ -80,7 +89,7 @@ function MultiStepForm() {
         let jsonResult = null
         setLoading(true);
         try {
-            let result = await fetchArDoCoAPI(formData.projectName, formData.selectedTraceLinkType, formData.files)
+            let result = await fetchArDoCoAPI(formData.projectName, formData.selectedTraceLinkType, formData.files, formData.traceLinkConfiguration);
             console.log("Data submitted successfully:", formData);
             jsonResult = result.jsonResult
 
@@ -119,7 +128,8 @@ function MultiStepForm() {
                     {/* Step-specific components */}
                     {currentStep === 0 && <FileUploadStep/>}
                     {currentStep === 1 && <ProjectDetailsStep/>}
-                    {currentStep === 2 && <SummaryStep/>}
+                    {currentStep === 2 && <ConfigurationStep/>}
+                    {currentStep === 3 && <SummaryStep/>}
 
                     {/* Error messages */}
                     {errors.length > 0 && (

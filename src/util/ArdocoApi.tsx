@@ -3,13 +3,14 @@
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import {TraceLinkConfiguration} from "@/components/multiStepForm/ProjectFormContext";
 
 interface ArDoCoApiResponse {
     jsonResult: any;
     usedFiles: UploadedFile[];
 }
 
-export default async function fetchArDoCoAPI (projectName:string, selectedTraceLinkType:TraceLinkType | null, inputFiles: UploadedFile[]) : Promise<ArDoCoApiResponse> {
+export default async function fetchArDoCoAPI (projectName:string, selectedTraceLinkType:TraceLinkType | null, inputFiles: UploadedFile[], config?:TraceLinkConfiguration | null) : Promise<ArDoCoApiResponse> {
     console.log("Submitted data: ", projectName, selectedTraceLinkType, inputFiles);
 
     let result = null
@@ -23,6 +24,14 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
         const apiEndpoint = `/api/${selectedTraceLinkType.name.toLowerCase()}/start`;
         const requestData = new FormData();
         requestData.append("projectName", projectName);
+
+        // filter config to exclude empty entries and convert to JSON string
+        if (config) {
+            const filteredConfig = Object.fromEntries(Object.entries(config).filter(([_, value]) => value !== ""));
+            const configJson = JSON.stringify(filteredConfig);
+            console.log(configJson)
+            requestData.append("additionalConfigs", configJson);
+        }
 
         let inputCodeFile
         let inputTextFile

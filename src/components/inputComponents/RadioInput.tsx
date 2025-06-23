@@ -38,7 +38,7 @@ export default function MultiOptionSelectWithInfo({
                     key={traceLinkType.name}
                     className={`flex items-center gap-3 p-3 border rounded-lg ${
                         checkCanBeSelected(traceLinkType)
-                            ? "shadow-xs border-gray-200 hover:shadow-md hover:border-blau-600 cursor-pointer checked:border-blau-500"
+                            ? "shadow-xs border-gray-200 hover:shadow-md hover:border-blau-500 cursor-pointer checked:border-blau-500"
                             : "border-gray-100 cursor-not-allowed opacity-50"
                     }`}
                 >
