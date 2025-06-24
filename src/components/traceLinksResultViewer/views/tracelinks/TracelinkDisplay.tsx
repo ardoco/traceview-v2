@@ -3,9 +3,10 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
-import {Select} from "@headlessui/react";
+import {Button, Select} from "@headlessui/react";
 import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
+import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
 
 /**
  * Defines the props for the DisplayRawJsonTracelinks component.
@@ -83,6 +84,20 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
         }
     }, [traceLinks, sortMethods, highlightedTraceLinks, prioritizeHighlights]);
 
+    const handleDownloadClick = () => {
+        // create json file with traceLinks
+        const data = JSON.stringify(sortedTraceLinks, null, 2);
+        console.log('Data to be written:', data);
+
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tracelinks.json';
+        document.body.appendChild(a);
+        a.click();
+    }
+
     // Re-sort whenever traceLinks or highlights change.
     useEffect(() => {
         handleSortChange(selectedSortMethod);
@@ -91,60 +106,68 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
     return (
         <div className="p-2">
             {/* Sticky header for type and sort control */}
-            <div className="sticky top-10 flex justify-between items-start bg-white pb-5 z-10 border-b pt-2 px-2">
 
-                <div className="flex justify-between items-center flex-wrap gap-4 w-full">
-                    <div className="text-sm font-medium">
-                        <strong>Type:</strong> {traceLinkType.name}
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <label className="text-sm text-gray-600">Sort by:</label>
-
-                        <select
-                            value={selectedSortMethod}
-                            onChange={(e) => handleSortChange(e.target.value)}
-                            className={`border rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
-                        >
-                            <option value="None">None</option>
-                            {availableSortOptions.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
-
-                        <button
-                            className={`h-8 rounded px-3 py-1 text-sm transition-colors border ${
-                                prioritizeHighlights
-                                    ? "border-gruen text-gruen bg-gruen/10 font-semibold"
-                                    : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            }`}
-                            onClick={() => setPrioritizeHighlights((prev) => !prev)}
-                        >
-                            {prioritizeHighlights ? "Highlight ↑" : "Highlight ↓"}
-                        </button>
-                    </div>
-                </div>
-
-            </div>
 
             {isLoading ? (
                 <div className="text-center py-8 text-gray-500">
                     Generating trace links, this may take a few moments...
                 </div>
             ) : (
-                <ul className="space-y-2">
-                {sortedTraceLinks.map((link, idx) => (
-                        <TraceLinkItem
-                            key={idx}
-                            link={link}
-                            showCode={showCode}
-                            showModel={showModel}
-                            showSentence={showSentence}
-                        />
-                    ))}
-                </ul>
+                <>
+                    <div
+                        className="sticky top-10 flex justify-between items-start bg-white pb-5 z-10 border-b pt-2 px-2">
+
+                        <div className="flex justify-between items-center flex-wrap gap-4 w-full">
+                            <div className="text-sm font-medium">
+                                <strong>Type:</strong> {traceLinkType.name}
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                <label className="text-sm text-gray-600">Sort by:</label>
+
+                                <select
+                                    value={selectedSortMethod}
+                                    onChange={(e) => handleSortChange(e.target.value)}
+                                    className={`border rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                                >
+                                    <option value="None">None</option>
+                                    {availableSortOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <button
+                                    className={`h-8 rounded px-3 py-1 text-sm transition-colors border ${
+                                        prioritizeHighlights
+                                            ? "border-gruen text-gruen bg-gruen/10 font-semibold"
+                                            : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    }`}
+                                    onClick={() => setPrioritizeHighlights((prev) => !prev)}
+                                >
+                                    {prioritizeHighlights ? "Highlight ↑" : "Highlight ↓"}
+                                </button>
+
+                                <Button onClick={handleDownloadClick} className=" text-gray-700 hover:text-gray-200">
+                                    <ArrowDownTrayIcon className="w-5 h-5"/>
+                                </Button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <ul className="space-y-2">
+                        {sortedTraceLinks.map((link, idx) => (
+                            <TraceLinkItem
+                                key={idx}
+                                link={link}
+                                showCode={showCode}
+                                showModel={showModel}
+                                showSentence={showSentence}
+                            />
+                        ))}
+                    </ul>
+                </>
             )}
         </div>
     );
