@@ -14,22 +14,38 @@ function FileUploadStep() {
         // Map new files to the UploadedFile format with default FileType
         const updatedFiles = newUploadedFiles.map((file) => ({
             file,
-            fileType: FileType.None,
+            fileType: preselectFileType(file), // Preselect file type based on extension
         }));
 
         updateFormData({ files: [...formData.files, ...updatedFiles] });
-
-        console.log(formData);// Pass errors to parent component
     };
 
 
 
     return (
-        <div className="flex-col">
+        <div className="">
             <DragAndDrop handleFilesChangeAction={addFiles} />
             <DroppedFilesList files={formData.files} />
         </div>
     );
+}
+
+// add function to preselect file type based on file extension
+// This function can be used to preselect the file type based on the file extension
+function preselectFileType(file: File): FileType {
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    switch (extension) {
+        case 'uml':
+            return FileType.Architecture_Model_UML;
+        case 'repository':
+            return FileType.Architecture_Model_PCM;
+        case 'txt':
+            return FileType.Architecture_Documentation;
+        case 'acm':
+            return FileType.Code_Model;
+        default:
+            return FileType.None; // Default type if no match
+    }
 }
 
 export default FileUploadStep;
