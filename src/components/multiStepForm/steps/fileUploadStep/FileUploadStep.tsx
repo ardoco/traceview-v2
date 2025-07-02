@@ -4,7 +4,7 @@ import DroppedFilesList from "@/components/multiStepForm/steps/fileUploadStep/dr
 import {FileType} from "@/components/dataTypes/FileType";
 
 function FileUploadStep() {
-    const { formData, updateFormData } = useFormContext();
+    const { formData, updateFormData, allowedFileTypes } = useFormContext();
 
     const addFiles = (newFiles: FileList) => {
         const newUploadedFiles = Array.from(newFiles).filter(
@@ -20,7 +20,24 @@ function FileUploadStep() {
         updateFormData({ files: [...formData.files, ...updatedFiles] });
     };
 
+    // This function can be used to preselect the file type based on the file extension
+    function preselectFileType(file: File): FileType {
+        const extension = file.name.split('.').pop()?.toLowerCase();
 
+        if (extension === 'uml') {
+            return FileType.Architecture_Model_UML;
+        } else if (extension === 'repository') {
+            return FileType.Architecture_Model_PCM;
+        } else if (extension === 'txt') {
+            return FileType.Architecture_Documentation;
+        } else if (extension === 'acm') {
+            return FileType.Code_Model;
+        } else if (extension === 'json' && allowedFileTypes.includes(FileType.Trace_Link_JSON)) {
+            return FileType.Trace_Link_JSON;
+        } else {
+            return FileType.None;
+        }
+    }
 
     return (
         <div className="">
@@ -28,24 +45,6 @@ function FileUploadStep() {
             <DroppedFilesList files={formData.files} />
         </div>
     );
-}
-
-// add function to preselect file type based on file extension
-// This function can be used to preselect the file type based on the file extension
-function preselectFileType(file: File): FileType {
-    const extension = file.name.split('.').pop()?.toLowerCase();
-    switch (extension) {
-        case 'uml':
-            return FileType.Architecture_Model_UML;
-        case 'repository':
-            return FileType.Architecture_Model_PCM;
-        case 'txt':
-            return FileType.Architecture_Documentation;
-        case 'acm':
-            return FileType.Code_Model;
-        default:
-            return FileType.None; // Default type if no match
-    }
 }
 
 export default FileUploadStep;

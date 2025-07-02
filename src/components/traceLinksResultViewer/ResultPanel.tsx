@@ -14,14 +14,13 @@ import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 interface ResultPanelProps {
     id: string;
     collapsible: boolean;
-    JSONResult: any;
     displayOptions: ResultPanelType[];
     defaultView: ResultPanelType;
     setSelectedDialogView: (value: ResultPanelType | null) => void;
     traceLinkType:TraceLinkType;
 }
 
-export default function ResultPanel({ id, collapsible, JSONResult, displayOptions, defaultView, setSelectedDialogView, traceLinkType }: ResultPanelProps) {
+export default function ResultPanel({ id, collapsible, displayOptions, defaultView, setSelectedDialogView, traceLinkType }: ResultPanelProps) {
     const [selectedPanel, setSelectedPanel] = useState(defaultView);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -53,16 +52,16 @@ export default function ResultPanel({ id, collapsible, JSONResult, displayOption
             </div>
 
             {selectedPanel === ResultPanelType.Documentation &&
-                <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation JSONResult={JSONResult} id={id}/></Suspense>}
-            {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel JSONResult={JSONResult} id={id}/>}
-            {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel JSONResult={JSONResult} id={id}/>}
-        {selectedPanel === ResultPanelType.Raw_JSON && <TraceLinkView JSONResult={JSONResult} traceLinkType={traceLinkType}/>}
+                <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}
+            {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel  id={id}/>}
+            {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel  id={id}/>}
+        {selectedPanel === ResultPanelType.Raw_JSON && <TraceLinkView  traceLinkType={traceLinkType}/>}
 
             <Dialog onClose={() => setIsOpen(false)} open={isOpen} className="bg-white fixed top-0 left-0 w-full h-full overflow-y-auto z-1000">
-                {selectedPanel === ResultPanelType.Documentation && <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation JSONResult={JSONResult} id={id}/></Suspense>}
-                {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel JSONResult={JSONResult} id={id}/>}
-                {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel JSONResult={JSONResult} id={id}/>}
-                {selectedPanel === ResultPanelType.Raw_JSON && <TraceLinkView JSONResult={JSONResult} traceLinkType={traceLinkType}/>}
+                {selectedPanel === ResultPanelType.Documentation && <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}
+                {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel id={id}/>}
+                {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel  id={id}/>}
+                {selectedPanel === ResultPanelType.Raw_JSON && <TraceLinkView traceLinkType={traceLinkType}/>}
             </Dialog>
         </Panel>
     );

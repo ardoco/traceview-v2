@@ -34,8 +34,8 @@ export function TraceLinkItem ({link, showCode, showModel, showSentence}:TraceLi
                 </div>
             )}
             {showSentence && (
-                <div className={"truncate max-w-full"} title={link.sentenceId?.toString()}>
-                    <strong>Sentence:</strong> {link.sentenceId !== undefined && link.sentenceId !== null ? link.sentenceId : "N/A"}
+                <div className={"truncate max-w-full"} title={link.sentenceNumber?.toString()}>
+                    <strong>Sentence:</strong> {link.sentenceNumber !== undefined && link.sentenceNumber !== null ? link.sentenceNumber : "N/A"}
                 </div>
             )}
         </li>

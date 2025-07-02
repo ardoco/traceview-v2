@@ -5,6 +5,7 @@ import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 
 export interface TraceLinkType {
     name: string;
+    api_name: string; // The name used in the API, which may differ from the display name
     info: string; // Additional information about the option
     checkCondition: (uploadedFiles: UploadedFile[]) => boolean; // Determines if the option is selectable
     providedFiles: FileType[]; // The file types that are provided when this option is selected
@@ -12,8 +13,9 @@ export interface TraceLinkType {
 }
 
 export const TraceLinkTypes: Record<string, TraceLinkType> = {
-    "SAD-SAM-Code": {
-        name: "SAD-SAM-Code",
+    "SAD_SAM_CODE": {
+        name: "SAD_SAM_CODE",
+        api_name: "SAD-SAM-Code",
         info: "Finds transitive traceLinks between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
@@ -21,24 +23,27 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
 
     },
-    "SAD-SAM": {
-        name: "SAD-SAM",
+    "SAD_SAM": {
+        name: "SAD_SAM",
+        api_name: "SAD-SAM",
         info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML],
         resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
     },
-    "SAD-Code": {
-        name: "SAD-Code",
+    "SAD_CODE": {
+        name: "SAD_CODE",
+        api_name: "SAD-Code",
         info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded code",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Code_Model],
         resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Documentation],
     },
-    "SAM-Code": {
-        name: "SAM-Code",
+    "SAM_CODE": {
+        name: "SAM_CODE",
+        api_name: "SAM-Code",
         info: "Finds traceLinks between the Software Architecture Model (SAM) and the uploaded code",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles),
@@ -51,44 +56,6 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
 export function getTraceLinkTypes(): TraceLinkType[] {
     return Object.values(TraceLinkTypes);
 }
-
-
-// export function getTraceLinkTypes(): TraceLinkType[] {
-//     return [
-//         {
-//             name: "SAD-SAM-Code",
-//             info: "Finds transitive traceLinks between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
-//             checkCondition: (uploadedFiles: UploadedFile[]) => {
-//                 return (uploadedFiles) && hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles)
-//             },
-//             providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-//         },
-//         {
-//             name: "SAD-SAM",
-//             info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Software Architecture Model (SAM)",
-//             checkCondition: (uploadedFiles: UploadedFile[]) => {
-//                 return (uploadedFiles) && hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles)
-//             },
-//             providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML],
-//         },
-//         {
-//             name: "SAD-Code",
-//             info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded code",
-//             checkCondition: (uploadedFiles: UploadedFile[]) => {
-//                 return (uploadedFiles) && hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles)
-//             },
-//             providedFiles: [FileType.Architecture_Documentation, FileType.Code_Model],
-//         },
-//         {
-//             name: "SAM-Code",
-//             info: "Finds traceLinks between the Software Architecture Model (SAM) and the uploaded code",
-//             checkCondition: (uploadedFiles: UploadedFile[]) => {
-//                 return (uploadedFiles) && hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles)
-//             },
-//             providedFiles: [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-//         },
-//     ];
-// }
 
 // Helper functions to check specific conditions
 const hasArchitectureDocumentation = (files: UploadedFile[]): boolean =>

@@ -6,10 +6,10 @@ import {parseACMFile} from "@/components/traceLinksResultViewer/views/codeModel/
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 import ACMViewer from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer";
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
-import {loadProjectFile} from "@/util/ClientFileStorage";
+import {deleteProjectFile, loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 
-export default function DisplayCodeModel({JSONResult, id}: ViewProps) {
+export default function DisplayCodeModel({id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>();
     const [codeModel, setCodeModel] = useState<CodeModelUnit | any>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
@@ -33,7 +33,7 @@ export default function DisplayCodeModel({JSONResult, id}: ViewProps) {
             setError(null);
             try {
                 // Ensure loadProjectFile is only called client-side
-                if (typeof window !== "undefined") {
+                if (typeof window !== "undefined" && !codeModel) {
                     const result = await loadProjectFile(id, FileType.Code_Model); // fallback type
 
                     if (!result) {
@@ -57,6 +57,8 @@ export default function DisplayCodeModel({JSONResult, id}: ViewProps) {
                         // This case should ideally not be hit if isMounted is true,
                         // but as a safeguard:
                         console.warn("loadModel called on server, skipping ClientFileStorage.");}
+                    // Clean up the file after loading
+                    //await deleteProjectFile(id, FileType.Code_Model);
                 }
             } catch (e: any) {
                 console.error("Failed to load or parse architecture model:", e);

@@ -33,7 +33,6 @@ const pollForResult = async (id: string, maxSeconds: number = 240, intervalSecon
             throw new Error("An error occurred while polling the result.");
         }
     }
-
     throw new Error("The result is still processing. Please try again.");
 };
 
@@ -45,12 +44,10 @@ export default function NewUploadProject() {
 
     const [loading, setLoading] = useState(true);
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
-    const [result, setResult] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const [retryAllowed, setRetryAllowed] = useState(false);
 
-
-    const traceLinkType = TraceLinkTypes[type || "SAD-SAM-Code"] ?? TraceLinkTypes["SAD-SAM-Code"];
+    const traceLinkType = TraceLinkTypes[type || "SAD_SAM_CODE"] ?? TraceLinkTypes["SAD_SAM_CODE"];
     const uriDecodedId = decodeURIComponent(id);
 
     const fetchResult = async () => {
@@ -60,7 +57,6 @@ export default function NewUploadProject() {
 
         try {
             const response = await pollForResult(id, 240); // Poll for up to 4 minutes
-            setResult(response);
             const parsedTraceLinks = parseTraceLinksFromJSON(response);
             setTraceLinks(parsedTraceLinks); // Step 2: Store in context
             console.log("Parsed Trace Links:", parsedTraceLinks);
@@ -84,7 +80,7 @@ export default function NewUploadProject() {
             {loading && <LoadingBanner/>}
             {error && <ErrorDisplay message={error} onRetry={fetchResult} retryAllowed={retryAllowed}/>}
             <HighlightProvider traceLinks={traceLinks}>
-                <ResultDisplay result={result} id={uriDecodedId} traceLinkType={traceLinkType}/>
+                <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={traceLinkType.resultViewOptions}/>
             </HighlightProvider>
         </>
     );
@@ -100,24 +96,21 @@ function LoadingBanner() {
     );
 }
 
-function ErrorDisplay({message, onRetry, retryAllowed}: {
+export function ErrorDisplay({message, onRetry, retryAllowed}: {
     message: string;
     onRetry: () => void;
     retryAllowed: boolean
 }) {
     return (
-        <div className="relative bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center w-80">
-                <p className="text-red-600 font-bold text-lg">Error</p>
-                <p className="text-gray-700 mt-2">{message}</p>
-                {retryAllowed && (
-                    <Button
-                        text="Retry"
-                        onButtonClicked={onRetry}
-                        disabled={false}
-                    />
-                )}
-            </div>
+        <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
+            {message}
+            {retryAllowed && (
+                <Button
+                    text="Retry"
+                    onButtonClicked={onRetry}
+                    disabled={false}
+                />
+            )}
         </div>
     );
 }

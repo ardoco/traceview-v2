@@ -7,10 +7,10 @@ import UMLViewer from "@/components/traceLinksResultViewer/views/architectureMod
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
 import {parsePCM} from "@/components/traceLinksResultViewer/views/architectureModel/parser/PCMParser";
 import {AbstractComponent, Edge} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
-import {loadProjectFile} from "@/util/ClientFileStorage";
+import {deleteProjectFile, loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 
-export default function DisplayArchitectureModel({JSONResult, id}: ViewProps) {
+export default function DisplayArchitectureModel({id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>(null);
     const [architectureModel, setArchitectureModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
@@ -33,7 +33,7 @@ export default function DisplayArchitectureModel({JSONResult, id}: ViewProps) {
             setError(null);
             try {
                 // Ensure loadProjectFile is only called client-side
-                if (typeof window !== "undefined") {
+                if (typeof window !== "undefined" && !architectureModel) {
                     const result = await loadProjectFile(id, FileType.Architecture_Model_UML); // fallback type
 
                     if (!result) {
@@ -60,6 +60,8 @@ export default function DisplayArchitectureModel({JSONResult, id}: ViewProps) {
                             setError(`Unknown architecture model file type: ${result.fileType}`);
                     }
                     setArchitectureModel(parsedModel);
+                    // Clean up the file after loading
+                    // await deleteProjectFile(id, result.fileType);
                 } else {
                     // This case should ideally not be hit if isMounted is true,
                     // but as a safeguard:
@@ -88,7 +90,7 @@ export default function DisplayArchitectureModel({JSONResult, id}: ViewProps) {
     }
 
     return (
-        <div className="relative w-full" style={{height: "calc(100% - 40px)"}}>
+        <div className="relative w-full h-full" style={{height: "calc(100% - 40px)"}}>
             {architectureModel ? (
                 <UMLViewer umlComponents={architectureModel.components} umlEdges={architectureModel.edges}/>
             ) : (

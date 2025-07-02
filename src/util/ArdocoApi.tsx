@@ -1,4 +1,3 @@
-//this function calls the ArDoCo REST Api and returns
 'use client'
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
@@ -21,7 +20,7 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
     }
 
     try {
-        const apiEndpoint = `/api/${selectedTraceLinkType.name.toLowerCase()}/start`;
+        const apiEndpoint = `/api/${selectedTraceLinkType.api_name.toLowerCase()}/start`;
         const requestData = new FormData();
         requestData.append("projectName", projectName);
 
@@ -40,12 +39,12 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
 
         // create different form data depending on the selected tracelinktype
         switch (selectedTraceLinkType.name) {
-            case 'SAD-SAM-Code':
+            case 'SAD_SAM_CODE':
                 inputCodeFile = findFile(inputFiles, FileType.Code_Model);
                 inputTextFile = findFile(inputFiles, FileType.Architecture_Documentation);
                 inputArchitectureFile = findFile(inputFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
                 if (!inputCodeFile || !inputTextFile || !inputArchitectureFile) {
-                    throw new Error("Missing required files for SAD-SAM-CODE.");
+                    throw new Error("Missing required files for SAD_SAM_CODE.");
                 }
 
                 requestData.append("inputCode", inputCodeFile.file);
@@ -55,7 +54,7 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
                 usedFiles = [inputCodeFile, inputTextFile, inputArchitectureFile]
                 break;
 
-            case 'SAD-Code':
+            case 'SAD_CODE':
                 inputCodeFile = findFile(inputFiles, FileType.Code_Model);
                 inputTextFile = findFile(inputFiles, FileType.Architecture_Documentation);
                 if (!inputCodeFile || !inputTextFile) {
@@ -67,11 +66,11 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
                 usedFiles = [inputCodeFile, inputTextFile]
                 break;
 
-            case 'SAM-Code':
+            case 'SAM_CODE':
                 inputCodeFile = findFile(inputFiles, FileType.Code_Model);
                 inputArchitectureFile = findFile(inputFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
                 if (!inputCodeFile || !inputArchitectureFile) {
-                    throw new Error("Missing required files for SAM-CODE.");
+                    throw new Error("Missing required files for SAM_CODE.");
                 }
 
                 requestData.append("inputCode", inputCodeFile.file);
@@ -80,11 +79,11 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
                 usedFiles = [inputCodeFile, inputArchitectureFile]
                 break;
 
-            case 'SAD-SAM':
+            case 'SAD_SAM':
                 inputTextFile = findFile(inputFiles, FileType.Architecture_Documentation);
                 inputArchitectureFile = findFile(inputFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
                 if (!inputTextFile || !inputArchitectureFile) {
-                    throw new Error("Missing required files for SAD-SAM.");
+                    throw new Error("Missing required files for SAD_SAM.");
                 }
 
                 requestData.append("inputText", inputTextFile.file);
@@ -114,79 +113,77 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
         console.error("Error submitting data:", error);
     }
     return {jsonResult: result, usedFiles: usedFiles}
-
 }
-
-
-/**
- * Constructs a FormData object based on the selected trace link type and uploaded files.
- * Validates that all required files for the given trace link type are present.
- * @param traceLinkType - The selected `TraceLinkType`.
- * @param uploadedFiles - An array of `UploadedFile` objects.
- * @param projectName - The name of the project.
- * @returns A `FormData` object containing the necessary files and project name.
- * @throws {Error} If required files for the specified trace link type are missing.
- */
-function buildRequestFormData(traceLinkType: TraceLinkType, uploadedFiles: UploadedFile[], projectName: string): FormData {
-    const requestData = new FormData();
-    requestData.append("projectName", projectName);
-
-    let inputCodeFile: UploadedFile | undefined;
-    let inputTextFile: UploadedFile | undefined;
-    let inputArchitectureFile: UploadedFile | undefined;
-
-    switch (traceLinkType.name) {
-        case 'SAD-SAM-Code':
-            inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
-            inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
-            inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
-            if (!inputCodeFile || !inputTextFile || !inputArchitectureFile) {
-                throw new Error("Missing required files for SAD-SAM-CODE: Code Model, Architecture Documentation, and Architecture Model.");
-            }
-            requestData.append("inputCode", inputCodeFile.file);
-            requestData.append("inputText", inputTextFile.file);
-            requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-            requestData.append("architectureModelType", inputArchitectureFile.fileType);
-            break;
-
-        case 'SAD-Code':
-            inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
-            inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
-            if (!inputCodeFile || !inputTextFile) {
-                throw new Error("Missing required files for SAD-CODE: Code Model and Architecture Documentation.");
-            }
-            requestData.append("inputCode", inputCodeFile.file);
-            requestData.append("inputText", inputTextFile.file);
-            break;
-
-        case 'SAM-Code':
-            inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
-            inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
-            if (!inputCodeFile || !inputArchitectureFile) {
-                throw new Error("Missing required files for SAM-CODE: Code Model and Architecture Model.");
-            }
-            requestData.append("inputCode", inputCodeFile.file);
-            requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-            requestData.append("architectureModelType", inputArchitectureFile.fileType);
-            break;
-
-        case 'SAD-SAM':
-            inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
-            inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
-            if (!inputTextFile || !inputArchitectureFile) {
-                throw new Error("Missing required files for SAD-SAM: Architecture Documentation and Architecture Model.");
-            }
-            requestData.append("inputText", inputTextFile.file);
-            requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-            requestData.append("architectureModelType", inputArchitectureFile.fileType);
-            break;
-
-        default:
-            throw new Error(`Unsupported trace link type: ${traceLinkType.name}`);
-    }
-
-    return requestData;
-}
+//
+// /**
+//  * Constructs a FormData object based on the selected trace link type and uploaded files.
+//  * Validates that all required files for the given trace link type are present.
+//  * @param traceLinkType - The selected `TraceLinkType`.
+//  * @param uploadedFiles - An array of `UploadedFile` objects.
+//  * @param projectName - The name of the project.
+//  * @returns A `FormData` object containing the necessary files and project name.
+//  * @throws {Error} If required files for the specified trace link type are missing.
+//  */
+// function buildRequestFormData(traceLinkType: TraceLinkType, uploadedFiles: UploadedFile[], projectName: string): FormData {
+//     const requestData = new FormData();
+//     requestData.append("projectName", projectName);
+//
+//     let inputCodeFile: UploadedFile | undefined;
+//     let inputTextFile: UploadedFile | undefined;
+//     let inputArchitectureFile: UploadedFile | undefined;
+//
+//     switch (traceLinkType.name) {
+//         case 'SAD_SAM_CODE':
+//             inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
+//             inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
+//             inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
+//             if (!inputCodeFile || !inputTextFile || !inputArchitectureFile) {
+//                 throw new Error("Missing required files for SAD_SAM_CODE: Code Model, Architecture Documentation, and Architecture Model.");
+//             }
+//             requestData.append("inputCode", inputCodeFile.file);
+//             requestData.append("inputText", inputTextFile.file);
+//             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
+//             requestData.append("architectureModelType", inputArchitectureFile.fileType);
+//             break;
+//
+//         case 'SAD_CODE':
+//             inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
+//             inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
+//             if (!inputCodeFile || !inputTextFile) {
+//                 throw new Error("Missing required files for SAD_CODE: Code Model and Architecture Documentation.");
+//             }
+//             requestData.append("inputCode", inputCodeFile.file);
+//             requestData.append("inputText", inputTextFile.file);
+//             break;
+//
+//         case 'SAM_CODE':
+//             inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
+//             inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
+//             if (!inputCodeFile || !inputArchitectureFile) {
+//                 throw new Error("Missing required files for SAM_CODE: Code Model and Architecture Model.");
+//             }
+//             requestData.append("inputCode", inputCodeFile.file);
+//             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
+//             requestData.append("architectureModelType", inputArchitectureFile.fileType);
+//             break;
+//
+//         case 'SAD_SAM':
+//             inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
+//             inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
+//             if (!inputTextFile || !inputArchitectureFile) {
+//                 throw new Error("Missing required files for SAD_SAM: Architecture Documentation and Architecture Model.");
+//             }
+//             requestData.append("inputText", inputTextFile.file);
+//             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
+//             requestData.append("architectureModelType", inputArchitectureFile.fileType);
+//             break;
+//
+//         default:
+//             throw new Error(`Unsupported trace link type: ${traceLinkType.name}`);
+//     }
+//
+//     return requestData;
+// }
 
 /**
  * Finds the first file in the uploaded files array that matches one of the specified file types.

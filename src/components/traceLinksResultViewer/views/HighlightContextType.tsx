@@ -41,14 +41,11 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
         let matchingTraceLinks: TraceLink[] = [];
 
         for (const traceLink of traceLinks) {
-            if (type == 'sentenceId' && traceLink.sentenceId && traceLink.sentenceId == id) {
-                console.log("found", traceLink);
+            if (type == 'sentenceId' && traceLink.sentenceNumber && traceLink.sentenceNumber == id) {
                 matchingTraceLinks.push(traceLink);
             } else if (type == 'modelElementId' && traceLink.modelElementId == id) {
-                console.log("found", traceLink);
                 matchingTraceLinks.push(traceLink);
             } else if (type == 'codeElementId' && traceLink.codeElementId == id) {
-                console.log("found", traceLink);
                 matchingTraceLinks.push(traceLink);
             }
         }
@@ -62,8 +59,6 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 setShowNoTraceLinksMessage(false);
             }, 2000);
         }
-
-        console.log("matched tracelinks :", id, type, matchingTraceLinks, traceLinks)
         setHighlightedTraceLinks(matchingTraceLinks);
     };
 

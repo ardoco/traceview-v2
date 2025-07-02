@@ -8,6 +8,7 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 // Navigation menu items
 const navigation = [
     { name: 'New Project', href: '/new-project' },
+    { name: 'Load Project', href: '/load-project' },
     { name: 'About', href: 'https://ardoco.de/' },
     { name: 'GitHub', href: 'https://github.com/ArDoCo' },
 ];

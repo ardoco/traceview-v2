@@ -43,6 +43,40 @@ export default class FormValidation {
         return errors;
     }
 
+    static validateExistingProject(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]) {
+        const errors: string[] = [];
+
+        if (uploadedFiles.length === 0) {
+            errors.push("Please upload at least one file.");
+        }
+        // count the occurrences of each file ty
+        const fileTypeCount = new Map<FileType, number>();
+        uploadedFiles.forEach((file) => {
+            fileTypeCount.set(file.fileType, (fileTypeCount.get(file.fileType) || 0) + 1);
+        });
+
+        // Special rule: Ensure no more than one Architecture Model file (PCM/UML)
+        const architectureModelCount =
+            (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) +
+            (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
+
+        if (architectureModelCount > 1) {
+            errors.push("Please upload no more than one file of type PCM/UML to avoid ambiguities.");
+        }
+
+        // General rule: Ensure Nn more than one file of other types
+        fileTypeCount.forEach((count, fileType) => {
+            if (
+                count > 1 &&
+                ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)
+            ) {
+                errors.push(`Only one file of type ${fileType} can be uploaded.`);
+            }
+        });
+
+        return errors;
+    }
+
     static validateProjectDetails(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]) {
         let errors: string[] = [];
 

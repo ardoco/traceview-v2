@@ -10,7 +10,7 @@ export function SentenceView({sentence, index}: { sentence: Sentence, index: num
             className={`flex items-center p-2 rounded-lg transition cursor-pointer hover:bg-gray-200`}
             onClick={() => highlightElement(index, "sentenceId")}
             style={{
-                backgroundColor: highlightedTraceLinks.some(traceLink => traceLink.sentenceId == index)
+                backgroundColor: highlightedTraceLinks.some(traceLink => traceLink.sentenceNumber == index)
                     ? highlightingColor
                     : undefined
             }}

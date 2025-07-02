@@ -15,7 +15,7 @@ import fetchArDoCoAPI from "@/util/ArdocoApi";
 import {storeProjectFiles} from "@/util/ClientFileStorage";
 import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
 
-interface Step {
+export interface Step {
     stepperLabel: string;
     title: string;
     description: string;

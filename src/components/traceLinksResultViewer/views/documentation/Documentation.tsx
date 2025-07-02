@@ -8,10 +8,10 @@ import {
 import {Sentence} from "@/components/traceLinksResultViewer/views/documentation/dataModel/DocumentationSentence";
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
 import {SentenceView} from "@/components/traceLinksResultViewer/views/documentation/viewer/SentenceView";
-import {loadProjectFile} from "@/util/ClientFileStorage";
+import {deleteProjectFile, loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 
-export default function DisplayDocumentation({JSONResult, id}: ViewProps) {
+export default function DisplayDocumentation({id}: ViewProps) {
     const [sentences, setSentences] = useState<Sentence[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
     const [error, setError] = useState<string | null>(null); // Added error state
@@ -33,7 +33,7 @@ export default function DisplayDocumentation({JSONResult, id}: ViewProps) {
             setError(null);
             try {
                 // Ensure loadProjectFile is only called client-side
-                if (typeof window !== "undefined") {
+                if (typeof window !== "undefined" && sentences.length === 0) {
                     const result = await loadProjectFile(id, FileType.Architecture_Documentation);
 
                     if (!result) {
@@ -45,6 +45,9 @@ export default function DisplayDocumentation({JSONResult, id}: ViewProps) {
 
                     const text = await result.file.text();
                     setSentences(parseDocumentationText(text));
+                    // Clean up the file after loading
+                    //await deleteProjectFile(id, FileType.Architecture_Documentation);
+
                 } else {
                     // This case should ideally not be hit if isMounted is true,
                     // but as a safeguard:

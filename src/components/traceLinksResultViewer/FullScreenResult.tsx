@@ -20,8 +20,6 @@ interface FullScreenResultDialogProps {
     onSelectView: (view: ResultPanelType) => void;
     /** The list of all available result panel types. */
     displayOptions: ResultPanelType[];
-    /** The raw JSON result data to be passed to the content components. */
-    JSONResult: any;
     /** The unique ID associated with the result. */
     id: string;
     /** The type of trace link, passed to relevant views (e.g., TraceLinkView). */
@@ -39,17 +37,16 @@ export default function FullScreenResultDialog({selectedView,
                                                onClose,
                                                onSelectView,
                                                displayOptions,
-                                               JSONResult,
                                                id,
                                                traceLinkType,
                                            } : FullScreenResultDialogProps){
     // Memoize the content mapping for performance
     const tabContent = useMemo(() => ({
-        [ResultPanelType.Documentation]: <DisplayDocumentation JSONResult={JSONResult} id={id} />,
-        [ResultPanelType.Code_Model]: <DisplayCodeModel JSONResult={JSONResult} id={id} />,
-        [ResultPanelType.Architecture_Model]: <DisplayArchitectureModel JSONResult={JSONResult} id={id} />,
-        [ResultPanelType.Raw_JSON]: <TraceLinkView JSONResult={JSONResult} traceLinkType={traceLinkType} />,
-    }), [JSONResult, id, traceLinkType]);
+        [ResultPanelType.Documentation]: <DisplayDocumentation id={id} />,
+        [ResultPanelType.Code_Model]: <DisplayCodeModel id={id} />,
+        [ResultPanelType.Architecture_Model]: <DisplayArchitectureModel id={id} />,
+        [ResultPanelType.Raw_JSON]: <TraceLinkView traceLinkType={traceLinkType} />,
+    }), [id, traceLinkType]);
 
     const selectedIndex = selectedView ? displayOptions.indexOf(selectedView) : 0;
 

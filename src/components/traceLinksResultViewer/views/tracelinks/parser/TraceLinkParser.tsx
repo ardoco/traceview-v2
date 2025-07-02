@@ -10,9 +10,9 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
 
     if (traceLinkType === 'SAD_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceId = parseInt(entry.sentenceNumber);
+        const sentenceNumber = parseInt(entry.sentenceNumber);
         const codeElementId = entry.codeElementId;
-        return new TraceLink(sentenceId, "", codeElementId);
+        return new TraceLink(sentenceNumber, "", codeElementId);
       });
     } else if (traceLinkType === 'SAM_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
@@ -23,21 +23,21 @@ export function parseTraceLinksFromJSON(data:any): TraceLink[] {
 
     } else if (traceLinkType === 'SAD_SAM_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceId = parseInt(entry.sentenceNumber);
+        const sentenceNumber = parseInt(entry.sentenceNumber);
         const modelElementId = entry.modelElementId;
         const codeElementId = entry.codeElementId;
-        return new TraceLink(sentenceId, modelElementId, codeElementId);
+        return new TraceLink(sentenceNumber, modelElementId, codeElementId);
       });
 
     } else if (traceLinkType === 'SAD_SAM') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceId = parseInt(entry.sentenceNumber);
+        const sentenceNumber = parseInt(entry.sentenceNumber);
         const modelElementId = entry.modelElementId;
-        return new TraceLink(sentenceId, modelElementId, "");
+        return new TraceLink(sentenceNumber, modelElementId, "");
       });
 
     } else {
-      console.warn('Error parsing JSON. Unknown trace link type:', traceLinkType);
+      console.error('Error parsing JSON. Unknown trace link type:', traceLinkType);
     }
     return traceLinks;
 

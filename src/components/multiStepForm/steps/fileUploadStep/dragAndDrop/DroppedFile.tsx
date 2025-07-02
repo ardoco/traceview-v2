@@ -15,9 +15,10 @@ export default function DroppedFile({
                                          file,
                                          fileType,
                                          onDelete,
+
                                      }: FileListItemProps) {
 
-    const { formData, updateFormData } = useFormContext();
+    const { formData, updateFormData, allowedFileTypes } = useFormContext();
 
     const onFileTypeChange = (newType: FileType) => {
 
@@ -43,7 +44,7 @@ export default function DroppedFile({
 
             <div className="flex-1 mx-4">
                 <Dropdown<FileType>
-                    options={Object.values(FileType)}
+                    options={allowedFileTypes}
                     selectedValue={fileType? fileType : FileType.None}
                     onChange={onFileTypeChange}
                     placeholder={FileType.None}

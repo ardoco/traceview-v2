@@ -8,8 +8,6 @@ import { TraceLinkType } from "@/components/dataTypes/TraceLinkTypes";
  * Props for the ResultPanelsLayout component.
  */
 interface ResultPanelsLayoutProps {
-    /** The raw JSON result data to be passed to each ResultPanel. */
-    JSONResult: any;
     /** The unique ID associated with the result. */
     id: string;
     /** The list of available result panel types to display. */
@@ -29,8 +27,7 @@ interface ResultPanelsLayoutProps {
  * @param {ResultPanelsLayoutProps} props - The props for the component.
  * @returns {JSX.Element} The rendered panel group with result panels.
  */
-export default function ResultPanelsLayout({JSONResult,
-                                           id,
+export default function ResultPanelsLayout({id,
                                            displayOptions,
                                            traceLinkType,
                                            setSelectedDialogView,
@@ -45,7 +42,6 @@ export default function ResultPanelsLayout({JSONResult,
                 <React.Fragment key={index}>
                     <ResultPanel
                         collapsible={index === 0 || index === panelsToRender.length - 1} // Only first and last panels are collapsible
-                        JSONResult={JSONResult}
                         displayOptions={displayOptions}
                         defaultView={resultViewOption}
                         setSelectedDialogView={setSelectedDialogView}

@@ -23,15 +23,15 @@ interface TraceLinkViewProps {
  * @param {TraceLinkViewProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component displaying the trace links.
  */
-export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkViewProps) {
+export default function TraceLinkView({traceLinkType }: TraceLinkViewProps) {
     const { traceLinks, highlightedTraceLinks} = useHighlightContext();
     const [sortedTraceLinks, setSortedTraceLinks] = useState<TraceLink[]>(traceLinks);
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
     const [prioritizeHighlights, setPrioritizeHighlights] = useState(false);
 
-    const showCode = useMemo(() => traceLinkType.name !== "SAD-SAM", [traceLinkType.name]);
-    const showModel = useMemo(() => traceLinkType.name !== "SAD-Code", [traceLinkType.name]);
-    const showSentence = useMemo(() => traceLinkType.name !== "SAM-Code", [traceLinkType.name]);
+    const showCode = useMemo(() => traceLinkType.name !== "SAD_SAM", [traceLinkType.name]);
+    const showModel = useMemo(() => traceLinkType.name !== "SAD_CODE", [traceLinkType.name]);
+    const showSentence = useMemo(() => traceLinkType.name !== "SAM_CODE", [traceLinkType.name]);
 
     // Check if trace links are being loaded
     const isLoading = traceLinks.length === 0;
@@ -40,16 +40,16 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
     const sortMethods = useMemo(() => ({
         "Code": (a: TraceLink, b: TraceLink) => (a.codeElementId || "").localeCompare((b.codeElementId || "")),
         "Model": (a: TraceLink, b: TraceLink) => (a.modelElementId || "").localeCompare((b.modelElementId || "")),
-        "Sentence": (a: TraceLink, b: TraceLink) => ((a.sentenceId ?? Number.MAX_SAFE_INTEGER) - (b.sentenceId ?? Number.MAX_SAFE_INTEGER))
+        "Sentence": (a: TraceLink, b: TraceLink) => ((a.sentenceNumber ?? Number.MAX_SAFE_INTEGER) - (b.sentenceNumber ?? Number.MAX_SAFE_INTEGER))
     }), []);
 
     // Determine available sort options based on the trace link type
     const availableSortOptions = useMemo(() => {
         return Object.keys(sortMethods).filter((option) => {
             switch (traceLinkType.name) {
-                case "SAD-SAM": return option !== "Code";
-                case "SAD-Code": return option !== "Model";
-                case "SAM-Code": return option !== "Sentence";
+                case "SAD_SAM": return option !== "Code";
+                case "SAD_CODE": return option !== "Model";
+                case "SAM_CODE": return option !== "Sentence";
                 default: return true;
             }
         });
@@ -86,7 +86,11 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
 
     const handleDownloadClick = () => {
         // create json file with traceLinks
-        const data = JSON.stringify(sortedTraceLinks, null, 2);
+        const dataToExport = {
+            traceLinkType: traceLinkType.name,
+            traceLinks: sortedTraceLinks
+        };
+        const data = JSON.stringify(dataToExport, null, 2); //
         console.log('Data to be written:', data);
 
         const blob = new Blob([data], { type: 'application/json' });
@@ -106,7 +110,6 @@ export default function TraceLinkView({ JSONResult, traceLinkType }: TraceLinkVi
     return (
         <div className="p-2">
             {/* Sticky header for type and sort control */}
-
 
             {isLoading ? (
                 <div className="text-center py-8 text-gray-500">

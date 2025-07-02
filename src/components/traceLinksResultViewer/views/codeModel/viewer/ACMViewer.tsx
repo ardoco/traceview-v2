@@ -121,7 +121,6 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
             for (const traceLink of highlightedTraceLinks) {
                 const matchingNode = nodes_all.find(n =>
                     traceLink.codeElementId === n.data.id);
-                console.log(matchingNode)
 
                 let current: ACMLayoutNode | null | undefined = matchingNode;
                 while (current && current.parent) {
