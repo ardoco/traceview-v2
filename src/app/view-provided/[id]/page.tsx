@@ -39,16 +39,14 @@ export default function ViewProvided() {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined") {
-                    const result = await loadProjectFile(id, FileType.Trace_Link_JSON);
+                    const result = await loadProjectFile(id, FileType.Trace_Link_JSON, true);
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
                         setTraceLinks([]);
                         return;
                     }
-
-                    const text: any = await result.file.text();
-                    const rawJson = JSON.parse(text);
+                    const rawJson = JSON.parse(result.content);
                     setTraceLinks(parseTraceLinksFromJSON(rawJson));
                     setTraceLinkType(TraceLinkTypes[rawJson.traceLinkType] ?? TraceLinkTypes["SAD_SAM_CODE"]);
                 } else {

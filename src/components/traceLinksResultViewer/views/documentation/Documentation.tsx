@@ -34,7 +34,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined" && sentences.length === 0) {
-                    const result = await loadProjectFile(id, FileType.Architecture_Documentation);
+                    const result = await loadProjectFile(id, FileType.Architecture_Documentation, true);
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
@@ -42,12 +42,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
                         setIsLoading(false);
                         return;
                     }
-
-                    const text = await result.file.text();
-                    setSentences(parseDocumentationText(text));
-                    // Clean up the file after loading
-                    //await deleteProjectFile(id, FileType.Architecture_Documentation);
-
+                    setSentences(parseDocumentationText(result.content));
                 } else {
                     // This case should ideally not be hit if isMounted is true,
                     // but as a safeguard:

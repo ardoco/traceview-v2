@@ -3,12 +3,47 @@
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {convertStringToFileType, FileType} from "@/components/dataTypes/FileType";
 
+// A simple in-memory lock for metadata operations
+const metadataLocks: { [projectId: string]: Promise<(() => void) | undefined> } = {};
+
+/**
+ * Acquires a lock for a given project's metadata.
+ * Operations that modify metadata should await this lock.
+ * Returns a function to release the lock.
+ */
+async function acquireMetadataLock(projectId: string): Promise<() => void> {
+    while (metadataLocks[projectId]) {
+        await metadataLocks[projectId];
+    }
+    let releaseLock!: () => void; // Declare with definite assignment assertion
+    metadataLocks[projectId] = new Promise<(() => void) | undefined>(resolve => {
+        releaseLock = () => {
+            delete metadataLocks[projectId];
+            resolve(undefined); // Resolve with undefined when released
+        };
+        // Resolve the promise for the current lock holder with the release function
+        // This makes sure the promise in metadataLocks[projectId] holds the release function
+        // but it's not directly returned by acquireMetadataLock.
+        // The actual release function is returned by the outer Promise.
+    });
+    return releaseLock; // Return the release function directly
+}
+
+/**
+ * Releases a lock for a given project's metadata.
+ */
+function releaseMetadataLock(projectId: string, release: () => void) {
+    release();
+}
+
 export async function storeProjectFiles(projectId: string, uploadedFiles: UploadedFile[]) {
     if (typeof window === "undefined") {
         throw new Error("This function must be executed on the client side.");
     }
-    const fsHandle = await navigator.storage.getDirectory();// get the root directory where files can be stored
-    const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, {create: true});// create a directory for the project
+    const fsHandle = await navigator.storage.getDirectory();
+    const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, {create: true});
+
+    console.log(`[ClientFileStorage] projectDirHandle:`, projectDirHandle);
 
     for (const uploadedFile of uploadedFiles) {
         await storeProjectFile(projectDirHandle, uploadedFile);
@@ -23,20 +58,21 @@ export async function storeProjectMetadata(
         throw new Error("This function must be executed on the client side.");
     }
 
-    const fsHandle = await navigator.storage.getDirectory();
-    const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, { create: true });
+    const release = await acquireMetadataLock(projectId);
+    try {
+        const fsHandle = await navigator.storage.getDirectory();
+        const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, { create: true });
 
-    // Create metadata: e.g. list file name and file type
-    const metadata = uploadedFiles.map(file => ({
-        fileType: file.fileType,
-        storedFileName: getStoredFileName(file.fileType),
-        originalName: file.file.name
-    }));
+        const metadata = uploadedFiles.map(file => ({
+            fileType: file.fileType,
+            storedFileName: getStoredFileName(file.fileType),
+            originalName: file.file.name
+        }));
 
-    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`, { create: true });
-    const metaWritable = await metaHandle.createWritable();
-    await metaWritable.write(JSON.stringify(metadata, null, 2));
-    await metaWritable.close();
+        await writeMetadataToFile(projectDirHandle, metadata);
+    } finally {
+        releaseMetadataLock(projectId, release);
+    }
 }
 
 
@@ -50,39 +86,50 @@ async function storeProjectFile(projectDirHandle: FileSystemDirectoryHandle, fil
     await writable.close();
 }
 
-export async function loadProjectFile(projectId: string, fallbackType: FileType): Promise<UploadedFile | null> {
+export async function loadProjectFile(projectId: string, fallbackType: FileType, deleteFileAfterLoad = false): Promise<{content: string, fileType: FileType} | null> {
     if (typeof window === "undefined") {
         throw new Error("This function must be executed on the client side.");
     }
     try {
-        const fsHandle = await navigator.storage.getDirectory(); // get the root directory where files can be stored
-        const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, {create: true}); // create a directory for the project
+        const fsHandle = await navigator.storage.getDirectory();
+        const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, {create: true});
 
-        const fileName = fallbackType === FileType.Architecture_Model_PCM || fallbackType === FileType.Architecture_Model_UML
-            ? "Architecture Model"
-            : fallbackType;
+        const fileName = getStoredFileName(fallbackType);
+        let actualFileType: FileType = fallbackType;
+        let actualFileName = fileName;
 
-        const fileHandle = await projectDirHandle.getFileHandle(fileName);
-        const file = await fileHandle.getFile();
-
-        // Try to read the .meta.json file to determine specific fileType
-        let actualFileType = fallbackType;
-
+        // Load metadata to get the actual file type and stored name
         try {
-            const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`);
-            const metaFile = await metaHandle.getFile();
-            const text = await metaFile.text();
-            const metadata:any[] =  JSON.parse(text);
+            const metadata = await readMetadataFromFile(projectDirHandle);
             const fileMeta = metadata.find(m => m.storedFileName === fileName);
-            actualFileType = fileMeta ? convertStringToFileType(fileMeta.fileType) : fallbackType;
-        } catch {
-            console.warn("Metadata not found for file:", fileName);
+            if (fileMeta) {
+                actualFileType = convertStringToFileType(fileMeta.fileType);
+                actualFileName = getStoredFileName(actualFileType); // Use actualFileType for the file name if found in metadata
+            }
+        } catch (e) {
+            console.warn("Metadata not found or unreadable for file:", fileName, e);
         }
 
-        return {fileType: actualFileType, file};
+        const fileHandle = await projectDirHandle.getFileHandle(actualFileName);
+        const file = await fileHandle.getFile();
+        const content = await file.text();
 
-    } catch (error) {
-        // @ts-ignore
+        const result = { content: content, fileType: actualFileType };
+        console.log(`[ClientFileStorage] Loaded file ${actualFileName} of type ${actualFileType} for project ${projectId}.`);
+
+        if (deleteFileAfterLoad) {
+            try {
+                // Pass projectDirHandle and fsHandle to avoid re-fetching them inside deleteProjectFile
+                await deleteProjectFile(projectId, actualFileName, projectDirHandle, fsHandle);
+                console.log(`[ClientFileStorage] File ${actualFileName} deleted after successful load.`);
+            } catch (deleteError) {
+                console.error(`[ClientFileStorage] Failed to delete file ${actualFileName} after loading:`, deleteError);
+            }
+        }
+
+        return result;
+
+    } catch (error: any) {
         if (error.name === "NotFoundError") {
             console.log("File not found: ", error);
             return null;
@@ -99,57 +146,50 @@ export async function loadProjectMetaData(projectId: string) {
     const fsHandle = await navigator.storage.getDirectory();
     const projectDirHandle = await fsHandle.getDirectoryHandle(projectId);
 
-    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`);
-    const metaFile = await metaHandle.getFile();
-    const text = await metaFile.text();
-    const metadata:any[] =  JSON.parse(text);
-    const allFileTypes: FileType[] = metadata.map(m =>
-        convertStringToFileType(m.fileType)
-    );
-    return allFileTypes
+    const metadata = await readMetadataFromFile(projectDirHandle);
+    return metadata.map(m => convertStringToFileType(m.fileType));
 }
 
-/**
- * Delete a specific file from a project.
- * Also removes its metadata entry and updates the metadata file.
- */
-export async function deleteProjectFile(projectId: string, fileType: FileType) {
+export async function deleteProjectFile(projectId: string, fileName: string, projectDirHandle?: FileSystemDirectoryHandle, fsHandle?: FileSystemDirectoryHandle) {
     if (typeof window === "undefined") {
         throw new Error("This function must be executed on the client side.");
     }
 
-    const fsHandle = await navigator.storage.getDirectory();
-    const projectDirHandle = await fsHandle.getDirectoryHandle(projectId);
+    const release = await acquireMetadataLock(projectId);
+    try {
+        const currentFsHandle = fsHandle || await navigator.storage.getDirectory();
+        const currentProjectDirHandle = projectDirHandle || await currentFsHandle.getDirectoryHandle(projectId);
 
-    const fileName = getStoredFileName(fileType);
+        // Load metadata
+        let metadata: any[] = [];
+        try {
+            metadata = await readMetadataFromFile(currentProjectDirHandle);
+            console.log(`[ClientFileStorage] Metadata loaded for project ${projectId} before deletion:`, metadata);
+        } catch (e) {
+            console.warn(`[ClientFileStorage] No metadata found for project ${projectId}. Proceeding with file deletion only.`, e);
+        }
 
-    // Load metadata BEFORE deleting
-    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`);
-    const metaFile = await metaHandle.getFile();
-    const text = await metaFile.text();
-    const metadata: any[] = JSON.parse(text);
+        // Delete the file
+        await currentProjectDirHandle.removeEntry(fileName);
 
-    // Delete the file
-    await projectDirHandle.removeEntry(fileName);
+        // Update metadata
+        const updatedMetadata = metadata.filter(m => m.storedFileName !== fileName);
+        await writeMetadataToFile(currentProjectDirHandle, updatedMetadata);
+        console.log(`[ClientFileStorage] Metadata updated: `, updatedMetadata);
 
-    // Update metadata
-    const updatedMetadata = metadata.filter(m => m.storedFileName !== fileName);
-    const metaWritable = await metaHandle.createWritable();
-    await metaWritable.write(JSON.stringify(updatedMetadata, null, 2));
-    await metaWritable.close();
-}
-
-
-/**
- * Delete the entire project directory (all files and metadata).
- */
-export async function deleteProject(projectId: string) {
-    if (typeof window === "undefined") {
-        throw new Error("This function must be executed on the client side.");
+        // if the metadata is empty, delete the metadata file and directory
+        if (updatedMetadata.length === 0) {
+            await currentProjectDirHandle.removeEntry(`project.meta.json`);
+            try {
+                await currentFsHandle.removeEntry(projectId, { recursive: true });
+                console.log(`[ClientFileStorage] Project directory ${projectId} removed as no files remain.`);
+            } catch (error) {
+                console.warn(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);
+            }
+        }
+    } finally {
+        releaseMetadataLock(projectId, release);
     }
-
-    const fsHandle = await navigator.storage.getDirectory();
-    await fsHandle.removeEntry(projectId, { recursive: true });
 }
 
 /**
@@ -159,4 +199,24 @@ function getStoredFileName(fileType: FileType): string {
     return fileType === FileType.Architecture_Model_PCM || fileType === FileType.Architecture_Model_UML
         ? "Architecture Model"
         : fileType;
+}
+
+/**
+ * Reads metadata from the project's meta.json file.
+ */
+async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle): Promise<any[]> {
+    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`);
+    const metaFile = await metaHandle.getFile();
+    const text = await metaFile.text();
+    return JSON.parse(text);
+}
+
+/**
+ * Writes metadata to the project's meta.json file.
+ */
+async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, metadata: any[]) {
+    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`, { create: true });
+    const metaWritable = await metaHandle.createWritable();
+    await metaWritable.write(JSON.stringify(metadata, null, 2));
+    await metaWritable.close();
 }

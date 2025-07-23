@@ -12,7 +12,7 @@ import StepContainer from "@/components/multiStepForm/steps/StepContainer";
 import FormValidation from "@/components/multiStepForm/FormValidation";
 import Button from "@/components/Button";
 import fetchArDoCoAPI from "@/util/ArdocoApi";
-import {storeProjectFiles} from "@/util/ClientFileStorage";
+import {storeProjectFiles, storeProjectMetadata} from "@/util/ClientFileStorage";
 import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
 
 export interface Step {
@@ -96,6 +96,7 @@ function MultiStepForm() {
             // Store project files in the client storage
             if (jsonResult?.requestId) {
                 await storeProjectFiles(jsonResult.requestId, result.usedFiles);
+                await storeProjectMetadata(jsonResult.requestId, formData.files)
                 console.log(`Project files for request ID ${jsonResult.requestId} stored successfully.`);
             }
         } catch (error) {

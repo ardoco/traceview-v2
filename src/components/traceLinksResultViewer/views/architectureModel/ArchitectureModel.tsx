@@ -34,7 +34,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined" && !architectureModel) {
-                    const result = await loadProjectFile(id, FileType.Architecture_Model_UML); // fallback type
+                    const result = await loadProjectFile(id, FileType.Architecture_Model_UML, true); // fallback type
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
@@ -44,24 +44,21 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
                         return;
                     }
 
-                    const text = await result.file.text();
-                    setFileContent(text); // Keep for potential raw display if parsing fails
+                    setFileContent(result.content); // Keep for potential raw display if parsing fails
 
                     let parsedModel = null;
                     switch (result.fileType) {
                         case FileType.Architecture_Model_UML:
-                            parsedModel = parseUMLModel(text);
+                            parsedModel = parseUMLModel(result.content);
                             break;
                         case FileType.Architecture_Model_PCM:
-                            parsedModel = parsePCM(text);
+                            parsedModel = parsePCM(result.content);
                             break;
                         default:
                             console.warn("Unknown architecture model file type:", result.fileType);
                             setError(`Unknown architecture model file type: ${result.fileType}`);
                     }
                     setArchitectureModel(parsedModel);
-                    // Clean up the file after loading
-                    // await deleteProjectFile(id, result.fileType);
                 } else {
                     // This case should ideally not be hit if isMounted is true,
                     // but as a safeguard:

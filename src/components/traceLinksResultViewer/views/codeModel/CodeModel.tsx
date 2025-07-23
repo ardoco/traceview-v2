@@ -34,7 +34,7 @@ export default function DisplayCodeModel({id}: ViewProps) {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined" && !codeModel) {
-                    const result = await loadProjectFile(id, FileType.Code_Model); // fallback type
+                    const result = await loadProjectFile(id, FileType.Code_Model, true);
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
@@ -44,13 +44,12 @@ export default function DisplayCodeModel({id}: ViewProps) {
                         return;
                     }
 
-                    const text = await result.file.text();
-                    setFileContent(text); // Keep for potential raw display if parsing fails
+                    setFileContent(result.content); // Keep for potential raw display if parsing fails
 
                     // init code model
-                    if (text) {
+                    if (result.content) {
                         //const parsedCodeModel2 = parseCodeFromACM(text);
-                        const parsedCodeModel2 = parseACMFile(text);
+                        const parsedCodeModel2 = parseACMFile(result.content);
                         setCodeModel(parsedCodeModel2);
                     }
                  else {
