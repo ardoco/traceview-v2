@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import FullScreenResultDialog from "@/components/traceLinksResultViewer/FullScreenResult";
 import ResultPanelsLayout from "@/components/traceLinksResultViewer/ResultPanelLayout";
-import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightContextType";
 import NoTraceLinksMessage from "@/components/traceLinksResultViewer/NoTraceLinksMessage";
 
 interface ResultDisplayProps {

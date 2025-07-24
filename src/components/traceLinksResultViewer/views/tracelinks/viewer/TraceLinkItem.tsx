@@ -1,6 +1,6 @@
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import React from "react";
-import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightContextType";
 
 /**
  * Defines the props for the TraceLinkItem component.

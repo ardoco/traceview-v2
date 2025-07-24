@@ -1,6 +1,6 @@
 import React from "react";
 import { Position } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
-import { useHighlightContext } from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import { useHighlightContext } from "@/contexts/HighlightContextType";
 import {Component} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 
 // --- Utility to measure text width ---

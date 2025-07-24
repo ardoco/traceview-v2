@@ -2,7 +2,7 @@
 
 import React, {useState} from "react";
 import { ACMLayoutNode, CustomHierarchyNode } from "./ACMViewer"; // Adjust path if types are elsewhere
-import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightContextType";
 
 type ACMNodeProps = {
     node: ACMLayoutNode;        // This node is from the layout (has x, y, id, and potentially _children from data)

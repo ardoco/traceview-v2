@@ -1,7 +1,6 @@
 'use client';
 
-import MultiStepForm from "@/components/multiStepForm/MultiStepForm";
-import {FormProvider} from "@/components/multiStepForm/ProjectFormContext";
+import {FormProvider} from "@/contexts/ProjectFormContext";
 import {FileType} from "@/components/dataTypes/FileType";
 import MultiStepFormLoadProject from "@/components/loadExistingProject/MultiStepFormLoadProject";
 

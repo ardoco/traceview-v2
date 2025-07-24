@@ -1,6 +1,6 @@
 'use client'
 
-import {useFormContext} from "@/components/multiStepForm/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectFormContext";
 import {useState} from "react";
 import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/FileUploadStep";
 import ProjectDetailsStep from "@/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep";
@@ -14,6 +14,7 @@ import Button from "@/components/Button";
 import fetchArDoCoAPI from "@/util/ArdocoApi";
 import {storeProjectFiles, storeProjectMetadata} from "@/util/ClientFileStorage";
 import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
+import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 
 export interface Step {
     stepperLabel: string;
@@ -24,6 +25,7 @@ export interface Step {
 
 function MultiStepForm() {
     const {formData} = useFormContext();
+    const {apiAddress} = useApiAddressContext();
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
 
@@ -89,7 +91,7 @@ function MultiStepForm() {
         let jsonResult = null
         setLoading(true);
         try {
-            let result = await fetchArDoCoAPI(formData.projectName, formData.selectedTraceLinkType, formData.files, formData.traceLinkConfiguration);
+            let result = await fetchArDoCoAPI(apiAddress, formData.projectName, formData.selectedTraceLinkType, formData.files, formData.traceLinkConfiguration);
             console.log("Data submitted successfully:", formData);
             jsonResult = result.jsonResult
 

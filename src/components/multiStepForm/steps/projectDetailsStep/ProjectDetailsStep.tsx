@@ -1,6 +1,6 @@
 import TextInput from "@/components/inputComponents/TextInput";
 import MultiOptionSelectWithInfo from "@/components/inputComponents/RadioInput";
-import {useFormContext} from "@/components/multiStepForm/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectFormContext";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 
 export default function ProjectDetailsStep() {

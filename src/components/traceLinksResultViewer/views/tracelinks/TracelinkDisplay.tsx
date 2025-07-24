@@ -4,7 +4,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {Button, Select} from "@headlessui/react";
-import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
 import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
 

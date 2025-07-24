@@ -2,14 +2,14 @@
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
-import {TraceLinkConfiguration} from "@/components/multiStepForm/ProjectFormContext";
+import {TraceLinkConfiguration} from "@/contexts/ProjectFormContext";
 
 interface ArDoCoApiResponse {
     jsonResult: any;
     usedFiles: UploadedFile[];
 }
 
-export default async function fetchArDoCoAPI (projectName:string, selectedTraceLinkType:TraceLinkType | null, inputFiles: UploadedFile[], config?:TraceLinkConfiguration | null) : Promise<ArDoCoApiResponse> {
+export default async function fetchArDoCoAPI (apiAddress: string, projectName:string, selectedTraceLinkType:TraceLinkType | null, inputFiles: UploadedFile[], config?:TraceLinkConfiguration | null) : Promise<ArDoCoApiResponse> {
     console.log("Submitted data: ", projectName, selectedTraceLinkType, inputFiles);
 
     let result = null
@@ -28,14 +28,12 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
         if (config) {
             const filteredConfig = Object.fromEntries(Object.entries(config).filter(([_, value]) => value !== ""));
             const configJson = JSON.stringify(filteredConfig);
-            console.log(configJson)
             requestData.append("additionalConfigs", configJson);
         }
 
         let inputCodeFile
         let inputTextFile
         let inputArchitectureFile
-
 
         // create different form data depending on the selected tracelinktype
         switch (selectedTraceLinkType.name) {
@@ -98,6 +96,9 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
         const response = await fetch(apiEndpoint, {
             method: "POST",
             body: requestData,
+            headers: {
+                'X-Target-API': apiAddress,
+            },
         });
 
         if (!response.ok) {
@@ -114,76 +115,6 @@ export default async function fetchArDoCoAPI (projectName:string, selectedTraceL
     }
     return {jsonResult: result, usedFiles: usedFiles}
 }
-//
-// /**
-//  * Constructs a FormData object based on the selected trace link type and uploaded files.
-//  * Validates that all required files for the given trace link type are present.
-//  * @param traceLinkType - The selected `TraceLinkType`.
-//  * @param uploadedFiles - An array of `UploadedFile` objects.
-//  * @param projectName - The name of the project.
-//  * @returns A `FormData` object containing the necessary files and project name.
-//  * @throws {Error} If required files for the specified trace link type are missing.
-//  */
-// function buildRequestFormData(traceLinkType: TraceLinkType, uploadedFiles: UploadedFile[], projectName: string): FormData {
-//     const requestData = new FormData();
-//     requestData.append("projectName", projectName);
-//
-//     let inputCodeFile: UploadedFile | undefined;
-//     let inputTextFile: UploadedFile | undefined;
-//     let inputArchitectureFile: UploadedFile | undefined;
-//
-//     switch (traceLinkType.name) {
-//         case 'SAD_SAM_CODE':
-//             inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
-//             inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
-//             inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
-//             if (!inputCodeFile || !inputTextFile || !inputArchitectureFile) {
-//                 throw new Error("Missing required files for SAD_SAM_CODE: Code Model, Architecture Documentation, and Architecture Model.");
-//             }
-//             requestData.append("inputCode", inputCodeFile.file);
-//             requestData.append("inputText", inputTextFile.file);
-//             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-//             requestData.append("architectureModelType", inputArchitectureFile.fileType);
-//             break;
-//
-//         case 'SAD_CODE':
-//             inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
-//             inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
-//             if (!inputCodeFile || !inputTextFile) {
-//                 throw new Error("Missing required files for SAD_CODE: Code Model and Architecture Documentation.");
-//             }
-//             requestData.append("inputCode", inputCodeFile.file);
-//             requestData.append("inputText", inputTextFile.file);
-//             break;
-//
-//         case 'SAM_CODE':
-//             inputCodeFile = findFile(uploadedFiles, FileType.Code_Model);
-//             inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
-//             if (!inputCodeFile || !inputArchitectureFile) {
-//                 throw new Error("Missing required files for SAM_CODE: Code Model and Architecture Model.");
-//             }
-//             requestData.append("inputCode", inputCodeFile.file);
-//             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-//             requestData.append("architectureModelType", inputArchitectureFile.fileType);
-//             break;
-//
-//         case 'SAD_SAM':
-//             inputTextFile = findFile(uploadedFiles, FileType.Architecture_Documentation);
-//             inputArchitectureFile = findFile(uploadedFiles, [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML]);
-//             if (!inputTextFile || !inputArchitectureFile) {
-//                 throw new Error("Missing required files for SAD_SAM: Architecture Documentation and Architecture Model.");
-//             }
-//             requestData.append("inputText", inputTextFile.file);
-//             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-//             requestData.append("architectureModelType", inputArchitectureFile.fileType);
-//             break;
-//
-//         default:
-//             throw new Error(`Unsupported trace link type: ${traceLinkType.name}`);
-//     }
-//
-//     return requestData;
-// }
 
 /**
  * Finds the first file in the uploaded files array that matches one of the specified file types.

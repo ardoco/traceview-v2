@@ -5,13 +5,13 @@ import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/da
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {loadProjectFile, loadProjectMetaData} from "@/util/ClientFileStorage";
 import {FileType, getResultViewOption} from "@/components/dataTypes/FileType";
-import {HighlightProvider} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {HighlightProvider} from "@/contexts/HighlightContextType";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {ErrorDisplay} from "@/app/view/[id]/page";
 
 export default function ViewProvided() {
-    const {id} = useParams<{ id: string }>(); // Get the `id` from the path
+    const {id} = useParams<{ id: string }>();
 
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -60,8 +60,7 @@ export default function ViewProvided() {
         }
         loadModel();
 
-    }, [id]); // Re-run when id changes
-
+    }, [id]);
 
     return (
         <>

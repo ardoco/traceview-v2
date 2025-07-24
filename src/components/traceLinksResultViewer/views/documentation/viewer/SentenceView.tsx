@@ -1,5 +1,5 @@
 import {Sentence} from "@/components/traceLinksResultViewer/views/documentation/dataModel/DocumentationSentence";
-import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightContextType";
 import React from "react";
 
 export function SentenceView({sentence, index}: { sentence: Sentence, index: number }) {

@@ -1,6 +1,6 @@
 'use client'
 
-import {FormProvider, useFormContext} from "@/components/multiStepForm/ProjectFormContext";
+import {FormProvider} from "@/contexts/ProjectFormContext";
 import MultiStepForm from "@/components/multiStepForm/MultiStepForm";
 import {FileType} from "@/components/dataTypes/FileType";
 

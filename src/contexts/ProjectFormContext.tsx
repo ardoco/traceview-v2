@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {FileType} from "@/components/dataTypes/FileType";
+import {useApiAddressContext} from "@/contexts/ApiAddressContext";
+import {normalizeSourceMapAfterPostcss} from "next/dist/build/webpack/loaders/postcss-loader/src/utils";
 
 export interface FormData {
     projectName: string;
@@ -52,15 +54,22 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
         configurationSource: 'default'
     });
 
+    const {apiAddress} = useApiAddressContext();
     const [configurationLoading, setConfigurationLoading] = useState(true);
     const [configurationError, setConfigurationError] = useState<string | null>(null);
     const [originalTraceLinkConfiguration, setOriginalTraceLinkConfiguration] = useState<TraceLinkConfiguration | null>(null);
 
     // Fetch configuration data once when the FormProvider mounts
     React.useEffect(() => {
+        console.log(apiAddress)
         const fetchConfiguration = async () => {
             try {
-                const response = await fetch('/api/configuration');
+                const response = await fetch('/api/configuration', {
+                    method: 'GET',
+                    headers: {
+                        'X-Target-API': apiAddress,
+                    },
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }

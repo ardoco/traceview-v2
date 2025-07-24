@@ -5,17 +5,23 @@ import React, {useEffect, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import Button from "@/components/Button";
-import {HighlightProvider} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {HighlightProvider} from "@/contexts/HighlightContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
+import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 
 // Utility function for polling the API
-const pollForResult = async (id: string, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
+const pollForResult = async (apiAddress:string, id: string, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
     let elapsedSeconds = 0;
 
     while (elapsedSeconds < maxSeconds) {
         try {
-            const response = await fetch(`/api/get-result/${id}`);
+            const response = await fetch(`/api/get-result/${id}`, {
+                    method: "GET",
+                    headers: {
+                        'X-Target-API': apiAddress,
+                    },
+            });
 
             const data = await response.json();
             if (data.status === "OK") {
@@ -42,6 +48,7 @@ export default function NewUploadProject() {
     const searchParams = useSearchParams();
     const type = searchParams.get("type"); // Get the `type` from the query params
 
+    const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -56,11 +63,9 @@ export default function NewUploadProject() {
         setRetryAllowed(false);
 
         try {
-            const response = await pollForResult(id, 240); // Poll for up to 4 minutes
+            const response = await pollForResult(apiAddress, id, 240); // Poll for up to 4 minutes
             const parsedTraceLinks = parseTraceLinksFromJSON(response);
-            setTraceLinks(parsedTraceLinks); // Step 2: Store in context
-            console.log("Parsed Trace Links:", parsedTraceLinks);
-
+            setTraceLinks(parsedTraceLinks);
 
         } catch (err: any) {
             setError(err.message || "An unexpected error occurred.");

@@ -1,4 +1,4 @@
-import { useFormContext } from "@/components/multiStepForm/ProjectFormContext";
+import { useFormContext } from "@/contexts/ProjectFormContext";
 import DragAndDrop from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DragAndDrop";
 import DroppedFilesList from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFilesList";
 import {FileType} from "@/components/dataTypes/FileType";
@@ -11,10 +11,9 @@ function FileUploadStep() {
             (file) => !formData.files.some((uploadedFile) => uploadedFile.file.name === file.name)
         );
 
-        // Map new files to the UploadedFile format with default FileType
         const updatedFiles = newUploadedFiles.map((file) => ({
             file,
-            fileType: preselectFileType(file), // Preselect file type based on extension
+            fileType: preselectFileType(file),
         }));
 
         updateFormData({ files: [...formData.files, ...updatedFiles] });

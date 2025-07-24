@@ -1,5 +1,5 @@
 import DroppedFile from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFile";
-import {useFormContext} from "@/components/multiStepForm/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectFormContext";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
 interface FileListDragDropProps {
