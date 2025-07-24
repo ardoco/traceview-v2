@@ -7,7 +7,7 @@ export default function ErrorState({ message }: Props) {
         <div className="text-center text-red-500 p-8">
             <p className="font-bold">Error loading configuration:</p>
             <p>{message}</p>
-            <p className="text-sm text-gray-500 mt-2">Please try again or contact support if the issue persists.</p>
+            <p className="text-sm text-gray-500 mt-2">Please try again.</p>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useFormContext } from "@/components/multiStepForm/ProjectFormContext";
+import { useFormContext } from "@/contexts/ProjectFormContext";
 import ConfigurationSourceSelector from './ConfigurationSourceSelector';
 import CustomizationTabs from './CustomizationTabs';
 import FileUploadSection from './FileUploadSection';
@@ -40,7 +40,6 @@ export default function ConfigurationStep() {
         if (files.length === 0) {
             setUploadedFile(null);
             setFileParseError(null);
-            updateFormData({ traceLinkConfiguration: null });
             return;
         }
 
@@ -55,12 +54,11 @@ export default function ConfigurationStep() {
                 updateFormData({ configurationSource: 'custom', traceLinkConfiguration: parsed });
             } catch {
                 setFileParseError('Error parsing JSON file. Please ensure it is a valid JSON.');
-                updateFormData({ traceLinkConfiguration: null });
             }
         };
         reader.onerror = () => {
             setFileParseError('Error reading file. Please try again.');
-            updateFormData({ traceLinkConfiguration: null });
+
         };
         reader.readAsText(file);
     };
@@ -99,10 +97,6 @@ export default function ConfigurationStep() {
                     <CustomizationTabs
                         currentMethod={customizationMethod}
                         setMethod={setCustomizationMethod}
-                        resetError={() => setFileParseError(null)}
-                        updateFormData={updateFormData}
-                        formData={formData}
-                        originalTraceLinkConfiguration={originalTraceLinkConfiguration}
                     />
 
                     {customizationMethod === 'file_upload' && (

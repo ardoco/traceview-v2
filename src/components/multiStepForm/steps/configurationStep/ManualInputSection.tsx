@@ -1,6 +1,6 @@
 import React from 'react';
 import TextInput from "@/components/inputComponents/TextInput";
-import {TraceLinkConfiguration} from "@/components/multiStepForm/ProjectFormContext";
+import {TraceLinkConfiguration} from "@/contexts/ProjectFormContext";
 import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
 import {Button} from "@headlessui/react";
 

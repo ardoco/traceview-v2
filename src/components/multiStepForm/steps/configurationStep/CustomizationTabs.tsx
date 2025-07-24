@@ -1,22 +1,12 @@
 import React from 'react';
-import { FormData, TraceLinkConfiguration } from "@/components/multiStepForm/ProjectFormContext";
 
 interface Props {
     currentMethod: 'manual' | 'file_upload';
     setMethod: (method: 'manual' | 'file_upload') => void;
-    resetError: () => void;
-    updateFormData: (data: Partial<FormData>) => void;
-    formData: FormData;
-    originalTraceLinkConfiguration: TraceLinkConfiguration | null;
 }
 
-export default function CustomizationTabs({
-                                              currentMethod,
-                                              setMethod,
-                                              resetError,
-                                              updateFormData,
-                                              formData,
-                                              originalTraceLinkConfiguration
+export default function CustomizationTabs({currentMethod,
+                                              setMethod
                                           }: Props) {
     return (
         <div className="flex justify-center mb-6 border-b border-gray-200 w-full max-w-md">
@@ -26,8 +16,6 @@ export default function CustomizationTabs({
                 }`}
                 onClick={() => {
                     setMethod('file_upload');
-                    resetError();
-                    updateFormData({ traceLinkConfiguration: originalTraceLinkConfiguration });
                 }}
             >
                 Upload Configuration
@@ -38,12 +26,6 @@ export default function CustomizationTabs({
                 }`}
                 onClick={() => {
                     setMethod('manual');
-                    resetError();
-                    if (!formData.traceLinkConfiguration && originalTraceLinkConfiguration) {
-                        updateFormData({ traceLinkConfiguration: originalTraceLinkConfiguration });
-                    } else if (!formData.traceLinkConfiguration) {
-                        updateFormData({ traceLinkConfiguration: {} });
-                    }
                 }}
             >
                 Manual Input
