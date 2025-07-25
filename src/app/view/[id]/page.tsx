@@ -9,18 +9,24 @@ import {HighlightProvider} from "@/contexts/HighlightContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
+import {useNavigation} from "@/contexts/NavigationContext";
+import LoadingErrorModal from "@/components/LoadingErrorModal";
 
 // Utility function for polling the API
-const pollForResult = async (apiAddress:string, id: string, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
+const pollForResult = async (apiAddress:string, id: string, signal:AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
     let elapsedSeconds = 0;
 
     while (elapsedSeconds < maxSeconds) {
+        if (signal.aborted) {
+            throw new Error("Polling was aborted.");
+        }
         try {
             const response = await fetch(`/api/get-result/${id}`, {
                     method: "GET",
                     headers: {
                         'X-Target-API': apiAddress,
                     },
+                    signal: signal,
             });
 
             const data = await response.json();
@@ -44,9 +50,10 @@ const pollForResult = async (apiAddress:string, id: string, maxSeconds: number =
 
 // Main Component
 export default function NewUploadProject() {
-    const {id} = useParams<{ id: string }>(); // Get the `id` from the path
+    const {id} = useParams<{ id: string }>();
     const searchParams = useSearchParams();
-    const type = searchParams.get("type"); // Get the `type` from the query params
+    const type = searchParams.get("type");
+    const { setCurrentProjectId, controller } = useNavigation();
 
     const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
@@ -57,20 +64,33 @@ export default function NewUploadProject() {
     const traceLinkType = TraceLinkTypes[type || "SAD_SAM_CODE"] ?? TraceLinkTypes["SAD_SAM_CODE"];
     const uriDecodedId = decodeURIComponent(id);
 
-    const fetchResult = async () => {
+    const handleRetry = () => {
+        setError(null);
+        const controller = new AbortController();
+        fetchResult(controller.signal);
+    };
+
+    const handleViewFiles = () => {
+        setError(null);
+        setLoading(false);
+    };
+
+    const fetchResult = async (signal: AbortSignal) => {
         if (!apiAddress) return;
         setLoading(true);
         setError(null);
         setRetryAllowed(false);
 
         try {
-            const response = await pollForResult(apiAddress, id, 240); // Poll for up to 4 minutes
+            const response = await pollForResult(apiAddress, id, signal, 240); // Poll for up to 4 minutes
             const parsedTraceLinks = parseTraceLinksFromJSON(response);
             setTraceLinks(parsedTraceLinks);
 
         } catch (err: any) {
-            setError(err.message || "An unexpected error occurred.");
-            setRetryAllowed(true);
+            if (err.name !== 'AbortError') {
+                setError(err.message || "An unexpected error occurred.");
+                setRetryAllowed(true);
+            }
         } finally {
             setLoading(false);
         }
@@ -78,13 +98,27 @@ export default function NewUploadProject() {
 
     // Fetch & initialize data when component mounts
     useEffect(() => {
-        fetchResult();
+        fetchResult(controller.signal);
     }, [id, apiAddress]);
+
+    useEffect(() => {
+        setCurrentProjectId(uriDecodedId);
+
+        // Clear the project ID when the component unmounts (navigates away)
+        return () => {
+            setCurrentProjectId(null);
+        };
+    }, [uriDecodedId, setCurrentProjectId]);
 
     return (
         <>
             {loading && <LoadingBanner/>}
-            {error && <ErrorDisplay message={error} onRetry={fetchResult} retryAllowed={retryAllowed}/>}
+            <LoadingErrorModal
+                isOpen={!!error}
+                message={error || ''}
+                onRetry={handleRetry}
+                onViewFiles={handleViewFiles}
+            />
             <HighlightProvider traceLinks={traceLinks}>
                 <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={traceLinkType.resultViewOptions}/>
             </HighlightProvider>
@@ -104,16 +138,18 @@ function LoadingBanner() {
 
 export function ErrorDisplay({message, onRetry, retryAllowed}: {
     message: string;
-    onRetry: () => void;
+    onRetry: (signal: AbortSignal) => void;
     retryAllowed: boolean
 }) {
+    const { controller } = useNavigation();
+
     return (
         <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
             {message}
             {retryAllowed && (
                 <Button
                     text="Retry"
-                    onButtonClicked={onRetry}
+                    onButtonClicked={() => onRetry(controller.signal)}
                     disabled={false}
                 />
             )}

@@ -9,6 +9,7 @@ import {HighlightProvider} from "@/contexts/HighlightContextType";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {ErrorDisplay} from "@/app/view/[id]/page";
+import {useNavigation} from "@/contexts/NavigationContext";
 
 export default function ViewProvided() {
     const {id} = useParams<{ id: string }>();
@@ -16,12 +17,12 @@ export default function ViewProvided() {
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes["SAD_SAM_CODE"]); // Default type
-    const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]); // Track uploaded file types
+    const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
+    const { setCurrentProjectId } = useNavigation();
 
     const uriDecodedId = decodeURIComponent(id);
 
     useEffect(() => {
-        // Only run loadModel if the component has mounted on the client
         if (!id) {
             return;
         }
@@ -30,7 +31,6 @@ export default function ViewProvided() {
             const uploadedFileTypes = await loadProjectMetaData(id)
             setUploadedFileTypes(uploadedFileTypes);
         }
-
         getAndSetUploadedFileTypes();
 
 
@@ -39,7 +39,7 @@ export default function ViewProvided() {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined") {
-                    const result = await loadProjectFile(id, FileType.Trace_Link_JSON, true);
+                    const result = await loadProjectFile(id, FileType.Trace_Link_JSON, false);
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
@@ -61,6 +61,15 @@ export default function ViewProvided() {
         loadModel();
 
     }, [id]);
+
+    useEffect(() => {
+        setCurrentProjectId(uriDecodedId);
+
+        // Clear the project ID when the component unmounts (navigates away)
+        return () => {
+            setCurrentProjectId(null);
+        };
+    }, [uriDecodedId, setCurrentProjectId]);
 
     return (
         <>

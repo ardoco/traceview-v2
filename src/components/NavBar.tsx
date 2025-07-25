@@ -6,6 +6,7 @@ import {Bars3Icon, PencilIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {Dialog, DialogPanel} from "@headlessui/react";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import EditApiAddressModal from "@/components/EditApiAddressModal";
+import {useNavigation} from "@/contexts/NavigationContext";
 
 // Navigation menu items
 const navigation = [
@@ -19,6 +20,7 @@ const navigation = [
 interface ArDoCoLogoProps {
     /** Corresponds to keys in sizeClassMap (e.g., 8, 10, 12) */
     size: number;
+    onClick: (href:string, event: any) => void;
 }
 
 // Mapping for image sizes to ensure Tailwind JIT picks them up
@@ -34,13 +36,14 @@ const imageSizeMap: { [key: number]: string } = {
     16: "h-16 w-auto",
 };
 
-export function ArDoCoLogo({size}: ArDoCoLogoProps) {
+export function ArDoCoLogo({size, onClick}: ArDoCoLogoProps) {
     const imageClasses = imageSizeMap[size] || imageSizeMap[10];
 
     return (
-        <Link
+        <a
             href="/"
             className={`-ml-3 p-1.5 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75% flex items-center justify-center`}
+            onClick={(event) => onClick("/", event)}
         >
             <span className="sr-only">ArDoCo Logo</span>
             <img
@@ -48,15 +51,20 @@ export function ArDoCoLogo({size}: ArDoCoLogoProps) {
                 src="/ardoco-logo.png" // Assumes ardoco-logo.png is in the public folder
                 className={imageClasses}
             />
-        </Link>
+        </a>
     );
 }
 
-// NavBar component
 export default function NavBar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {apiAddress} = useApiAddressContext();
+    const { handleNavigation } = useNavigation();
+
+    const onClickNavigation = (href: string, event:any) => {
+        event.preventDefault();
+        handleNavigation(href);
+    }
 
     return (
         <>
@@ -64,7 +72,7 @@ export default function NavBar() {
                 <nav aria-label="Global" className="flex items-center justify-between p-3 lg:px-8 h-24">
                     {/* Logo */}
                     <div className="flex lg:flex-1">
-                        <ArDoCoLogo size={16}/>
+                        <ArDoCoLogo size={16} onClick={onClickNavigation}/>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -95,7 +103,10 @@ export default function NavBar() {
                         </div>
 
                         {navigation.map((item) => (
-                            <a key={item.name} href={item.href} className="text-sm font-semibold text-white">
+                            <a key={item.name}
+                               href={item.href}
+                               onClick={(e) => onClickNavigation(item.href, e)}
+                               className="text-sm font-semibold text-white">
                                 {item.name}
                             </a>
                         ))}
@@ -115,7 +126,7 @@ export default function NavBar() {
                     <DialogPanel
                         className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white px-6 py-6 sm:ring-1 sm:ring-gray-900/10">
                         <div className="flex items-center justify-between">
-                            <ArDoCoLogo size={10}/>
+                            <ArDoCoLogo size={10} onClick={onClickNavigation}/>
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}

@@ -43,7 +43,6 @@ export function ApiAddressProvider({ children }: { children: React.ReactNode }) 
                 return false;
             }
 
-            // save the address in local storage so the user does not have to enter it again
             if (typeof window !== 'undefined') {
                 localStorage.setItem('apiAddress', cleanedAddress);
             }

@@ -220,3 +220,17 @@ async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, 
     await metaWritable.write(JSON.stringify(metadata, null, 2));
     await metaWritable.close();
 }
+
+export async function deleteProjectDirectory(projectId: string) {
+    if (typeof window === "undefined") {
+        console.warn("Cannot delete project directory on the server.");
+        return;
+    }
+    try {
+        const fsHandle = await navigator.storage.getDirectory();
+        await fsHandle.removeEntry(projectId, { recursive: true });
+        console.log(`[ClientFileStorage] Project directory ${projectId} and all its contents removed.`);
+    } catch (error: any) {
+        console.error(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);
+    }
+}

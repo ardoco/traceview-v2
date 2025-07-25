@@ -34,7 +34,7 @@ export default function DisplayCodeModel({id}: ViewProps) {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined" && !codeModel) {
-                    const result = await loadProjectFile(id, FileType.Code_Model, true);
+                    const result = await loadProjectFile(id, FileType.Code_Model, false);
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
@@ -48,16 +48,11 @@ export default function DisplayCodeModel({id}: ViewProps) {
 
                     // init code model
                     if (result.content) {
-                        //const parsedCodeModel2 = parseCodeFromACM(text);
                         const parsedCodeModel2 = parseACMFile(result.content);
                         setCodeModel(parsedCodeModel2);
                     }
                  else {
-                        // This case should ideally not be hit if isMounted is true,
-                        // but as a safeguard:
                         console.warn("loadModel called on server, skipping ClientFileStorage.");}
-                    // Clean up the file after loading
-                    //await deleteProjectFile(id, FileType.Code_Model);
                 }
             } catch (e: any) {
                 console.error("Failed to load or parse architecture model:", e);

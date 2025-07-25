@@ -34,7 +34,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined" && !architectureModel) {
-                    const result = await loadProjectFile(id, FileType.Architecture_Model_UML, true); // fallback type
+                    const result = await loadProjectFile(id, FileType.Architecture_Model_UML, false);
 
                     if (!result) {
                         console.warn("No project file found for ID:", id);
