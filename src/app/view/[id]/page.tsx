@@ -58,6 +58,7 @@ export default function NewUploadProject() {
     const uriDecodedId = decodeURIComponent(id);
 
     const fetchResult = async () => {
+        if (!apiAddress) return;
         setLoading(true);
         setError(null);
         setRetryAllowed(false);
@@ -78,7 +79,7 @@ export default function NewUploadProject() {
     // Fetch & initialize data when component mounts
     useEffect(() => {
         fetchResult();
-    }, [id]);
+    }, [id, apiAddress]);
 
     return (
         <>

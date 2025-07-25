@@ -61,6 +61,7 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
 
     // Fetch configuration data once when the FormProvider mounts
     React.useEffect(() => {
+        if (!apiAddress) return;
         console.log(apiAddress)
         const fetchConfiguration = async () => {
             try {
@@ -83,7 +84,7 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
             }
         };
         fetchConfiguration();
-    }, []);
+    }, [apiAddress]);
 
     const updateFormData = (updatedData: Partial<FormData>) => {
         setFormData((prevData) => ({

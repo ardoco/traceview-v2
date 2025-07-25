@@ -88,6 +88,10 @@ function MultiStepForm() {
     };
 
     const handleSubmit = async () => {
+        if (!apiAddress) {
+            console.error("API address is not set.");
+            return null;
+        }
         let jsonResult = null
         setLoading(true);
         try {

@@ -85,8 +85,8 @@ export default function NavBar() {
                         {/* Styled API Address Display */}
                         <div
                             className="flex items-center gap-x-2 rounded-md px-3 py-1.5 ring-1 ring-white/10 hover:ring-white/20">
-                            <span className="text-sm text-white" title={apiAddress}>
-                                Connected API: <span className="font-semibold">{apiAddress}</span>
+                            <span className="text-sm text-white" title={apiAddress ?? "loading"}>
+                                Connected API: <span className="font-semibold">{apiAddress ?? "loading"}</span>
                             </span>
                             <button onClick={() => setIsModalOpen(true)} className="text-white/80 hover:text-white">
                                 <span className="sr-only">Edit API Address</span>

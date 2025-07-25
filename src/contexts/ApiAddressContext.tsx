@@ -6,19 +6,21 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const DEFAULT_API = 'https://rest.ardoco.de';
 
 type ApiAddressContextType = {
-    apiAddress: string;
+    apiAddress: string | null;
     setApiAddress: (newAddress: string) => Promise<boolean>;
 };
 
 const ApiAddressContext = createContext<ApiAddressContextType | undefined>(undefined);
 
 export function ApiAddressProvider({ children }: { children: React.ReactNode }) {
-    const [apiAddress, setApiAddressState] = useState( DEFAULT_API);
+    const [apiAddress, setApiAddressState] = useState<string | null>(null);
 
     useEffect(() => {
         const stored = localStorage.getItem('apiAddress');
         if (stored) {
             setApiAddressState(stored);
+        } else {
+            setApiAddressState(DEFAULT_API);
         }
     }, []);
 

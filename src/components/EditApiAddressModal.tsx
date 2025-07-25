@@ -11,18 +11,18 @@ interface EditApiAddressModalProps {
 
 export default function EditApiAddressModal({ isOpen, onClose }: EditApiAddressModalProps) {
     const { setApiAddress, apiAddress } = useApiAddressContext();
-    const [input, setInput] = useState(apiAddress);
+    const [input, setInput] = useState(apiAddress ?? "");
     const [warningMessage, setWarningMessage] = useState('');
 
     const handleClose = () => {
         // reset input to the current API address when closing
-        setInput(apiAddress);
+        setInput(apiAddress ?? "");
         setWarningMessage('');
         onClose();
     };
 
     useEffect(() => {
-        setInput(apiAddress);
+        setInput(apiAddress ?? "");
     }, [apiAddress]);
 
     const handleSave = async () => {
