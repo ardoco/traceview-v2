@@ -1,13 +1,13 @@
 export class Sentence {
     content: string;
-    identifier: string;
+    identifier: number;
 
-    constructor(content: string, identifier: string) {
+    constructor(content: string, identifier: number) {
         this.content = content;
         this.identifier = identifier;
     }
 
-    getIdentifier() {
+    public getIdentifier() {
         return this.identifier;
     }
 

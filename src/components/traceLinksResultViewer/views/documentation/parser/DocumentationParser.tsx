@@ -3,13 +3,13 @@ import {Sentence} from "@/components/traceLinksResultViewer/views/documentation/
 export function parseDocumentationText(content: string): Sentence[] {
     let sentences: Sentence[] = [];
     let lines = content.split("\n");
-    let lineIndex: number = 1;
+    let lineIndex: number = 0;
     for (let line of lines) {
-        lineIndex++;
         if (line.trim().length === 0) {
             continue;
         }
-        sentences.push(new Sentence(line, "" + lineIndex));
+        lineIndex++;
+        sentences.push(new Sentence(line, lineIndex));
     }
     return sentences;
 }
