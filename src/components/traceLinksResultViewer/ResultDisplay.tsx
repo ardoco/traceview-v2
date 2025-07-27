@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import FullScreenResultDialog from "@/components/traceLinksResultViewer/FullScreenResult";
 import ResultPanelsLayout from "@/components/traceLinksResultViewer/ResultPanelLayout";
-import {useHighlightContext} from "@/contexts/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import NoTraceLinksMessage from "@/components/traceLinksResultViewer/NoTraceLinksMessage";
 
 interface ResultDisplayProps {
@@ -44,6 +44,7 @@ export function ResultDisplay({id, traceLinkType, displayOptions}:ResultDisplayP
             {showNoTraceLinksMessage && (
                 <NoTraceLinksMessage/>
             )}
+
 
         </div>
     );

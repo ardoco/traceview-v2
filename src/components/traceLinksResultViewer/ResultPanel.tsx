@@ -7,9 +7,10 @@ import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeMode
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
 import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
 import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
-import {Dialog, Select, Button} from "@headlessui/react";
+import {Button, Dialog, Select} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import InconsistencyViewer from "@/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer";
 
 interface ResultPanelProps {
     id: string;
@@ -33,7 +34,7 @@ export default function ResultPanel({ id, collapsible, displayOptions, defaultVi
             minSize={10}
             className="h-full overflow-y-auto"
             style={{ overflowY: "auto", overflowX: "auto" }}
-            collapsible={collapsible} // Use the input prop here
+            collapsible={collapsible}
             collapsedSize={0}
         >
             {/*drop down*/}
@@ -51,17 +52,18 @@ export default function ResultPanel({ id, collapsible, displayOptions, defaultVi
                 </Button>
             </div>
 
-            {selectedPanel === ResultPanelType.Documentation &&
-                <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}
+            {selectedPanel === ResultPanelType.Documentation && <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}
             {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel  id={id}/>}
             {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel  id={id}/>}
-        {selectedPanel === ResultPanelType.Raw_JSON && <TraceLinkView  traceLinkType={traceLinkType}/>}
+            {selectedPanel === ResultPanelType.TraceLinks && <TraceLinkView traceLinkType={traceLinkType}/>}
+            {selectedPanel === ResultPanelType.Inconsistencies && <Suspense fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer/></Suspense>}
 
             <Dialog onClose={() => setIsOpen(false)} open={isOpen} className="bg-white fixed top-0 left-0 w-full h-full overflow-y-auto z-1000">
                 {selectedPanel === ResultPanelType.Documentation && <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}
                 {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel id={id}/>}
                 {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel  id={id}/>}
-                {selectedPanel === ResultPanelType.Raw_JSON && <TraceLinkView traceLinkType={traceLinkType}/>}
+                {selectedPanel === ResultPanelType.TraceLinks && <TraceLinkView traceLinkType={traceLinkType}/>}
+                {selectedPanel === ResultPanelType.Inconsistencies && <Suspense fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer/></Suspense>}
             </Dialog>
         </Panel>
     );

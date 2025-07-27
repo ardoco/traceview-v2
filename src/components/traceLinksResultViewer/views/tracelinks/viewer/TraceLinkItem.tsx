@@ -1,6 +1,7 @@
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import React from "react";
-import {useHighlightContext} from "@/contexts/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
+import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 
 /**
  * Defines the props for the TraceLinkItem component.
@@ -14,13 +15,16 @@ interface TraceLinkItemProps {
 
 export function TraceLinkItem ({link, showCode, showModel, showSentence}:TraceLinkItemProps) {
     const { highlightSingleTraceLink, highlightedTraceLinks, highlightingColor } = useHighlightContext();
-
+    const {resetHighlightedInconsistencies} = useInconsistencyContext();
     return (
         <li
-            className={`p-2 border rounded cursor-pointer ${
+            className={`p-2 border rounded-lg cursor-pointer ${
                 highlightedTraceLinks.includes(link) ? "" : "hover:bg-gray-100"
             }`}
-            onClick={() => highlightSingleTraceLink(link)}
+            onClick={() => {
+                highlightSingleTraceLink(link);
+                resetHighlightedInconsistencies();
+            }}
             style={{backgroundColor: highlightedTraceLinks.includes(link) ? highlightingColor : "transparent"}}
         >
             {showCode && (
@@ -35,7 +39,7 @@ export function TraceLinkItem ({link, showCode, showModel, showSentence}:TraceLi
             )}
             {showSentence && (
                 <div className={"truncate max-w-full"} title={link.sentenceNumber?.toString()}>
-                    <strong>Sentence:</strong> {link.sentenceNumber !== undefined && link.sentenceNumber !== null ? link.sentenceNumber : "N/A"}
+                    <strong>Sentence:</strong> {link.sentenceNumber?.toString() || "N/A"}
                 </div>
             )}
         </li>

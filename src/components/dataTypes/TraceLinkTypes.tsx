@@ -20,7 +20,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
+        resultViewOptions: [ResultPanelType.Code_Model, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
 
     },
     "SAD_SAM": {
@@ -30,7 +30,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML],
-        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
+        resultViewOptions: [ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
     },
     "SAD_CODE": {
         name: "SAD_CODE",
@@ -39,7 +39,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Code_Model],
-        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Documentation],
+        resultViewOptions: [ResultPanelType.Code_Model, ResultPanelType.Documentation],
     },
     "SAM_CODE": {
         name: "SAM_CODE",
@@ -48,7 +48,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-        resultViewOptions: [ResultPanelType.Raw_JSON, ResultPanelType.Code_Model, ResultPanelType.Architecture_Model],
+        resultViewOptions: [ResultPanelType.Code_Model, ResultPanelType.Architecture_Model],
     },
 };
 

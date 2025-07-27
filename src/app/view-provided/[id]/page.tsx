@@ -5,7 +5,7 @@ import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/da
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {loadProjectFile, loadProjectMetaData} from "@/util/ClientFileStorage";
 import {FileType, getResultViewOption} from "@/components/dataTypes/FileType";
-import {HighlightProvider} from "@/contexts/HighlightContextType";
+import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {ErrorDisplay} from "@/app/view/[id]/page";
@@ -47,7 +47,7 @@ export default function ViewProvided() {
                         return;
                     }
                     const rawJson = JSON.parse(result.content);
-                    setTraceLinks(parseTraceLinksFromJSON(rawJson));
+                    setTraceLinks(parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks));
                     setTraceLinkType(TraceLinkTypes[rawJson.traceLinkType] ?? TraceLinkTypes["SAD_SAM_CODE"]);
                 } else {
                     console.log("loadModel called on server, skipping ClientFileStorage.");

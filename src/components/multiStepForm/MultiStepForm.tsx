@@ -72,7 +72,8 @@ function MultiStepForm() {
                 let result = await handleSubmit();
                 console.log(result);
                 const encodedId = encodeURIComponent(result.requestId);
-                redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}`);
+                const inconsistenciesParam = `&inconsistencies=${formData.findInconsistencies}`;
+                redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}${inconsistenciesParam}`);
             }
         } else {
             setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
@@ -95,7 +96,14 @@ function MultiStepForm() {
         let jsonResult = null
         setLoading(true);
         try {
-            let result = await fetchArDoCoAPI(apiAddress, formData.projectName, formData.selectedTraceLinkType, formData.files, formData.traceLinkConfiguration);
+            let result = await fetchArDoCoAPI(
+                apiAddress,
+                formData.projectName,
+                formData.selectedTraceLinkType,
+                formData.files,
+                formData.findInconsistencies,
+                formData.traceLinkConfiguration
+            );
             console.log("Data submitted successfully:", formData);
             jsonResult = result.jsonResult
 

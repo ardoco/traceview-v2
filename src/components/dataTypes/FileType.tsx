@@ -29,7 +29,7 @@ export function getResultViewOption(fileType: FileType): ResultPanelType {
         case FileType.Code_Model:
             return ResultPanelType.Code_Model;
         case FileType.Trace_Link_JSON:
-            return ResultPanelType.Raw_JSON;
+            return ResultPanelType.TraceLinks;
         default:
             throw new Error(`No result view option defined for file type: ${fileType}`);
     }

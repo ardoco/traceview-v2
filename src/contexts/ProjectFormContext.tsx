@@ -1,11 +1,10 @@
 'use client'
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {FileType} from "@/components/dataTypes/FileType";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
-import {normalizeSourceMapAfterPostcss} from "next/dist/build/webpack/loaders/postcss-loader/src/utils";
 
 export interface FormData {
     projectName: string;
@@ -14,6 +13,7 @@ export interface FormData {
     errors: string[];
     traceLinkConfiguration: TraceLinkConfiguration | null;
     configurationSource: 'default' | 'custom' | null;
+    findInconsistencies: boolean;
 }
 
 export interface TraceLinkConfiguration {
@@ -51,7 +51,8 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
         files: [],
         errors: [],
         traceLinkConfiguration: null,
-        configurationSource: 'default'
+        configurationSource: 'default',
+        findInconsistencies: false,
     });
 
     const {apiAddress} = useApiAddressContext();
@@ -87,11 +88,18 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
     }, [apiAddress]);
 
     const updateFormData = (updatedData: Partial<FormData>) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            ...updatedData,
-        }));
-        console.log("Updated FormData:", { ...formData, ...updatedData });
+        setFormData((prevData) => {
+            const newData = { ...prevData, ...updatedData };
+
+            // If the selected trace link type is changing and it's not SAD_SAM,
+            // automatically reset the findInconsistencies flag to false.
+            if (newData.selectedTraceLinkType !== TraceLinkTypes.SAD_SAM) {
+                newData.findInconsistencies = false;
+            }
+
+            console.log("Updated FormData:", newData);
+            return newData;
+        });
     };
 
     return (

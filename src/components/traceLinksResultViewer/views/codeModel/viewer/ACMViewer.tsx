@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 import ACMNode from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMNode";
 import ACMLink from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMLink";
-import {useHighlightContext} from "@/contexts/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 
 
 export type HierarchyData = CodeModelUnit;

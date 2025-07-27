@@ -55,9 +55,13 @@ export default function SummaryStep() {
             <p className="text-sm font-medium text-gray-700 mb-1">
                 <span className="font-bold">Project Name:</span> {formData.projectName}
             </p>
-            <p className="text-sm font-medium text-gray-700 mb-4">
+            <p className="text-sm font-medium text-gray-700 mb-1">
                 <span className="font-bold">Selected TraceLink Type:</span> {formData.selectedTraceLinkType? formData.selectedTraceLinkType.name: "None"}
             </p>
+            <p className="text-sm font-medium text-gray-700 mb-4">
+                <span className="font-bold">Find Inconsistencies:</span> {formData.findInconsistencies ? "Enabled" : "Disabled"}
+            </p>
+
             <h3 className="text-md font-semibold text-gray-800 mb-2">Files:</h3>
             <div>
                 {formData.files.map((uploadedFile, index) => (

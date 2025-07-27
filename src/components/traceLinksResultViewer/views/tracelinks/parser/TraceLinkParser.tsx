@@ -1,11 +1,10 @@
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 
-export function parseTraceLinksFromJSON(data:any): TraceLink[] {
+export function parseTraceLinksFromJSON (traceLinkType:any, traceLinksJson:any): TraceLink[] {
 
   try {
     // Ensure the traceLinks property exists
-    const traceLinksData: TraceLink[] = data.traceLinks || [];
-    const traceLinkType = data.traceLinkType || 'unknown';
+    const traceLinksData: TraceLink[] = traceLinksJson || [];
     let traceLinks:TraceLink[] = [];
 
     if (traceLinkType === 'SAD_CODE') {

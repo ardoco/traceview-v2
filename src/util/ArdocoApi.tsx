@@ -1,7 +1,7 @@
 'use client'
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
-import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {TraceLinkConfiguration} from "@/contexts/ProjectFormContext";
 
 interface ArDoCoApiResponse {
@@ -9,7 +9,7 @@ interface ArDoCoApiResponse {
     usedFiles: UploadedFile[];
 }
 
-export default async function fetchArDoCoAPI (apiAddress: string, projectName:string, selectedTraceLinkType:TraceLinkType | null, inputFiles: UploadedFile[], config?:TraceLinkConfiguration | null) : Promise<ArDoCoApiResponse> {
+export default async function fetchArDoCoAPI (apiAddress: string, projectName:string, selectedTraceLinkType:TraceLinkType | null, inputFiles: UploadedFile[], findInconsistencies:boolean, config?:TraceLinkConfiguration | null) : Promise<ArDoCoApiResponse> {
     console.log("Submitted data: ", projectName, selectedTraceLinkType, inputFiles);
 
     let result = null
@@ -19,8 +19,16 @@ export default async function fetchArDoCoAPI (apiAddress: string, projectName:st
         throw new Error("No selectedTraceLinkType provided");
     }
 
+    if (findInconsistencies && selectedTraceLinkType.name !== TraceLinkTypes.SAD_SAM.name) {
+        throw new Error("Find inconsistencies is only supported for SAD_SAM trace link type.");
+    }
+
     try {
-        const apiEndpoint = `/api/${selectedTraceLinkType.api_name.toLowerCase()}/start`;
+        let apiEndpoint = `/api/${selectedTraceLinkType.api_name.toLowerCase()}/start`;
+        if (findInconsistencies) {
+            apiEndpoint = `/api/find-inconsistencies/start`;
+        }
+
         const requestData = new FormData();
         requestData.append("projectName", projectName);
 

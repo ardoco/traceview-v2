@@ -1,7 +1,8 @@
 import React from "react";
 import { Position } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
-import { useHighlightContext } from "@/contexts/HighlightContextType";
+import { useHighlightContext } from "@/contexts/HighlightTracelinksContextType";
 import {Component} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
+import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 
 // --- Utility to measure text width ---
 function measureTextWidth(text: string, font: string): number {
@@ -71,6 +72,7 @@ function wrapText(text: string, maxWidth: number, font: string): string[] {
 export default function UMLNode({ component, position }: UMLNodeProps) {
     const { x: posX, y: posY } = position;
     const { highlightElement, highlightedTraceLinks, highlightingColor } = useHighlightContext();
+    const { highlightInconsistencyWithModelId, highlightedModelInconsistencies, highlightingColorInconsistencies } = useInconsistencyContext();
 
     const fontSize = 12;
     const fontFamily = "sans-serif";
@@ -88,9 +90,24 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
     const calculatedWidth = Math.min(Math.max(widestLine + padding, minWidth), maxWidth);
     const calculatedHeight = 40 + textLines.length * lineHeight; // 40 for <<component>>#
 
-    const isHighlighted = highlightedTraceLinks.some(
+    const isTraceLinkHighlighted = highlightedTraceLinks.some(
         traceLink => traceLink.modelElementId === component.id
     );
+
+    const isInconsistencyHighlighted = highlightedModelInconsistencies.some(
+        inc => inc.modelElementId === component.id
+    );
+
+    const gradientId = `gradient-${component.id}`;
+
+    const fillStyle =
+        isTraceLinkHighlighted && isInconsistencyHighlighted
+            ? `url(#${gradientId})`
+            : isTraceLinkHighlighted
+                ? highlightingColor
+                : isInconsistencyHighlighted
+                    ? highlightingColorInconsistencies
+                    : "#ffffff";
 
     return (
         <g
@@ -98,14 +115,24 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
             onClick={(event) => {
                 event.stopPropagation();
                 highlightElement(component.id ?? null, "modelElementId");
+                highlightInconsistencyWithModelId(component.id ?? null);
             }}
         >
             {component.name}
 
+            {isTraceLinkHighlighted && isInconsistencyHighlighted && (
+                <defs>
+                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor={highlightingColor} />
+                        <stop offset="100%" stopColor={highlightingColorInconsistencies} />
+                    </linearGradient>
+                </defs>
+            )}
+
             <rect
                 width={calculatedWidth}
                 height={calculatedHeight}
-                fill={isHighlighted ? highlightingColor : "#ffffff"}
+                fill={fillStyle}
                 stroke="#4b5563"
             />
             <text

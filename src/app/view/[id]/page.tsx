@@ -1,16 +1,22 @@
 'use client';
 
 import {useParams, useSearchParams} from "next/navigation";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import Button from "@/components/Button";
-import {HighlightProvider} from "@/contexts/HighlightContextType";
+import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import {useNavigation} from "@/contexts/NavigationContext";
 import LoadingErrorModal from "@/components/LoadingErrorModal";
+import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
+import {
+    parseInconsistenciesFromJSON
+} from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
+import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
 
 // Utility function for polling the API
 const pollForResult = async (apiAddress:string, id: string, signal:AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
@@ -53,16 +59,28 @@ export default function NewUploadProject() {
     const {id} = useParams<{ id: string }>();
     const searchParams = useSearchParams();
     const type = searchParams.get("type");
+    const findInconsistencies = searchParams.get("inconsistencies") === 'true';
     const { setCurrentProjectId, controller } = useNavigation();
 
     const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
+    const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [retryAllowed, setRetryAllowed] = useState(false);
 
     const traceLinkType = TraceLinkTypes[type || "SAD_SAM_CODE"] ?? TraceLinkTypes["SAD_SAM_CODE"];
     const uriDecodedId = decodeURIComponent(id);
+
+    // add inconsistencies to display options if they are requested (when id starts with 'inconsistencies-')
+    const displayOptions = useMemo(() => {
+        const options = [...traceLinkType.resultViewOptions];
+        options.unshift(ResultPanelType.TraceLinks); // Always show trace links first
+        if (findInconsistencies) {
+            options.push(ResultPanelType.Inconsistencies);
+        }
+        return options;
+    }, []);
+
 
     const handleRetry = () => {
         setError(null);
@@ -79,17 +97,21 @@ export default function NewUploadProject() {
         if (!apiAddress) return;
         setLoading(true);
         setError(null);
-        setRetryAllowed(false);
 
         try {
             const response = await pollForResult(apiAddress, id, signal, 240); // Poll for up to 4 minutes
-            const parsedTraceLinks = parseTraceLinksFromJSON(response);
+            const parsedTraceLinks = parseTraceLinksFromJSON(response.traceLinkType, response.result.traceLinks);
             setTraceLinks(parsedTraceLinks);
+
+            // If inconsistencies are present and asked for, parse them as well
+             if (findInconsistencies && response.result.inconsistencies) {
+                 const parsedInconsistencies = parseInconsistenciesFromJSON(response.result.inconsistencies);
+                 setInconsistencies(parsedInconsistencies);
+             }
 
         } catch (err: any) {
             if (err.name !== 'AbortError') {
                 setError(err.message || "An unexpected error occurred.");
-                setRetryAllowed(true);
             }
         } finally {
             setLoading(false);
@@ -119,9 +141,11 @@ export default function NewUploadProject() {
                 onRetry={handleRetry}
                 onViewFiles={handleViewFiles}
             />
-            <HighlightProvider traceLinks={traceLinks}>
-                <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={traceLinkType.resultViewOptions}/>
-            </HighlightProvider>
+            <InconsistencyProvider inconsistencies={inconsistencies}>
+                <HighlightProvider traceLinks={traceLinks}>
+                    <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>
+                </HighlightProvider>
+            </InconsistencyProvider>
         </>
     );
 }

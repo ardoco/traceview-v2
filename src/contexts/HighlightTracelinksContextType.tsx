@@ -3,13 +3,14 @@
 import React, {createContext, useContext, useState} from 'react';
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 
-interface HighlightContextType {
+interface HighlightTracelinksContextType {
     highlightedTraceLinks: TraceLink[];
     highlightElement: (id: number| string | null, type: string) => void;
     highlightSingleTraceLink: (traceLinks:TraceLink) => void;
     traceLinks:TraceLink[];
     highlightingColor: string;
     showNoTraceLinksMessage: boolean;
+    resetHighlightedTraceLinks: () => void;
 }
 
 interface HighlightProviderProps {
@@ -17,7 +18,7 @@ interface HighlightProviderProps {
     traceLinks: TraceLink[];
 }
 
-const HighlightContext = createContext<HighlightContextType | undefined>(undefined);
+const HighlightContext = createContext<HighlightTracelinksContextType | undefined>(undefined);
 
 export const useHighlightContext = () => {
     const context = useContext(HighlightContext);
@@ -66,6 +67,11 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
         setHighlightedTraceLinks([traceLinks]);
     }
 
+    const resetHighlightedTraceLinks = () => {
+        setHighlightedTraceLinks([]);
+        setShowNoTraceLinksMessage(false);
+    }
+
     return (
         <HighlightContext.Provider
             value={{
@@ -74,7 +80,8 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 highlightSingleTraceLink,
                 traceLinks,
                 highlightingColor,
-                showNoTraceLinksMessage
+                showNoTraceLinksMessage,
+                resetHighlightedTraceLinks
             }}
         >
             {children}

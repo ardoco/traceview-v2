@@ -8,7 +8,8 @@ import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/
 import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
-import {useMemo} from "react";
+import {Suspense, useMemo} from "react";
+import InconsistencyViewer from "@/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer";
 
 
 interface FullScreenResultDialogProps {
@@ -45,7 +46,8 @@ export default function FullScreenResultDialog({selectedView,
         [ResultPanelType.Documentation]: <DisplayDocumentation id={id} />,
         [ResultPanelType.Code_Model]: <DisplayCodeModel id={id} />,
         [ResultPanelType.Architecture_Model]: <DisplayArchitectureModel id={id} />,
-        [ResultPanelType.Raw_JSON]: <TraceLinkView traceLinkType={traceLinkType} />,
+        [ResultPanelType.TraceLinks]: <TraceLinkView traceLinkType={traceLinkType} />,
+        [ResultPanelType.Inconsistencies]: <Suspense fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer/></Suspense>,
     }), [id, traceLinkType]);
 
     const selectedIndex = selectedView ? displayOptions.indexOf(selectedView) : 0;
