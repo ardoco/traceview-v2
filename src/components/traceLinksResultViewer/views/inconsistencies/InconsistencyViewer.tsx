@@ -90,7 +90,7 @@ export default function InconsistencyViewer() {
 
                     <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
                         <div className="flex-1">
-                            <label className="text-sm text-gray-600">Sort by: </label>
+                            <label className="text-sm text-gray-600">Filter by: </label>
 
                             <select
                                 value={filterType}

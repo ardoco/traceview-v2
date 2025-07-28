@@ -6,7 +6,7 @@ import DisplayDocumentation from "@/components/traceLinksResultViewer/views/docu
 import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModel";
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
 import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {displayOptionName, ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import {Button, Dialog, Select} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
@@ -41,14 +41,15 @@ export default function ResultPanel({ id, collapsible, displayOptions, defaultVi
             <div className="sticky top-0 flex bg-white">
                 <Select value={selectedPanel} onChange={(e) => handleOptionChange(e.target.value as ResultPanelType)}
                         className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:border-gruen ">
-                    {displayOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
+                    {displayOptions
+                        .map((option) => (
+                            <option key={option} value={option}>
+                                {displayOptionName(option, traceLinkType)}
+                            </option>
+                        ))}
                 </Select>
                 <Button onClick={() => setSelectedDialogView(selectedPanel)} className="p-3">
-                    <ArrowsPointingOutIcon className="w-4 h-4"/>
+                <ArrowsPointingOutIcon className="w-4 h-4"/>
                 </Button>
             </div>
 

@@ -5,7 +5,7 @@ import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeMode
 import {Button, Dialog, Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {displayOptionName, ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {Suspense, useMemo} from "react";
@@ -58,7 +58,7 @@ export default function FullScreenResultDialog({selectedView,
                 <TabList className="sticky top-0 left-0 flex bg-gradient-to-b from-gruen-400 to-gruen-500 px-2 z-[1001] ">
                     {displayOptions.map((option) => (
                         <Tab key={option} className="rounded-t data-[selected]:bg-white bg-blau-900 mr-2 mt-2 px-4 text-black ui-selected:text-gruen ui-not-selected:text-white focus:outline-none hover:bg-blau-800">
-                            {option}
+                            {displayOptionName(option, traceLinkType)}
                         </Tab>
                     ))}
                     <div className="flex-grow" />

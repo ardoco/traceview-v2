@@ -126,13 +126,6 @@ export default function TraceLinkView({traceLinkType}: TraceLinkViewProps) {
             <div className="sticky top-10 flex justify-between items-start bg-white z-10 border-b px-2 pt-1">
 
                 <div className="w-full">
-                    <div className="flex mb-2">
-                        <div className="flex-1 text-sm font-medium">
-                            <strong>Type:</strong> {traceLinkType.name}
-                        </div>
-                    </div>
-
-
                     <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
                         <div className="flex-1">
                             <label className="text-sm text-gray-600">Sort by: </label>
