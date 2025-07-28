@@ -117,7 +117,7 @@ export default function UMLNode({component, position}: UMLNodeProps) {
             <defs>
                 <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%"
-                          stopColor={isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : "var(--color-highlight-none)"}/>
+                          stopColor={isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" : "var(--color-highlight-none)"}/>
                     <stop offset="100%"
                           stopColor={isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" : isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : "var(--color-highlight-none)"}/>
                 </linearGradient>
