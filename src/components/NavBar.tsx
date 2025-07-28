@@ -106,7 +106,7 @@ export default function NavBar() {
                             <a key={item.name}
                                href={item.href}
                                onClick={(e) => onClickNavigation(item.href, e)}
-                               className="text-sm font-semibold text-white">
+                               className="py-2 text-sm font-semibold text-white">
                                 {item.name}
                             </a>
                         ))}

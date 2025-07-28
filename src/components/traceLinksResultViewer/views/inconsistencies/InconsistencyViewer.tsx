@@ -7,7 +7,6 @@ import {
 import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
 import {Button} from "@headlessui/react";
 import {
-    Inconsistency,
     InconsistencyType,
     MissingModelInstanceInconsistency,
     MissingTextForModelElementInconsistency
@@ -20,7 +19,7 @@ export default function InconsistencyViewer() {
     const isLoading = inconsistencies.length === 0;
 
     const handleDownloadClick = () => {
-        const dataToExport = { inconsistencies };
+        const dataToExport = {inconsistencies};
         const data = JSON.stringify(dataToExport, null, 2);
         const blob = new Blob([data], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
@@ -60,6 +59,19 @@ export default function InconsistencyViewer() {
         });
     }, [inconsistencies, filterType]);
 
+    const setFilterTypeFromString = (value: string) => {
+        if (value === "All") {
+            setFilterType("All");
+        } else {
+            const type = InconsistencyType[value as keyof typeof InconsistencyType];
+            if (type) {
+                setFilterType(type);
+            } else {
+                console.warn(`Unknown inconsistency type: ${value}`);
+            }
+        }
+    }
+
     if (isLoading) {
         return (
             <div className="p-2 text-center py-8 text-gray-500">
@@ -69,34 +81,41 @@ export default function InconsistencyViewer() {
     }
 
     return (
-        <div className="p-2">
+        <div className="px-2 pb-2">
             {/* Sticky Top Bar */}
-            <div className="sticky top-10 bg-white z-10 border-b px-2 pt-2 pb-4">
-                <div className="flex flex-wrap justify-between items-center gap-3">
-                    <div className="flex items-center gap-2">
-                        <label className="text-sm text-gray-600 font-medium">Filter: </label>
-                        <select
-                            value={filterType}
-                            onChange={(e) => setFilterType(e.target.value as any)}
-                            className="text-sm border rounded px-2 py-1"
-                        >
-                            <option value="All">All Types</option>
-                            <option value={InconsistencyType.MissingModelInstance}>Missing Model Instance</option>
-                            <option value={InconsistencyType.MissingTextForModelElement}>Missing Text For Model</option>
-                        </select>
-                    </div>
+            <div className="sticky top-10 flex justify-between items-start bg-white z-10 border-b px-2 pt-1">
 
-                    <Button
-                        onClick={handleDownloadClick}
-                        className="text-gray-700 hover:text-gray-200 px-2 py-1"
-                    >
-                        <ArrowDownTrayIcon className="w-5 h-5"/>
-                    </Button>
+                <div className="w-full">
+
+
+                    <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
+                        <div className="flex-1">
+                            <label className="text-sm text-gray-600">Sort by: </label>
+
+                            <select
+                                value={filterType}
+                                onChange={(e) => setFilterTypeFromString(e.target.value)}
+                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                            >
+                                <option value="All">All Types</option>
+                                <option value={InconsistencyType.MissingModelInstance}>Missing Model Instance
+                                </option>
+                                <option value={InconsistencyType.MissingTextForModelElement}>Missing Text For
+                                    Model
+                                </option>
+                            </select>
+                        </div>
+                        <Button onClick={handleDownloadClick} className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"
+                                title="Download Inconsistencies">
+                            <ArrowDownTrayIcon className="h-4"/>
+                        </Button>
+
+                    </div>
                 </div>
             </div>
 
             {/* List of Inconsistencies */}
-            <ul className="space-y-2 max-h-full overflow-y-auto mt-4">
+            <ul className="space-y-2 max-h-full overflow-y-auto pt-2">
                 {filteredAndSorted.map((inconsistency, index) => (
                     <InconsistencyItemDisplay
                         inconsistency={inconsistency}
@@ -106,18 +125,21 @@ export default function InconsistencyViewer() {
                 ))}
             </ul>
 
-            <TooltipInstruction
-                title="Instructions"
-                position="bottom-right"
-                instructions={[
-                    {
-                        keyCombo: "Click",
-                        description: "Highlight Inconsistency. An inconsistency can be two things: " +
-                            "1) A sentence in the documentation, which is not represented in the architecture model, or " +
-                            "2) An element in the architecture model, which cannot be fitted with a sentence in the documentation."
-                    },
-                ]}
-            />
+            <div className="z-10">
+                <TooltipInstruction
+                    title="Instructions"
+                    position="bottom-right"
+                    instructions={[
+                        {
+                            keyCombo: "Click",
+                            description: "Highlight Inconsistency. An inconsistency can be two things: " +
+                                "1) A sentence in the documentation, which is not represented in the architecture model, or " +
+                                "2) An element in the architecture model, which cannot be fitted with a sentence in the documentation."
+                        },
+                    ]}
+                />
+            </div>
+
         </div>
     );
 }

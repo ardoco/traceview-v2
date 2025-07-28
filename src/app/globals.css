@@ -59,6 +59,10 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-highlight-tracelink: var(--color-blau-700);
+  --color-highlight-inconsistency: var(--color-lila-800);
+  --color-highlight-none: var(--color-white)
 }
 
 /*
@@ -91,4 +95,13 @@
 
 .animate-fade-in-out-vibrate {
   animation: fade-in-out-vibrate 2s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
 }

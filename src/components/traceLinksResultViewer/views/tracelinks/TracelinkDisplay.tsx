@@ -6,7 +6,7 @@ import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {Button} from "@headlessui/react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
-import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
+import {ArrowDownTrayIcon, BookmarkIcon} from "@heroicons/react/24/outline";
 
 /**
  * Defines the props for the DisplayRawJsonTracelinks component.
@@ -120,55 +120,57 @@ export default function TraceLinkView({traceLinkType}: TraceLinkViewProps) {
     }
 
     return (
-        <div className="p-2">
+        <div className="px-2 pb-2">
 
             {/* Sticky header for type and sort control */}
-            <div className="sticky top-10 flex justify-between items-start bg-white pb-5 z-10 border-b pt-2 px-2">
+            <div className="sticky top-10 flex justify-between items-start bg-white z-10 border-b px-2 pt-1">
 
-                <div className="  gap-2 w-full">
-                    <div className="text-sm font-medium">
-                        <strong>Type:</strong> {traceLinkType.name}
+                <div className="w-full">
+                    <div className="flex mb-2">
+                        <div className="flex-1 text-sm font-medium">
+                            <strong>Type:</strong> {traceLinkType.name}
+                        </div>
                     </div>
 
-                    <div className="flex flex-wrap justify-between items-center gap-3">
-                        <div>
-                        <label className="text-sm text-gray-600">Sort by: </label>
 
-                        <select
-                            value={selectedSortMethod}
-                            onChange={(e) => handleSortChange(e.target.value)}
-                            className={`border rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
-                        >
-                            <option value="None">None</option>
-                            {availableSortOptions.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
+                    <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
+                        <div className="flex-1">
+                            <label className="text-sm text-gray-600">Sort by: </label>
+
+                            <select
+                                value={selectedSortMethod}
+                                onChange={(e) => handleSortChange(e.target.value)}
+                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                            >
+                                <option value="None">None</option>
+                                {availableSortOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
-                        <div className="">
-                        <button
-                            className={`h-8 rounded  px-3 py-1 text-sm transition-colors border ${
+                        <Button
+                            className={`rounded px-3 py-0.5 text-sm transition-colors border ${
                                 prioritizeHighlights
-                                    ? "border-gruen text-gruen bg-gruen/10 font-semibold"
-                                    : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                    ? "border-blau text-blau bg-blau/10 hover:text-blau-600 hover:bg-blau-600/10 hover:border-blau-600"
+                                    : "border-gray-300 text-gray-700 hover:bg-gray-200"
                             }`}
                             onClick={() => setPrioritizeHighlights((prev) => !prev)}
                         >
-                            {prioritizeHighlights ? "Highlight ↑" : "Highlight ↓"}
-                        </button>
-
-                        <Button onClick={handleDownloadClick} className=" text-gray-700 hover:text-gray-200">
-                            <ArrowDownTrayIcon className="w-5 h-5"/>
+                            <BookmarkIcon className="inline h-4 -mt-0.5 mr-1"/>
+                            <span className="text-sm/6">Highlights</span>
                         </Button>
-                        </div>
+                        <Button onClick={handleDownloadClick} className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"
+                                title="Download Tracelinks">
+                            <ArrowDownTrayIcon className="h-4"/>
+                        </Button>
 
                     </div>
                 </div>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-2 pt-2">
                 {sortedTraceLinks.map((link, idx) => (
                     <TraceLinkItem
                         key={idx}

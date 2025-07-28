@@ -1,6 +1,6 @@
 import React from "react";
-import { Position } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
-import { useHighlightContext } from "@/contexts/HighlightTracelinksContextType";
+import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {Component} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 
@@ -69,10 +69,13 @@ function wrapText(text: string, maxWidth: number, font: string): string[] {
     return lines;
 }
 
-export default function UMLNode({ component, position }: UMLNodeProps) {
-    const { x: posX, y: posY } = position;
-    const { highlightElement, highlightedTraceLinks, highlightingColor } = useHighlightContext();
-    const { highlightInconsistencyWithModelId, highlightedModelInconsistencies, highlightingColorInconsistencies } = useInconsistencyContext();
+export default function UMLNode({component, position}: UMLNodeProps) {
+    const {x: posX, y: posY} = position;
+    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+    const {
+        highlightInconsistencyWithModelId,
+        highlightedModelInconsistencies,
+    } = useInconsistencyContext();
 
     const fontSize = 12;
     const fontFamily = "sans-serif";
@@ -100,15 +103,6 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
 
     const gradientId = `gradient-${component.id}`;
 
-    const fillStyle =
-        isTraceLinkHighlighted && isInconsistencyHighlighted
-            ? `url(#${gradientId})`
-            : isTraceLinkHighlighted
-                ? highlightingColor
-                : isInconsistencyHighlighted
-                    ? highlightingColorInconsistencies
-                    : "#ffffff";
-
     return (
         <g
             transform={`translate(${posX}, ${posY})`}
@@ -120,19 +114,19 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
         >
             {component.name}
 
-            {isTraceLinkHighlighted && isInconsistencyHighlighted && (
-                <defs>
-                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor={highlightingColor} />
-                        <stop offset="100%" stopColor={highlightingColorInconsistencies} />
-                    </linearGradient>
-                </defs>
-            )}
+            <defs>
+                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"
+                          stopColor={isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : "var(--color-highlight-none)"}/>
+                    <stop offset="100%"
+                          stopColor={isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" : isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : "var(--color-highlight-none)"}/>
+                </linearGradient>
+            </defs>
 
             <rect
                 width={calculatedWidth}
                 height={calculatedHeight}
-                fill={fillStyle}
+                fill={`url(#${gradientId})`}
                 stroke="#4b5563"
             />
             <text
@@ -160,9 +154,9 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
 
             {/* UML component symbol (top-right corner) */}
             <g transform={`translate(${calculatedWidth - 16}, 6)`}>
-                <rect width={10} height={14} fill="white" stroke="black" />
-                <rect y={2} x={-4} width={8} height={3} fill="white" stroke="black" />
-                <rect y={7} x={-4} width={8} height={3} fill="white" stroke="black" />
+                <rect width={10} height={14} fill="white" stroke="black"/>
+                <rect y={2} x={-4} width={8} height={3} fill="white" stroke="black"/>
+                <rect y={7} x={-4} width={8} height={3} fill="white" stroke="black"/>
             </g>
         </g>
     );

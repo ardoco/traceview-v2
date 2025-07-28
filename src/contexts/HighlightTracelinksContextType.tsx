@@ -8,9 +8,9 @@ interface HighlightTracelinksContextType {
     highlightElement: (id: number| string | null, type: string) => void;
     highlightSingleTraceLink: (traceLinks:TraceLink) => void;
     traceLinks:TraceLink[];
-    highlightingColor: string;
     showNoTraceLinksMessage: boolean;
     resetHighlightedTraceLinks: () => void;
+    lastSearchTimestamp: number;
 }
 
 interface HighlightProviderProps {
@@ -31,8 +31,7 @@ export const useHighlightContext = () => {
 export function HighlightProvider({children, traceLinks}: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const [showNoTraceLinksMessage, setShowNoTraceLinksMessage] = useState(false);
-
-    const highlightingColor = "#fde047"; // Highlight color
+    const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
 
     const highlightElement = (id: number| string | null, type: string) => {
         if (id === null) {
@@ -61,10 +60,12 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
             }, 2000);
         }
         setHighlightedTraceLinks(matchingTraceLinks);
+        setLastSearchTimestamp(Date.now());
     };
 
     const highlightSingleTraceLink = (traceLinks:TraceLink) =>{
         setHighlightedTraceLinks([traceLinks]);
+        setLastSearchTimestamp(Date.now());
     }
 
     const resetHighlightedTraceLinks = () => {
@@ -79,9 +80,9 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 highlightElement,
                 highlightSingleTraceLink,
                 traceLinks,
-                highlightingColor,
                 showNoTraceLinksMessage,
-                resetHighlightedTraceLinks
+                resetHighlightedTraceLinks,
+                lastSearchTimestamp
             }}
         >
             {children}

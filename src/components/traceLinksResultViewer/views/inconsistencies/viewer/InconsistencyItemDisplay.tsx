@@ -1,33 +1,33 @@
 import React from "react";
 import {
     Inconsistency,
-    InconsistencyType, MissingModelInstanceInconsistency, MissingTextForModelElementInconsistency
+    InconsistencyType,
+    MissingModelInstanceInconsistency,
+    MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
+import clsx from "clsx";
 
 
 export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency: Inconsistency, index: number }) {
-    const {highlightedInconsistencies, highlightSingleInconsistency, highlightingColorInconsistencies} = useInconsistencyContext()
+    const {highlightedInconsistencies, highlightSingleInconsistency} = useInconsistencyContext()
     const {resetHighlightedTraceLinks} = useHighlightContext()
     const showSentenceNumber = inconsistency.type === InconsistencyType.MissingModelInstance;
     const showModelElement = inconsistency.type === InconsistencyType.MissingTextForModelElement;
 
-    if ( !inconsistency) {
+    if (!inconsistency) {
         return null;
     }
 
     return (
         <div
-            className={`p-2 border rounded-lg transition cursor-pointer hover:bg-gray-200`}
+            className={clsx("p-2 border rounded-lg transition cursor-pointer hover:bg-gray-200",
+                highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none"
+            )}
             onClick={() => {
                 highlightSingleInconsistency(inconsistency)
                 resetHighlightedTraceLinks()
-            }}
-            style={{
-                backgroundColor: highlightedInconsistencies.includes(inconsistency)
-                    ? highlightingColorInconsistencies
-                    : undefined
             }}
         >
             {/*<span className="mr-3 font-bold text-gray-600">{index}.</span>*/}

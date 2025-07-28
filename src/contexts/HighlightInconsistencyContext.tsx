@@ -7,20 +7,21 @@ import {
 interface InconsistencyContextProps {
     children: React.ReactNode;
     inconsistencies: Inconsistency[];
+    useInconsitencies: boolean;
 }
 
 interface InconsistencyContextType {
     highlightedInconsistencies: Inconsistency[];
     highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[];
     highlightedModelInconsistencies: MissingTextForModelElementInconsistency[];
-    highlightSingleInconsistency: (inconsistency:Inconsistency) => void;
     inconsistencies: Inconsistency[];
     modelInconsistencies: MissingTextForModelElementInconsistency[];
     sentenceInconsistencies: MissingModelInstanceInconsistency[];
     highlightInconsistencyWithSentence: (sentence: number) => void;
     highlightInconsistencyWithModelId: (modelElementId: string) => void;
     resetHighlightedInconsistencies: () => void;
-    highlightingColorInconsistencies: string;
+    lastSearchTimestamp: number;
+    highlightSingleInconsistency: (inconsistency: Inconsistency) => void;
 }
 
 const InconsistencyContext = createContext<InconsistencyContextType | undefined>(undefined);
@@ -34,48 +35,37 @@ export const useInconsistencyContext = () => {
 }
 
 
-export function InconsistencyProvider({children, inconsistencies}: InconsistencyContextProps) {
+export function InconsistencyProvider({children, inconsistencies, useInconsitencies}: InconsistencyContextProps) {
     const [highlightedInconsistencies, setHighlightedInconsistencies] = useState<Inconsistency[]>(inconsistencies);
-
-    // red for  inconsistencies
-    // const highlightingColor = "#CDC392";
-    const highlightingColor = "#EDEEC9";
+    const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
 
     const highlightSingleInconsistency = (inconsistency: Inconsistency) => {
-        if (inconsistency === undefined || inconsistency === null) {
-            console.warn("Tried to highlight an undefined or null inconsistency");
-            return;
-        }
-
-        // // Unhighlight the inconsistency if it's already highlighted
-        // if (highlightedInconsistencies.includes(inconsistency)) {
-        //     setHighlightedInconsistencies(prev => prev.filter(item => item !== inconsistency));
-        //     return;
-        // }
-
         setHighlightedInconsistencies([inconsistency]);
-    };
+        setLastSearchTimestamp(Date.now());
+    }
 
     const highlightInconsistencyWithSentence = (sentence: number)=> {
         const inconsistency = inconsistencies
-            .find(inc => inc.type === InconsistencyType.MissingModelInstance && (inc as MissingModelInstanceInconsistency).sentenceNumber === sentence);
+            .filter(inc => inc.type === InconsistencyType.MissingModelInstance && (inc as MissingModelInstanceInconsistency).sentenceNumber === sentence);
         if (inconsistency) {
-            highlightSingleInconsistency(inconsistency);
+            setHighlightedInconsistencies(inconsistency);
         } else {
             setHighlightedInconsistencies([]);
             console.warn(`No inconsistency found for sentence number ${sentence}`);
         }
+        setLastSearchTimestamp(Date.now());
     }
 
     const highlightInconsistencyWithModelId = (modelElementId: string) => {
         const inconsistency = inconsistencies
-            .find(inc => inc.type === InconsistencyType.MissingTextForModelElement && (inc as MissingTextForModelElementInconsistency).modelElementId === modelElementId);
+            .filter(inc => inc.type == InconsistencyType.MissingTextForModelElement && (inc as MissingTextForModelElementInconsistency).modelElementId === modelElementId);
         if (inconsistency) {
-            highlightSingleInconsistency(inconsistency);
+            setHighlightedInconsistencies(inconsistency);
         } else {
             setHighlightedInconsistencies([]);
             console.warn(`No inconsistency found for model element ID ${modelElementId}`);
         }
+        setLastSearchTimestamp(Date.now());
     }
 
     const resetHighlightedInconsistencies = () => {
@@ -104,14 +94,14 @@ export function InconsistencyProvider({children, inconsistencies}: Inconsistency
             highlightedInconsistencies,
             highlightedSentenceInconsistencies,
             highlightedModelInconsistencies,
-            highlightSingleInconsistency,
             inconsistencies,
             modelInconsistencies,
             sentenceInconsistencies,
             highlightInconsistencyWithSentence,
             highlightInconsistencyWithModelId,
             resetHighlightedInconsistencies,
-            highlightingColorInconsistencies : highlightingColor
+            lastSearchTimestamp,
+            highlightSingleInconsistency
         }}>
             {children}
         </InconsistencyContext.Provider>
