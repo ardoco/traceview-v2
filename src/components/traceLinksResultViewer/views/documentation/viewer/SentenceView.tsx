@@ -16,7 +16,8 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
 
     return (
         <div
-            className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer hover:bg-gray-200 bg-highlight-none",
+            className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer bg-highlight-none",
+                !traceLinkHighlight && !inconsistencyHighlight && "hover:bg-gray-100",
                 !traceLinkHighlight && inconsistencyHighlight && "bg-highlight-inconsistency",
                 traceLinkHighlight && !inconsistencyHighlight && "bg-highlight-tracelink",
                 traceLinkHighlight && inconsistencyHighlight && "bg-gradient-to-r from-highlight-tracelink to-highlight-inconsistency",
@@ -26,7 +27,7 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
                 highlightInconsistencyWithSentence(sentence.identifier);
             }}
         >
-            <span className="mr-3 font-bold text-gray-600">{sentence.identifier}.</span>
+            <span className="mr-3 font-bold">{sentence.identifier}.</span>
             <p className="flex-1 text-black">{sentence.getContent()}</p>
 
         </div>

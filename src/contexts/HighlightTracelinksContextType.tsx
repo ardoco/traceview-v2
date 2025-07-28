@@ -3,19 +3,22 @@
 import React, {createContext, useContext, useState} from 'react';
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 
+type MessageSource = 'tracelink-only' | 'element-click' | null;
+
 interface HighlightTracelinksContextType {
     highlightedTraceLinks: TraceLink[];
     highlightElement: (id: number| string | null, type: string) => void;
     highlightSingleTraceLink: (traceLinks:TraceLink) => void;
     traceLinks:TraceLink[];
-    showNoTraceLinksMessage: boolean;
     resetHighlightedTraceLinks: () => void;
     lastSearchTimestamp: number;
+    messageSource: MessageSource;
 }
 
 interface HighlightProviderProps {
     children: React.ReactNode;
     traceLinks: TraceLink[];
+    useTraceLinks?: boolean;
 }
 
 const HighlightContext = createContext<HighlightTracelinksContextType | undefined>(undefined);
@@ -28,12 +31,15 @@ export const useHighlightContext = () => {
     return context;
 };
 
-export function HighlightProvider({children, traceLinks}: HighlightProviderProps) {
+export function HighlightProvider({children, traceLinks, useTraceLinks=true}: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
-    const [showNoTraceLinksMessage, setShowNoTraceLinksMessage] = useState(false);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
+    const [messageSource, setMessageSource] = useState<MessageSource>(null);
 
     const highlightElement = (id: number| string | null, type: string) => {
+        if (!useTraceLinks) {
+            return;
+        }
         if (id === null) {
             setHighlightedTraceLinks([]);
             return;
@@ -50,27 +56,23 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
             }
         }
 
-        if (matchingTraceLinks.length === 0) {
-            setShowNoTraceLinksMessage(false);
-            requestAnimationFrame(() => {
-                setShowNoTraceLinksMessage(true);
-            });
-            setTimeout(() => {
-                setShowNoTraceLinksMessage(false);
-            }, 2000);
-        }
         setHighlightedTraceLinks(matchingTraceLinks);
+        setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
     };
 
     const highlightSingleTraceLink = (traceLinks:TraceLink) =>{
+        if (!useTraceLinks) {
+            return;
+        }
         setHighlightedTraceLinks([traceLinks]);
+        setMessageSource('tracelink-only');
         setLastSearchTimestamp(Date.now());
     }
 
     const resetHighlightedTraceLinks = () => {
         setHighlightedTraceLinks([]);
-        setShowNoTraceLinksMessage(false);
+        setMessageSource(null);
     }
 
     return (
@@ -80,9 +82,9 @@ export function HighlightProvider({children, traceLinks}: HighlightProviderProps
                 highlightElement,
                 highlightSingleTraceLink,
                 traceLinks,
-                showNoTraceLinksMessage,
                 resetHighlightedTraceLinks,
-                lastSearchTimestamp
+                lastSearchTimestamp,
+                messageSource
             }}
         >
             {children}

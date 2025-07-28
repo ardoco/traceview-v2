@@ -22,12 +22,13 @@ export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency
 
     return (
         <div
-            className={clsx("p-2 border rounded-lg transition cursor-pointer hover:bg-gray-200",
-                highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none"
+            className={clsx("p-2 border rounded-lg transition cursor-pointer ",
+                highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none hover:bg-gray-100"
             )}
             onClick={() => {
-                highlightSingleInconsistency(inconsistency)
                 resetHighlightedTraceLinks()
+                highlightSingleInconsistency(inconsistency)
+
             }}
         >
             {/*<span className="mr-3 font-bold text-gray-600">{index}.</span>*/}

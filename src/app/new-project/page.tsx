@@ -7,7 +7,9 @@ import {FileType} from "@/components/dataTypes/FileType";
 export default function startNewProject() {
     return(
         <div className="bg-white z-1 relative">
-            <FormProvider allowedFileTypes={Object.values(FileType).filter(type => type !== FileType.Trace_Link_JSON)}>
+            <FormProvider allowedFileTypes={
+                Object.values(FileType)
+                    .filter(type => type !== FileType.Trace_Link_JSON && type !== FileType.Inconsistencies_JSON)}>
                 <MultiStepForm/>
             </FormProvider>
         </div>

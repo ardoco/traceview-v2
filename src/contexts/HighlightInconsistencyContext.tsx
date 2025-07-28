@@ -4,10 +4,12 @@ import {
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 
+type MessageSource = 'inconsistency-only' | 'element-click' | null;
+
 interface InconsistencyContextProps {
     children: React.ReactNode;
     inconsistencies: Inconsistency[];
-    useInconsitencies: boolean;
+    useInconsistencies: boolean;
 }
 
 interface InconsistencyContextType {
@@ -22,6 +24,7 @@ interface InconsistencyContextType {
     resetHighlightedInconsistencies: () => void;
     lastSearchTimestamp: number;
     highlightSingleInconsistency: (inconsistency: Inconsistency) => void;
+    messageSource: MessageSource;
 }
 
 const InconsistencyContext = createContext<InconsistencyContextType | undefined>(undefined);
@@ -35,16 +38,25 @@ export const useInconsistencyContext = () => {
 }
 
 
-export function InconsistencyProvider({children, inconsistencies, useInconsitencies}: InconsistencyContextProps) {
-    const [highlightedInconsistencies, setHighlightedInconsistencies] = useState<Inconsistency[]>(inconsistencies);
+export function InconsistencyProvider({children, inconsistencies, useInconsistencies}: InconsistencyContextProps) {
+    const [highlightedInconsistencies, setHighlightedInconsistencies] = useState<Inconsistency[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
+    const [messageSource, setMessageSource] = useState<MessageSource>(null);
 
     const highlightSingleInconsistency = (inconsistency: Inconsistency) => {
+        if (!useInconsistencies) {
+            return;
+        }
         setHighlightedInconsistencies([inconsistency]);
+        setMessageSource('inconsistency-only');
         setLastSearchTimestamp(Date.now());
     }
 
     const highlightInconsistencyWithSentence = (sentence: number)=> {
+        if (!useInconsistencies) {
+            return;
+        }
+
         const inconsistency = inconsistencies
             .filter(inc => inc.type === InconsistencyType.MissingModelInstance && (inc as MissingModelInstanceInconsistency).sentenceNumber === sentence);
         if (inconsistency) {
@@ -53,10 +65,14 @@ export function InconsistencyProvider({children, inconsistencies, useInconsitenc
             setHighlightedInconsistencies([]);
             console.warn(`No inconsistency found for sentence number ${sentence}`);
         }
+        setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
     }
 
     const highlightInconsistencyWithModelId = (modelElementId: string) => {
+        if (!useInconsistencies) {
+            return;
+        }
         const inconsistency = inconsistencies
             .filter(inc => inc.type == InconsistencyType.MissingTextForModelElement && (inc as MissingTextForModelElementInconsistency).modelElementId === modelElementId);
         if (inconsistency) {
@@ -65,11 +81,13 @@ export function InconsistencyProvider({children, inconsistencies, useInconsitenc
             setHighlightedInconsistencies([]);
             console.warn(`No inconsistency found for model element ID ${modelElementId}`);
         }
+        setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
     }
 
     const resetHighlightedInconsistencies = () => {
         setHighlightedInconsistencies([]);
+        setMessageSource(null);
     }
 
     let modelInconsistencies: MissingTextForModelElementInconsistency[] =
@@ -101,7 +119,8 @@ export function InconsistencyProvider({children, inconsistencies, useInconsitenc
             highlightInconsistencyWithModelId,
             resetHighlightedInconsistencies,
             lastSearchTimestamp,
-            highlightSingleInconsistency
+            highlightSingleInconsistency,
+            messageSource
         }}>
             {children}
         </InconsistencyContext.Provider>

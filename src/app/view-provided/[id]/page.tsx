@@ -10,45 +10,70 @@ import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {ErrorDisplay} from "@/app/view/[id]/page";
 import {useNavigation} from "@/contexts/NavigationContext";
+import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
+import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
+import {
+    parseInconsistenciesFromJSON
+} from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
 
 export default function ViewProvided() {
     const {id} = useParams<{ id: string }>();
 
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
+    const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes["SAD_SAM_CODE"]); // Default type
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
     const { setCurrentProjectId } = useNavigation();
 
+    const [findInconsistencies, setFindInconsistencies] = useState(false);
+    const [findTraceLinks, setFindTraceLinks] = useState(false);
     const uriDecodedId = decodeURIComponent(id);
 
     useEffect(() => {
         if (!id) {
+            console.log("ID is not provided, skipping loading of project files.");
             return;
         }
 
-        async function getAndSetUploadedFileTypes() {
-            const uploadedFileTypes = await loadProjectMetaData(id)
-            setUploadedFileTypes(uploadedFileTypes);
-        }
-        getAndSetUploadedFileTypes();
-
-
         async function loadModel() {
+
+            // get the uploaded file types from the metadata
+            const uploadedFileTypes1 = await loadProjectMetaData(id);
+            setUploadedFileTypes(uploadedFileTypes1);
+            setFindInconsistencies(uploadedFileTypes1.includes(FileType.Inconsistencies_JSON));
+            setFindTraceLinks(uploadedFileTypes1.includes(FileType.Trace_Link_JSON));
+
             setError(null);
             try {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined") {
-                    const result = await loadProjectFile(id, FileType.Trace_Link_JSON, false);
-
-                    if (!result) {
-                        console.warn("No project file found for ID:", id);
-                        setTraceLinks([]);
-                        return;
+                    if (uploadedFileTypes1.includes(FileType.Inconsistencies_JSON)) {
+                        // parse file with provided inconsistencies
+                        const inconsistenciesFile = await loadProjectFile(id, FileType.Inconsistencies_JSON, false);
+                        if (inconsistenciesFile) {
+                            const inconsistenciesJson = JSON.parse(inconsistenciesFile.content);
+                            setInconsistencies(parseInconsistenciesFromJSON(inconsistenciesJson.inconsistencies));
+                        } else {
+                            console.warn("No inconsistencies file found for ID:", id);
+                            setInconsistencies([]);
+                        }
                     }
-                    const rawJson = JSON.parse(result.content);
-                    setTraceLinks(parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks));
-                    setTraceLinkType(TraceLinkTypes[rawJson.traceLinkType] ?? TraceLinkTypes["SAD_SAM_CODE"]);
+
+                    if (uploadedFileTypes1.includes(FileType.Trace_Link_JSON)) {
+                        // parse file with provided traceLinks
+                        const result = await loadProjectFile(id, FileType.Trace_Link_JSON, false);
+                        if (result) {
+                            const rawJson = JSON.parse(result.content);
+                            setTraceLinks(parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks));
+                            setTraceLinkType(TraceLinkTypes[rawJson.traceLinkType] ?? TraceLinkTypes["SAD_SAM_CODE"]);
+                        } else {
+                            console.warn("No project file found for ID:", id);
+                            setTraceLinks([]);
+                            return;
+                        }
+                    }
+
                 } else {
                     console.log("loadModel called on server, skipping ClientFileStorage.");
                 }
@@ -75,12 +100,15 @@ export default function ViewProvided() {
         <>
             {error && <ErrorDisplay message={error} onRetry={() => {
             }} retryAllowed={false}/>}
-            <HighlightProvider traceLinks={traceLinks}>
-                <ResultDisplay
-                    id={uriDecodedId}
-                    traceLinkType={traceLinkType}
-                    displayOptions={uploadedFileTypes.map(filetype => getResultViewOption(filetype))}/>
-            </HighlightProvider>
+            <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
+                <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks}>
+                    <ResultDisplay
+                        id={uriDecodedId}
+                        traceLinkType={traceLinkType}
+                        displayOptions={uploadedFileTypes.map(filetype => getResultViewOption(filetype))}
+                    />
+                </HighlightProvider>
+            </InconsistencyProvider>
         </>
     );
 }

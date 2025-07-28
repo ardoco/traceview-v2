@@ -7,6 +7,7 @@ export enum FileType {
     Code_Model = "Code Model",
     Trace_Link_JSON = "TraceLinks",
     None = "Select file type",
+    Inconsistencies_JSON = "Inconsistencies",
 }
 
 export function convertStringToFileType(value: string): FileType {
@@ -30,6 +31,8 @@ export function getResultViewOption(fileType: FileType): ResultPanelType {
             return ResultPanelType.Code_Model;
         case FileType.Trace_Link_JSON:
             return ResultPanelType.TraceLinks;
+        case FileType.Inconsistencies_JSON:
+            return ResultPanelType.Inconsistencies;
         default:
             throw new Error(`No result view option defined for file type: ${fileType}`);
     }

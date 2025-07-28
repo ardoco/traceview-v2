@@ -62,7 +62,9 @@
 
   --color-highlight-tracelink: var(--color-blau-700);
   --color-highlight-inconsistency: var(--color-lila-800);
-  --color-highlight-none: var(--color-white)
+  --color-highlight-none: var(--color-white);
+  --color-highlight-tracelink-text: var(--color-blau-400);
+    --color-highlight-inconsistency-text: var(--color-lila-600);
 }
 
 /*
@@ -104,4 +106,12 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes blink {
+  0% { opacity: 0.0; }
+}
+
+.animate-blink {
+  animation: blink 0.01s ease-in;
 }

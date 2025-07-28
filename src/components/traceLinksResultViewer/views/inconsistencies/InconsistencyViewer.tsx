@@ -79,7 +79,7 @@ export default function InconsistencyViewer({headerOffset=10}: InconsistencyView
     if (isLoading) {
         return (
             <div className="p-2 text-center py-8 text-gray-500">
-                Generating trace links, this may take a few moments...
+                Generating inconsistencies, this may take a few moments...
             </div>
         );
     }

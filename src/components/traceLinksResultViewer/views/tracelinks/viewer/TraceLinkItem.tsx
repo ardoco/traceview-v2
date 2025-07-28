@@ -24,8 +24,9 @@ export function TraceLinkItem({link, showCode, showModel, showSentence}: TraceLi
             )
             }
             onClick={() => {
-                highlightSingleTraceLink(link);
                 resetHighlightedInconsistencies();
+                highlightSingleTraceLink(link);
+
             }}
         >
             {showCode && (
