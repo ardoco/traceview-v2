@@ -40,7 +40,7 @@ export default function ResultPanel({ id, collapsible, displayOptions, defaultVi
             {/*drop down*/}
             <div className="sticky top-0 flex bg-white">
                 <Select value={selectedPanel} onChange={(e) => handleOptionChange(e.target.value as ResultPanelType)}
-                        className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:border-gruen ">
+                        className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:outline-none">
                     {displayOptions
                         .map((option) => (
                             <option key={option} value={option}>

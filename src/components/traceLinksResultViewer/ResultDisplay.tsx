@@ -32,7 +32,7 @@ export function ResultDisplay({id, traceLinkType, displayOptions, inconsistencie
         const traceCount = highlightedTraceLinks.length;
         const inconsistencyCount = highlightedInconsistencies.length;
 
-        let newMessage: string | null = null;
+        let newMessage: string;
 
         if (inconsistencies) {
             const traceText = traceCount === 0 ? 'No traceLinks' :
@@ -51,7 +51,7 @@ export function ResultDisplay({id, traceLinkType, displayOptions, inconsistencie
                     `${traceCount} traceLinks found`;
         }
 
-        if (newMessage) {
+        if (newMessage && (traceLinkTimestamp !== 0  || inconsistencyTimestamp !== 0)) {
             if (hideTimeout) clearTimeout(hideTimeout);
 
             setCurrentMessage(newMessage);
@@ -90,16 +90,6 @@ export function ResultDisplay({id, traceLinkType, displayOptions, inconsistencie
                 id={id}
                 traceLinkType={traceLinkType}
             />
-
-            {/*{showNoTraceLinksMessage && (*/}
-            {/*    <NoTraceLinksMessage/>*/}
-            {/*)}*/}
-            {/*{showMessage && (*/}
-            {/*inconsistencies ? (*/}
-            {/*    <FoundTraceLinksInconsistencies numberTraceLinks={numberOfHighlightedTraceLinks} numberInconsistencies={numberOfHighlightedInconsistencies}/>*/}
-            {/*) :*/}
-            {/*    <FoundTraceLinksInconsistencies numberTraceLinks={numberOfHighlightedTraceLinks}/>*/}
-            {/*)}*/}
 
             {messageVisible && currentMessage && (
                 <div
