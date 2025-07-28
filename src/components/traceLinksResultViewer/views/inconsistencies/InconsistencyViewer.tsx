@@ -12,7 +12,11 @@ import {
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 
-export default function InconsistencyViewer() {
+interface InconsistencyViewerProps {
+    headerOffset?: number;
+}
+
+export default function InconsistencyViewer({headerOffset=10}: InconsistencyViewerProps) {
     const {inconsistencies} = useInconsistencyContext();
     const [filterType, setFilterType] = useState<InconsistencyType | "All">("All");
 
@@ -83,10 +87,9 @@ export default function InconsistencyViewer() {
     return (
         <div className="px-2 pb-2">
             {/* Sticky Top Bar */}
-            <div className="sticky top-10 flex justify-between items-start bg-white z-10 border-b px-2 pt-1">
+            <div className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
 
                 <div className="w-full">
-
 
                     <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
                         <div className="flex-1">

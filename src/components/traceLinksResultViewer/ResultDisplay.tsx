@@ -39,7 +39,7 @@ export function ResultDisplay({id, traceLinkType, displayOptions, inconsistencie
                 traceCount === 1 ? '1 traceLink' :
                     `${traceCount} traceLinks`;
 
-            const inconsistencyText = inconsistencyCount === 0 ? 'No inconsistencies' :
+            const inconsistencyText = inconsistencyCount === 0 ? 'no inconsistencies' :
                 inconsistencyCount === 1 ? '1 inconsistency' :
                     `${inconsistencyCount} inconsistencies`;
 
