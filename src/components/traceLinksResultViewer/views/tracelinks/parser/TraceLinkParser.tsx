@@ -9,7 +9,7 @@ export function parseTraceLinksFromJSON (traceLinkType:any, traceLinksJson:any):
 
     if (traceLinkType === 'SAD_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceNumber = parseInt(entry.sentenceNumber);
+        const sentenceNumber = parseInt(entry.sentenceNumber) + 1;
         const codeElementId = entry.codeElementId;
         return new TraceLink(sentenceNumber, "", codeElementId);
       });
@@ -22,7 +22,7 @@ export function parseTraceLinksFromJSON (traceLinkType:any, traceLinksJson:any):
 
     } else if (traceLinkType === 'SAD_SAM_CODE') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceNumber = parseInt(entry.sentenceNumber);
+        const sentenceNumber = parseInt(entry.sentenceNumber) + 1;
         const modelElementId = entry.modelElementId;
         const codeElementId = entry.codeElementId;
         return new TraceLink(sentenceNumber, modelElementId, codeElementId);
@@ -30,7 +30,7 @@ export function parseTraceLinksFromJSON (traceLinkType:any, traceLinksJson:any):
 
     } else if (traceLinkType === 'SAD_SAM') {
       traceLinks = traceLinksData.map((entry:any) => {
-        const sentenceNumber = parseInt(entry.sentenceNumber);
+        const sentenceNumber = parseInt(entry.sentenceNumber) + 1;
         const modelElementId = entry.modelElementId;
         return new TraceLink(sentenceNumber, modelElementId, "");
       });
