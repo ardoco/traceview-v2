@@ -30,7 +30,7 @@ export function ApiAddressProvider({ children }: { children: React.ReactNode }) 
         console.log("cleaned Address", cleanedAddress)
 
         try {
-            const testUrl = `/api/configuration`;
+            const testUrl = `/api/health`;
 
             const res = await fetch(testUrl, {
                 method: 'GET',
@@ -49,7 +49,6 @@ export function ApiAddressProvider({ children }: { children: React.ReactNode }) 
             setApiAddressState(cleanedAddress);
             return true;
         } catch (err) {
-            //console.error(err);
             return false;
         }
     };
