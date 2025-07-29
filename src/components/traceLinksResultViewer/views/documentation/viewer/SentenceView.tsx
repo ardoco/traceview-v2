@@ -11,13 +11,12 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
         highlightInconsistencyWithSentence,
     } = useInconsistencyContext();
 
-    const traceLinkHighlight = highlightedTraceLinks.find(traceLink => traceLink.sentenceNumber === sentence.identifier);
-    const inconsistencyHighlight = highlightedSentenceInconsistencies.find(inc => inc.sentenceNumber === sentence.identifier);
-
+    const traceLinkHighlight = highlightedTraceLinks.find(traceLink => traceLink.sentenceNumber === sentence.identifier) !== undefined;
+    const inconsistencyHighlight = highlightedSentenceInconsistencies.find(inc => inc.sentenceNumber == sentence.identifier) !== undefined;
     return (
         <div
-            className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer bg-highlight-none",
-                !traceLinkHighlight && !inconsistencyHighlight && "hover:bg-gray-100",
+            className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer ",
+                !traceLinkHighlight && !inconsistencyHighlight && "hover:bg-gray-100 bg-highlight-none",
                 !traceLinkHighlight && inconsistencyHighlight && "bg-highlight-inconsistency",
                 traceLinkHighlight && !inconsistencyHighlight && "bg-highlight-tracelink",
                 traceLinkHighlight && inconsistencyHighlight && "bg-gradient-to-r from-highlight-tracelink to-highlight-inconsistency",

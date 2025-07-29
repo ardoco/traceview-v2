@@ -28,7 +28,6 @@ export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency
             onClick={() => {
                 resetHighlightedTraceLinks()
                 highlightSingleInconsistency(inconsistency)
-
             }}
         >
             {/*<span className="mr-3 font-bold text-gray-600">{index}.</span>*/}

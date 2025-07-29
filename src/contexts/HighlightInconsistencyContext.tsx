@@ -43,6 +43,23 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
 
+    let modelInconsistencies: MissingTextForModelElementInconsistency[] =
+        inconsistencies
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
+
+    let sentenceInconsistencies: MissingModelInstanceInconsistency[] =
+        inconsistencies
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
+
+    let highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[] =
+        highlightedInconsistencies
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
+
+    let highlightedModelInconsistencies: MissingTextForModelElementInconsistency[] =
+        highlightedInconsistencies
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
+
+
     const highlightSingleInconsistency = (inconsistency: Inconsistency) => {
         if (!useInconsistencies) {
             return;
@@ -89,23 +106,6 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
         setHighlightedInconsistencies([]);
         setMessageSource(null);
     }
-
-    let modelInconsistencies: MissingTextForModelElementInconsistency[] =
-        inconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
-
-    let sentenceInconsistencies: MissingModelInstanceInconsistency[] =
-        inconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
-
-    let highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[] =
-        highlightedInconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
-
-    let highlightedModelInconsistencies: MissingTextForModelElementInconsistency[] =
-        highlightedInconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
-
 
     return (
         <InconsistencyContext.Provider value={{
