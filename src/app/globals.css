@@ -64,7 +64,8 @@
   --color-highlight-inconsistency: var(--color-lila-800);
   --color-highlight-none: var(--color-white);
   --color-highlight-tracelink-text: var(--color-blau-400);
-    --color-highlight-inconsistency-text: var(--color-lila-600);
+  --color-highlight-inconsistency-text: var(--color-lila-600);
+    --color-highlight-source: var(--color-black-700);
 }
 
 /*
@@ -114,4 +115,11 @@
 
 .animate-blink {
   animation: blink 0.01s ease-in;
+}
+
+.border-highlight-source {
+  border: 2px solid var(--color-highlight-source);
+}
+.shadow-highlight-source {
+  box-shadow: 0 0 0px var(--color-highlight-source);
 }

@@ -11,14 +11,14 @@ type ACMNodeProps = {
 }
 
 export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodeProps) {
-    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+    const {highlightElement, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
     const [hovered, setHovered] = useState(false);
 
     const isHighlightedByTraceLink = highlightedTraceLinks.some(traceLink =>
         node.data.path && traceLink.codeElementId === node.data.id
     );
 
-
+    const isSource = lastClickedSource?.type === 'codeElementId' && lastClickedSource?.id === node.data.id;
 
     function textSymbol() {
         // 'node' is an ACMLayoutNode. Its 'children' are visible children after layout.
@@ -48,7 +48,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
                 setTreeDataRoot(Object.assign(Object.create(Object.getPrototypeOf(treeDataRoot)), treeDataRoot));
 
         } else {
-            highlightElement(node.data.path ?? null, "codeElementId");
+            highlightElement(node.data.id ?? null, "codeElementId");
         }
     };
 
@@ -61,9 +61,10 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
         >
             <circle
                 r={isHighlightedByTraceLink ? 6 : 4}
-                fill={hovered ? "#D3D3D3" : isHighlightedByTraceLink ? "var(--color-highlight-tracelink)" : "#999"}
+                fill={hovered ? "#D3D3D3" : isHighlightedByTraceLink || isSource? "var(--color-highlight-tracelink)" : "#999"}
                 strokeWidth={1}
-                stroke={hovered ? "#A9A9A9" : isHighlightedByTraceLink ? "var(--color-highlight-tracelink)" : "#555"}
+                stroke={hovered ? "#A9A9A9" : isSource ? "var(--color-highlight-source)" : (isHighlightedByTraceLink ? "var(--color-highlight-tracelink)" : "#555")}
+                strokeDasharray={isSource ? "4 2" : "none"}
             />
 
             {textSymbol()}

@@ -141,11 +141,11 @@ export default function NewUploadProject() {
                 onRetry={handleRetry}
                 onViewFiles={handleViewFiles}
             />
-            <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
-                <HighlightProvider traceLinks={traceLinks}>
+            <HighlightProvider traceLinks={traceLinks}>
+                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
                     <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>
-                </HighlightProvider>
-            </InconsistencyProvider>
+                </InconsistencyProvider>
+            </HighlightProvider>
         </>
     );
 }

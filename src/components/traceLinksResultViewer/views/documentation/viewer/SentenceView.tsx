@@ -5,7 +5,7 @@ import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext"
 import clsx from "clsx";
 
 export function SentenceView({sentence}: { sentence: Sentence }) {
-    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+    const {highlightElement, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
     const {
         highlightedSentenceInconsistencies,
         highlightInconsistencyWithSentence,
@@ -13,6 +13,9 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
 
     const traceLinkHighlight = highlightedTraceLinks.find(traceLink => traceLink.sentenceNumber === sentence.identifier) !== undefined;
     const inconsistencyHighlight = highlightedSentenceInconsistencies.find(inc => inc.sentenceNumber == sentence.identifier) !== undefined;
+
+    const isSource = lastClickedSource?.type === 'sentence' && lastClickedSource?.id === sentence.identifier;
+
     return (
         <div
             className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer ",
@@ -20,6 +23,7 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
                 !traceLinkHighlight && inconsistencyHighlight && "bg-highlight-inconsistency",
                 traceLinkHighlight && !inconsistencyHighlight && "bg-highlight-tracelink",
                 traceLinkHighlight && inconsistencyHighlight && "bg-gradient-to-r from-highlight-tracelink to-highlight-inconsistency",
+                isSource && "border-2 border-highlight-source shadow-highlight-source",
             )}
             onClick={() => {
                 highlightElement(sentence.identifier, "sentenceId")

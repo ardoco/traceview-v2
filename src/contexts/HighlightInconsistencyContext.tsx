@@ -3,6 +3,7 @@ import {
     Inconsistency, InconsistencyType, MissingModelInstanceInconsistency,
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 
 type MessageSource = 'inconsistency-only' | 'element-click' | null;
 
@@ -42,6 +43,7 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
     const [highlightedInconsistencies, setHighlightedInconsistencies] = useState<Inconsistency[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
+    const { setLastClickedSource } = useHighlightContext();
 
     let modelInconsistencies: MissingTextForModelElementInconsistency[] =
         inconsistencies
@@ -67,6 +69,7 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
         setHighlightedInconsistencies([inconsistency]);
         setMessageSource('inconsistency-only');
         setLastSearchTimestamp(Date.now());
+        setLastClickedSource(inconsistency.id, 'inconsistency');
     }
 
     const highlightInconsistencyWithSentence = (sentence: number)=> {
@@ -84,6 +87,7 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
         }
         setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
+        setLastClickedSource(sentence,'sentence');
     }
 
     const highlightInconsistencyWithModelId = (modelElementId: string) => {
@@ -100,6 +104,7 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
         }
         setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
+        setLastClickedSource(modelElementId, 'model');
     }
 
     const resetHighlightedInconsistencies = () => {

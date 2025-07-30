@@ -4,6 +4,7 @@ import React, {createContext, useContext, useState} from 'react';
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 
 type MessageSource = 'tracelink-only' | 'element-click' | null;
+type ClickedElementType = 'sentence' | 'model' | 'codeElementId' | 'tracelink' | 'inconsistency' | null; // New type
 
 interface HighlightTracelinksContextType {
     highlightedTraceLinks: TraceLink[];
@@ -13,6 +14,8 @@ interface HighlightTracelinksContextType {
     resetHighlightedTraceLinks: () => void;
     lastSearchTimestamp: number;
     messageSource: MessageSource;
+    lastClickedSource: { id: string | number | null; type: ClickedElementType } | null;
+    setLastClickedSource: (id: string | number | null, type: ClickedElementType) => void;
 }
 
 interface HighlightProviderProps {
@@ -35,6 +38,7 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true}: Hi
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
+    const [lastClickedSource, setLastClickedSource] = useState<{ id: string | number | null; type: ClickedElementType } | null>(null);
 
     const highlightElement = (id: number| string | null, type: string) => {
         if (!useTraceLinks) {
@@ -59,21 +63,29 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true}: Hi
         setHighlightedTraceLinks(matchingTraceLinks);
         setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
+        setLastClickedSource({ id, type: type as ClickedElementType });
+
     };
 
-    const highlightSingleTraceLink = (traceLinks:TraceLink) =>{
+    const highlightSingleTraceLink = (traceLink:TraceLink) =>{
         if (!useTraceLinks) {
             return;
         }
-        setHighlightedTraceLinks([traceLinks]);
+        setHighlightedTraceLinks([traceLink]);
         setMessageSource('tracelink-only');
         setLastSearchTimestamp(Date.now());
+        setLastClickedSource({ id: traceLink.id, type: 'tracelink' });
     }
 
     const resetHighlightedTraceLinks = () => {
         setHighlightedTraceLinks([]);
         setMessageSource(null);
+        setLastClickedSource(null);
     }
+
+    const setLastClickedSourceGlobal = (id: string | number | null, type: ClickedElementType) => {
+        setLastClickedSource({ id, type });
+    };
 
     return (
         <HighlightContext.Provider
@@ -84,7 +96,9 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true}: Hi
                 traceLinks,
                 resetHighlightedTraceLinks,
                 lastSearchTimestamp,
-                messageSource
+                messageSource,
+                lastClickedSource,
+                setLastClickedSource: setLastClickedSourceGlobal,
             }}
         >
             {children}

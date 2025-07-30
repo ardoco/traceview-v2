@@ -12,9 +12,10 @@ import clsx from "clsx";
 
 export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency: Inconsistency, index: number }) {
     const {highlightedInconsistencies, highlightSingleInconsistency} = useInconsistencyContext()
-    const {resetHighlightedTraceLinks} = useHighlightContext()
+    const {resetHighlightedTraceLinks, lastClickedSource} = useHighlightContext()
     const showSentenceNumber = inconsistency.type === InconsistencyType.MissingModelInstance;
     const showModelElement = inconsistency.type === InconsistencyType.MissingTextForModelElement;
+    const isSource = lastClickedSource?.type === 'inconsistency' && lastClickedSource?.id === inconsistency.id;
 
     if (!inconsistency) {
         return null;
@@ -23,7 +24,8 @@ export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency
     return (
         <div
             className={clsx("p-2 border rounded-lg transition cursor-pointer ",
-                highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none hover:bg-gray-100"
+                highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none hover:bg-gray-100",
+                isSource && "border-2 border-highlight-source shadow-highlight-source",
             )}
             onClick={() => {
                 resetHighlightedTraceLinks()

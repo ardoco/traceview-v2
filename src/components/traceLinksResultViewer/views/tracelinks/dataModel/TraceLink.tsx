@@ -5,6 +5,7 @@ export class TraceLink {
     sentenceNumber: number | null;
     modelElementId: string;
     codeElementId: string;
+    id: string;
 
     /**
      * Constructs a new instance of the `TraceLink` class.
@@ -17,6 +18,7 @@ export class TraceLink {
         this.sentenceNumber = sentenceNumber;
         this.modelElementId = modelElementId;
         this.codeElementId = codeElementId;
+        this.id = `${modelElementId}-${codeElementId}-${sentenceNumber}`;
     }
 
 }

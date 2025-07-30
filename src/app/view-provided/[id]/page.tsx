@@ -100,15 +100,15 @@ export default function ViewProvided() {
         <>
             {error && <ErrorDisplay message={error} onRetry={() => {
             }} retryAllowed={false}/>}
-            <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
-                <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks}>
+            <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks}>
+                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
                     <ResultDisplay
                         id={uriDecodedId}
                         traceLinkType={traceLinkType}
                         displayOptions={uploadedFileTypes.map(filetype => getResultViewOption(filetype))}
                     />
-                </HighlightProvider>
-            </InconsistencyProvider>
+                </InconsistencyProvider>
+            </HighlightProvider>
         </>
     );
 }

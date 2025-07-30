@@ -15,12 +15,16 @@ interface TraceLinkItemProps {
 }
 
 export function TraceLinkItem({link, showCode, showModel, showSentence}: TraceLinkItemProps) {
-    const {highlightSingleTraceLink, highlightedTraceLinks} = useHighlightContext();
+    const {highlightSingleTraceLink, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
     const {resetHighlightedInconsistencies} = useInconsistencyContext();
+
+    const isSource = lastClickedSource?.type === 'tracelink' && lastClickedSource?.id === link.id;
+
     return (
         <li
             className={clsx("p-2 border rounded-lg cursor-pointer",
                 highlightedTraceLinks.includes(link) ? "bg-highlight-tracelink" : "bg-highlight-none hover:bg-gray-100",
+                isSource && "border-2 border-highlight-source shadow-highlight-source",
             )
             }
             onClick={() => {

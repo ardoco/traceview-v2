@@ -71,7 +71,7 @@ function wrapText(text: string, maxWidth: number, font: string): string[] {
 
 export default function UMLNode({component, position}: UMLNodeProps) {
     const {x: posX, y: posY} = position;
-    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+    const {highlightElement, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
     const {
         highlightInconsistencyWithModelId,
         highlightedModelInconsistencies,
@@ -101,6 +101,8 @@ export default function UMLNode({component, position}: UMLNodeProps) {
         inc => inc.modelElementId === component.id
     );
 
+    const isSource = lastClickedSource?.type === 'model' && lastClickedSource?.id === component.id;
+
     const gradientId = `gradient-${component.id}`;
 
     return (
@@ -128,7 +130,9 @@ export default function UMLNode({component, position}: UMLNodeProps) {
                 height={calculatedHeight}
                 fill={`url(#${gradientId})`}
                 stroke="#4b5563"
+                strokeWidth={isSource ? 3 : 1}
             />
+
             <text
                 x={calculatedWidth / 2}
                 y={lineHeight}
