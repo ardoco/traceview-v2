@@ -65,7 +65,7 @@ export default function EditApiAddressModal({ isOpen, onClose }: EditApiAddressM
                                 type="url"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
-                                className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blau-500 focus:ring-blau-500 sm:text-sm"
                             />
 
                             {warningMessage && (
@@ -78,7 +78,7 @@ export default function EditApiAddressModal({ isOpen, onClose }: EditApiAddressM
                             <button type="button" className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200" onClick={handleClose}>
                                 Cancel
                             </button>
-                            <button type="button" className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none" onClick={handleSave}>
+                            <button type="button" className="rounded-md bg-blau-500 px-4 py-2 text-sm font-medium text-white hover:bg-blau-400 focus:outline-none" onClick={handleSave}>
                                 Save
                             </button>
                         </div>

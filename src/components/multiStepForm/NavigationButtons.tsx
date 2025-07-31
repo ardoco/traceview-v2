@@ -14,7 +14,7 @@ export default function NavigationButtons({ link_back, link_to_next, finish }: N
             {/* Back button */}
             {link_back && (
                 <Link href={link_back}>
-                    <button className="px-6 py-2 rounded-lg text-lg text-white bg-blau-600 hover:bg-jordy_blue-200">
+                    <button className="px-6 py-2 rounded-lg text-lg text-white bg-blau-500 hover:bg-blau-400">
                         Back
                     </button>
                 </Link>
@@ -23,7 +23,7 @@ export default function NavigationButtons({ link_back, link_to_next, finish }: N
             {/* Next button */}
             {link_to_next && (
                 <Link href={link_to_next}>
-                    <button className="px-6 py-2 rounded-lg text-lg text-white bg-blau-600 hover:bg-jordy_blue-200">
+                    <button className="px-6 py-2 rounded-lg text-lg text-white bg-blau-500 hover:bg-blau-400">
                         {finish ? "Calculate TraceLinks" : "Next"}
                     </button>
                 </Link>
