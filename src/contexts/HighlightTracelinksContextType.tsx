@@ -16,12 +16,14 @@ interface HighlightTracelinksContextType {
     messageSource: MessageSource;
     lastClickedSource: { id: string | number | null; type: ClickedElementType } | null;
     setLastClickedSource: (id: string | number | null, type: ClickedElementType) => void;
+    loading: boolean;
 }
 
 interface HighlightProviderProps {
     children: React.ReactNode;
     traceLinks: TraceLink[];
     useTraceLinks?: boolean;
+    loading?: boolean; // Optional prop to indicate loading state
 }
 
 const HighlightContext = createContext<HighlightTracelinksContextType | undefined>(undefined);
@@ -34,7 +36,7 @@ export const useHighlightContext = () => {
     return context;
 };
 
-export function HighlightProvider({children, traceLinks, useTraceLinks=true}: HighlightProviderProps) {
+export function HighlightProvider({children, traceLinks, useTraceLinks=true, loading=false}: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
@@ -64,7 +66,6 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true}: Hi
         setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
         setLastClickedSource({ id, type: type as ClickedElementType });
-
     };
 
     const highlightSingleTraceLink = (traceLink:TraceLink) =>{
@@ -99,6 +100,7 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true}: Hi
                 messageSource,
                 lastClickedSource,
                 setLastClickedSource: setLastClickedSourceGlobal,
+                loading
             }}
         >
             {children}

@@ -11,6 +11,7 @@ interface InconsistencyContextProps {
     children: React.ReactNode;
     inconsistencies: Inconsistency[];
     useInconsistencies: boolean;
+    loading: boolean; // indicate loading state
 }
 
 interface InconsistencyContextType {
@@ -26,6 +27,7 @@ interface InconsistencyContextType {
     lastSearchTimestamp: number;
     highlightSingleInconsistency: (inconsistency: Inconsistency) => void;
     messageSource: MessageSource;
+    loading: boolean;
 }
 
 const InconsistencyContext = createContext<InconsistencyContextType | undefined>(undefined);
@@ -39,7 +41,7 @@ export const useInconsistencyContext = () => {
 }
 
 
-export function InconsistencyProvider({children, inconsistencies, useInconsistencies}: InconsistencyContextProps) {
+export function InconsistencyProvider({children, inconsistencies, useInconsistencies, loading}: InconsistencyContextProps) {
     const [highlightedInconsistencies, setHighlightedInconsistencies] = useState<Inconsistency[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
@@ -125,7 +127,8 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
             resetHighlightedInconsistencies,
             lastSearchTimestamp,
             highlightSingleInconsistency,
-            messageSource
+            messageSource,
+            loading
         }}>
             {children}
         </InconsistencyContext.Provider>

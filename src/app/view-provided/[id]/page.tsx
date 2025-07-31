@@ -22,6 +22,7 @@ export default function ViewProvided() {
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
     const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE); // Default type
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
     const { setCurrentProjectId } = useNavigation();
@@ -37,13 +38,13 @@ export default function ViewProvided() {
         }
 
         async function loadModel() {
+            setLoading(true);
 
             // get the uploaded file types from the metadata
             const uploadedFileTypes1 = await loadProjectMetaData(id);
             setUploadedFileTypes(uploadedFileTypes1);
             setFindInconsistencies(uploadedFileTypes1.includes(FileType.Inconsistencies_JSON));
             setFindTraceLinks(uploadedFileTypes1.includes(FileType.Trace_Link_JSON));
-
             setError(null);
             try {
                 // Ensure loadProjectFile is only called client-side
@@ -81,6 +82,8 @@ export default function ViewProvided() {
                 console.warn("Failed to load or parse provided tracelinks:", e);
                 setError(`Failed to load or parse provided tracelinks: ${e.message}`);
                 setTraceLinks([]);
+            } finally {
+                setLoading(false);
             }
         }
         loadModel();
@@ -100,8 +103,8 @@ export default function ViewProvided() {
         <>
             {error && <ErrorDisplay message={error} onRetry={() => {
             }} retryAllowed={false}/>}
-            <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks}>
-                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
+            <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} loading={loading}>
                     <ResultDisplay
                         id={uriDecodedId}
                         traceLinkType={traceLinkType}

@@ -6,7 +6,7 @@ import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTyp
 import {Button} from "@headlessui/react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
-import {ArrowDownTrayIcon, BookmarkIcon} from "@heroicons/react/24/outline";
+import {BookmarkIcon} from "@heroicons/react/24/outline";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
 
 /**
@@ -24,8 +24,8 @@ interface TraceLinkViewProps {
  * @param {TraceLinkViewProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component displaying the trace links.
  */
-export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLinkViewProps) {
-    const {traceLinks, highlightedTraceLinks} = useHighlightContext();
+export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceLinkViewProps) {
+    const {traceLinks, highlightedTraceLinks, loading} = useHighlightContext();
     const [sortedTraceLinks, setSortedTraceLinks] = useState<TraceLink[]>(traceLinks);
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
     const [prioritizeHighlights, setPrioritizeHighlights] = useState(false);
@@ -33,9 +33,6 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
     const showCode = useMemo(() => traceLinkType.name !== TraceLinkTypes.SAD_SAM.name, [traceLinkType.name]);
     const showModel = useMemo(() => traceLinkType.name !== TraceLinkTypes.SAD_CODE.name, [traceLinkType.name]);
     const showSentence = useMemo(() => traceLinkType.name !== TraceLinkTypes.SAM_CODE.name, [traceLinkType.name]);
-
-    // Check if trace links are being loaded
-    const isLoading = traceLinks.length === 0;
 
     // Memoize sort methods to prevent re-creation on every render
     const sortMethods = useMemo(() => ({
@@ -102,7 +99,7 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
         handleSortChange(selectedSortMethod);
     }, [traceLinks, selectedSortMethod, handleSortChange]);
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div className="p-2 text-center py-8 text-gray-500">
                 Generating trace links, this may take a few moments...
@@ -110,62 +107,70 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
         );
     }
 
+    if (!loading && sortedTraceLinks.length === 0) {
+        return (
+            <div className="p-2 text-center py-8 text-gray-500">
+                No trace links found.
+            </div>
+        );
+    }
+
     return (
         <div className="px-2 pb-2">
             {/*/!* Sticky header for type and sort control *!/*/}
-                <div
-                    className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
-                    <div className="w-full">
-                        <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
-                            <div className="flex-1">
-                                <label className="text-sm text-gray-600">Sort by: </label>
+            <div
+                className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
+                <div className="w-full">
+                    <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
+                        <div className="flex-1">
+                            <label className="text-sm text-gray-600">Sort by: </label>
 
-                                <select
-                                    value={selectedSortMethod}
-                                    onChange={(e) => handleSortChange(e.target.value)}
-                                    className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
-                                >
-                                    <option value="None">None</option>
-                                    {availableSortOptions.map((option) => (
-                                        <option key={option} value={option}>
-                                            {option}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <Button
-                                className={`rounded px-3 py-0.5 text-sm transition-colors border ${
-                                    prioritizeHighlights
-                                        ? "border-blau text-blau bg-blau/10 hover:text-blau-600 hover:bg-blau-600/10 hover:border-blau-600"
-                                        : "border-gray-300 text-gray-700 hover:bg-gray-200"
-                                }`}
-                                onClick={() => setPrioritizeHighlights((prev) => !prev)}
+                            <select
+                                value={selectedSortMethod}
+                                onChange={(e) => handleSortChange(e.target.value)}
+                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
                             >
-                                <BookmarkIcon className="inline h-4 -mt-0.5 mr-1"/>
-                                <span className="text-sm/6">Highlights</span>
-                            </Button>
-
-                            <DownloadFileComponent
-                                fileName={"tracelinks.json"}
-                                prepareDataToExport={prepareDataToExport}
-                                title={"Download Tracelinks"}
-                            />
-
+                                <option value="None">None</option>
+                                {availableSortOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
+
+                        <Button
+                            className={`rounded px-3 py-0.5 text-sm transition-colors border ${
+                                prioritizeHighlights
+                                    ? "border-blau text-blau bg-blau/10 hover:text-blau-600 hover:bg-blau-600/10 hover:border-blau-600"
+                                    : "border-gray-300 text-gray-700 hover:bg-gray-200"
+                            }`}
+                            onClick={() => setPrioritizeHighlights((prev) => !prev)}
+                        >
+                            <BookmarkIcon className="inline h-4 -mt-0.5 mr-1"/>
+                            <span className="text-sm/6">Highlights</span>
+                        </Button>
+
+                        <DownloadFileComponent
+                            fileName={"tracelinks.json"}
+                            prepareDataToExport={prepareDataToExport}
+                            title={"Download Tracelinks"}
+                        />
+
                     </div>
                 </div>
-                <ul className="space-y-2 pt-2">
-                    {sortedTraceLinks.map((link, idx) => (
-                        <TraceLinkItem
-                            key={idx}
-                            link={link}
-                            showCode={showCode}
-                            showModel={showModel}
-                            showSentence={showSentence}
-                        />
-                    ))}
-                </ul>
             </div>
-            );
-            }
+            <ul className="space-y-2 pt-2">
+                {sortedTraceLinks.map((link, idx) => (
+                    <TraceLinkItem
+                        key={idx}
+                        link={link}
+                        showCode={showCode}
+                        showModel={showModel}
+                        showSentence={showSentence}
+                    />
+                ))}
+            </ul>
+        </div>
+    );
+}

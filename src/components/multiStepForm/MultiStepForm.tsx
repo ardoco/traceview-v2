@@ -15,6 +15,9 @@ import fetchArDoCoAPI from "@/util/ArdocoApi";
 import {storeProjectFiles, storeProjectMetadata} from "@/util/ClientFileStorage";
 import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
+import {v4 as uuidv4} from "uuid";
+import LoadingErrorModal from "@/components/LoadingErrorModal";
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 
 export interface Step {
     stepperLabel: string;
@@ -28,6 +31,8 @@ function MultiStepForm() {
     const {apiAddress} = useApiAddressContext();
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [errorModalApiErrorOpen, setErrorModalApiErrorOpen] = useState(false);
+    const [errorModalFileUpload, setErrorModalFileUpload] = useState(false);
 
     const steps: Step[] = [
         {
@@ -97,35 +102,55 @@ function MultiStepForm() {
     };
 
     const handleSubmit = async () => {
-        if (!apiAddress) {
-            console.error("API address is not set.");
-            return null;
-        }
         let jsonResult = null
+        let result = null;
         setLoading(true);
         try {
-            let result = await fetchArDoCoAPI(
-                apiAddress,
+            result = await fetchArDoCoAPI(
+                apiAddress!,
                 formData.projectName,
                 formData.selectedTraceLinkType,
                 formData.files,
                 formData.findInconsistencies,
                 formData.traceLinkConfiguration
             );
-            console.log("Data submitted successfully:", formData);
             jsonResult = result.jsonResult
-
-            // Store project files in the client storage
-            if (jsonResult?.requestId) {
-                await storeProjectFiles(jsonResult.requestId, result.usedFiles);
-                await storeProjectMetadata(jsonResult.requestId, formData.files)
-                console.log(`Project files for request ID ${jsonResult.requestId} stored successfully.`);
-            }
         } catch (error) {
-            console.warn("Error submitting data:", error);
+            console.log("Error submitting data:", error);
+            setLoading(false);
+            setErrorModalApiErrorOpen(true);
+            return
+        }
+
+        try {
+            // Store project files in the client storage
+            await storeProjectFiles(jsonResult.requestId, result.usedFiles);
+            await storeProjectMetadata(jsonResult.requestId, formData.files)
+            console.log(`Project files for request ID ${jsonResult.requestId} stored successfully.`);
+        } catch (error) {
+            console.log("Error storing project files:", error);
+            setLoading(false);
+            setErrorModalFileUpload(true);
+            return;
+        }
+
+
+        return jsonResult;
+    };
+
+    const handleSubmitError = async () => {
+        let storageId = uuidv4(); // Generate a unique request ID
+        setLoading(true);
+        try {
+            await storeProjectFiles(storageId, formData.files);
+            await storeProjectMetadata(storageId, formData.files)
+            console.log(`Project files for ID ${storageId} stored successfully.`);
+
+        } catch (error) {
+            console.error("Error submitting data:", error);
             setLoading(false);
         }
-        return jsonResult;
+        return storageId;
     };
 
 
@@ -180,8 +205,66 @@ function MultiStepForm() {
 
                 </Button>
             </div>
+            {/* Loading/Error Modal */}
+            {errorModalApiErrorOpen && (
+                <LoadingErrorModal
+                    isOpen={errorModalApiErrorOpen}
+                    message="An error occurred while processing your request. Please try again."
+                    onRetry={() => {
+                        setErrorModalApiErrorOpen(false);
+                    }}
+                    onViewFiles={ async () => {
+                        setErrorModalApiErrorOpen(false);
+                        let storageId = await handleSubmit();
+                        const encodedId = encodeURIComponent(storageId);
+                        redirect(`/view-provided/${encodedId}`);
+                    }}
+                />
+            )}
+
+            {errorModalFileUpload && (
+                <ErrorModalFileUpload
+                    isOpen={errorModalFileUpload}
+                    message="An error occurred while uploading the files. Please try again."
+                    onClose={() => setErrorModalFileUpload(false)}
+                />
+            )}
+
+            {/* Loading State */}
         </FormLayout>
     );
+}
+
+// this differs from the loading Error modal as that there is only a single okay button.
+export function ErrorModalFileUpload({ isOpen, message, onClose}: { isOpen: boolean, message: string, onClose: () => void }) {
+    if (!isOpen) return null;
+
+    return (
+        <Dialog as="div" className="relative z-[100]" open={isOpen} onClose={() => { /* Do nothing on overlay click */ }}>
+            <div className="fixed inset-0 bg-black/30"/>
+            <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                    <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl">
+                        <DialogTitle as="h3" className="text-lg font-medium leading-6 text-red-600">
+                            An Error Occurred
+                        </DialogTitle>
+                        <div className="mt-4">
+                            <p className="text-sm text-gray-700">
+                                {message}
+                            </p>
+                        </div>
+                        <div className="mt-6 flex justify-end gap-x-3">
+                            <button type="button" className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                                    onClick={onClose}>
+                                Okay
+                            </button>
+                        </div>
+                    </DialogPanel>
+                </div>
+            </div>
+        </Dialog>
+    );
+
 }
 
 export default MultiStepForm;

@@ -26,32 +26,28 @@ const pollForResult = async (apiAddress:string, id: string, signal:AbortSignal, 
         if (signal.aborted) {
             throw new Error("Polling was aborted.");
         }
-        try {
-            const response = await fetch(`/api/get-result/${id}`, {
-                    method: "GET",
-                    headers: {
-                        'X-Target-API': apiAddress,
-                    },
-                    signal: signal,
-            });
 
-            const data = await response.json();
-            if (data.status === "OK") {
-                return data; // Stop polling if we have valid result
-            } else if (data.status !== "ACCEPTED") {
-                console.error(`Polling failed with HTTP ${response.status}`);
-                throw new Error(data.message || "An unexpected error occurred.");
-            }
+        const response = await fetch(`/api/get-result/${id}`, {
+            method: "GET",
+            headers: {
+                'X-Target-API': apiAddress,
+            },
+            signal: signal,
+        });
 
-            console.log(`Polling... waiting for result (${elapsedSeconds}s elapsed)`);
-            await new Promise((resolve) => setTimeout(resolve, intervalSeconds * 1000)); // Wait before next attempt
-            elapsedSeconds += intervalSeconds;
-        } catch (error) {
-            console.error("Polling encountered an error:", error);
-            throw new Error("An error occurred while polling the result.");
+        const data = await response.json();
+        if (data.status === "OK") {
+            return data;
+        } else if (data.status !== "ACCEPTED") {
+            // Throw an error with the message from the server
+            throw new Error("An error occurred while running the pipeline in ArDoCo: \n" + data.message);
         }
+
+        // Keep polling
+        await new Promise((resolve) => setTimeout(resolve, intervalSeconds * 1000));
+        elapsedSeconds += intervalSeconds;
     }
-    throw new Error("The result is still processing. Please try again.");
+    throw new Error("The result is still processing. Please try again later.");
 };
 
 // Main Component
@@ -103,10 +99,10 @@ export default function NewUploadProject() {
             setTraceLinks(parsedTraceLinks);
 
             // If inconsistencies are present and asked for, parse them as well
-             if (findInconsistencies && response.result.inconsistencies) {
-                 const parsedInconsistencies = parseInconsistenciesFromJSON(response.result.inconsistencies);
-                 setInconsistencies(parsedInconsistencies);
-             }
+            if (findInconsistencies && response.result.inconsistencies) {
+                const parsedInconsistencies = parseInconsistenciesFromJSON(response.result.inconsistencies);
+                setInconsistencies(parsedInconsistencies);
+            }
 
         } catch (err: any) {
             if (err.name !== 'AbortError') {
@@ -140,8 +136,8 @@ export default function NewUploadProject() {
                 onRetry={handleRetry}
                 onViewFiles={handleViewFiles}
             />
-            <HighlightProvider traceLinks={traceLinks}>
-                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} >
+            <HighlightProvider traceLinks={traceLinks} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} loading={loading}>
                     <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>
                 </InconsistencyProvider>
             </HighlightProvider>
@@ -150,7 +146,6 @@ export default function NewUploadProject() {
 }
 
 
-// Loading Banner
 function LoadingBanner() {
     return (
         <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
@@ -179,4 +174,3 @@ export function ErrorDisplay({message, onRetry, retryAllowed}: {
         </div>
     );
 }
-

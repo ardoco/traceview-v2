@@ -18,7 +18,7 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
 
     return (
         <div
-            className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer ",
+            className={clsx("flex items-center p-2 rounded-lg transition cursor-pointer overflow-wrap ",
                 !traceLinkHighlight && !inconsistencyHighlight && "hover:bg-gray-100 bg-highlight-none",
                 !traceLinkHighlight && inconsistencyHighlight && "bg-highlight-inconsistency",
                 traceLinkHighlight && !inconsistencyHighlight && "bg-highlight-tracelink",

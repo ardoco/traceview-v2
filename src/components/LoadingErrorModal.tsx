@@ -30,7 +30,7 @@ export default function LoadingErrorModal({ isOpen, message, onRetry, onViewFile
                             <button type="button" className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-300" onClick={onViewFiles}>
                                 View Files Only
                             </button>
-                            <button type="button" className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700" onClick={onRetry}>
+                            <button type="button" className="rounded-md bg-blau-500 px-4 py-2 text-sm font-medium text-white hover:bg-blau-400" onClick={onRetry}>
                                 Retry
                             </button>
                         </div>

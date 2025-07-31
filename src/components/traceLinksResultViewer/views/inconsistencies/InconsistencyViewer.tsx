@@ -4,8 +4,6 @@ import React, {useMemo, useState} from "react";
 import {
     InconsistencyItemDisplay
 } from "@/components/traceLinksResultViewer/views/inconsistencies/viewer/InconsistencyItemDisplay";
-import {ArrowDownTrayIcon} from "@heroicons/react/24/outline";
-import {Button} from "@headlessui/react";
 import {
     InconsistencyType,
     MissingModelInstanceInconsistency,
@@ -17,23 +15,9 @@ interface InconsistencyViewerProps {
     headerOffset?: number;
 }
 
-export default function InconsistencyViewer({headerOffset=10}: InconsistencyViewerProps) {
-    const {inconsistencies} = useInconsistencyContext();
+export default function InconsistencyViewer({headerOffset = 10}: InconsistencyViewerProps) {
+    const {inconsistencies, loading} = useInconsistencyContext();
     const [filterType, setFilterType] = useState<InconsistencyType | "All">("All");
-
-    const isLoading = inconsistencies.length === 0;
-
-    // const handleDownloadClick = () => {
-    //     const dataToExport = {inconsistencies};
-    //     const data = JSON.stringify(dataToExport, null, 2);
-    //     const blob = new Blob([data], {type: 'application/json'});
-    //     const url = URL.createObjectURL(blob);
-    //     const a = document.createElement('a');
-    //     a.href = url;
-    //     a.download = 'inconsistencies.json';
-    //     document.body.appendChild(a);
-    //     a.click();
-    // };
 
     const prepareDataToExport = () => {
         const dataToExport = {inconsistencies};
@@ -82,7 +66,7 @@ export default function InconsistencyViewer({headerOffset=10}: InconsistencyView
         }
     }
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div className="p-2 text-center py-8 text-gray-500">
                 Generating inconsistencies, this may take a few moments...
@@ -90,10 +74,19 @@ export default function InconsistencyViewer({headerOffset=10}: InconsistencyView
         );
     }
 
+    if (!loading && inconsistencies.length === 0) {
+        return (
+            <div className="p-2 text-center py-8 text-gray-500">
+                No inconsistencies found.
+            </div>
+        );
+    }
+
     return (
         <div className="px-2 pb-2">
             {/* Sticky Top Bar */}
-            <div className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
+            <div
+                className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
 
                 <div className="w-full">
 
@@ -114,10 +107,6 @@ export default function InconsistencyViewer({headerOffset=10}: InconsistencyView
                                 </option>
                             </select>
                         </div>
-                        {/*<Button onClick={handleDownloadClick} className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"*/}
-                        {/*        title="Download Inconsistencies">*/}
-                        {/*    <ArrowDownTrayIcon className="h-4"/>*/}
-                        {/*</Button>*/}
                         <DownloadFileComponent
                             fileName={"inconsistencies.json"}
                             prepareDataToExport={prepareDataToExport}

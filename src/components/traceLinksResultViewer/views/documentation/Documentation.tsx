@@ -66,8 +66,8 @@ export default function DisplayDocumentation({id}: ViewProps) {
     }
 
     return (
-        <div className="relative" style={{height: "calc(100% - 40px)"}}>
-            <ul className={"space-y-2 max-h-full overflow-y-auto"}>
+        <div className="relative flex " style={{height: "calc(100% - 40px)"}}>
+            <ul className={"space-y-2 max-h-full min-w-0 break-all"}>
                 {sentences.map((sentence, index) => <SentenceView sentence={sentence} key={index}/>)}
             </ul>
 
