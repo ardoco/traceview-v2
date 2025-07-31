@@ -37,7 +37,8 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
                     const result = await loadProjectFile(id, FileType.Architecture_Model_UML, false);
 
                     if (!result) {
-                        console.warn("No project file found for ID:", id);
+                        console.warn(`No architecture model file found for ID: ${id}`);
+                        setError(`No architecture model file found for ID: ${id}`);
                         setArchitectureModel(null);
                         setFileContent(null);
                         setIsLoading(false);
@@ -65,8 +66,8 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
                     console.warn("loadModel called on server, skipping ClientFileStorage.");
                 }
             } catch (e: any) {
-                console.error("Failed to load or parse architecture model:", e);
-                setError(`Failed to load model: ${e.message}`);
+                // console.error("Failed to load or parse architecture model:", e);
+                setError(`Failed to load or parse architecture model: ${e.message}`);
                 setArchitectureModel(null);
             } finally {
                 setIsLoading(false);

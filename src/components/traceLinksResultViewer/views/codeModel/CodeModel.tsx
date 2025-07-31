@@ -37,7 +37,8 @@ export default function DisplayCodeModel({id}: ViewProps) {
                     const result = await loadProjectFile(id, FileType.Code_Model, false);
 
                     if (!result) {
-                        console.warn("No project file found for ID:", id);
+                        console.warn(`No code model file found for ID: ${id}`);
+                        setError(`No code model file found for ID: ${id}`);
                         setCodeModel(null);
                         setFileContent(null);
                         setIsLoading(false);
@@ -52,11 +53,13 @@ export default function DisplayCodeModel({id}: ViewProps) {
                         setCodeModel(parsedCodeModel2);
                     }
                  else {
-                        console.warn("loadModel called on server, skipping ClientFileStorage.");}
+                        console.warn("loadModel called on server, skipping ClientFileStorage.");
+                        setError(`An error loading the code model occurred.`);
+                 }
                 }
             } catch (e: any) {
-                console.error("Failed to load or parse architecture model:", e);
-                setError(`Failed to load model: ${e.message}`);
+                // console.error("Failed to load or parse architecture model:", e);
+                setError(`Failed to load or parse the code model: ${e.message}`);
                 setCodeModel(null);
             } finally {
                 setIsLoading(false);

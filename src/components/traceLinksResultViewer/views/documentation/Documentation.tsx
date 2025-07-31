@@ -47,7 +47,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
                     console.warn("loadModel called on server, skipping ClientFileStorage.");
                 }
             } catch (e: any) {
-                console.error("Failed to load or parse architecture model:", e);
+                // console.error("Failed to load or parse architecture model:", e);
                 setError(`Failed to load model: ${e.message}`);
                 setSentences([]);
             } finally {
@@ -62,7 +62,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
     }
 
     if (error) {
-        return <div className="text-red-500 p-4">Error: {error}</div>;
+        return <div className="text-red-500 p-4">An error occurred: {error}</div>;
     }
 
     return (

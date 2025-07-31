@@ -16,7 +16,7 @@ export function convertStringToFileType(value: string): FileType {
     } else if (value === "Architecture Model") {
         return FileType.Architecture_Model_UML; // Default to UML if "Architecture Model" is provided
     } else {
-        return FileType.None; // Return None for any other unrecognized value
+        return FileType.None;
     }
 }
 

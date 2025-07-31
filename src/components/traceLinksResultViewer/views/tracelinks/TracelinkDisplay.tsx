@@ -7,6 +7,7 @@ import {Button} from "@headlessui/react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
 import {ArrowDownTrayIcon, BookmarkIcon} from "@heroicons/react/24/outline";
+import DownloadFileComponent from "@/util/DownloadFileComponent";
 
 /**
  * Defines the props for the DisplayRawJsonTracelinks component.
@@ -88,22 +89,30 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
         }
     }, [traceLinks, sortMethods, highlightedTraceLinks, prioritizeHighlights]);
 
-    const handleDownloadClick = () => {
-        // create json file with traceLinks
+    // const handleDownloadClick = () => {
+    //     // create json file with traceLinks
+    //     const dataToExport = {
+    //         traceLinkType: traceLinkType.name,
+    //         traceLinks: sortedTraceLinks
+    //     };
+    //     const data = JSON.stringify(dataToExport, null, 2); //
+    //     console.log('Data to be written:', data);
+    //
+    //     const blob = new Blob([data], {type: 'application/json'});
+    //     const url = URL.createObjectURL(blob);
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = 'tracelinks.json';
+    //     document.body.appendChild(a);
+    //     a.click();
+    // }
+
+    const prepareDataToExport = () => {
         const dataToExport = {
             traceLinkType: traceLinkType.name,
             traceLinks: sortedTraceLinks
         };
-        const data = JSON.stringify(dataToExport, null, 2); //
-        console.log('Data to be written:', data);
-
-        const blob = new Blob([data], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'tracelinks.json';
-        document.body.appendChild(a);
-        a.click();
+        return JSON.stringify(dataToExport, null, 2);
     }
 
     // Re-sort whenever traceLinks or highlights change.
@@ -154,11 +163,16 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
                                 <BookmarkIcon className="inline h-4 -mt-0.5 mr-1"/>
                                 <span className="text-sm/6">Highlights</span>
                             </Button>
-                            <Button onClick={handleDownloadClick}
-                                    className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"
-                                    title="Download Tracelinks">
-                                <ArrowDownTrayIcon className="h-4"/>
-                            </Button>
+                            {/*<Button onClick={handleDownloadClick}*/}
+                            {/*        className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"*/}
+                            {/*        title="Download Tracelinks">*/}
+                            {/*    <ArrowDownTrayIcon className="h-4"/>*/}
+                            {/*</Button>*/}
+                            <DownloadFileComponent
+                                fileName={"tracelinks.json"}
+                                prepareDataToExport={prepareDataToExport}
+                                title={"Download Tracelinks"}
+                            />
 
                         </div>
                     </div>

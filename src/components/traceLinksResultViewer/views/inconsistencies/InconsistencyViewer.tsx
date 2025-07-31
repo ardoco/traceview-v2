@@ -11,6 +11,7 @@ import {
     MissingModelInstanceInconsistency,
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
+import DownloadFileComponent from "@/util/DownloadFileComponent";
 
 interface InconsistencyViewerProps {
     headerOffset?: number;
@@ -22,17 +23,22 @@ export default function InconsistencyViewer({headerOffset=10}: InconsistencyView
 
     const isLoading = inconsistencies.length === 0;
 
-    const handleDownloadClick = () => {
+    // const handleDownloadClick = () => {
+    //     const dataToExport = {inconsistencies};
+    //     const data = JSON.stringify(dataToExport, null, 2);
+    //     const blob = new Blob([data], {type: 'application/json'});
+    //     const url = URL.createObjectURL(blob);
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = 'inconsistencies.json';
+    //     document.body.appendChild(a);
+    //     a.click();
+    // };
+
+    const prepareDataToExport = () => {
         const dataToExport = {inconsistencies};
-        const data = JSON.stringify(dataToExport, null, 2);
-        const blob = new Blob([data], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'inconsistencies.json';
-        document.body.appendChild(a);
-        a.click();
-    };
+        return JSON.stringify(dataToExport, null, 2);
+    }
 
     const filteredAndSorted = useMemo(() => {
         let filtered = inconsistencies;
@@ -108,10 +114,15 @@ export default function InconsistencyViewer({headerOffset=10}: InconsistencyView
                                 </option>
                             </select>
                         </div>
-                        <Button onClick={handleDownloadClick} className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"
-                                title="Download Inconsistencies">
-                            <ArrowDownTrayIcon className="h-4"/>
-                        </Button>
+                        {/*<Button onClick={handleDownloadClick} className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"*/}
+                        {/*        title="Download Inconsistencies">*/}
+                        {/*    <ArrowDownTrayIcon className="h-4"/>*/}
+                        {/*</Button>*/}
+                        <DownloadFileComponent
+                            fileName={"inconsistencies.json"}
+                            prepareDataToExport={prepareDataToExport}
+                            title={"Download Inconsistencies"}
+                        />
 
                     </div>
                 </div>

@@ -57,7 +57,7 @@ export function getTraceLinkTypes(): TraceLinkType[] {
     return Object.values(TraceLinkTypes);
 }
 
-// Helper functions to check specific conditions
+
 const hasArchitectureDocumentation = (files: UploadedFile[]): boolean =>
     files.some(file => file.fileType === FileType.Architecture_Documentation);
 
