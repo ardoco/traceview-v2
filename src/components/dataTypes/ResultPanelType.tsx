@@ -17,7 +17,7 @@ export function displayOptionName(option: ResultPanelType, traceLinkType: TraceL
         case ResultPanelType.Architecture_Model:
             return "Architecture Model";
         case ResultPanelType.TraceLinks:
-            return traceLinkType.api_name + " TraceLinks";
+            return traceLinkType.name + " (" + traceLinkType.alternative_name +") TraceLinks";
         case ResultPanelType.Inconsistencies:
             return "Inconsistencies";
         default:

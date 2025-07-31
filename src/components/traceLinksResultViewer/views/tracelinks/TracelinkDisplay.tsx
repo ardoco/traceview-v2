@@ -2,7 +2,7 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
-import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
+import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {Button} from "@headlessui/react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
@@ -30,9 +30,9 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
     const [prioritizeHighlights, setPrioritizeHighlights] = useState(false);
 
-    const showCode = useMemo(() => traceLinkType.name !== "SAD_SAM", [traceLinkType.name]);
-    const showModel = useMemo(() => traceLinkType.name !== "SAD_CODE", [traceLinkType.name]);
-    const showSentence = useMemo(() => traceLinkType.name !== "SAM_CODE", [traceLinkType.name]);
+    const showCode = useMemo(() => traceLinkType.name !== TraceLinkTypes.SAD_SAM.name, [traceLinkType.name]);
+    const showModel = useMemo(() => traceLinkType.name !== TraceLinkTypes.SAD_CODE.name, [traceLinkType.name]);
+    const showSentence = useMemo(() => traceLinkType.name !== TraceLinkTypes.SAM_CODE.name, [traceLinkType.name]);
 
     // Check if trace links are being loaded
     const isLoading = traceLinks.length === 0;
@@ -48,11 +48,11 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
     const availableSortOptions = useMemo(() => {
         return Object.keys(sortMethods).filter((option) => {
             switch (traceLinkType.name) {
-                case "SAD_SAM":
+                case TraceLinkTypes.SAD_SAM.name:
                     return option !== "Code";
-                case "SAD_CODE":
+                case TraceLinkTypes.SAD_CODE.name:
                     return option !== "Model";
-                case "SAM_CODE":
+                case TraceLinkTypes.SAM_CODE.name:
                     return option !== "Sentence";
                 default:
                     return true;
@@ -88,24 +88,6 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
             setSortedTraceLinks(linksToSort);
         }
     }, [traceLinks, sortMethods, highlightedTraceLinks, prioritizeHighlights]);
-
-    // const handleDownloadClick = () => {
-    //     // create json file with traceLinks
-    //     const dataToExport = {
-    //         traceLinkType: traceLinkType.name,
-    //         traceLinks: sortedTraceLinks
-    //     };
-    //     const data = JSON.stringify(dataToExport, null, 2); //
-    //     console.log('Data to be written:', data);
-    //
-    //     const blob = new Blob([data], {type: 'application/json'});
-    //     const url = URL.createObjectURL(blob);
-    //     const a = document.createElement('a');
-    //     a.href = url;
-    //     a.download = 'tracelinks.json';
-    //     document.body.appendChild(a);
-    //     a.click();
-    // }
 
     const prepareDataToExport = () => {
         const dataToExport = {
@@ -163,11 +145,7 @@ export default function TraceLinkView({traceLinkType, headerOffset=10}: TraceLin
                                 <BookmarkIcon className="inline h-4 -mt-0.5 mr-1"/>
                                 <span className="text-sm/6">Highlights</span>
                             </Button>
-                            {/*<Button onClick={handleDownloadClick}*/}
-                            {/*        className="text-gray-700 hover:text-gray-500 p-1.5 -mr-2"*/}
-                            {/*        title="Download Tracelinks">*/}
-                            {/*    <ArrowDownTrayIcon className="h-4"/>*/}
-                            {/*</Button>*/}
+
                             <DownloadFileComponent
                                 fileName={"tracelinks.json"}
                                 prepareDataToExport={prepareDataToExport}

@@ -60,7 +60,7 @@ export default function MultiOptionSelectWithInfo({
                                 checkCanBeSelected(traceLinkType) ? "text-gray-800" : "text-gray-400"
                             }`}
                         >
-                            {traceLinkType.name}
+                            {traceLinkType.name + " (" + traceLinkType.alternative_name + ")"}
                         </span>
                         <div className="relative group ml-auto">
                             <InformationCircleIcon aria-label="Info about this option" aria-hidden="true"

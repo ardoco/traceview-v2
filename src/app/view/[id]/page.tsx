@@ -3,7 +3,7 @@
 import {useParams, useSearchParams} from "next/navigation";
 import React, {useEffect, useMemo, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
-import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {getTraceLinkTypeByName, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import Button from "@/components/Button";
 import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
@@ -68,10 +68,9 @@ export default function NewUploadProject() {
     const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
 
-    const traceLinkType = TraceLinkTypes[type || "SAD_SAM_CODE"] ?? TraceLinkTypes["SAD_SAM_CODE"];
+    const traceLinkType = getTraceLinkTypeByName(type!) || TraceLinkTypes.SAD_SAM_CODE;
     const uriDecodedId = decodeURIComponent(id);
 
-    // add inconsistencies to display options if they are requested (when id starts with 'inconsistencies-')
     const displayOptions = useMemo(() => {
         const options = [...traceLinkType.resultViewOptions];
         options.unshift(ResultPanelType.TraceLinks); // Always show trace links first

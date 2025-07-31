@@ -22,7 +22,7 @@ export default function ViewProvided() {
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes["SAD_SAM_CODE"]); // Default type
+    const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE); // Default type
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
     const { setCurrentProjectId } = useNavigation();
 
@@ -66,7 +66,7 @@ export default function ViewProvided() {
                         if (result) {
                             const rawJson = JSON.parse(result.content);
                             setTraceLinks(parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks));
-                            setTraceLinkType(TraceLinkTypes[rawJson.traceLinkType] ?? TraceLinkTypes["SAD_SAM_CODE"]);
+                            setTraceLinkType(TraceLinkTypes[rawJson.traceLinkType] ?? TraceLinkTypes.SAD_SAM_CODE);
                         } else {
                             console.warn("No project file found for ID:", id);
                             setTraceLinks([]);

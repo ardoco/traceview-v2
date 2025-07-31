@@ -49,8 +49,7 @@ function MultiStepForm() {
             title: "Configure ArDoCo",
             description:
                 "Review and adjust the default configuration for finding traceLinks if desired, else proceed with defaults.",
-            validation: () => [], // For now, no specific validation for this step.
-                                  // You might add validation here if specific configuration values are required.
+            validation: () => [],
         },
         {
             stepperLabel: "Summary",
@@ -69,7 +68,16 @@ function MultiStepForm() {
             if (summary_validation && summary_validation.length > 0) {
                 return
             } else {
-                let result = await handleSubmit();
+                let result = null;
+                try {
+                    result = await handleSubmit();
+                } catch (error) {
+                    console.error("Error during submission:", error);
+                    errors.push("An error occurred while submitting the data. Please try again.");
+                    setLoading(false);
+                    return;
+                }
+
                 console.log(result);
                 const encodedId = encodeURIComponent(result.requestId);
                 const inconsistenciesParam = `&inconsistencies=${formData.findInconsistencies}`;
@@ -114,7 +122,7 @@ function MultiStepForm() {
                 console.log(`Project files for request ID ${jsonResult.requestId} stored successfully.`);
             }
         } catch (error) {
-            console.error("Error submitting data:", error);
+            console.warn("Error submitting data:", error);
             setLoading(false);
         }
         return jsonResult;

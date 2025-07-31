@@ -63,7 +63,6 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
     // Fetch configuration data once when the FormProvider mounts
     React.useEffect(() => {
         if (!apiAddress) return;
-        console.log(apiAddress)
         const fetchConfiguration = async () => {
             try {
                 const response = await fetch('/api/configuration', {
