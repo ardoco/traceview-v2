@@ -1,6 +1,6 @@
 import TextInput from "@/components/inputComponents/TextInput";
 import MultiOptionSelectWithInfo from "@/components/inputComponents/RadioInput";
-import {useFormContext} from "@/contexts/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import React from "react";
 import InconsistencyCheckbox from "@/components/inputComponents/InconsistencyCheckbox";

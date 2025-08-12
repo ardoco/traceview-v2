@@ -69,7 +69,7 @@ export default function NewUploadProject() {
 
     const displayOptions = useMemo(() => {
         const options = [...traceLinkType.resultViewOptions];
-        options.unshift(ResultPanelType.TraceLinks); // Always show trace links first
+        options.unshift(ResultPanelType.TraceLinks); // Always show traceLinks first
         if (findInconsistencies) {
             options.push(ResultPanelType.Inconsistencies);
         }

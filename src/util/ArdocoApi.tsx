@@ -2,7 +2,7 @@
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
-import {TraceLinkConfiguration} from "@/contexts/ProjectFormContext";
+import {TraceLinkConfiguration} from "@/contexts/ProjectUploadContext";
 
 interface ArDoCoApiResponse {
     jsonResult: any;

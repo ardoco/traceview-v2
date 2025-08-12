@@ -3,7 +3,7 @@
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {convertStringToFileType, FileType} from "@/components/dataTypes/FileType";
 
-// A simple in-memory lock for metadata operations
+// lock for metadata operations
 const metadataLocks: { [projectId: string]: Promise<(() => void) | undefined> } = {};
 
 /**
@@ -26,7 +26,7 @@ async function acquireMetadataLock(projectId: string): Promise<() => void> {
         // but it's not directly returned by acquireMetadataLock.
         // The actual release function is returned by the outer Promise.
     });
-    return releaseLock; // Return the release function directly
+    return releaseLock;
 }
 
 /**

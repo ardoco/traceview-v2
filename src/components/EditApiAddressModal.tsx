@@ -15,7 +15,6 @@ export default function EditApiAddressModal({ isOpen, onClose }: EditApiAddressM
     const [warningMessage, setWarningMessage] = useState('');
 
     const handleClose = () => {
-        // reset input to the current API address when closing
         setInput(apiAddress ?? "");
         setWarningMessage('');
         onClose();

@@ -5,11 +5,11 @@ import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 
 export interface TraceLinkType {
     name: string;
-    alternative_name: string; // Optional old name for backward compatibility
-    api_name: string; // The name used in the API, which may differ from the display name
-    info: string; // Additional information about the option
+    alternative_name: string; // old name
+    api_name: string;
+    info: string;
     checkCondition: (uploadedFiles: UploadedFile[]) => boolean; // Determines if the option is selectable
-    providedFiles: FileType[]; // The file types that are provided when this option is selected
+    providedFiles: FileType[];
     resultViewOptions: ResultPanelType[]; // The options for the result view
 }
 

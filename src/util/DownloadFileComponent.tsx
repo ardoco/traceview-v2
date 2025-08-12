@@ -18,7 +18,7 @@ export default function DownloadFileComponent({ fileName, prepareDataToExport, t
         a.download = fileName;
         document.body.appendChild(a);
         a.click();
-        URL.revokeObjectURL(url); // Clean up the URL object
+        URL.revokeObjectURL(url);
     }
 
     return (

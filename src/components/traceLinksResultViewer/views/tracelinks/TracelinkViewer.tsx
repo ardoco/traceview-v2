@@ -18,11 +18,11 @@ interface TraceLinkViewProps {
 }
 
 /**
- * Component for displaying trace links in a list format, with sorting capabilities.
+ * Component for displaying traceLinks in a list format, with sorting capabilities.
  * It integrates with a highlight context to manage active trace link highlights.
  *
  * @param {TraceLinkViewProps} props - The props for the component.
- * @returns {JSX.Element} The rendered component displaying the trace links.
+ * @returns {JSX.Element} The rendered component displaying the traceLinks.
  */
 export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceLinkViewProps) {
     const {traceLinks, highlightedTraceLinks, loading} = useHighlightContext();
@@ -65,7 +65,7 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
 
     /**
      * Handles the change in the selected sorting method.
-     * Sorts the trace links and updates the state.
+     * Sorts the traceLinks and updates the state.
      * @param {string} method - The selected sorting method.
      */
     const handleSortChange = useCallback((method: string) => {
@@ -102,7 +102,7 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
     if (loading) {
         return (
             <div className="p-2 text-center py-8 text-gray-500">
-                Generating trace links, this may take a few moments...
+                Generating traceLinks, this may take a few moments...
             </div>
         );
     }
@@ -110,7 +110,7 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
     if (!loading && sortedTraceLinks.length === 0) {
         return (
             <div className="p-2 text-center py-8 text-gray-500">
-                No trace links found.
+                No traceLinks found.
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import { useFormContext } from "@/contexts/ProjectFormContext";
+import { useFormContext } from "@/contexts/ProjectUploadContext";
 import DragAndDrop from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DragAndDrop";
 import DroppedFilesList from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFilesList";
 import {FileType} from "@/components/dataTypes/FileType";

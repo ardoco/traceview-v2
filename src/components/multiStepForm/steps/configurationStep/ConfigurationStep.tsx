@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useFormContext } from "@/contexts/ProjectFormContext";
+import { useFormContext } from "@/contexts/ProjectUploadContext";
 import ConfigurationSourceSelector from './ConfigurationSourceSelector';
 import CustomizationTabs from './CustomizationTabs';
 import FileUploadSection from './FileUploadSection';

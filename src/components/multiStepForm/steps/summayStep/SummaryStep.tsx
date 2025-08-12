@@ -1,6 +1,6 @@
 // components/multiStepForm/steps/summayStep/SummaryStep.tsx
 import React, { useState } from 'react'; // Import useState
-import {useFormContext, TraceLinkConfiguration} from "@/contexts/ProjectFormContext";
+import {useFormContext, TraceLinkConfiguration} from "@/contexts/ProjectUploadContext";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
 export default function SummaryStep() {

@@ -1,11 +1,10 @@
-// context to mange the confirmation of the project when leaving the view page.
+// context to manage the confirmation of the project when leaving the view page.
 'use client';
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import ConfirmNavigationModal from '@/components/ConfirmNavigationModal';
-import { deleteProjectDirectory } from '@/util/ClientFileStorage'; // We will create this function next
-
+import { deleteProjectDirectory } from '@/util/ClientFileStorage';
 type NavigationContextType = {
     handleNavigation: (path: string) => void;
     setCurrentProjectId: (id: string | null) => void;
@@ -23,7 +22,6 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     const [controller, setController] = useState<AbortController>(new AbortController());
 
     const handleNavigation = (path: string) => {
-        // If viewing a project, show the confirmation modal, otherwise, navigate immediately.
         if (currentProjectId) {
             setNextPath(path);
             setIsModalOpen(true);
@@ -36,7 +34,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         console.log(`Deleting project directory for ID: ${currentProjectId}`);
         if (currentProjectId) {
             await deleteProjectDirectory(currentProjectId);
-            setCurrentProjectId(null); // Clear the ID after deletion
+            setCurrentProjectId(null);
             abortController(); // Abort any ongoing API requests related to the project
         }
         if (nextPath) {

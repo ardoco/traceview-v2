@@ -2,10 +2,10 @@
 
 import {Panel} from "react-resizable-panels";
 import React, {Suspense, useState} from "react";
-import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/Documentation";
-import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModel";
+import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/DocumentationViewer";
+import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModelViewer";
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
-import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
+import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer";
 import {displayOptionName, ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import {Button, Dialog, Select} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";

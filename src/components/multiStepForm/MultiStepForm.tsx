@@ -1,6 +1,6 @@
 'use client'
 
-import {useFormContext} from "@/contexts/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import {useState} from "react";
 import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/FileUploadStep";
 import ProjectDetailsStep from "@/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep";
@@ -17,7 +17,8 @@ import ConfigurationStep from "@/components/multiStepForm/steps/configurationSte
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import {v4 as uuidv4} from "uuid";
 import LoadingErrorModal from "@/components/LoadingErrorModal";
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import {Dialog, DialogPanel, DialogTitle} from '@headlessui/react';
+import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
 
 export interface Step {
     stepperLabel: string;
@@ -34,36 +35,27 @@ function MultiStepForm() {
     const [errorModalApiErrorOpen, setErrorModalApiErrorOpen] = useState(false);
     const [errorModalFileUpload, setErrorModalFileUpload] = useState(false);
 
-    const steps: Step[] = [
-        {
-            stepperLabel: "Upload Files",
-            title: "Upload the Project Files",
-            description:
-                "Upload the project files for the project. For each file, select the corresponding file type.",
-            validation: () => FormValidation.validateFiles(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
-        },
-        {
-            stepperLabel: "Project Details",
-            title: "Project Details",
-            description:
-                "Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve.",
-            validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
-        },
-        {
-            stepperLabel: "Configuration",
-            title: "Configure ArDoCo",
-            description:
-                "Review and adjust the default configuration for finding traceLinks if desired, else proceed with defaults.",
-            validation: () => [],
-        },
-        {
-            stepperLabel: "Summary",
-            title: "Summary",
-            description:
-                "Review the data you provided. If changes are required, return to the corresponding step and modify before calculating the traceLinks.",
-            validation: () => FormValidation.validateSummary(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
-        },
-    ];
+    const steps: Step[] = [{
+        stepperLabel: "Upload Files",
+        title: "Upload the Project Files",
+        description: "Upload the files of the project. For each file, select the corresponding file type.",
+        validation: () => FormValidation.validateFiles(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
+    }, {
+        stepperLabel: "Project Details",
+        title: "Project Details",
+        description: "Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve. If you additionally want to find inconsistencies, check the corresponding box.",
+        validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
+    }, {
+        stepperLabel: "Configuration",
+        title: "Configure ArDoCo",
+        description: "Adjust the default configuration for finding traceLinks if desired, else proceed with defaults.",
+        validation: () => [],
+    }, {
+        stepperLabel: "Summary",
+        title: "Summary",
+        description: "Review your provided data. If changes are required, return to the corresponding step and modify before calculating the traceLinks.",
+        validation: () => FormValidation.validateSummary(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
+    },];
 
     let errors = steps[currentStep].validation();
 
@@ -106,14 +98,7 @@ function MultiStepForm() {
         let result = null;
         setLoading(true);
         try {
-            result = await fetchArDoCoAPI(
-                apiAddress!,
-                formData.projectName,
-                formData.selectedTraceLinkType,
-                formData.files,
-                formData.findInconsistencies,
-                formData.traceLinkConfiguration
-            );
+            result = await fetchArDoCoAPI(apiAddress!, formData.projectName, formData.selectedTraceLinkType, formData.files, formData.findInconsistencies, formData.traceLinkConfiguration);
             jsonResult = result.jsonResult
         } catch (error) {
             console.log("Error submitting data:", error);
@@ -154,8 +139,7 @@ function MultiStepForm() {
     };
 
 
-    return (
-        <FormLayout>
+    return (<FormLayout>
             <Stepper
                 steps={steps.map((step) => step.stepperLabel)}
                 currentStep={currentStep}
@@ -180,15 +164,8 @@ function MultiStepForm() {
                     {currentStep === 3 && <SummaryStep/>}
 
                     {/* Error messages */}
-                    {errors.length > 0 && (
-                        <div className="mt-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-sm">
-                            {errors.map((error, index) => (
-                                <p key={index} className="text-sm">
-                                    {error}
-                                </p>
-                            ))}
-                        </div>
-                    )}
+                    <DisplayErrors errors={errors}/>
+
                 </StepContainer>
             </div>
 
@@ -196,9 +173,7 @@ function MultiStepForm() {
             <div className="flex justify-between w-full mt-8">
                 <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
                 <Button
-                    text={currentStep === steps.length - 1
-                        ? "Calculate TraceLinks"
-                        : "Next"}
+                    text={currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
                     onButtonClicked={nextStep}
                     disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
                 >
@@ -206,45 +181,45 @@ function MultiStepForm() {
                 </Button>
             </div>
             {/* Loading/Error Modal */}
-            {errorModalApiErrorOpen && (
-                <LoadingErrorModal
+            {errorModalApiErrorOpen && (<LoadingErrorModal
                     isOpen={errorModalApiErrorOpen}
                     message="An error occurred while processing your request. Please try again."
                     onRetry={() => {
                         setErrorModalApiErrorOpen(false);
                     }}
-                    onViewFiles={ async () => {
+                    onViewFiles={async () => {
                         setErrorModalApiErrorOpen(false);
                         let storageId = await handleSubmit();
                         const encodedId = encodeURIComponent(storageId);
                         redirect(`/view-provided/${encodedId}`);
                     }}
-                />
-            )}
+                />)}
 
-            {errorModalFileUpload && (
-                <ErrorModalFileUpload
+            {errorModalFileUpload && (<ErrorModalFileUpload
                     isOpen={errorModalFileUpload}
                     message="An error occurred while uploading the files. Please try again."
                     onClose={() => setErrorModalFileUpload(false)}
-                />
-            )}
+                />)}
 
             {/* Loading State */}
-        </FormLayout>
-    );
+        </FormLayout>);
 }
 
 // this differs from the loading Error modal as that there is only a single okay button.
-export function ErrorModalFileUpload({ isOpen, message, onClose}: { isOpen: boolean, message: string, onClose: () => void }) {
+export function ErrorModalFileUpload({isOpen, message, onClose}: {
+    isOpen: boolean,
+    message: string,
+    onClose: () => void
+}) {
     if (!isOpen) return null;
 
-    return (
-        <Dialog as="div" className="relative z-[100]" open={isOpen} onClose={() => { /* Do nothing on overlay click */ }}>
+    return (<Dialog as="div" className="relative z-[100]" open={isOpen} onClose={() => { /* Do nothing on overlay click */
+        }}>
             <div className="fixed inset-0 bg-black/30"/>
             <div className="fixed inset-0 overflow-y-auto">
                 <div className="flex min-h-full items-center justify-center p-4 text-center">
-                    <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl">
+                    <DialogPanel
+                        className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl">
                         <DialogTitle as="h3" className="text-lg font-medium leading-6 text-red-600">
                             An Error Occurred
                         </DialogTitle>
@@ -254,7 +229,8 @@ export function ErrorModalFileUpload({ isOpen, message, onClose}: { isOpen: bool
                             </p>
                         </div>
                         <div className="mt-6 flex justify-end gap-x-3">
-                            <button type="button" className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                            <button type="button"
+                                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                                     onClick={onClose}>
                                 Okay
                             </button>
@@ -262,8 +238,7 @@ export function ErrorModalFileUpload({ isOpen, message, onClose}: { isOpen: bool
                     </DialogPanel>
                 </div>
             </div>
-        </Dialog>
-    );
+        </Dialog>);
 
 }
 

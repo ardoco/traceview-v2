@@ -1,12 +1,12 @@
 'use client';
 
-import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/Documentation";
-import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModel";
+import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/DocumentationViewer";
+import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModelViewer";
 import {Button, Dialog, Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
 import {displayOptionName, ResultPanelType} from "@/components/dataTypes/ResultPanelType";
-import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkDisplay";
+import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {Suspense, useMemo} from "react";
 import InconsistencyViewer from "@/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer";

@@ -4,13 +4,13 @@ import React, {useEffect} from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {getTraceLinkTypes, TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
-import {useFormContext} from "@/contexts/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 
 interface MultiOptionSelectWithInfoProps {
-    selectedValue: TraceLinkType | null; // Current selected value
-    handleOptionChange: (value: TraceLinkType | null) => void; // Callback when selection changes
-    checkCanBeSelected: (option: TraceLinkType) => boolean; // Function to check if an option is disabled
-    uploadedFiles: UploadedFile[]; // The uploaded files
+    selectedValue: TraceLinkType | null;
+    handleOptionChange: (value: TraceLinkType | null) => void;
+    checkCanBeSelected: (option: TraceLinkType) => boolean;
+    uploadedFiles: UploadedFile[];
 }
 
 export default function MultiOptionSelectWithInfo({

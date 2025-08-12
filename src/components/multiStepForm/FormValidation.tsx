@@ -81,7 +81,7 @@ export default class FormValidation {
         let errors: string[] = [];
 
         if (!projectName || projectName === "") {
-            errors.push("Project name is required")
+            errors.push("Project name is required.")
         }
         if (selectedTraceLinkType === null) {
              errors.push("No traceLink type could be selected. Please upload files with different types.")
@@ -108,11 +108,11 @@ export default class FormValidation {
 
         // Generate summary message
         if (stepsWithErrors.length == 1) {
-            errors.push(`You need to resolve the problems at Step ${stepsWithErrors[0]} before you can proceed.`);
+            errors.push(`You need to resolve the issue at step ${stepsWithErrors[0]} before you can proceed.`);
         } else if (stepsWithErrors.length > 1) {
             let last_step = stepsWithErrors[stepsWithErrors.length - 1];
             let first_steps = stepsWithErrors.slice(0, stepsWithErrors.length - 1)
-            errors.push(`You need to resolve the problems at ${first_steps.join(",")} and ${last_step} before you can proceed.`);
+            errors.push(`You need to resolve the issues at steps ${first_steps.join(",")} and ${last_step} before you can proceed.`);
         }
 
         return errors;

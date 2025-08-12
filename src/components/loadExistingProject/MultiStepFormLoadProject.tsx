@@ -1,4 +1,4 @@
-import {useFormContext} from "@/contexts/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import {useState} from "react";
 import FormValidation from "@/components/multiStepForm/FormValidation";
 import {redirect} from "next/navigation";
@@ -10,6 +10,7 @@ import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/File
 import Button from "@/components/Button";
 import {Step} from "@/components/multiStepForm/MultiStepForm";
 import {v4 as uuidv4} from 'uuid';
+import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
 
 function MultiStepFormLoadProject() {
     const {formData} = useFormContext();
@@ -19,7 +20,7 @@ function MultiStepFormLoadProject() {
     const steps: Step[] = [{
         stepperLabel: "Upload Files",
         title: "Upload the Project Files and TraceLinks",
-        description: "Upload your existing project files and the JSON file containing the trace links.",
+        description: "Upload your existing project files and the JSON file containing the traceLinks.",
         validation: () => FormValidation.validateExistingProject(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
 
@@ -85,13 +86,7 @@ function MultiStepFormLoadProject() {
                     {/* Step-specific components */}
                     {currentStep === 0 && <FileUploadStep/>}
 
-                    {/* Error messages */}
-                    {errors.length > 0 && (
-                        <div className="mt-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-sm">
-                            {errors.map((error, index) => (<p key={index} className="text-sm">
-                                    {error}
-                                </p>))}
-                        </div>)}
+                    <DisplayErrors errors={errors}/>
                 </StepContainer>
             </div>
 

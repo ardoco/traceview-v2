@@ -1,6 +1,6 @@
 import React from 'react';
 import TextInput from "@/components/inputComponents/TextInput";
-import {TraceLinkConfiguration} from "@/contexts/ProjectFormContext";
+import {TraceLinkConfiguration} from "@/contexts/ProjectUploadContext";
 import {Button} from "@headlessui/react";
 import DownLoadFileComponent from "@/util/DownloadFileComponent";
 

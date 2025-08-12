@@ -2,7 +2,7 @@
 
 import React, {useEffect} from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import {useFormContext} from "@/contexts/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 
 interface InconsistencyCheckboxProps {

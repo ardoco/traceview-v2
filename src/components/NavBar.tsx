@@ -7,6 +7,7 @@ import {Dialog, DialogPanel} from "@headlessui/react";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import EditApiAddressModal from "@/components/EditApiAddressModal";
 import {useNavigation} from "@/contexts/NavigationContext";
+import clsx from "clsx";
 
 // Navigation menu items
 const navigation = [
@@ -16,43 +17,32 @@ const navigation = [
     {name: 'GitHub', href: 'https://github.com/ArDoCo'},
 ];
 
-// Component for the ArDoCo logo
 interface ArDoCoLogoProps {
-    /** Corresponds to keys in sizeClassMap (e.g., 8, 10, 12) */
     size: number;
     onClick: (href:string, event: any) => void;
 }
 
-// Mapping for image sizes to ensure Tailwind JIT picks them up
-const imageSizeMap: { [key: number]: string } = {
-    8: "h-8 w-auto",
-    9: "h-9 w-auto",
-    10: "h-10 w-auto",
-    11: "h-11 w-auto",
-    12: "h-12 w-auto",
-    13: "h-13 w-auto",
-    14: "h-14 w-auto",
-    15: "h-15 w-auto",
-    16: "h-16 w-auto",
-};
-
 export function ArDoCoLogo({size, onClick}: ArDoCoLogoProps) {
-    const imageClasses = imageSizeMap[size] || imageSizeMap[10];
+    const href = "/";
+
+    const handleClick = (event: any) => {
+        onClick(href, event);
+    }
 
     return (
-        <a
-            href="/"
-            className={`-ml-3 p-1.5 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75% flex items-center justify-center`}
-            onClick={(event) => onClick("/", event)}
-        >
-            <span className="sr-only">ArDoCo Logo</span>
-            <img
-                alt="ArDoCo Logo"
-                src="/ardoco-logo.png" // Assumes ardoco-logo.png is in the public folder
-                className={imageClasses}
-            />
-        </a>
-    );
+            <Link
+                href={href}
+                className={`-ml-3 p-1.5 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75% flex items-center justify-center`}
+                onClick={handleClick}
+            >
+                <span className="sr-only">ArDoCo Logo</span>
+                <img
+                    alt="ArDoCo Logo"
+                    src="/ardoco-logo.png"
+                    className={clsx("w-auto h-" + size)}
+                />
+            </Link>
+        );
 }
 
 export default function NavBar() {
