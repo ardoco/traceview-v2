@@ -1,0 +1,33 @@
+.git
+.gitignore
+.github
+.vscode
+.DS_Store
+
+# Node modules and caches
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js build output (not needed for multi-stage build)
+.next
+out
+
+# Local env and compose files
+.env*
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile.dev
+
+# Test and coverage
+coverage
+*.tsbuildinfo
+test
+
+# Editor and OS files
+.idea
+*.swp
+*.swo
+
