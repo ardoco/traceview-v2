@@ -2,6 +2,7 @@
 
 import React, {createContext, useContext, useState} from 'react';
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
+import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 
 type MessageSource = 'tracelink-only' | 'element-click' | null;
 type ClickedElementType = 'sentence' | 'model' | 'codeElementId' | 'tracelink' | 'inconsistency' | null; // New type
@@ -11,6 +12,7 @@ interface HighlightTracelinksContextType {
     highlightElement: (id: number | string | null, type: string) => void;
     highlightSingleTraceLink: (traceLinks: TraceLink) => void;
     traceLinks: TraceLink[];
+    traceLinkType: TraceLinkType;
     resetHighlightedTraceLinks: () => void;
     lastSearchTimestamp: number;
     messageSource: MessageSource;
@@ -22,8 +24,10 @@ interface HighlightTracelinksContextType {
 interface HighlightProviderProps {
     children: React.ReactNode;
     traceLinks: TraceLink[];
+    traceLinkType: TraceLinkType;
     useTraceLinks?: boolean;
-    loading?: boolean; // Optional prop to indicate loading state
+    loading?: boolean; // indicates loading state
+
 }
 
 const HighlightContext = createContext<HighlightTracelinksContextType | undefined>(undefined);
@@ -39,6 +43,7 @@ export const useHighlightContext = () => {
 export function HighlightProvider({
                                       children,
                                       traceLinks,
+                                      traceLinkType,
                                       useTraceLinks = true,
                                       loading = false
                                   }: HighlightProviderProps) {
@@ -103,6 +108,7 @@ export function HighlightProvider({
                 highlightElement,
                 highlightSingleTraceLink,
                 traceLinks,
+                traceLinkType,
                 resetHighlightedTraceLinks,
                 lastSearchTimestamp,
                 messageSource,

@@ -136,7 +136,7 @@ export default function NewUploadProject() {
                 onRetry={handleRetry}
                 onViewFiles={handleViewFiles}
             />
-            <HighlightProvider traceLinks={traceLinks} loading={loading}>
+            <HighlightProvider traceLinks={traceLinks} traceLinkType={traceLinkType} loading={loading}>
                 <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies}
                                        loading={loading}>
                     <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>

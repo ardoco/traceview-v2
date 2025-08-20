@@ -126,7 +126,6 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
             ref={messageRef}
             className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white text-gray-800 px-6 py-3 rounded-lg shadow-lg border border-gray-200 z-50 animate-blink"
         >
-            {/*<div className="animate-blink bg-">*/}
             {messageParts.map((part, index) => {
                 let className = "";
                 if (part.type === 'tracelink') {
@@ -143,7 +142,6 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
                 </span>
                 );
             })}
-            {/*// </div>*/}
         </div>
     );
 }

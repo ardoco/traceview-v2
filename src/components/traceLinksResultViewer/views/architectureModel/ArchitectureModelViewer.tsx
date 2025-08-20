@@ -12,6 +12,7 @@ import {
 } from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
+import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
 
 export default function DisplayArchitectureModel({id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>(null);
@@ -19,18 +20,17 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
         components: AbstractComponent[],
         edges: Edge[]
     } | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
-    const [error, setError] = useState<string | null>(null); // Added error state
-    const [isMounted, setIsMounted] = useState<boolean>(false); // Track if component has mounted
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [isMounted, setIsMounted] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsMounted(true); // Set to true once component mounts on client
+        setIsMounted(true);
     }, []);
 
     useEffect(() => {
-        // Only run loadModel if the component has mounted on the client
         if (!isMounted || !id) {
-            if (id) setIsLoading(false); // If no id, or not mounted, stop loading if id was present
+            if (id) setIsLoading(false);
             return;
         }
 
@@ -38,7 +38,6 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             setIsLoading(true);
             setError(null);
             try {
-                // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined" && !architectureModel) {
                     const result = await loadProjectFile(id, FileType.Architecture_Model_UML, false);
 
@@ -67,12 +66,9 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
                     }
                     setArchitectureModel(parsedModel);
                 } else {
-                    // This case should ideally not be hit if isMounted is true,
-                    // but as a safeguard:
                     console.warn("loadModel called on server, skipping ClientFileStorage.");
                 }
             } catch (e: any) {
-                // console.error("Failed to load or parse architecture model:", e);
                 setError(`Failed to load or parse architecture model: ${e.message}`);
                 setArchitectureModel(null);
             } finally {
@@ -81,17 +77,15 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
         }
 
         loadModel();
-    }, [id, isMounted]); // Rerun when id or isMounted changes
+    }, [id, isMounted]);
 
 
-    // Initial render (server and first client render before useEffect runs)
-    // should be consistent. If not mounted, or loading, show a placeholder.
     if (!isMounted || isLoading) {
-        return <div className="flex justify-center items-center h-full">Loading architecture model...</div>;
+        return <LoadingMessage title="Loading code model..." />;
     }
 
     if (error) {
-        return <div className="text-red-500 p-4">Error: {error}</div>;
+        return <ErrorMessage error={error}/>;
     }
 
     return (
@@ -99,8 +93,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             {architectureModel ? (
                 <UMLViewer umlComponents={architectureModel.components} umlEdges={architectureModel.edges}/>
             ) : (
-                // Display raw file content or a "not found" message if model is null but not loading and no error
-                <div className="whitespace-pre p-4">
+                 <div className="whitespace-pre p-4">
                     {fileContent ? `Could not parse model. Raw content:\n\n${fileContent}` : "Architecture model not found or could not be loaded."}
                 </div>
             )}

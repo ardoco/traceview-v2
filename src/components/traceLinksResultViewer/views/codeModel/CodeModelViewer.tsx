@@ -8,6 +8,7 @@ import ACMViewer from "@/components/traceLinksResultViewer/views/codeModel/viewe
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
 import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
+import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
 
 export default function DisplayCodeModel({id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>();
@@ -69,11 +70,11 @@ export default function DisplayCodeModel({id}: ViewProps) {
 
 
     if (!isMounted || isLoading) {
-        return <div className="flex justify-center items-center h-full">Loading code model...</div>;
+        return <LoadingMessage title="Loading code model..." />;
     }
 
     if (error) {
-        return <div className="text-red-500 p-4">Error: {error}</div>;
+        return <ErrorMessage error={error}/>;
     }
 
     return (

@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {loadProjectFile, loadProjectMetaData} from "@/util/ClientFileStorage";
-import {FileType, getResultViewOption} from "@/components/dataTypes/FileType";
+import {FileType} from "@/components/dataTypes/FileType";
 import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {getTraceLinkTypeByName, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
@@ -15,6 +15,7 @@ import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsist
 import {
     parseInconsistenciesFromJSON
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
+import {getResultViewOption} from "@/components/dataTypes/ResultPanelType";
 
 export default function ViewProvided() {
     const {id} = useParams<{ id: string }>();
@@ -23,7 +24,7 @@ export default function ViewProvided() {
     const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE); // Default type
+    const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE);
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
     const {setCurrentProjectId} = useNavigation();
 
@@ -50,7 +51,6 @@ export default function ViewProvided() {
                 // Ensure loadProjectFile is only called client-side
                 if (typeof window !== "undefined") {
                     if (uploadedFileTypes1.includes(FileType.Inconsistencies_JSON)) {
-                        // parse file with provided inconsistencies
                         const inconsistenciesFile = await loadProjectFile(id, FileType.Inconsistencies_JSON, false);
                         if (inconsistenciesFile) {
                             const inconsistenciesJson = JSON.parse(inconsistenciesFile.content);
@@ -104,7 +104,7 @@ export default function ViewProvided() {
         <>
             {error && <ErrorDisplay message={error} onRetry={() => {
             }} retryAllowed={false}/>}
-            <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks} loading={loading}>
+            <HighlightProvider traceLinks={traceLinks} traceLinkType={traceLinkType} useTraceLinks={findTraceLinks} loading={loading}>
                 <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies}
                                        loading={loading}>
                     <ResultDisplay

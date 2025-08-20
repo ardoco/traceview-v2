@@ -11,23 +11,21 @@ import {
     showInterfaceTooltip
 } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/InterfaceTooltip";
 import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
+import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 
-// --- Constants for Styling and Layout ---
 const COMPONENT_WIDTH = 140;
 const COMPONENT_HEIGHT = 70;
 const COMPONENT_CENTER_OFFSET_X = COMPONENT_WIDTH / 2;
 const COMPONENT_CENTER_OFFSET_Y = COMPONENT_HEIGHT / 2;
 
-const LOLLIPOP_RADIUS = 6; // Radius of the lollipop/socket symbol part drawn by LollipopEdges.tsx
-const HOVERED_LOLLIPOP_RADIUS = 8; // Radius of the lollipop when hovered
+const LOLLIPOP_RADIUS = 6;
+const HOVERED_LOLLIPOP_RADIUS = 8;
 
 const DEFAULT_STROKE_WIDTH = 1.5;
-const HOVER_STROKE_WIDTH = 2.5; // Stroke width when hovered
+const HOVER_STROKE_WIDTH = 2.5;
 const DEFAULT_STROKE_COLOR = "black";
-const HOVER_COLOR = "#00876c";
-
-const ARROW_MARKER_ID_DEFAULT = "uml-edge-arrow-default";
-const ARROW_MARKER_ID_HOVER = "uml-edge-arrow-hover";
+const HOVER_COLOR = "var(--color-black-700)";
 
 const STROKE_DASH_ARRAY = "4";
 
@@ -60,20 +58,48 @@ export default function UMLEdge({
     let endY = supplier.y + COMPONENT_CENTER_OFFSET_Y;
 
     if (edge.type === "uml:InterfaceRealization" || edge.type === "uml:Usage") {
-        // Supplier is the interface node's center (approximate, adjust if Interface node has different center)
         endX = supplier.x + 10;
         endY = supplier.y + 10;
     }
+    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+    const {
+        highlightInconsistencyWithModelId,
+        highlightedModelInconsistencies,
+    } = useInconsistencyContext();
+
+    const isTraceLinkHighlighted = highlightedTraceLinks.some(link => link.modelElementId === edge.usedInterface?.id) || false;
+    const isInconsistencyHighlighted = highlightedModelInconsistencies.some(inconsistency => inconsistency.id === edge.usedInterface?.id) || false;
+
+    const fillColor =
+        isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" :
+        isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" :
+            hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR;
+    const strokeWidth =
+        (hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH;
+    const lollipopRadius =
+        (hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS;
+    const markerId =
+        isTraceLinkHighlighted ? "arrow-traceLinks" :
+            isInconsistencyHighlighted ? "arrow-inconsistencies" :
+                hovered ? "arrow-hovered" : "arrow-default";
 
     const markerDefs = (
         <defs>
-            <marker id={ARROW_MARKER_ID_DEFAULT} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+            <marker id={"arrow-default"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
                     markerUnits="strokeWidth">
                 <path d="M0,0 L6,3 L0,6" fill="none" stroke={DEFAULT_STROKE_COLOR} strokeWidth={DEFAULT_STROKE_WIDTH}/>
             </marker>
-            <marker id={ARROW_MARKER_ID_HOVER} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+            <marker id={"arrow-hovered"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
                     markerUnits="strokeWidth">
                 <path d="M0,0 L6,3 L0,6" fill="none" stroke={HOVER_COLOR} strokeWidth={HOVER_STROKE_WIDTH}/>
+            </marker>
+            <marker id={"arrow-inconsistencies"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+                    markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-inconsistency)"} strokeWidth={HOVER_STROKE_WIDTH}/>
+            </marker>
+            <marker id={"arrow-traceLinks"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+                    markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-tracelink)"} strokeWidth={HOVER_STROKE_WIDTH}/>
             </marker>
         </defs>
     );
@@ -98,26 +124,34 @@ export default function UMLEdge({
         const providedLollipopEndY = startY + unitY * (lollipopLength + 20);
 
         return (
-            <g onMouseEnter={(e) => {
+            <g
+                onMouseEnter={(e) => {
                 if (edge.usedInterface) {
                     showInterfaceTooltip(svgRef, e.nativeEvent.layerX, e.nativeEvent.layerY, edge.usedInterface, setTooltip, "Provided");
                 }
                 setHovered(true);
-            }}
+                }}
                onMouseLeave={() => {
                    hideTooltip(setTooltip)
                    setHovered(false);
                }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    if (edge.usedInterface) {
+                        highlightElement(edge.usedInterface.id, "modelElementId");
+                        highlightInconsistencyWithModelId(edge.usedInterface.id);
+                    }
+                }}
             >
                 {markerDefs}
                 <RequiredLollipop
                     x={endX}
                     y={endY}
                     facingVector={{x: -unitX, y: -unitY}} // Facing towards the client
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
+                    radius={lollipopRadius}
                     lineLength={lollipopLength}
-                    strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                    strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
+                    strokeColor={fillColor}
+                    strokeWidth={strokeWidth}
                 />
 
                 {lollipopLength < totalLength * 0.5 && (
@@ -126,11 +160,11 @@ export default function UMLEdge({
                         y1={requiredLollipopEndY}
                         x2={providedLollipopEndX}
                         y2={providedLollipopEndY}
-                        strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
+                        strokeWidth={strokeWidth}
                         strokeDasharray={STROKE_DASH_ARRAY}
-                        markerEnd={`url(#${hovered ? ARROW_MARKER_ID_HOVER : ARROW_MARKER_ID_DEFAULT})`}
+                        markerEnd={`url(#${markerId})`}
 
-                        stroke={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
+                        stroke={fillColor}
                     />
                 )}
 
@@ -138,10 +172,10 @@ export default function UMLEdge({
                     x={startX}
                     y={startY}
                     facingVector={{x: unitX, y: unitY}}
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
+                    radius={lollipopRadius}
                     lineLength={0.5 * totalLength - 14}
-                    strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                    strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
+                    strokeColor={fillColor}
+                    strokeWidth={strokeWidth}
                 />
 
                 <text
@@ -150,8 +184,8 @@ export default function UMLEdge({
                     textAnchor="middle"
                     fontSize="12"
                     fontFamily="sans-serif"
-                    fill={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                    fontWeight={hovered ? "bold" : "normal"}
+                    fill={fillColor}
+                    fontWeight={(hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? "bold" : "normal"}
                     style={{userSelect: 'none', cursor: 'default'}}
                 >
                     {edge.usedInterface?.name}
@@ -193,10 +227,10 @@ export default function UMLEdge({
                     x={startX}
                     y={startY}
                     facingVector={direction}
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
+                    radius={lollipopRadius}
                     lineLength={lollipopLength}
-                    strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                    strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
+                    strokeColor={fillColor}
+                    strokeWidth={strokeWidth}
                 />
 
                 {!isShortLink && lollipopLength < fullLength && (
@@ -205,11 +239,10 @@ export default function UMLEdge({
                         y1={lollipopEndY}
                         x2={supplier.x}
                         y2={supplier.y}
-                        stroke={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                        strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
+                        stroke={fillColor}
+                        strokeWidth={strokeWidth}
                         strokeDasharray={STROKE_DASH_ARRAY}
-                        markerEnd={`url(#${hovered ? ARROW_MARKER_ID_HOVER : ARROW_MARKER_ID_DEFAULT})`}
-
+                        markerEnd={`url(#${markerId})`}
                     />
                 )}
             </g>
@@ -235,7 +268,15 @@ export default function UMLEdge({
                onMouseLeave={() => {
                    hideTooltip(setTooltip)
                    setHovered(false);
-               }}>
+               }}
+               onClick={(e) => {
+                   e.stopPropagation();
+                   if (edge.usedInterface) {
+                       highlightElement(edge.usedInterface.id, "modelElementId");
+                       highlightInconsistencyWithModelId(edge.usedInterface.id);
+                   }
+               }}
+            >
                 <ProvidedLollipop
                     x={startX}
                     y={startY}
@@ -243,21 +284,21 @@ export default function UMLEdge({
                         x: supplier.x - startX,
                         y: supplier.y - startY,
                     }}
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
+                    radius={lollipopRadius}
                     lineLength={lineLength}
-                    strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                    strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
+                    strokeColor={fillColor}
+                    strokeWidth={strokeWidth}
                 />
 
                 {isShortLink && (
                     <text
                         x={textX}
-                        y={textY} // Adjust text position slightly above the line
+                        y={textY}
                         textAnchor="middle"
                         fontSize="12"
                         fontFamily="sans-serif"
-                        fill={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
-                        fontWeight={hovered ? "bold" : "normal"}
+                        fill={fillColor}
+                        fontWeight={(hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? "bold" : "normal"}
                         style={{userSelect: 'none', cursor: 'default'}}
                     >
                         {edge.usedInterface?.name}
@@ -277,8 +318,8 @@ export default function UMLEdge({
                     x2={endX}
                     y2={endY}
                     stroke={DEFAULT_STROKE_COLOR}
-                    strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
-                    markerEnd={`url(#${hovered ? ARROW_MARKER_ID_HOVER : ARROW_MARKER_ID_DEFAULT})`}
+                    strokeWidth={strokeWidth}
+                    markerEnd={`url(#${markerId})`}
 
                     strokeDasharray={STROKE_DASH_ARRAY}
                 />

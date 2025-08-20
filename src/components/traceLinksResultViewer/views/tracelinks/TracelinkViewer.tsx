@@ -2,18 +2,18 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
-import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {Button} from "@headlessui/react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {TraceLinkItem} from "@/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem";
 import {BookmarkIcon} from "@heroicons/react/24/outline";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
+import LoadingMessage from "@/components/traceLinksResultViewer/Loading";
 
 /**
  * Defines the props for the DisplayRawJsonTracelinks component.
  */
 interface TraceLinkViewProps {
-    traceLinkType: TraceLinkType;
     headerOffset?: number;
 }
 
@@ -24,8 +24,8 @@ interface TraceLinkViewProps {
  * @param {TraceLinkViewProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component displaying the traceLinks.
  */
-export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceLinkViewProps) {
-    const {traceLinks, highlightedTraceLinks, loading} = useHighlightContext();
+export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
+    const {traceLinks, traceLinkType, highlightedTraceLinks, loading} = useHighlightContext();
     const [sortedTraceLinks, setSortedTraceLinks] = useState<TraceLink[]>(traceLinks);
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
     const [prioritizeHighlights, setPrioritizeHighlights] = useState(false);
@@ -37,7 +37,7 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
     // Memoize sort methods to prevent re-creation on every render
     const sortMethods = useMemo(() => ({
         "Code": (a: TraceLink, b: TraceLink) => (a.codeElementName || a.codeElementId || "").localeCompare((b.codeElementName || b.codeElementId || "")),
-        "Model": (a: TraceLink, b: TraceLink) => (a.modelElementName || a.modelElementId || "").localeCompare((a.modelElementName || b.modelElementId || "")),
+        "Model": (a: TraceLink, b: TraceLink) => (a.modelElementName || a.modelElementId || "").localeCompare((b.modelElementName || b.modelElementId || "")),
         "Sentence": (a: TraceLink, b: TraceLink) => ((a.sentenceNumber ?? Number.MAX_SAFE_INTEGER) - (b.sentenceNumber ?? Number.MAX_SAFE_INTEGER))
     }), []);
 
@@ -100,19 +100,11 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
     }, [traceLinks, selectedSortMethod, handleSortChange]);
 
     if (loading) {
-        return (
-            <div className="p-2 text-center py-8 text-gray-600">
-                Generating traceLinks, this may take a few moments...
-            </div>
-        );
+        return <LoadingMessage title={"Generating traceLinks, this may take a few moments..."} />;
     }
 
     if (sortedTraceLinks.length === 0) {
-        return (
-            <div className="p-2 text-center py-8 text-gray-600">
-                No traceLinks found.
-            </div>
-        );
+        return <LoadingMessage title={"No traceLinks found."} />
     }
 
     return (

@@ -1,16 +1,12 @@
 'use client'
 
 import {Panel} from "react-resizable-panels";
-import React, {Suspense, useState} from "react";
-import DisplayDocumentation from "@/components/traceLinksResultViewer/views/documentation/DocumentationViewer";
-import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeModel/CodeModelViewer";
-import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModel";
-import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer";
+import React, {useState} from "react";
 import {displayOptionName, ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import {Button, Select} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
-import InconsistencyViewer from "@/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer";
+import {getResultPanel} from "@/components/traceLinksResultViewer/TabContent";
 
 interface ResultPanelProps {
     id: string;
@@ -30,7 +26,6 @@ export default function ResultPanel({
                                         traceLinkType
                                     }: ResultPanelProps) {
     const [selectedPanel, setSelectedPanel] = useState(defaultView);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleOptionChange = (value: ResultPanelType) => {
         setSelectedPanel(value);
@@ -60,25 +55,8 @@ export default function ResultPanel({
                 </Button>
             </div>
 
-            {selectedPanel === ResultPanelType.Documentation &&
-                <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}
-            {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel id={id}/>}
-            {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel id={id}/>}
-            {selectedPanel === ResultPanelType.TraceLinks &&
-                <TraceLinkView traceLinkType={traceLinkType} headerOffset={10}/>}
-            {selectedPanel === ResultPanelType.Inconsistencies &&
-                <Suspense fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer/></Suspense>}
+            {getResultPanel(selectedPanel, id, 10)}
 
-            {/*<Dialog onClose={() => setIsOpen(false)} open={isOpen}*/}
-            {/*        className="bg-white fixed top-0 left-0 w-full h-full overflow-y-auto z-1000">*/}
-            {/*    {selectedPanel === ResultPanelType.Documentation &&*/}
-            {/*        <Suspense fallback={<h1>Loading</h1>}><DisplayDocumentation id={id}/></Suspense>}*/}
-            {/*    {selectedPanel === ResultPanelType.Code_Model && <DisplayCodeModel id={id}/>}*/}
-            {/*    {selectedPanel === ResultPanelType.Architecture_Model && <DisplayArchitectureModel id={id}/>}*/}
-            {/*    {selectedPanel === ResultPanelType.TraceLinks && <TraceLinkView traceLinkType={traceLinkType} headerOffset={10}/>}*/}
-            {/*    {selectedPanel === ResultPanelType.Inconsistencies &&*/}
-            {/*        <Suspense fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer/></Suspense>}*/}
-            {/*</Dialog>*/}
         </Panel>
     );
 }

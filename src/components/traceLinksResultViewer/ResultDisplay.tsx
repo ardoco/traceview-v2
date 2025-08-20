@@ -18,16 +18,13 @@ export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplay
 
     return (
         <div className="bg-white z-1 relative h-full">
-            {/* Main panel layout for displaying results */}
             <ResultPanelsLayout
                 id={id}
                 displayOptions={displayOptions}
                 traceLinkType={traceLinkType}
                 setSelectedDialogView={setSelectedDialogView}
-                showThreePanels={true} // Control how many panels are rendered in the main layout
             />
 
-            {/* Full-screen dialog for detailed view */}
             <FullScreenResultDialog
                 selectedView={selectedDialogView}
                 onClose={() => setSelectedDialogView(null)}
@@ -37,7 +34,6 @@ export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplay
                 traceLinkType={traceLinkType}
             />
 
-            {/* Search result message */}
             <SearchResultMessage
                 displayOptions={displayOptions}
             />

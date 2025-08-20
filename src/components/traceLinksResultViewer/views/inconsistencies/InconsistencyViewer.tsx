@@ -10,6 +10,7 @@ import {
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
+import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
 
 interface InconsistencyViewerProps {
     headerOffset?: number;
@@ -67,19 +68,12 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
     }
 
     if (loading) {
-        return (
-            <div className="p-2 text-center py-8 text-gray-500">
-                Generating inconsistencies, this may take a few moments...
-            </div>
-        );
+        return <LoadingMessage title={"Generating inconsistencies, this may take a few moments..."} />;
     }
 
     if (!loading && inconsistencies.length === 0) {
-        return (
-            <div className="p-2 text-center py-8 text-gray-500">
-                No inconsistencies found.
-            </div>
-        );
+        return <LoadingMessage title={"No inconsistencies found."} />;
+
     }
 
     return (

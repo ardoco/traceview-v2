@@ -1,5 +1,3 @@
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
-
 export enum FileType {
     Architecture_Documentation = "Documentation",
     Architecture_Model_UML = "UML",
@@ -18,23 +16,4 @@ export function convertStringToFileType(value: string): FileType {
     } else {
         return FileType.None;
     }
-}
-
-export function getResultViewOption(fileType: FileType): ResultPanelType {
-    switch (fileType) {
-        case FileType.Architecture_Documentation:
-            return ResultPanelType.Documentation;
-        case FileType.Architecture_Model_UML:
-        case FileType.Architecture_Model_PCM:
-            return ResultPanelType.Architecture_Model;
-        case FileType.Code_Model:
-            return ResultPanelType.Code_Model;
-        case FileType.Trace_Link_JSON:
-            return ResultPanelType.TraceLinks;
-        case FileType.Inconsistencies_JSON:
-            return ResultPanelType.Inconsistencies;
-        default:
-            throw new Error(`No result view option defined for file type: ${fileType}`);
-    }
-
 }

@@ -16,8 +16,6 @@ interface ResultPanelsLayoutProps {
     traceLinkType: TraceLinkType;
     /** Callback function to set the currently selected view for the full-screen dialog. */
     setSelectedDialogView: (view: ResultPanelType | null) => void;
-    /** A boolean indicating whether to show three panels or limit to two. */
-    showThreePanels: boolean; // Keeping this prop as per your original logic
 }
 
 /**
@@ -32,10 +30,8 @@ export default function ResultPanelsLayout({
                                                displayOptions,
                                                traceLinkType,
                                                setSelectedDialogView,
-                                               showThreePanels,
                                            }: ResultPanelsLayoutProps) {
-    // Limit the panels to 3 or 2 based on the `showThreePanels` state
-    const panelsToRender = showThreePanels ? displayOptions.slice(0, 3) : displayOptions.slice(0, 2);
+    const panelsToRender = displayOptions.slice(0, 3);
 
     return (
         <PanelGroup direction="horizontal" className="h-full">
@@ -49,7 +45,6 @@ export default function ResultPanelsLayout({
                         id={id}
                         traceLinkType={traceLinkType}
                     />
-                    {/* Render a PanelResizeHandle between panels, if necessary */}
                     {index !== panelsToRender.length - 1 && <PanelResizeHandle className="w-0.5 bg-gruen"/>}
                 </React.Fragment>
             ))}

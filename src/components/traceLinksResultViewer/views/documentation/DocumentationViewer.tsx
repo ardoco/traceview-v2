@@ -10,6 +10,7 @@ import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstr
 import {SentenceView} from "@/components/traceLinksResultViewer/views/documentation/viewer/SentenceView";
 import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
+import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
 
 export default function DisplayDocumentation({id}: ViewProps) {
     const [sentences, setSentences] = useState<Sentence[]>([]);
@@ -59,15 +60,15 @@ export default function DisplayDocumentation({id}: ViewProps) {
     }, [id, isMounted]); // Re-run when id or isMounted changes
 
     if (!isMounted || isLoading) {
-        return <div className="flex justify-center items-center h-full">Loading architecture model...</div>;
+        return <LoadingMessage title="documentation" />;
     }
 
     if (error) {
-        return <div className="text-red-500 p-4">An error occurred: {error}</div>;
+        return <ErrorMessage error={error}/>;
     }
 
     return (
-        <div className="relative flex " style={{height: "calc(100% - 40px)"}}>
+        <div className="px-2 pb-2" style={{height: "calc(100% - 40px)"}}>
             <ul className={"space-y-2 max-h-full min-w-0 overflow-y-auto"}>
                 {sentences.map((sentence, index) => <SentenceView sentence={sentence} key={index}/>)}
             </ul>
