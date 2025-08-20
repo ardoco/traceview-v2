@@ -1,14 +1,13 @@
 'use client'
 
 import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 // Main Home Component
 export default function Home() {
     return (
         <div className="h-full z-1 relative">
-            <HeroSection />
-            <AboutSection />
+            <HeroSection/>
+            <AboutSection/>
         </div>
     );
 }
@@ -20,7 +19,7 @@ function HeroSection() {
             <div className="relative isolate px-6 pt-14 lg:px-8">
                 {/*<BackgroundBlur position="top" />*/}
                 <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-                    <HeroContent />
+                    <HeroContent/>
                 </div>
                 {/*<BackgroundBlur position="bottom" />*/}
             </div>
@@ -51,7 +50,7 @@ function HeroContent() {
 }
 
 // Background Blur Component
-function BackgroundBlur({ position }: { position: "top" | "bottom" }) {
+function BackgroundBlur({position}: { position: "top" | "bottom" }) {
     const styles = {
         top: {
             className: "absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80",

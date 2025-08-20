@@ -1,6 +1,8 @@
 import React, {createContext, useContext, useState} from "react";
 import {
-    Inconsistency, InconsistencyType, MissingModelInstanceInconsistency,
+    Inconsistency,
+    InconsistencyType,
+    MissingModelInstanceInconsistency,
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
@@ -41,11 +43,16 @@ export const useInconsistencyContext = () => {
 }
 
 
-export function InconsistencyProvider({children, inconsistencies, useInconsistencies, loading}: InconsistencyContextProps) {
+export function InconsistencyProvider({
+                                          children,
+                                          inconsistencies,
+                                          useInconsistencies,
+                                          loading
+                                      }: InconsistencyContextProps) {
     const [highlightedInconsistencies, setHighlightedInconsistencies] = useState<Inconsistency[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
-    const { setLastClickedSource } = useHighlightContext();
+    const {setLastClickedSource} = useHighlightContext();
 
     let modelInconsistencies: MissingTextForModelElementInconsistency[] =
         inconsistencies
@@ -74,7 +81,7 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
         setLastClickedSource(inconsistency.id, 'inconsistency');
     }
 
-    const highlightInconsistencyWithSentence = (sentence: number)=> {
+    const highlightInconsistencyWithSentence = (sentence: number) => {
         if (!useInconsistencies) {
             return;
         }
@@ -89,7 +96,7 @@ export function InconsistencyProvider({children, inconsistencies, useInconsisten
         }
         setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource(sentence,'sentence');
+        setLastClickedSource(sentence, 'sentence');
     }
 
     const highlightInconsistencyWithModelId = (modelElementId: string) => {

@@ -34,29 +34,32 @@ interface FullScreenResultDialogProps {
  * @param {FullScreenResultDialogProps} props - The props for the component.
  * @returns {JSX.Element} The rendered full-screen dialog.
  */
-export default function FullScreenResultDialog({selectedView,
+export default function FullScreenResultDialog({
+                                                   selectedView,
                                                    onClose,
                                                    onSelectView,
                                                    displayOptions,
                                                    id,
                                                    traceLinkType,
-                                               } : FullScreenResultDialogProps){
+                                               }: FullScreenResultDialogProps) {
     // Memoize the content mapping for performance
     const tabContent = useMemo(() => ({
-        [ResultPanelType.Documentation]: <DisplayDocumentation id={id} />,
-        [ResultPanelType.Code_Model]: <DisplayCodeModel id={id} />,
-        [ResultPanelType.Architecture_Model]: <DisplayArchitectureModel id={id} />,
-        [ResultPanelType.TraceLinks]: <TraceLinkView traceLinkType={traceLinkType} headerOffset={0} />,
-        [ResultPanelType.Inconsistencies]: <Suspense fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer headerOffset={0}/></Suspense>,
+        [ResultPanelType.Documentation]: <DisplayDocumentation id={id}/>,
+        [ResultPanelType.Code_Model]: <DisplayCodeModel id={id}/>,
+        [ResultPanelType.Architecture_Model]: <DisplayArchitectureModel id={id}/>,
+        [ResultPanelType.TraceLinks]: <TraceLinkView traceLinkType={traceLinkType} headerOffset={0}/>,
+        [ResultPanelType.Inconsistencies]: <Suspense
+            fallback={<h1>Loading. This might take a while.</h1>}><InconsistencyViewer headerOffset={0}/></Suspense>,
     }), [id, traceLinkType]);
 
     const selectedIndex = selectedView ? displayOptions.indexOf(selectedView) : 0;
 
     return (
-        <Dialog onClose={onClose} open={selectedView !== null} className="bg-white fixed inset-0 z-[1000] flex flex-col">
-            <TabGroup selectedIndex={selectedIndex} onChange={(index) => onSelectView(displayOptions[index])} manual className="flex flex-col h-full">
+        <Dialog onClose={onClose} open={selectedView !== null} className="bg-white fixed inset-0 z-1000 flex flex-col">
+            <TabGroup selectedIndex={selectedIndex} onChange={(index) => onSelectView(displayOptions[index])} manual
+                      className="flex flex-col h-full">
                 {/* Header: Stays at the top and does not shrink */}
-                <TabList className="flex-shrink-0 flex items-center bg-gray-100 border-b border-gray-300 px-4 z-[1001]">
+                <TabList className="flex-shrink-0 flex items-center bg-gray-100 border-b border-gray-300 px-4 z-1001">
                     {displayOptions.map((option) => (
                         <Tab
                             key={option}
@@ -71,9 +74,11 @@ export default function FullScreenResultDialog({selectedView,
                             {displayOptionName(option, traceLinkType)}
                         </Tab>
                     ))}
-                    <div className="flex-grow" /> {/* Pushes the close button to the right */}
-                    <Button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full focus:outline-none">
-                        <XMarkIcon className="w-6 h-6" />
+                    <div className="flex-grow"/>
+                    {/* Pushes the close button to the right */}
+                    <Button onClick={onClose}
+                            className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full focus:outline-none">
+                        <XMarkIcon className="w-6 h-6"/>
                     </Button>
                 </TabList>
 

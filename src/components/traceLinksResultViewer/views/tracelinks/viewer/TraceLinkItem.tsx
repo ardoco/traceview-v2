@@ -30,17 +30,16 @@ export function TraceLinkItem({link, showCode, showModel, showSentence}: TraceLi
             onClick={() => {
                 resetHighlightedInconsistencies();
                 highlightSingleTraceLink(link);
-
             }}
         >
             {showCode && (
-                <div className={"truncate"} title={link.codeElementId}>
-                    <strong>Code Id:</strong> {link.codeElementId || "N/A"}
+                <div className={"truncate"} title={`id: ${link.codeElementId}`}>
+                    <strong>Code Name:</strong> {link.codeElementName || link.codeElementId || "N/A"}
                 </div>
             )}
             {showModel && (
-                <div className={"truncate max-w-full"} title={link.modelElementId}>
-                    <strong>Model Id:</strong> {link.modelElementId || "N/A"}
+                <div className={"truncate max-w-full"} title={`id: ${link.modelElementId}`}>
+                    <strong>Model Name:</strong> {link.modelElementName || link.modelElementId || "N/A"}
                 </div>
             )}
             {showSentence && (

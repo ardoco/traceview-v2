@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {createContext, useContext, useState} from 'react';
 import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {FileType} from "@/components/dataTypes/FileType";
@@ -12,7 +12,6 @@ export interface FormData {
     files: UploadedFile[];
     errors: string[];
     traceLinkConfiguration: TraceLinkConfiguration | null;
-    configurationSource: 'default' | 'custom' | null;
     findInconsistencies: boolean;
 }
 
@@ -44,14 +43,13 @@ export const useFormContext = () => {
     return context;
 };
 
-export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
+export function FormProvider({children, allowedFileTypes}: FormProviderProps) {
     const [formData, setFormData] = useState<FormData>({
         projectName: '',
         selectedTraceLinkType: null,
         files: [],
         errors: [],
         traceLinkConfiguration: null,
-        configurationSource: 'default',
         findInconsistencies: false,
     });
 
@@ -76,7 +74,7 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
                 }
                 const data: TraceLinkConfiguration = await response.json();
                 setOriginalTraceLinkConfiguration(data);
-                setFormData(prev => ({ ...prev, traceLinkConfiguration: data, configurationSource: 'default' }));
+                setFormData(prev => ({...prev, traceLinkConfiguration: data}));
             } catch (e: any) {
                 setConfigurationError(e.message);
             } finally {
@@ -88,7 +86,7 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
 
     const updateFormData = (updatedData: Partial<FormData>) => {
         setFormData((prevData) => {
-            const newData = { ...prevData, ...updatedData };
+            const newData = {...prevData, ...updatedData};
 
             // If the selected trace link type is changing and it's not SAD_SAM,
             // automatically reset the findInconsistencies flag to false.
@@ -102,7 +100,14 @@ export function FormProvider({ children, allowedFileTypes}:FormProviderProps) {
     };
 
     return (
-        <FormContext.Provider value={{ formData, updateFormData, configurationLoading, configurationError, originalTraceLinkConfiguration, allowedFileTypes }}>
+        <FormContext.Provider value={{
+            formData,
+            updateFormData,
+            configurationLoading,
+            configurationError,
+            originalTraceLinkConfiguration,
+            allowedFileTypes
+        }}>
             {children}
         </FormContext.Provider>
     );

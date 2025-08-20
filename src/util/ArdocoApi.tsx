@@ -100,23 +100,27 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
             throw new Error(`Unsupported trace link type: ${selectedTraceLinkType}`);
     }
 
-    const response = await fetch(apiEndpoint, {
-        method: "POST",
-        body: requestData,
-        headers: {
-            'X-Target-API': apiAddress,
-        },
-    });
+    try {
+        const response = await fetch(apiEndpoint, {
+            method: "POST",
+            body: requestData,
+            headers: {
+                'X-Target-API': apiAddress,
+            },
+        });
 
-    if (!response.ok) {
-        throw new Error("API call failed.");
-    }
+        if (!response.ok) {
+            throw new Error("API call failed.");
+        }
 
-    result = await response.json();
-    if (!result.requestId) {
-        throw new Error("Invalid API response.");
+        result = await response.json();
+        if (!result.requestId) {
+            throw new Error("Invalid API response.");
+        }
+        return {jsonResult: result, usedFiles: usedFiles}
+    } catch (error) {
+        throw new Error(`API call failed: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
-    return {jsonResult: result, usedFiles: usedFiles}
 }
 
 /**

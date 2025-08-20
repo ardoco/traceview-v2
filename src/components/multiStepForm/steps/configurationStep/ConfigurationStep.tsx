@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useFormContext } from "@/contexts/ProjectUploadContext";
+import React, {useEffect, useState} from 'react';
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import ConfigurationSourceSelector from './ConfigurationSourceSelector';
 import CustomizationTabs from './CustomizationTabs';
 import FileUploadSection from './FileUploadSection';
 import ManualInputSection from './ManualInputSection';
 import LoadingState from './LoadingState';
 import ErrorState from './ErrorState';
+import {ConfigurationMethod} from "@/components/multiStepForm/steps/configurationStep/ConfigurationMethod";
 
 export default function ConfigurationStep() {
     const {
@@ -18,21 +19,16 @@ export default function ConfigurationStep() {
         originalTraceLinkConfiguration
     } = useFormContext();
 
-    const isUsingDefaults = formData.configurationSource === 'default';
-    const isCustomizing = formData.configurationSource === 'custom';
-
-    const [customizationMethod, setCustomizationMethod] = useState<'manual' | 'file_upload'>(() =>
-        isCustomizing && formData.traceLinkConfiguration && Object.keys(formData.traceLinkConfiguration).length > 0
-            ? 'manual'
-            : 'file_upload'
-    );
-
     const [fileParseError, setFileParseError] = useState<string | null>(null);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+    const [configurationSource, setConfigurationSource] = useState<ConfigurationMethod>(ConfigurationMethod.DEFAULT);
+    const isUsingFileUpload = configurationSource === ConfigurationMethod.FILE_UPLOAD;
+    const isUsingManualInput = configurationSource === ConfigurationMethod.MANUAL_INPUT;
+    const isUsingDefaults = configurationSource === ConfigurationMethod.DEFAULT;
 
     useEffect(() => {
         if (isUsingDefaults && originalTraceLinkConfiguration && !formData.traceLinkConfiguration) {
-            updateFormData({ traceLinkConfiguration: originalTraceLinkConfiguration });
+            updateFormData({traceLinkConfiguration: originalTraceLinkConfiguration});
         }
     }, [isUsingDefaults, originalTraceLinkConfiguration, formData.traceLinkConfiguration, updateFormData]);
 
@@ -51,7 +47,7 @@ export default function ConfigurationStep() {
         reader.onload = (e) => {
             try {
                 const parsed = JSON.parse(e.target?.result as string);
-                updateFormData({ configurationSource: 'custom', traceLinkConfiguration: parsed });
+                updateFormData({traceLinkConfiguration: parsed});
             } catch {
                 setFileParseError('Error parsing JSON file. Please ensure it is a valid JSON.');
             }
@@ -67,55 +63,41 @@ export default function ConfigurationStep() {
         setUploadedFile(null);
         setFileParseError(null);
         updateFormData({
-            configurationSource: 'custom',
             traceLinkConfiguration: originalTraceLinkConfiguration
         });
-        setCustomizationMethod('manual');
     };
 
-    if (configurationLoading) return <LoadingState />;
-    if (configurationError) return <ErrorState message={configurationError} />;
+    if (configurationLoading) return <LoadingState/>;
+    if (configurationError) return <ErrorState message={configurationError}/>;
 
     return (
         <div className="flex flex-col items-center p-6 rounded-lg min-h-[400px]">
             <ConfigurationSourceSelector
-                currentSource={formData.configurationSource}
-                setToDefault={() =>
-                    updateFormData({
-                        configurationSource: 'default',
-                        traceLinkConfiguration: originalTraceLinkConfiguration
-                    })
-                }
-                setToCustom={() => {
-                    updateFormData({ configurationSource: 'custom' });
-                    if (!formData.traceLinkConfiguration) setCustomizationMethod('file_upload');
-                }}
+                currentMethod={configurationSource}
+                setMethod={setConfigurationSource}
+                setToDefault={handleResetToDefault}
             />
 
-            {isCustomizing && (
-                <>
-                    <CustomizationTabs
-                        currentMethod={customizationMethod}
-                        setMethod={setCustomizationMethod}
-                    />
-
-                    {customizationMethod === 'file_upload' && (
-                        <FileUploadSection
-                            uploadedFile={uploadedFile}
-                            fileParseError={fileParseError}
-                            handleFileChange={handleFileChange}
-                        />
-                    )}
-
-                    {customizationMethod === 'manual' && (
-                        <ManualInputSection
-                            config={formData.traceLinkConfiguration}
-                            updateFormData={updateFormData}
-                            onReset={handleResetToDefault}
-                        />
-                    )}
-                </>
+            {!isUsingDefaults && (<CustomizationTabs
+                    currentMethod={configurationSource}
+                    setMethod={setConfigurationSource}
+                />
             )}
+
+            {isUsingFileUpload && (
+                <FileUploadSection
+                    uploadedFile={uploadedFile}
+                    fileParseError={fileParseError}
+                    handleFileChange={handleFileChange}
+                />
+            )}
+
+            {isUsingManualInput && (
+                <ManualInputSection
+                    onReset={handleResetToDefault}
+                />
+            )}
+
         </div>
     );
 }

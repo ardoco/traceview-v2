@@ -6,7 +6,7 @@ import MultiStepFormLoadProject from "@/components/loadExistingProject/MultiStep
 
 export default function () {
 
-    return(
+    return (
         <div className="bg-white h-full z-1 relative">
             <FormProvider allowedFileTypes={Object.values(FileType)}>
                 <MultiStepFormLoadProject/>

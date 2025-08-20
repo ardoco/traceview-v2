@@ -37,11 +37,11 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     const parser = new XMLParser(options);
     const jsonModel = parser.parse(rawXML);
 
-    let components:AbstractComponent[] = [];
-    let edges:Edge[] = [];
+    let components: AbstractComponent[] = [];
+    let edges: Edge[] = [];
 
     let elements = jsonModel["uml:Model"]["packagedElement"];
-    if (!elements) return { components, edges };
+    if (!elements) return {components, edges};
 
     for (const element of elements) {
         const packagedElements = extractPackagedElement(element, edges);
@@ -68,10 +68,10 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     //     index === self.findIndex((e) => e.equals(edge)) // Check if the edge is the first occurrence
     // );
 
-    return { components, edges };
+    return {components, edges};
 }
 
-function getTransitiveEdges(edges:Edge[], components:AbstractComponent[]): Edge[] {
+function getTransitiveEdges(edges: Edge[], components: AbstractComponent[]): Edge[] {
 
     const usages: Edge[] = edges.filter((edge) => edge.type === "uml:Usage");
     const providedInterfaces: Edge[] = edges.filter((edge) => edge.type === "uml:InterfaceRealization");
@@ -92,10 +92,10 @@ function getTransitiveEdges(edges:Edge[], components:AbstractComponent[]): Edge[
     return final;
 }
 
-function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[] {
+function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[] {
     const type = element["@_xmi:type"];
 
-    const addedEdges:EdgeTypes = addEdges(element, edges);
+    const addedEdges: EdgeTypes = addEdges(element, edges);
 
     // Process element based on its type
     switch (type) {
@@ -153,7 +153,7 @@ function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[]
     return [];
 }
 
-function addEdges(element: any, edges:Edge[]): EdgeTypes {
+function addEdges(element: any, edges: Edge[]): EdgeTypes {
     const usages = extractUsage(element);
     const providedInterfaces = extractInterfaceRealizations(element);
 
@@ -161,7 +161,7 @@ function addEdges(element: any, edges:Edge[]): EdgeTypes {
     edges.push(...providedInterfaces);
     edges.push(...usages);
 
-    return {usages:usages, providedInterfaces:providedInterfaces} as EdgeTypes;
+    return {usages: usages, providedInterfaces: providedInterfaces} as EdgeTypes;
 }
 
 function extractOperations(element: any): Operation[] {
@@ -232,9 +232,9 @@ function extractUsage(element: any): Edge[] {
             .filter((el: any) => el["@_xmi:type"] === "uml:Usage")
             .map((usage: any) =>
                 new Edge(
-                usage["@_client"], // element that uses the target component
-                usage["@_supplier"], // id of the component that is being used
-                "uml:Usage" // type of the edge
+                    usage["@_client"], // element that uses the target component
+                    usage["@_supplier"], // id of the component that is being used
+                    "uml:Usage" // type of the edge
                 )
             );
     }

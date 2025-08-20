@@ -25,7 +25,7 @@ export default function ViewProvided() {
     const [loading, setLoading] = useState<boolean>(true);
     const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE); // Default type
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
-    const { setCurrentProjectId } = useNavigation();
+    const {setCurrentProjectId} = useNavigation();
 
     const [findInconsistencies, setFindInconsistencies] = useState(false);
     const [findTraceLinks, setFindTraceLinks] = useState(false);
@@ -86,6 +86,7 @@ export default function ViewProvided() {
                 setLoading(false);
             }
         }
+
         loadModel();
 
     }, [id]);
@@ -104,7 +105,8 @@ export default function ViewProvided() {
             {error && <ErrorDisplay message={error} onRetry={() => {
             }} retryAllowed={false}/>}
             <HighlightProvider traceLinks={traceLinks} useTraceLinks={findTraceLinks} loading={loading}>
-                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies}
+                                       loading={loading}>
                     <ResultDisplay
                         id={uriDecodedId}
                         traceLinkType={traceLinkType}

@@ -140,69 +140,69 @@ function MultiStepForm() {
 
 
     return (<FormLayout>
-            <Stepper
-                steps={steps.map((step) => step.stepperLabel)}
-                currentStep={currentStep}
-                onStepChange={(step: number) => setCurrentStep(step)}
-            />
+        <Stepper
+            steps={steps.map((step) => step.stepperLabel)}
+            currentStep={currentStep}
+            onStepChange={(step: number) => setCurrentStep(step)}
+        />
 
-            <div className="content-center flex flex-col w-full mt-8">
-                <StepContainer>
-                    {/* Heading */}
-                    <h2 className="text-3xl font-bold text-black mb-4">
-                        {steps[currentStep].title}
-                    </h2>
-                    {/* Description */}
-                    <p className="text-base leading-relaxed text-black-700 mb-8">
-                        {steps[currentStep].description}
-                    </p>
+        <div className="content-center flex flex-col w-full mt-8">
+            <StepContainer>
+                {/* Heading */}
+                <h2 className="text-3xl font-bold text-black mb-4">
+                    {steps[currentStep].title}
+                </h2>
+                {/* Description */}
+                <p className="text-base leading-relaxed text-black-700 mb-8">
+                    {steps[currentStep].description}
+                </p>
 
-                    {/* Step-specific components */}
-                    {currentStep === 0 && <FileUploadStep/>}
-                    {currentStep === 1 && <ProjectDetailsStep/>}
-                    {currentStep === 2 && <ConfigurationStep/>}
-                    {currentStep === 3 && <SummaryStep/>}
+                {/* Step-specific components */}
+                {currentStep === 0 && <FileUploadStep/>}
+                {currentStep === 1 && <ProjectDetailsStep/>}
+                {currentStep === 2 && <ConfigurationStep/>}
+                {currentStep === 3 && <SummaryStep/>}
 
-                    {/* Error messages */}
-                    <DisplayErrors errors={errors}/>
+                {/* Error messages */}
+                <DisplayErrors errors={errors}/>
 
-                </StepContainer>
-            </div>
+            </StepContainer>
+        </div>
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between w-full mt-8">
-                <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
-                <Button
-                    text={currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
-                    onButtonClicked={nextStep}
-                    disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
-                >
+        {/* Navigation buttons */}
+        <div className="flex justify-between w-full mt-8">
+            <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
+            <Button
+                text={currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
+                onButtonClicked={nextStep}
+                disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+            >
 
-                </Button>
-            </div>
-            {/* Loading/Error Modal */}
-            {errorModalApiErrorOpen && (<LoadingErrorModal
-                    isOpen={errorModalApiErrorOpen}
-                    message="An error occurred while processing your request. Please try again."
-                    onRetry={() => {
-                        setErrorModalApiErrorOpen(false);
-                    }}
-                    onViewFiles={async () => {
-                        setErrorModalApiErrorOpen(false);
-                        let storageId = await handleSubmit();
-                        const encodedId = encodeURIComponent(storageId);
-                        redirect(`/view-provided/${encodedId}`);
-                    }}
-                />)}
+            </Button>
+        </div>
+        {/* Loading/Error Modal */}
+        {errorModalApiErrorOpen && (<LoadingErrorModal
+            isOpen={errorModalApiErrorOpen}
+            message="An error occurred while processing your request. Please try again."
+            onRetry={() => {
+                setErrorModalApiErrorOpen(false);
+            }}
+            onViewFiles={async () => {
+                setErrorModalApiErrorOpen(false);
+                let storageId = await handleSubmit();
+                const encodedId = encodeURIComponent(storageId);
+                redirect(`/view-provided/${encodedId}`);
+            }}
+        />)}
 
-            {errorModalFileUpload && (<ErrorModalFileUpload
-                    isOpen={errorModalFileUpload}
-                    message="An error occurred while uploading the files. Please try again."
-                    onClose={() => setErrorModalFileUpload(false)}
-                />)}
+        {errorModalFileUpload && (<ErrorModalFileUpload
+            isOpen={errorModalFileUpload}
+            message="An error occurred while uploading the files. Please try again."
+            onClose={() => setErrorModalFileUpload(false)}
+        />)}
 
-            {/* Loading State */}
-        </FormLayout>);
+        {/* Loading State */}
+    </FormLayout>);
 }
 
 // this differs from the loading Error modal as that there is only a single okay button.
@@ -214,31 +214,31 @@ export function ErrorModalFileUpload({isOpen, message, onClose}: {
     if (!isOpen) return null;
 
     return (<Dialog as="div" className="relative z-[100]" open={isOpen} onClose={() => { /* Do nothing on overlay click */
-        }}>
-            <div className="fixed inset-0 bg-black/30"/>
-            <div className="fixed inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center p-4 text-center">
-                    <DialogPanel
-                        className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl">
-                        <DialogTitle as="h3" className="text-lg font-medium leading-6 text-red-600">
-                            An Error Occurred
-                        </DialogTitle>
-                        <div className="mt-4">
-                            <p className="text-sm text-gray-700">
-                                {message}
-                            </p>
-                        </div>
-                        <div className="mt-6 flex justify-end gap-x-3">
-                            <button type="button"
-                                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                                    onClick={onClose}>
-                                Okay
-                            </button>
-                        </div>
-                    </DialogPanel>
-                </div>
+    }}>
+        <div className="fixed inset-0 bg-black/30"/>
+        <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <DialogPanel
+                    className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl">
+                    <DialogTitle as="h3" className="text-lg font-medium leading-6 text-red-600">
+                        An Error Occurred
+                    </DialogTitle>
+                    <div className="mt-4">
+                        <p className="text-sm text-gray-700">
+                            {message}
+                        </p>
+                    </div>
+                    <div className="mt-6 flex justify-end gap-x-3">
+                        <button type="button"
+                                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                                onClick={onClose}>
+                            Okay
+                        </button>
+                    </div>
+                </DialogPanel>
             </div>
-        </Dialog>);
+        </div>
+    </Dialog>);
 
 }
 

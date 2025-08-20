@@ -8,7 +8,15 @@ export interface LollipopProps {
     strokeWidth?: number;
 }
 
-export function ProvidedLollipop({x, y, facingVector, lineLength = 6, radius = 6, strokeColor="black", strokeWidth=1.5}: LollipopProps) {
+export function ProvidedLollipop({
+                                     x,
+                                     y,
+                                     facingVector,
+                                     lineLength = 6,
+                                     radius = 6,
+                                     strokeColor = "black",
+                                     strokeWidth = 1.5
+                                 }: LollipopProps) {
     const fillColor = "white";
 
     const norm = Math.hypot(facingVector.x, facingVector.y);
@@ -40,7 +48,15 @@ export function ProvidedLollipop({x, y, facingVector, lineLength = 6, radius = 6
     );
 }
 
-export function RequiredLollipop({x, y, facingVector, lineLength = 6, radius = 6, strokeColor="black", strokeWidth=1.5}: LollipopProps) {
+export function RequiredLollipop({
+                                     x,
+                                     y,
+                                     facingVector,
+                                     lineLength = 6,
+                                     radius = 6,
+                                     strokeColor = "black",
+                                     strokeWidth = 1.5
+                                 }: LollipopProps) {
     const norm = Math.hypot(facingVector.x, facingVector.y);
     const ux = facingVector.x / norm;
     const uy = facingVector.y / norm;

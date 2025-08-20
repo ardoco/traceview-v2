@@ -6,13 +6,19 @@ import parseUMLModel from "@/components/traceLinksResultViewer/views/architectur
 import UMLViewer from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
 import {parsePCM} from "@/components/traceLinksResultViewer/views/architectureModel/parser/PCMParser";
-import {AbstractComponent, Edge} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
-import {deleteProjectFile, loadProjectFile} from "@/util/ClientFileStorage";
+import {
+    AbstractComponent,
+    Edge
+} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
+import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 
 export default function DisplayArchitectureModel({id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>(null);
-    const [architectureModel, setArchitectureModel] = useState<{ components: AbstractComponent[], edges: Edge[] } | null>(null);
+    const [architectureModel, setArchitectureModel] = useState<{
+        components: AbstractComponent[],
+        edges: Edge[]
+    } | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
     const [error, setError] = useState<string | null>(null); // Added error state
     const [isMounted, setIsMounted] = useState<boolean>(false); // Track if component has mounted
@@ -73,6 +79,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
                 setIsLoading(false);
             }
         }
+
         loadModel();
     }, [id, isMounted]); // Rerun when id or isMounted changes
 
@@ -101,8 +108,8 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             <TooltipInstruction
                 title="Instructions"
                 instructions={[
-                    { keyCombo: "Click", description: "Highlight traceLinks" },
-                    { keyCombo: "Hover over interface's name", description: "display details" },
+                    {keyCombo: "Click", description: "Highlight traceLinks"},
+                    {keyCombo: "Hover over interface's name", description: "display details"},
                 ]}
             />
         </div>

@@ -14,7 +14,7 @@ export function convertStringToFileType(value: string): FileType {
     if ((Object.values(FileType) as Array<string>).includes(value)) {
         return value as FileType;
     } else if (value === "Architecture Model") {
-        return FileType.Architecture_Model_UML; // Default to UML if "Architecture Model" is provided
+        return FileType.Architecture_Model_UML; // Default to UML
     } else {
         return FileType.None;
     }

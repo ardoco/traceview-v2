@@ -1,12 +1,14 @@
 import {
     Inconsistency,
-    InconsistencyType, MissingModelInstanceInconsistency, MissingTextForModelElementInconsistency
+    InconsistencyType,
+    MissingModelInstanceInconsistency,
+    MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 
 
-export function parseInconsistenciesFromJSON(data:any): Inconsistency[] {
+export function parseInconsistenciesFromJSON(data: any): Inconsistency[] {
 
-    let inconsistencies = data.map((inconsistency:any) => {
+    let inconsistencies = data.map((inconsistency: any) => {
         const reason = inconsistency.reason;
         if (inconsistency.type === InconsistencyType.MissingModelInstance) {
             const sentenceNumber = parseInt(inconsistency.sentenceNumber);

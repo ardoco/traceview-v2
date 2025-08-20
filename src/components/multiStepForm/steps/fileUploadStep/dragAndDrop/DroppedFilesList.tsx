@@ -6,9 +6,9 @@ interface FileListDragDropProps {
     files: UploadedFile[];
 }
 
-export default function DroppedFilesList({ files}: FileListDragDropProps) {
+export default function DroppedFilesList({files}: FileListDragDropProps) {
 
-    const { formData, updateFormData } = useFormContext();
+    const {formData, updateFormData} = useFormContext();
 
     const deleteFile = (deletedFile: UploadedFile) => {
         updateFormData({

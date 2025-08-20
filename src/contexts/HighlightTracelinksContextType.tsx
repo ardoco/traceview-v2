@@ -8,9 +8,9 @@ type ClickedElementType = 'sentence' | 'model' | 'codeElementId' | 'tracelink' |
 
 interface HighlightTracelinksContextType {
     highlightedTraceLinks: TraceLink[];
-    highlightElement: (id: number| string | null, type: string) => void;
-    highlightSingleTraceLink: (traceLinks:TraceLink) => void;
-    traceLinks:TraceLink[];
+    highlightElement: (id: number | string | null, type: string) => void;
+    highlightSingleTraceLink: (traceLinks: TraceLink) => void;
+    traceLinks: TraceLink[];
     resetHighlightedTraceLinks: () => void;
     lastSearchTimestamp: number;
     messageSource: MessageSource;
@@ -36,13 +36,21 @@ export const useHighlightContext = () => {
     return context;
 };
 
-export function HighlightProvider({children, traceLinks, useTraceLinks=true, loading=false}: HighlightProviderProps) {
+export function HighlightProvider({
+                                      children,
+                                      traceLinks,
+                                      useTraceLinks = true,
+                                      loading = false
+                                  }: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
     const [messageSource, setMessageSource] = useState<MessageSource>(null);
-    const [lastClickedSource, setLastClickedSource] = useState<{ id: string | number | null; type: ClickedElementType } | null>(null);
+    const [lastClickedSource, setLastClickedSource] = useState<{
+        id: string | number | null;
+        type: ClickedElementType
+    } | null>(null);
 
-    const highlightElement = (id: number| string | null, type: string) => {
+    const highlightElement = (id: number | string | null, type: string) => {
         if (!useTraceLinks) {
             return;
         }
@@ -65,17 +73,17 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true, loa
         setHighlightedTraceLinks(matchingTraceLinks);
         setMessageSource('element-click');
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource({ id, type: type as ClickedElementType });
+        setLastClickedSource({id, type: type as ClickedElementType});
     };
 
-    const highlightSingleTraceLink = (traceLink:TraceLink) =>{
+    const highlightSingleTraceLink = (traceLink: TraceLink) => {
         if (!useTraceLinks) {
             return;
         }
         setHighlightedTraceLinks([traceLink]);
         setMessageSource('tracelink-only');
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource({ id: traceLink.id, type: 'tracelink' });
+        setLastClickedSource({id: traceLink.id, type: 'tracelink'});
     }
 
     const resetHighlightedTraceLinks = () => {
@@ -85,7 +93,7 @@ export function HighlightProvider({children, traceLinks, useTraceLinks=true, loa
     }
 
     const setLastClickedSourceGlobal = (id: string | number | null, type: ClickedElementType) => {
-        setLastClickedSource({ id, type });
+        setLastClickedSource({id, type});
     };
 
     return (

@@ -61,7 +61,7 @@ export async function storeProjectMetadata(
     const release = await acquireMetadataLock(projectId);
     try {
         const fsHandle = await navigator.storage.getDirectory();
-        const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, { create: true });
+        const projectDirHandle = await fsHandle.getDirectoryHandle(projectId, {create: true});
 
         const metadata = uploadedFiles.map(file => ({
             fileType: file.fileType,
@@ -86,7 +86,10 @@ async function storeProjectFile(projectDirHandle: FileSystemDirectoryHandle, fil
     await writable.close();
 }
 
-export async function loadProjectFile(projectId: string, fallbackType: FileType, deleteFileAfterLoad = false): Promise<{content: string, fileType: FileType} | null> {
+export async function loadProjectFile(projectId: string, fallbackType: FileType, deleteFileAfterLoad = false): Promise<{
+    content: string,
+    fileType: FileType
+} | null> {
     if (typeof window === "undefined") {
         throw new Error("This function must be executed on the client side.");
     }
@@ -114,7 +117,7 @@ export async function loadProjectFile(projectId: string, fallbackType: FileType,
         const file = await fileHandle.getFile();
         const content = await file.text();
 
-        const result = { content: content, fileType: actualFileType };
+        const result = {content: content, fileType: actualFileType};
         console.log(`[ClientFileStorage] Loaded file ${actualFileName} of type ${actualFileType} for project ${projectId}.`);
 
         if (deleteFileAfterLoad) {
@@ -181,7 +184,7 @@ export async function deleteProjectFile(projectId: string, fileName: string, pro
         if (updatedMetadata.length === 0) {
             await currentProjectDirHandle.removeEntry(`project.meta.json`);
             try {
-                await currentFsHandle.removeEntry(projectId, { recursive: true });
+                await currentFsHandle.removeEntry(projectId, {recursive: true});
                 console.log(`[ClientFileStorage] Project directory ${projectId} removed as no files remain.`);
             } catch (error) {
                 console.warn(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);
@@ -215,7 +218,7 @@ async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle)
  * Writes metadata to the project's meta.json file.
  */
 async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, metadata: any[]) {
-    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`, { create: true });
+    const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`, {create: true});
     const metaWritable = await metaHandle.createWritable();
     await metaWritable.write(JSON.stringify(metadata, null, 2));
     await metaWritable.close();
@@ -228,7 +231,7 @@ export async function deleteProjectDirectory(projectId: string) {
     }
     try {
         const fsHandle = await navigator.storage.getDirectory();
-        await fsHandle.removeEntry(projectId, { recursive: true });
+        await fsHandle.removeEntry(projectId, {recursive: true});
         console.log(`[ClientFileStorage] Project directory ${projectId} and all its contents removed.`);
     } catch (error: any) {
         console.error(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);

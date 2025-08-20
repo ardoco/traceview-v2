@@ -18,11 +18,10 @@ const navigation = [
 ];
 
 interface ArDoCoLogoProps {
-    size: number;
-    onClick: (href:string, event: any) => void;
+    onClick: (href: string, event: any) => void;
 }
 
-export function ArDoCoLogo({size, onClick}: ArDoCoLogoProps) {
+export function ArDoCoLogo({onClick}: ArDoCoLogoProps) {
     const href = "/";
 
     const handleClick = (event: any) => {
@@ -30,28 +29,27 @@ export function ArDoCoLogo({size, onClick}: ArDoCoLogoProps) {
     }
 
     return (
-            <Link
-                href={href}
-                className={`-ml-3 p-1.5 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75% flex items-center justify-center`}
-                onClick={handleClick}
-            >
-                <span className="sr-only">ArDoCo Logo</span>
-                <img
-                    alt="ArDoCo Logo"
-                    src="/ardoco-logo.png"
-                    className={clsx("w-auto h-" + size)}
-                />
-            </Link>
-        );
+        <Link
+            href={href}
+            className={`-ml-3 p-1.5 w-24 h-24 bg-radial-[at_50%_50%] from-[#FFF4] to-75% flex items-center justify-center`}
+            onClick={handleClick}
+        >
+            <img
+                alt="ArDoCo Logo"
+                src="/ardoco-logo.png"
+                className={clsx(`w-auto h-3/4`)}
+            />
+        </Link>
+    );
 }
 
 export default function NavBar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {apiAddress} = useApiAddressContext();
-    const { handleNavigation } = useNavigation();
+    const {handleNavigation} = useNavigation();
 
-    const onClickNavigation = (href: string, event:any) => {
+    const onClickNavigation = (href: string, event: any) => {
         event.preventDefault();
         handleNavigation(href);
     }
@@ -62,7 +60,7 @@ export default function NavBar() {
                 <nav aria-label="Global" className="flex items-center justify-between p-3 lg:px-8 h-24">
                     {/* Logo */}
                     <div className="flex lg:flex-1">
-                        <ArDoCoLogo size={16} onClick={onClickNavigation}/>
+                        <ArDoCoLogo onClick={onClickNavigation}/>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -116,7 +114,7 @@ export default function NavBar() {
                     <DialogPanel
                         className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white px-6 py-6 sm:ring-1 sm:ring-gray-900/10">
                         <div className="flex items-center justify-between">
-                            <ArDoCoLogo size={10} onClick={onClickNavigation}/>
+                            <ArDoCoLogo onClick={onClickNavigation}/>
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}

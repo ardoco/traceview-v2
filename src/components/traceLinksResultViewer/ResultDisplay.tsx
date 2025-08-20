@@ -13,7 +13,7 @@ interface ResultDisplayProps {
     displayOptions: ResultPanelType[];
 }
 
-export function ResultDisplay({id, traceLinkType, displayOptions}:ResultDisplayProps) {
+export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplayProps) {
     const [selectedDialogView, setSelectedDialogView] = useState<ResultPanelType | null>(null);
 
     return (

@@ -1,30 +1,30 @@
 'use client'
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {FileType} from "@/components/dataTypes/FileType";
 import {parseACMFile} from "@/components/traceLinksResultViewer/views/codeModel/parser/ACMParser";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 import ACMViewer from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer";
 import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstruction";
-import {deleteProjectFile, loadProjectFile} from "@/util/ClientFileStorage";
+import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 
 export default function DisplayCodeModel({id}: ViewProps) {
     const [fileContent, setFileContent] = useState<string | null>();
     const [codeModel, setCodeModel] = useState<CodeModelUnit | any>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true); // Added loading state
-    const [error, setError] = useState<string | null>(null); // Added error state
-    const [isMounted, setIsMounted] = useState<boolean>(false); // Track if component has mounted
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [isMounted, setIsMounted] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsMounted(true); // Set to true once component mounts on client
+        setIsMounted(true);
     }, []);
 
 
     useEffect(() => {
         // Only run loadModel if the component has mounted on the client
         if (!isMounted || !id) {
-            if (id) setIsLoading(false); // If no id, or not mounted, stop loading if id was present
+            if (id) setIsLoading(false);
             return;
         }
 
@@ -51,26 +51,23 @@ export default function DisplayCodeModel({id}: ViewProps) {
                     if (result.content) {
                         const parsedCodeModel2 = parseACMFile(result.content);
                         setCodeModel(parsedCodeModel2);
-                    }
-                 else {
+                    } else {
                         console.warn("loadModel called on server, skipping ClientFileStorage.");
                         setError(`An error loading the code model occurred.`);
-                 }
+                    }
                 }
             } catch (e: any) {
-                // console.error("Failed to load or parse architecture model:", e);
                 setError(`Failed to load or parse the code model: ${e.message}`);
                 setCodeModel(null);
             } finally {
                 setIsLoading(false);
             }
         }
+
         loadModel();
     }, [id, isMounted]);
 
 
-    // Initial render (server and first client render before useEffect runs)
-    // should be consistent. If not mounted, or loading, show a placeholder.
     if (!isMounted || isLoading) {
         return <div className="flex justify-center items-center h-full">Loading code model...</div>;
     }
@@ -95,8 +92,8 @@ export default function DisplayCodeModel({id}: ViewProps) {
             <TooltipInstruction
                 title="Instructions"
                 instructions={[
-                    { keyCombo: "Click", description: "Highlight path to root" },
-                    { keyCombo: "Ctrl + Click", description: "Collapse/Expand node" },
+                    {keyCombo: "Click", description: "Find traceLinks"},
+                    {keyCombo: "Ctrl + Click", description: "Collapse/Expand node"},
                 ]}
             />
         </div>

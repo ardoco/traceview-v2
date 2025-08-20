@@ -1,4 +1,4 @@
-import { CodeModelUnit } from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
+import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 
 // Defines the structure of raw data items from the JSON file.
 interface RawCodeItem {
@@ -171,6 +171,7 @@ export function parseACMFile(content: string): CodeModelUnit {
         }
         node.children = collapsedChildren;
     }
+
     collapseSingleChildPackagesRecursive(artificialRoot);
 
     // --- Pass 6: Determine the final root node ---

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 
 // Default base URL
 const DEFAULT_API = 'https://rest.ardoco.de';
@@ -12,7 +12,7 @@ type ApiAddressContextType = {
 
 const ApiAddressContext = createContext<ApiAddressContextType | undefined>(undefined);
 
-export function ApiAddressProvider({ children }: { children: React.ReactNode }) {
+export function ApiAddressProvider({children}: { children: React.ReactNode }) {
     const [apiAddress, setApiAddressState] = useState<string | null>(null);
 
     useEffect(() => {
@@ -54,7 +54,7 @@ export function ApiAddressProvider({ children }: { children: React.ReactNode }) 
     };
 
     return (
-        <ApiAddressContext.Provider value={{ apiAddress, setApiAddress }}>
+        <ApiAddressContext.Provider value={{apiAddress, setApiAddress}}>
             {children}
         </ApiAddressContext.Provider>
     );

@@ -1,7 +1,6 @@
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
-
 export default class FormValidation {
 
     // validates everything relevant for the file upload view.
@@ -23,9 +22,7 @@ export default class FormValidation {
         });
 
         // Special rule: Ensure no more than one Architecture Model file (PCM/UML)
-        const architectureModelCount =
-            (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) +
-            (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
+        const architectureModelCount = (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) + (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
 
         if (architectureModelCount > 1) {
             errors.push("Please upload no more than one file of type PCM/UML to avoid ambiguities.");
@@ -33,10 +30,7 @@ export default class FormValidation {
 
         // General rule: Ensure Nn more than one file of other types
         fileTypeCount.forEach((count, fileType) => {
-            if (
-                count > 1 &&
-                ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)
-            ) {
+            if (count > 1 && ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)) {
                 errors.push(`Only one file of type ${fileType} can be uploaded.`);
             }
         });
@@ -56,9 +50,7 @@ export default class FormValidation {
         });
 
         // Special rule: Ensure no more than one Architecture Model file (PCM/UML)
-        const architectureModelCount =
-            (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) +
-            (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
+        const architectureModelCount = (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) + (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
 
         if (architectureModelCount > 1) {
             errors.push("Please upload no more than one file of type PCM/UML to avoid ambiguities.");
@@ -66,10 +58,7 @@ export default class FormValidation {
 
         // General rule: Ensure Nn more than one file of other types
         fileTypeCount.forEach((count, fileType) => {
-            if (
-                count > 1 &&
-                ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)
-            ) {
+            if (count > 1 && ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)) {
                 errors.push(`Only one file of type ${fileType} can be uploaded.`);
             }
         });
@@ -84,16 +73,13 @@ export default class FormValidation {
             errors.push("Project name is required.")
         }
         if (selectedTraceLinkType === null) {
-             errors.push("No traceLink type could be selected. Please upload files with different types.")
+            errors.push("No traceLink type could be selected. Please upload files with different types.")
         }
         return errors;
     }
 
     static validateSummary(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]): string[] {
-        const validationMethods = [
-            () => FormValidation.validateFiles(projectName, selectedTraceLinkType, uploadedFiles),
-            () => FormValidation.validateProjectDetails(projectName, selectedTraceLinkType, uploadedFiles),
-        ];
+        const validationMethods = [() => FormValidation.validateFiles(projectName, selectedTraceLinkType, uploadedFiles), () => FormValidation.validateProjectDetails(projectName, selectedTraceLinkType, uploadedFiles),];
 
         let errors: string[] = [];
         let stepsWithErrors: number[] = [];

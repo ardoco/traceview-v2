@@ -23,21 +23,21 @@ export function showInterfaceTooltip(
                         color: "#333",
                     }}
                 >
-                    <div style={{ fontWeight: "bold", marginBottom: 4 }}>
+                    <div style={{fontWeight: "bold", marginBottom: 4}}>
                         {description} Interface:
                     </div>
-                    <div style={{ marginBottom: 8 }}>{usedInterface.name}</div>
-                    <div style={{ fontWeight: "bold", marginBottom: 4 }}>
+                    <div style={{marginBottom: 8}}>{usedInterface.name}</div>
+                    <div style={{fontWeight: "bold", marginBottom: 4}}>
                         Operations:
                     </div>
-                    { usedInterface.ownedOperations.length === 0 ? (
-                    <ul style={{ paddingLeft: 20, margin: 0 }}>
-                        {usedInterface.ownedOperations.map((op) => (
-                            <li key={op.id} style={{ marginBottom: 2 }}>
-                                {op.name}
-                            </li>
-                        ))}
-                    </ul>) : <span>-</span>
+                    {usedInterface.ownedOperations.length === 0 ? (
+                        <ul style={{paddingLeft: 20, margin: 0}}>
+                            {usedInterface.ownedOperations.map((op) => (
+                                <li key={op.id} style={{marginBottom: 2}}>
+                                    {op.name}
+                                </li>
+                            ))}
+                        </ul>) : <span>-</span>
                     }
                 </div>
             ),

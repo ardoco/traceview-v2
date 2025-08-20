@@ -1,4 +1,4 @@
-import { XMLParser } from 'fast-xml-parser';
+import {XMLParser} from 'fast-xml-parser';
 import {
     AbstractComponent,
     Component,
@@ -136,5 +136,5 @@ export function parsePCM(xmlString: string): { components: AbstractComponent[]; 
         components.push(iface);
     }
 
-    return { components, edges };
+    return {components, edges};
 }

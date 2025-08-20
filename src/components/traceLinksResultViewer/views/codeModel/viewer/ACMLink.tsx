@@ -1,5 +1,5 @@
 import {HierarchyPointLink} from "d3";
-import { ACMLayoutNode } from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer";
+import {ACMLayoutNode} from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer";
 
 type ACMLinkProps = {
     diagonal: (link: HierarchyPointLink<ACMLayoutNode>) => string | null;
@@ -7,7 +7,7 @@ type ACMLinkProps = {
     isHighlighted: boolean;
 };
 
-export default function ACMLink({ diagonal, link, isHighlighted }: ACMLinkProps) {
+export default function ACMLink({diagonal, link, isHighlighted}: ACMLinkProps) {
     return (
         <path
             d={diagonal(link as any)!}

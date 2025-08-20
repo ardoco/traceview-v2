@@ -1,12 +1,10 @@
 import React from 'react';
 import TextInput from "@/components/inputComponents/TextInput";
-import {TraceLinkConfiguration} from "@/contexts/ProjectUploadContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import {Button} from "@headlessui/react";
 import DownLoadFileComponent from "@/util/DownloadFileComponent";
 
 interface Props {
-    config: TraceLinkConfiguration | null;
-    updateFormData: (data: Partial<{ traceLinkConfiguration: TraceLinkConfiguration }>) => void;
     onReset: () => void;
 }
 
@@ -19,12 +17,14 @@ const formatKey = (key: string): string => {
         .join(' ');
 };
 
-export default function ManualInputSection({config, updateFormData, onReset}: Props) {
+export default function ManualInputSection({onReset}: Props) {
+    const {updateFormData, formData} = useFormContext();
+
     const handleChange = (key: string, newValue: string) => {
-        if (config) {
+        if (formData.traceLinkConfiguration) {
             updateFormData({
                 traceLinkConfiguration: {
-                    ...config,
+                    ...formData.traceLinkConfiguration,
                     [key]: newValue
                 }
             });
@@ -32,7 +32,7 @@ export default function ManualInputSection({config, updateFormData, onReset}: Pr
     };
 
     return (
-        <div className="w-full max-w-4xl p-6 rounded-lg border border-gray-100">
+        <div className=" bg-white w-full max-w-4xl p-6 rounded-lg border border-gray-100">
             <h4 className="text-md font-semibold text-gray-800 mb-4 text-center">Edit Configuration Parameters</h4>
             <div className="flex justify-end mb-4">
 
@@ -40,7 +40,9 @@ export default function ManualInputSection({config, updateFormData, onReset}: Pr
                 <div className="flex items-center px-3 mr-1 hover:bg-red-500">
                     <DownLoadFileComponent
                         fileName="ardoco_configuration.json"
-                        prepareDataToExport={() => { return JSON.stringify(config, null, 2)}}
+                        prepareDataToExport={() => {
+                            return JSON.stringify(formData.traceLinkConfiguration, null, 2)
+                        }}
                         title="Download Configuration"
                     />
                 </div>
@@ -54,8 +56,8 @@ export default function ManualInputSection({config, updateFormData, onReset}: Pr
                 </Button>
             </div>
             <div className="flex flex-col space-y-3">
-                {config && Object.keys(config).length > 0 ? (
-                    Object.entries(config).map(([key, value]) => (
+                {formData.traceLinkConfiguration && Object.keys(formData.traceLinkConfiguration).length > 0 ? (
+                    Object.entries(formData.traceLinkConfiguration).map(([key, value]) => (
                         <div key={key}
                              className="flex flex-col sm:flex-row items-start sm:items-center py-2 border-b border-gray-100 last:border-b-0">
                             <label htmlFor={`config-${key}`}

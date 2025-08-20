@@ -8,7 +8,7 @@ interface DownLoadFileComponentProps {
     title: string;
 }
 
-export default function DownloadFileComponent({ fileName, prepareDataToExport, title }: DownLoadFileComponentProps) {
+export default function DownloadFileComponent({fileName, prepareDataToExport, title}: DownLoadFileComponentProps) {
     const handleDownloadClick = () => {
         const dataToExport = prepareDataToExport();
         const blob = typeof dataToExport === 'string' ? new Blob([dataToExport], {type: 'application/json'}) : dataToExport;

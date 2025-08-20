@@ -66,42 +66,42 @@ function MultiStepFormLoadProject() {
     };
 
     return (<FormLayout>
-            <Stepper
-                steps={[""].concat(steps.map((step) => step.stepperLabel))}
-                currentStep={currentStep + 1}
-                onStepChange={(step: number) => setCurrentStep(step)}
-            />
+        <Stepper
+            steps={[""].concat(steps.map((step) => step.stepperLabel))}
+            currentStep={currentStep + 1}
+            onStepChange={(step: number) => setCurrentStep(step)}
+        />
 
-            <div className="content-center flex flex-col w-full mt-8">
-                <StepContainer>
-                    {/* Heading */}
-                    <h2 className="text-3xl font-bold text-black mb-4">
-                        {steps[currentStep].title}
-                    </h2>
-                    {/* Description */}
-                    <p className="text-base leading-relaxed text-black-700 mb-8">
-                        {steps[currentStep].description}
-                    </p>
+        <div className="content-center flex flex-col w-full mt-8">
+            <StepContainer>
+                {/* Heading */}
+                <h2 className="text-3xl font-bold text-black mb-4">
+                    {steps[currentStep].title}
+                </h2>
+                {/* Description */}
+                <p className="text-base leading-relaxed text-black-700 mb-8">
+                    {steps[currentStep].description}
+                </p>
 
-                    {/* Step-specific components */}
-                    {currentStep === 0 && <FileUploadStep/>}
+                {/* Step-specific components */}
+                {currentStep === 0 && <FileUploadStep/>}
 
-                    <DisplayErrors errors={errors}/>
-                </StepContainer>
-            </div>
+                <DisplayErrors errors={errors}/>
+            </StepContainer>
+        </div>
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between w-full mt-8">
-                <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
-                <Button
-                    text={currentStep === steps.length - 1 ? "Visualize TraceLinks" : "Next"}
-                    onButtonClicked={nextStep}
-                    disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
-                >
+        {/* Navigation buttons */}
+        <div className="flex justify-between w-full mt-8">
+            <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
+            <Button
+                text={currentStep === steps.length - 1 ? "Visualize TraceLinks" : "Next"}
+                onButtonClicked={nextStep}
+                disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+            >
 
-                </Button>
-            </div>
-        </FormLayout>);
+            </Button>
+        </div>
+    </FormLayout>);
 }
 
 export default MultiStepFormLoadProject;

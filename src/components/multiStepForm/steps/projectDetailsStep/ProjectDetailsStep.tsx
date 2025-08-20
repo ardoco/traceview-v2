@@ -6,7 +6,7 @@ import React from "react";
 import InconsistencyCheckbox from "@/components/inputComponents/InconsistencyCheckbox";
 
 export default function ProjectDetailsStep() {
-    const { formData, updateFormData } = useFormContext();
+    const {formData, updateFormData} = useFormContext();
 
     const checkCanBeSelected = (option: TraceLinkType) => {
         return option.checkCondition(formData.files);
@@ -16,7 +16,7 @@ export default function ProjectDetailsStep() {
     const isFindInconsistenciesDisabled = formData.selectedTraceLinkType?.name !== TraceLinkTypes.SAD_SAM.name;
 
     const handleInconsistencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateFormData({ findInconsistencies: e.target.checked });
+        updateFormData({findInconsistencies: e.target.checked});
     };
 
     return (

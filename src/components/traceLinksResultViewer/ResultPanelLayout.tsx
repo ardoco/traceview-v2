@@ -1,8 +1,8 @@
 import React from "react";
-import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import {PanelGroup, PanelResizeHandle} from "react-resizable-panels";
 import ResultPanel from "@/components/traceLinksResultViewer/ResultPanel";
-import { ResultPanelType } from "@/components/dataTypes/ResultPanelType";
-import { TraceLinkType } from "@/components/dataTypes/TraceLinkTypes";
+import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 
 /**
  * Props for the ResultPanelsLayout component.
@@ -27,12 +27,13 @@ interface ResultPanelsLayoutProps {
  * @param {ResultPanelsLayoutProps} props - The props for the component.
  * @returns {JSX.Element} The rendered panel group with result panels.
  */
-export default function ResultPanelsLayout({id,
-                                           displayOptions,
-                                           traceLinkType,
-                                           setSelectedDialogView,
-                                           showThreePanels,
-                                       }: ResultPanelsLayoutProps) {
+export default function ResultPanelsLayout({
+                                               id,
+                                               displayOptions,
+                                               traceLinkType,
+                                               setSelectedDialogView,
+                                               showThreePanels,
+                                           }: ResultPanelsLayoutProps) {
     // Limit the panels to 3 or 2 based on the `showThreePanels` state
     const panelsToRender = showThreePanels ? displayOptions.slice(0, 3) : displayOptions.slice(0, 2);
 
@@ -49,7 +50,7 @@ export default function ResultPanelsLayout({id,
                         traceLinkType={traceLinkType}
                     />
                     {/* Render a PanelResizeHandle between panels, if necessary */}
-                    {index !== panelsToRender.length - 1 && <PanelResizeHandle className="w-0.5 bg-gruen" />}
+                    {index !== panelsToRender.length - 1 && <PanelResizeHandle className="w-0.5 bg-gruen"/>}
                 </React.Fragment>
             ))}
         </PanelGroup>

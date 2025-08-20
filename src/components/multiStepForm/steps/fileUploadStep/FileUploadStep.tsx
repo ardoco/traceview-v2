@@ -1,10 +1,10 @@
-import { useFormContext } from "@/contexts/ProjectUploadContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import DragAndDrop from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DragAndDrop";
 import DroppedFilesList from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFilesList";
 import {FileType} from "@/components/dataTypes/FileType";
 
 function FileUploadStep() {
-    const { formData, updateFormData, allowedFileTypes } = useFormContext();
+    const {formData, updateFormData, allowedFileTypes} = useFormContext();
 
     const addFiles = (newFiles: FileList) => {
         const newUploadedFiles = Array.from(newFiles).filter(
@@ -16,7 +16,7 @@ function FileUploadStep() {
             fileType: preselectFileType(file),
         }));
 
-        updateFormData({ files: [...formData.files, ...updatedFiles] });
+        updateFormData({files: [...formData.files, ...updatedFiles]});
     };
 
     // This function can be used to preselect the file type based on the file extension
@@ -44,8 +44,8 @@ function FileUploadStep() {
 
     return (
         <div className="">
-            <DragAndDrop handleFilesChangeAction={addFiles} />
-            <DroppedFilesList files={formData.files} />
+            <DragAndDrop handleFilesChangeAction={addFiles}/>
+            <DroppedFilesList files={formData.files}/>
         </div>
     );
 }

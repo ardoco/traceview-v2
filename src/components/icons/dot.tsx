@@ -3,7 +3,7 @@ interface DotProps {
     active: boolean
 }
 
-export const Dot = ({ active, passed }: DotProps) => {
+export const Dot = ({active, passed}: DotProps) => {
     return (
         <div
             className={`w-3 h-3 rounded-full ${

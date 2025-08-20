@@ -19,7 +19,7 @@ import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
 
 // Utility function for polling the API
-const pollForResult = async (apiAddress:string, id: string, signal:AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
+const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
     let elapsedSeconds = 0;
 
     while (elapsedSeconds < maxSeconds) {
@@ -56,7 +56,7 @@ export default function NewUploadProject() {
     const searchParams = useSearchParams();
     const type = searchParams.get("type");
     const findInconsistencies = searchParams.get("inconsistencies") === 'true';
-    const { setCurrentProjectId, controller } = useNavigation();
+    const {setCurrentProjectId, controller} = useNavigation();
 
     const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
@@ -137,7 +137,8 @@ export default function NewUploadProject() {
                 onViewFiles={handleViewFiles}
             />
             <HighlightProvider traceLinks={traceLinks} loading={loading}>
-                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies}
+                                       loading={loading}>
                     <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>
                 </InconsistencyProvider>
             </HighlightProvider>
@@ -159,7 +160,7 @@ export function ErrorDisplay({message, onRetry, retryAllowed}: {
     onRetry: (signal: AbortSignal) => void;
     retryAllowed: boolean
 }) {
-    const { controller } = useNavigation();
+    const {controller} = useNavigation();
 
     return (
         <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">

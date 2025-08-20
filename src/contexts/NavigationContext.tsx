@@ -1,10 +1,11 @@
 // context to manage the confirmation of the project when leaving the view page.
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import {createContext, ReactNode, useContext, useState} from 'react';
+import {useRouter} from 'next/navigation';
 import ConfirmNavigationModal from '@/components/ConfirmNavigationModal';
-import { deleteProjectDirectory } from '@/util/ClientFileStorage';
+import {deleteProjectDirectory} from '@/util/ClientFileStorage';
+
 type NavigationContextType = {
     handleNavigation: (path: string) => void;
     setCurrentProjectId: (id: string | null) => void;
@@ -14,7 +15,7 @@ type NavigationContextType = {
 
 const NavigationContext = createContext<NavigationContextType | undefined>(undefined);
 
-export function NavigationProvider({ children }: { children: ReactNode }) {
+export function NavigationProvider({children}: { children: ReactNode }) {
     const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nextPath, setNextPath] = useState<string | null>(null);
@@ -57,7 +58,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <NavigationContext.Provider value={{ handleNavigation, setCurrentProjectId, controller, abortController }}>
+        <NavigationContext.Provider value={{handleNavigation, setCurrentProjectId, controller, abortController}}>
             {children}
             <ConfirmNavigationModal
                 isOpen={isModalOpen}

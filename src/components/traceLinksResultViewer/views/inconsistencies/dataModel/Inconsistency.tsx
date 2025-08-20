@@ -8,7 +8,7 @@ export class Inconsistency {
     reason: string;
     id: string;
 
-    constructor(type: InconsistencyType, reason:string) {
+    constructor(type: InconsistencyType, reason: string) {
         this.type = type;
         this.reason = reason;
         this.id = `${type}-${reason}`;

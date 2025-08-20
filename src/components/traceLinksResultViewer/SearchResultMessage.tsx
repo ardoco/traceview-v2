@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { ResultPanelType } from "@/components/dataTypes/ResultPanelType";
-import { useHighlightContext } from "@/contexts/HighlightTracelinksContextType";
-import { useInconsistencyContext } from "@/contexts/HighlightInconsistencyContext";
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
+import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 
 interface SearchResultMessageProps {
     displayOptions: ResultPanelType[];
@@ -12,7 +12,7 @@ interface MessagePart {
     type: 'tracelink' | 'inconsistency' | 'normal';
 }
 
-export function SearchResultMessage({ displayOptions }: SearchResultMessageProps) {
+export function SearchResultMessage({displayOptions}: SearchResultMessageProps) {
     const [messageVisible, setMessageVisible] = useState(false);
     const [messageParts, setMessageParts] = useState<MessagePart[]>([]);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -54,7 +54,7 @@ export function SearchResultMessage({ displayOptions }: SearchResultMessageProps
                         traceCount === 1 ? '1 traceLink' : `${traceCount} traceLinks`,
                     type: 'tracelink'
                 },
-                { text: ' found.', type: 'normal' }
+                {text: ' found.', type: 'normal'}
             );
         } else if (source === 'inconsistency-only' && displayInconsistencies) {
             parts.push(
@@ -63,7 +63,7 @@ export function SearchResultMessage({ displayOptions }: SearchResultMessageProps
                         inconsistencyCount === 1 ? '1 inconsistency' : `${inconsistencyCount} inconsistencies`,
                     type: 'inconsistency'
                 },
-                { text: ' found.', type: 'normal' }
+                {text: ' found.', type: 'normal'}
             );
         } else if (source === 'element-click') {
             if (displayTraceLinks) {
@@ -76,7 +76,7 @@ export function SearchResultMessage({ displayOptions }: SearchResultMessageProps
 
             if (displayInconsistencies) {
                 if (parts.length > 0) {
-                    parts.push({ text: ' and ', type: 'normal' });
+                    parts.push({text: ' and ', type: 'normal'});
                 }
                 parts.push({
                     text: inconsistencyCount === 0 ? 'no inconsistencies' :
@@ -86,11 +86,11 @@ export function SearchResultMessage({ displayOptions }: SearchResultMessageProps
             }
 
             if (parts.length > 0) {
-                parts.push({ text: ' found.', type: 'normal' });
+                parts.push({text: ' found.', type: 'normal'});
             }
         }
 
-        return { parts, shouldShow: parts.length > 0 };
+        return {parts, shouldShow: parts.length > 0};
     }, [traceLinkTimestamp, inconsistencyTimestamp, traceLinkSource, inconsistencySource, displayTraceLinks, displayInconsistencies, highlightedTraceLinks.length, highlightedInconsistencies.length]);
 
     useEffect(() => {

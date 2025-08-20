@@ -36,8 +36,8 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
 
     // Memoize sort methods to prevent re-creation on every render
     const sortMethods = useMemo(() => ({
-        "Code": (a: TraceLink, b: TraceLink) => (a.codeElementId || "").localeCompare((b.codeElementId || "")),
-        "Model": (a: TraceLink, b: TraceLink) => (a.modelElementId || "").localeCompare((b.modelElementId || "")),
+        "Code": (a: TraceLink, b: TraceLink) => (a.codeElementName || a.codeElementId || "").localeCompare((b.codeElementName || b.codeElementId || "")),
+        "Model": (a: TraceLink, b: TraceLink) => (a.modelElementName || a.modelElementId || "").localeCompare((a.modelElementName || b.modelElementId || "")),
         "Sentence": (a: TraceLink, b: TraceLink) => ((a.sentenceNumber ?? Number.MAX_SAFE_INTEGER) - (b.sentenceNumber ?? Number.MAX_SAFE_INTEGER))
     }), []);
 
@@ -101,15 +101,15 @@ export default function TraceLinkView({traceLinkType, headerOffset = 10}: TraceL
 
     if (loading) {
         return (
-            <div className="p-2 text-center py-8 text-gray-500">
+            <div className="p-2 text-center py-8 text-gray-600">
                 Generating traceLinks, this may take a few moments...
             </div>
         );
     }
 
-    if (!loading && sortedTraceLinks.length === 0) {
+    if (sortedTraceLinks.length === 0) {
         return (
-            <div className="p-2 text-center py-8 text-gray-500">
+            <div className="p-2 text-center py-8 text-gray-600">
                 No traceLinks found.
             </div>
         );

@@ -1,4 +1,4 @@
-import { FileType } from "@/components/dataTypes/FileType";
+import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
 

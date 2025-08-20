@@ -4,7 +4,9 @@
 export class TraceLink {
     sentenceNumber: number | null;
     modelElementId: string;
+    modelElementName: string;
     codeElementId: string;
+    codeElementName: string;
     id: string;
 
     /**
@@ -12,12 +14,16 @@ export class TraceLink {
      *
      * @param sentenceNumber - The identifier of the sentence, or `null` if no sentence is associated.
      * @param modelElementId - The identifier of the architectural model element.
+     * @param modelElementName - The human-readable name of the architectural model element.
      * @param codeElementId - The identifier of the code element.
+     * @param codeElementName - The human-readable name of the code element.
      */
-    constructor(sentenceNumber: number | null, modelElementId: string, codeElementId: string) {
+    constructor(sentenceNumber: number | null, modelElementId: string, modelElementName: string, codeElementId: string, codeElementName: string) {
         this.sentenceNumber = sentenceNumber;
         this.modelElementId = modelElementId;
+        this.modelElementName = modelElementName;
         this.codeElementId = codeElementId;
+        this.codeElementName = codeElementName;
         this.id = `${modelElementId}-${codeElementId}-${sentenceNumber}`;
     }
 

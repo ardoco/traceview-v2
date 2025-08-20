@@ -1,4 +1,3 @@
-
 'use client'
 
 import React, {useState} from "react";
@@ -7,7 +6,10 @@ import {
     RequiredLollipop
 } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/LollipopEdges";
 import {Edge} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
-import { showInterfaceTooltip, hideTooltip } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/InterfaceTooltip";
+import {
+    hideTooltip,
+    showInterfaceTooltip
+} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/InterfaceTooltip";
 import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 
 // --- Constants for Styling and Layout ---
@@ -65,11 +67,13 @@ export default function UMLEdge({
 
     const markerDefs = (
         <defs>
-            <marker id={ARROW_MARKER_ID_DEFAULT} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke={DEFAULT_STROKE_COLOR} strokeWidth={DEFAULT_STROKE_WIDTH} />
+            <marker id={ARROW_MARKER_ID_DEFAULT} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+                    markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={DEFAULT_STROKE_COLOR} strokeWidth={DEFAULT_STROKE_WIDTH}/>
             </marker>
-            <marker id={ARROW_MARKER_ID_HOVER} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke={HOVER_COLOR} strokeWidth={HOVER_STROKE_WIDTH} />
+            <marker id={ARROW_MARKER_ID_HOVER} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
+                    markerUnits="strokeWidth">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={HOVER_COLOR} strokeWidth={HOVER_STROKE_WIDTH}/>
             </marker>
         </defs>
     );
@@ -110,7 +114,7 @@ export default function UMLEdge({
                     x={endX}
                     y={endY}
                     facingVector={{x: -unitX, y: -unitY}} // Facing towards the client
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS: LOLLIPOP_RADIUS}
+                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
                     lineLength={lollipopLength}
                     strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
                     strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
@@ -134,7 +138,7 @@ export default function UMLEdge({
                     x={startX}
                     y={startY}
                     facingVector={{x: unitX, y: unitY}}
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS: LOLLIPOP_RADIUS}
+                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
                     lineLength={0.5 * totalLength - 14}
                     strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
                     strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
@@ -160,7 +164,7 @@ export default function UMLEdge({
         dx = supplier.x - startX;
         dy = supplier.y - startY;
         const fullLength = Math.hypot(dx, dy);
-        const direction = { x: dx, y: dy };
+        const direction = {x: dx, y: dy};
 
         const unitX = dx / fullLength;
         const unitY = dy / fullLength;
@@ -189,7 +193,7 @@ export default function UMLEdge({
                     x={startX}
                     y={startY}
                     facingVector={direction}
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS: LOLLIPOP_RADIUS}
+                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
                     lineLength={lollipopLength}
                     strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
                     strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
@@ -221,7 +225,7 @@ export default function UMLEdge({
         const textX = startX + (lineLength + 20) * (supplier.x - startX) / Math.hypot(supplier.x - startX, supplier.y - startY)
         const textY = startY + (lineLength + 20) * (supplier.y - startY) / Math.hypot(supplier.x - startX, supplier.y - startY)
 
-        return(
+        return (
             <g onMouseEnter={(e) => {
                 if (edge.usedInterface) {
                     showInterfaceTooltip(svgRef, e.nativeEvent.layerX, e.nativeEvent.layerY, edge.usedInterface, setTooltip, "Provided");
@@ -239,7 +243,7 @@ export default function UMLEdge({
                         x: supplier.x - startX,
                         y: supplier.y - startY,
                     }}
-                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS: LOLLIPOP_RADIUS}
+                    radius={hovered ? HOVERED_LOLLIPOP_RADIUS : LOLLIPOP_RADIUS}
                     lineLength={lineLength}
                     strokeColor={hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR}
                     strokeWidth={hovered ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH}
