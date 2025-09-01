@@ -15,7 +15,7 @@ import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsist
 import {
     parseInconsistenciesFromJSON
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
-import {getResultViewOption} from "@/components/dataTypes/ResultPanelType";
+import {getResultViewOption} from "@/components/dataTypes/ResultType";
 
 export default function ViewProvided() {
     const {id} = useParams<{ id: string }>();

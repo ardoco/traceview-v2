@@ -11,55 +11,28 @@ import {SentenceView} from "@/components/traceLinksResultViewer/views/documentat
 import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
+import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
 
 export default function DisplayDocumentation({id}: ViewProps) {
-    const [sentences, setSentences] = useState<Sentence[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [isMounted, setIsMounted] = useState<boolean>(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    useEffect(() => {
-        // Only run loadModel if the component has mounted on the client
-        if (!isMounted || !id) {
-            if (id) setIsLoading(false);
-            return;
-        }
-
-        async function loadModel() {
-            setIsLoading(true);
-            setError(null);
+    const loadDocumentation = async (id: string): Promise<LoaderResult<Sentence[]>> => {
+        const result = await loadProjectFile(id, FileType.Architecture_Documentation, false);
+        const fileContent = result?.content || null;
+        let data = null;
+        if (result && result.content) {
             try {
-                // Ensure loadProjectFile is only called client-side
-                if (typeof window !== "undefined" && sentences.length === 0) {
-                    const result = await loadProjectFile(id, FileType.Architecture_Documentation, false);
-
-                    if (!result) {
-                        console.warn("No project file found for ID:", id);
-                        setSentences([]);
-                        setIsLoading(false);
-                        return;
-                    }
-                    setSentences(parseDocumentationText(result.content));
-                } else {
-                    console.warn("loadModel called on server, skipping ClientFileStorage.");
-                }
+                data = parseDocumentationText(result.content);
             } catch (e: any) {
-                // console.error("Failed to load or parse architecture model:", e);
-                setError(`Failed to load model: ${e.message}`);
-                setSentences([]);
-            } finally {
-                setIsLoading(false);
+                console.error("Failed to parse code model:", e);
+                throw new Error("Failed to parse the code model. The file might be corrupted or in an invalid format.");
             }
         }
+        return {data, fileContent}
+    };
 
-        loadModel();
-    }, [id, isMounted]); // Re-run when id or isMounted changes
+    const { data: sentences, fileContent, isLoading, error } = useDataLoader<Sentence[]>(id, loadDocumentation);
 
-    if (!isMounted || isLoading) {
+    if (isLoading) {
         return <LoadingMessage title="documentation" />;
     }
 
@@ -70,7 +43,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
     return (
         <div className="px-2 pb-2" style={{height: "calc(100% - 40px)"}}>
             <ul className={"space-y-2 max-h-full min-w-0 overflow-y-auto"}>
-                {sentences.map((sentence, index) => <SentenceView sentence={sentence} key={index}/>)}
+                {sentences && sentences.map((sentence, index) => <SentenceView sentence={sentence} key={index}/>)}
             </ul>
 
             <TooltipInstruction

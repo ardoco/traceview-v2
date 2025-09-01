@@ -3,6 +3,7 @@
 import React, {useState} from "react";
 import {ACMLayoutNode, CustomHierarchyNode} from "./ACMViewer";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 type ACMNodeProps = {
     node: ACMLayoutNode;       // node is from the layout (has x, y, id, and potentially _children from data)
@@ -18,7 +19,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
         node.data.path && traceLink.codeElementId === node.data.id
     );
 
-    const isSource = lastClickedSource?.type === 'codeElementId' && lastClickedSource?.id === node.data.id;
+    const isSource = lastClickedSource?.type === ResultType.Code_Model && lastClickedSource?.id === node.data.id;
 
     function textSymbol() {
         // 'node' is an ACMLayoutNode. Its 'children' are visible children after layout.
@@ -49,7 +50,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
             setTreeDataRoot(Object.assign(Object.create(Object.getPrototypeOf(treeDataRoot)), treeDataRoot));
 
         } else {
-            highlightElement(node.data.id ?? null, "codeElementId");
+            highlightElement(node.data.id ?? null, ResultType.Code_Model);
         }
     };
 
@@ -64,7 +65,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
                 r={isHighlightedByTraceLink ? 6 : 4}
                 fill={hovered ? "#D3D3D3" : isHighlightedByTraceLink || isSource ? "var(--color-highlight-tracelink)" : "#999"}
                 strokeWidth={1}
-                stroke={hovered ? "#A9A9A9" : isSource ? "var(--color-highlight-source)" : (isHighlightedByTraceLink ? "var(--color-highlight-tracelink)" : "#555")}
+                stroke={hovered ? "#A9A9A9" : isSource ? "var(--color-highlight-tracelink-text)" : (isHighlightedByTraceLink ? "var(--color-highlight-tracelink)" : "#555")}
                 strokeDasharray={isSource ? "4 2" : "none"}
             />
 

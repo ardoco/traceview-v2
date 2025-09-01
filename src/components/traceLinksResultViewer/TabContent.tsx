@@ -5,19 +5,19 @@ import DisplayCodeModel from "@/components/traceLinksResultViewer/views/codeMode
 import DisplayArchitectureModel from "@/components/traceLinksResultViewer/views/architectureModel/ArchitectureModelViewer";
 import TraceLinkView from "@/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer";
 import InconsistencyViewer from "@/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer";
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
-export function getResultPanel(option: ResultPanelType, projectId:string, headerOffset=0) {
+export function getResultPanel(option: ResultType, projectId:string, headerOffset=0) {
     switch (option) {
-        case ResultPanelType.Documentation:
+        case ResultType.Documentation:
             return <DisplayDocumentation id={projectId}/>;
-        case ResultPanelType.Code_Model:
+        case ResultType.Code_Model:
             return <DisplayCodeModel id={projectId}/>;
-        case ResultPanelType.Architecture_Model:
+        case ResultType.Architecture_Model:
             return <DisplayArchitectureModel id={projectId}/>;
-        case ResultPanelType.TraceLinks:
+        case ResultType.TraceLinks:
             return <TraceLinkView headerOffset={headerOffset}/>;
-        case ResultPanelType.Inconsistencies:
+        case ResultType.Inconsistencies:
             return <InconsistencyViewer headerOffset={headerOffset}/>
         default:
             return null;

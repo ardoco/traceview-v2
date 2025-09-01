@@ -1,6 +1,6 @@
 'use client'
 
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 import React, {useState} from "react";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import FullScreenResultDialog from "@/components/traceLinksResultViewer/FullScreenResult";
@@ -10,11 +10,11 @@ import {SearchResultMessage} from "@/components/traceLinksResultViewer/SearchRes
 interface ResultDisplayProps {
     id: string;
     traceLinkType: TraceLinkType;
-    displayOptions: ResultPanelType[];
+    displayOptions: ResultType[];
 }
 
 export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplayProps) {
-    const [selectedDialogView, setSelectedDialogView] = useState<ResultPanelType | null>(null);
+    const [selectedDialogView, setSelectedDialogView] = useState<ResultType | null>(null);
 
     return (
         <div className="bg-white z-1 relative h-full">

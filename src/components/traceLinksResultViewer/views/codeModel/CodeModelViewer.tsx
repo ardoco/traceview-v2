@@ -9,67 +9,33 @@ import TooltipInstruction from "@/components/traceLinksResultViewer/TooltipInstr
 import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
+import {
+    parseDocumentationText
+} from "@/components/traceLinksResultViewer/views/documentation/parser/DocumentationParser";
+import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
+import {Sentence} from "@/components/traceLinksResultViewer/views/documentation/dataModel/DocumentationSentence";
 
 export default function DisplayCodeModel({id}: ViewProps) {
-    const [fileContent, setFileContent] = useState<string | null>();
-    const [codeModel, setCodeModel] = useState<CodeModelUnit | any>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [isMounted, setIsMounted] = useState<boolean>(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    const loadCodeModel = async (fileId: string): Promise<LoaderResult<CodeModelUnit>> => {
+        const result = await loadProjectFile(fileId, FileType.Code_Model, false);
+        const fileContent = result?.content || null;
+        let data = null;
 
-
-    useEffect(() => {
-        // Only run loadModel if the component has mounted on the client
-        if (!isMounted || !id) {
-            if (id) setIsLoading(false);
-            return;
-        }
-
-        async function loadModel() {
-            setIsLoading(true);
-            setError(null);
+        if (fileContent) {
             try {
-                // Ensure loadProjectFile is only called client-side
-                if (typeof window !== "undefined" && !codeModel) {
-                    const result = await loadProjectFile(id, FileType.Code_Model, false);
-
-                    if (!result) {
-                        console.warn(`No code model file found for ID: ${id}`);
-                        setError(`No code model file found for ID: ${id}`);
-                        setCodeModel(null);
-                        setFileContent(null);
-                        setIsLoading(false);
-                        return;
-                    }
-
-                    setFileContent(result.content); // Keep for potential raw display if parsing fails
-
-                    // init code model
-                    if (result.content) {
-                        const parsedCodeModel2 = parseACMFile(result.content);
-                        setCodeModel(parsedCodeModel2);
-                    } else {
-                        console.warn("loadModel called on server, skipping ClientFileStorage.");
-                        setError(`An error loading the code model occurred.`);
-                    }
-                }
+                data = parseACMFile(fileContent);
             } catch (e: any) {
-                setError(`Failed to load or parse the code model: ${e.message}`);
-                setCodeModel(null);
-            } finally {
-                setIsLoading(false);
+                console.error("Failed to parse code model:", e);
+                throw new Error("Failed to parse the code model. The file might be corrupted or in an invalid format.");
             }
         }
+        return {data, fileContent};
+    };
 
-        loadModel();
-    }, [id, isMounted]);
+    const {data: codeModel, fileContent, isLoading, error} = useDataLoader<CodeModelUnit>(id, loadCodeModel);
 
-
-    if (!isMounted || isLoading) {
+    if (isLoading) {
         return <LoadingMessage title="Loading code model..." />;
     }
 
@@ -78,9 +44,7 @@ export default function DisplayCodeModel({id}: ViewProps) {
     }
 
     return (
-
         <div className=" relative w-full" style={{height: "calc(100% - 40px)"}}>
-
             {codeModel ? (
                 <ACMViewer codeModel={codeModel}/>
 

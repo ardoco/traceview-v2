@@ -8,6 +8,7 @@ import {
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import clsx from "clsx";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 
 export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency: Inconsistency, index: number }) {
@@ -15,7 +16,7 @@ export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency
     const {resetHighlightedTraceLinks, lastClickedSource} = useHighlightContext()
     const showSentenceNumber = inconsistency.type === InconsistencyType.MissingModelInstance;
     const showModelElement = inconsistency.type === InconsistencyType.MissingTextForModelElement;
-    const isSource = lastClickedSource?.type === 'inconsistency' && lastClickedSource?.id === inconsistency.id;
+    const isSource = lastClickedSource?.type === ResultType.Inconsistencies && lastClickedSource?.id === inconsistency.id;
 
     if (!inconsistency) {
         return null;
@@ -25,15 +26,13 @@ export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency
         <div
             className={clsx("p-2 border rounded-lg transition cursor-pointer ",
                 highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none hover:bg-gray-100",
-                isSource && "border-2 border-highlight-source shadow-highlight-source",
+                isSource && "border-2 border-highlight-inconsistency-text shadow-highlight-inconsistency-text",
             )}
             onClick={() => {
                 resetHighlightedTraceLinks()
                 highlightSingleInconsistency(inconsistency)
             }}
         >
-            {/*<span className="mr-3 font-bold text-gray-600">{index}.</span>*/}
-
             <p className="flex-1 text-black"><strong>Type: </strong>{inconsistency.type}</p>
 
             {showSentenceNumber && (

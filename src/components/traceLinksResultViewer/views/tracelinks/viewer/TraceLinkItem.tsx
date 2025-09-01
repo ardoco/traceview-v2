@@ -3,6 +3,7 @@ import React from "react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import clsx from "clsx";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 /**
  * Defines the props for the TraceLinkItem component.
@@ -18,13 +19,13 @@ export function TraceLinkItem({link, showCode, showModel, showSentence}: TraceLi
     const {highlightSingleTraceLink, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
     const {resetHighlightedInconsistencies} = useInconsistencyContext();
 
-    const isSource = lastClickedSource?.type === 'tracelink' && lastClickedSource?.id === link.id;
+    const isSource = lastClickedSource?.type === ResultType.TraceLinks && lastClickedSource?.id === link.id;
 
     return (
         <li
             className={clsx("p-2 border rounded-lg cursor-pointer",
                 highlightedTraceLinks.includes(link) ? "bg-highlight-tracelink" : "bg-highlight-none hover:bg-gray-100",
-                isSource && "border-2 border-highlight-source shadow-highlight-source",
+                isSource && "border-2 border-highlight-tracelink-text shadow-highlight-tracelink-text",
             )
             }
             onClick={() => {

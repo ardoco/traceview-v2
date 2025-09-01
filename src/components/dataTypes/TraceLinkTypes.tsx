@@ -1,6 +1,6 @@
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 
 export interface TraceLinkType {
@@ -10,7 +10,7 @@ export interface TraceLinkType {
     info: string;
     checkCondition: (uploadedFiles: UploadedFile[]) => boolean; // Determines if the option is selectable
     providedFiles: FileType[];
-    resultViewOptions: ResultPanelType[]; // The options for the result view
+    resultViewOptions: ResultType[]; // The options for the result view
 }
 
 export const TraceLinkTypes: Record<string, TraceLinkType> = {
@@ -22,7 +22,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-        resultViewOptions: [ResultPanelType.Code_Model, ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
+        resultViewOptions: [ResultType.Code_Model, ResultType.Architecture_Model, ResultType.Documentation],
 
     },
     "SAD_SAM": {
@@ -33,7 +33,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML],
-        resultViewOptions: [ResultPanelType.Architecture_Model, ResultPanelType.Documentation],
+        resultViewOptions: [ResultType.Architecture_Model, ResultType.Documentation],
     },
     "SAD_CODE": {
         name: "ArDoCode",
@@ -43,7 +43,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Documentation, FileType.Code_Model],
-        resultViewOptions: [ResultPanelType.Code_Model, ResultPanelType.Documentation],
+        resultViewOptions: [ResultType.Code_Model, ResultType.Documentation],
     },
     "SAM_CODE": {
         name: "ArCoTL",
@@ -53,7 +53,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles),
         providedFiles: [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
-        resultViewOptions: [ResultPanelType.Code_Model, ResultPanelType.Architecture_Model],
+        resultViewOptions: [ResultType.Code_Model, ResultType.Architecture_Model],
     },
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {PanelGroup, PanelResizeHandle} from "react-resizable-panels";
 import ResultPanel from "@/components/traceLinksResultViewer/ResultPanel";
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 
 /**
@@ -11,11 +11,11 @@ interface ResultPanelsLayoutProps {
     /** The unique ID associated with the result. */
     id: string;
     /** The list of available result panel types to display. */
-    displayOptions: ResultPanelType[];
+    displayOptions: ResultType[];
     /** The type of trace link, used for specific panel behaviors. */
     traceLinkType: TraceLinkType;
     /** Callback function to set the currently selected view for the full-screen dialog. */
-    setSelectedDialogView: (view: ResultPanelType | null) => void;
+    setSelectedDialogView: (view: ResultType | null) => void;
 }
 
 /**

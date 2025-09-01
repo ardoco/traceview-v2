@@ -2,20 +2,20 @@
 
 import {Button, Dialog, Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
-import {displayOptionName, ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {displayOptionName, ResultType} from "@/components/dataTypes/ResultType";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {getResultPanel} from "@/components/traceLinksResultViewer/TabContent";
 
 
 interface FullScreenResultDialogProps {
     /** The currently selected view type for the dialog, or null if closed. */
-    selectedView: ResultPanelType | null;
+    selectedView: ResultType | null;
     /** Callback function to close the dialog or change the selected view. */
     onClose: () => void;
     /** Callback function to update the selected view within the dialog. */
-    onSelectView: (view: ResultPanelType) => void;
+    onSelectView: (view: ResultType) => void;
     /** The list of all available result panel types. */
-    displayOptions: ResultPanelType[];
+    displayOptions: ResultType[];
     /** The unique ID associated with the result. */
     id: string;
     /** The type of trace link, passed to relevant views (e.g., TraceLinkView). */

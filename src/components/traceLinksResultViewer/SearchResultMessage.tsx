@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 
 interface SearchResultMessageProps {
-    displayOptions: ResultPanelType[];
+    displayOptions: ResultType[];
 }
 
 interface MessagePart {
@@ -30,8 +30,8 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
         messageSource: inconsistencySource
     } = useInconsistencyContext();
 
-    const displayTraceLinks = displayOptions.includes(ResultPanelType.TraceLinks);
-    const displayInconsistencies = displayOptions.includes(ResultPanelType.Inconsistencies);
+    const displayTraceLinks = displayOptions.includes(ResultType.TraceLinks);
+    const displayInconsistencies = displayOptions.includes(ResultType.Inconsistencies);
 
     // Compute current message data based on the latest trigger
     const currentMessage = useMemo(() => {

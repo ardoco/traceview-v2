@@ -15,7 +15,7 @@ import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsist
 import {
     parseInconsistenciesFromJSON
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
-import {ResultPanelType} from "@/components/dataTypes/ResultPanelType";
+import {ResultType} from "@/components/dataTypes/ResultType";
 import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
 
 // Utility function for polling the API
@@ -69,9 +69,9 @@ export default function NewUploadProject() {
 
     const displayOptions = useMemo(() => {
         const options = [...traceLinkType.resultViewOptions];
-        options.unshift(ResultPanelType.TraceLinks); // Always show traceLinks first
+        options.unshift(ResultType.TraceLinks); // Always show traceLinks first
         if (findInconsistencies) {
-            options.push(ResultPanelType.Inconsistencies);
+            options.push(ResultType.Inconsistencies);
         }
         return options;
     }, []);

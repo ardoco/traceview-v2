@@ -10,7 +10,7 @@ import {
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
-import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
+import LoadingMessage from "@/components/traceLinksResultViewer/Loading";
 
 interface InconsistencyViewerProps {
     headerOffset?: number;

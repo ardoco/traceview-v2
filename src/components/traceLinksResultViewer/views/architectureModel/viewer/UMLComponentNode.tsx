@@ -3,6 +3,7 @@ import {Position} from "@/components/traceLinksResultViewer/views/architectureMo
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {Component} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 // --- Utility to measure text width ---
 function measureTextWidth(text: string, font: string): number {
@@ -101,7 +102,7 @@ export default function UMLNode({component, position}: UMLNodeProps) {
         inc => inc.modelElementId === component.id
     );
 
-    const isSource = lastClickedSource?.type === 'model' && lastClickedSource?.id === component.id;
+    const isSource = lastClickedSource?.type === ResultType.Architecture_Model && lastClickedSource?.id === component.id;
 
     const gradientId = `gradient-${component.id}`;
 
@@ -110,7 +111,7 @@ export default function UMLNode({component, position}: UMLNodeProps) {
             transform={`translate(${posX}, ${posY})`}
             onClick={(event) => {
                 event.stopPropagation();
-                highlightElement(component.id ?? null, "modelElementId");
+                highlightElement(component.id ?? null, ResultType.Architecture_Model);
                 highlightInconsistencyWithModelId(component.id ?? null);
             }}
         >
@@ -129,7 +130,10 @@ export default function UMLNode({component, position}: UMLNodeProps) {
                 width={calculatedWidth}
                 height={calculatedHeight}
                 fill={`url(#${gradientId})`}
-                stroke="#4b5563"
+                stroke= {isSource && isTraceLinkHighlighted ? "var(--color-highlight-tracelink-text)" :
+                        isSource && isInconsistencyHighlighted ? "var(--color-highlight-inconsistency-text)" :
+                        "#4b5563"
+            }
                 strokeWidth={isSource ? 3 : 1}
             />
 

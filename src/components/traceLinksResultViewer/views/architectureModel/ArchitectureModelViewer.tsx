@@ -13,74 +13,36 @@ import {
 import {loadProjectFile} from "@/util/ClientFileStorage";
 import ViewProps from "@/components/traceLinksResultViewer/views/ViewProps";
 import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
+import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
 
 export default function DisplayArchitectureModel({id}: ViewProps) {
-    const [fileContent, setFileContent] = useState<string | null>(null);
-    const [architectureModel, setArchitectureModel] = useState<{
-        components: AbstractComponent[],
-        edges: Edge[]
-    } | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [isMounted, setIsMounted] = useState<boolean>(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    const loadArchitectureModel = async (fileId: string): Promise<LoaderResult<{ components: AbstractComponent[], edges: Edge[] }>> => {
+        const result = await loadProjectFile(fileId, FileType.Architecture_Model_UML, false);
+        const fileContent = result?.content || null;
+        let data = null;
 
-    useEffect(() => {
-        if (!isMounted || !id) {
-            if (id) setIsLoading(false);
-            return;
-        }
-
-        async function loadModel() {
-            setIsLoading(true);
-            setError(null);
+        if (result && fileContent) {
             try {
-                if (typeof window !== "undefined" && !architectureModel) {
-                    const result = await loadProjectFile(id, FileType.Architecture_Model_UML, false);
-
-                    if (!result) {
-                        console.warn(`No architecture model file found for ID: ${id}`);
-                        setError(`No architecture model file found for ID: ${id}`);
-                        setArchitectureModel(null);
-                        setFileContent(null);
-                        setIsLoading(false);
-                        return;
-                    }
-
-                    setFileContent(result.content); // Keep for potential raw display if parsing fails
-
-                    let parsedModel = null;
-                    switch (result.fileType) {
-                        case FileType.Architecture_Model_UML:
-                            parsedModel = parseUMLModel(result.content);
-                            break;
-                        case FileType.Architecture_Model_PCM:
-                            parsedModel = parsePCM(result.content);
-                            break;
-                        default:
-                            console.warn("Unknown architecture model file type:", result.fileType);
-                            setError(`Unknown architecture model file type: ${result.fileType}`);
-                    }
-                    setArchitectureModel(parsedModel);
+                if (result.fileType === FileType.Architecture_Model_PCM) {
+                    data = parsePCM(fileContent);
+                } else if (result.fileType === FileType.Architecture_Model_UML) {
+                    data = parseUMLModel(fileContent);
                 } else {
-                    console.warn("loadModel called on server, skipping ClientFileStorage.");
+                    throw new Error("Unknown architecture file type.");
                 }
             } catch (e: any) {
-                setError(`Failed to load or parse architecture model: ${e.message}`);
-                setArchitectureModel(null);
-            } finally {
-                setIsLoading(false);
+                console.error("Failed to parse architecture model:", e);
+                throw new Error("Failed to parse the architecture model. The file might be corrupted or in an invalid format.");
             }
         }
+        return {data, fileContent};
+    }
 
-        loadModel();
-    }, [id, isMounted]);
+    const {data: architectureModel, fileContent, isLoading, error} = useDataLoader<{ components: AbstractComponent[], edges: Edge[] }>(id, loadArchitectureModel);
 
 
-    if (!isMounted || isLoading) {
+    if (isLoading) {
         return <LoadingMessage title="Loading code model..." />;
     }
 

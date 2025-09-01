@@ -13,6 +13,7 @@ import {
 import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 const COMPONENT_WIDTH = 140;
 const COMPONENT_HEIGHT = 70;
@@ -71,8 +72,8 @@ export default function UMLEdge({
     const isInconsistencyHighlighted = highlightedModelInconsistencies.some(inconsistency => inconsistency.id === edge.usedInterface?.id) || false;
 
     const fillColor =
-        isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" :
-        isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" :
+        isTraceLinkHighlighted ? "var(--color-highlight-tracelink-text)" :
+        isInconsistencyHighlighted ? "var(--color-highlight-inconsistency-text)" :
             hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR;
     const strokeWidth =
         (hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH;
@@ -95,11 +96,11 @@ export default function UMLEdge({
             </marker>
             <marker id={"arrow-inconsistencies"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
                     markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-inconsistency)"} strokeWidth={HOVER_STROKE_WIDTH}/>
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-inconsistency-text)"} strokeWidth={HOVER_STROKE_WIDTH}/>
             </marker>
             <marker id={"arrow-traceLinks"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
                     markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-tracelink)"} strokeWidth={HOVER_STROKE_WIDTH}/>
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-tracelink-text)"} strokeWidth={HOVER_STROKE_WIDTH}/>
             </marker>
         </defs>
     );
@@ -138,7 +139,7 @@ export default function UMLEdge({
                 onClick={(e) => {
                     e.stopPropagation();
                     if (edge.usedInterface) {
-                        highlightElement(edge.usedInterface.id, "modelElementId");
+                        highlightElement(edge.usedInterface.id, ResultType.Architecture_Model);
                         highlightInconsistencyWithModelId(edge.usedInterface.id);
                     }
                 }}
@@ -272,7 +273,7 @@ export default function UMLEdge({
                onClick={(e) => {
                    e.stopPropagation();
                    if (edge.usedInterface) {
-                       highlightElement(edge.usedInterface.id, "modelElementId");
+                       highlightElement(edge.usedInterface.id, ResultType.Architecture_Model);
                        highlightInconsistencyWithModelId(edge.usedInterface.id);
                    }
                }}

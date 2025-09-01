@@ -7,6 +7,7 @@ import {
 import {Interface} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
+import {ResultType} from "@/components/dataTypes/ResultType";
 
 interface UMLInterfaceNodeProps {
     usedInterface: Interface;
@@ -35,11 +36,11 @@ export default function UMLInterfaceNode({usedInterface, position, setTooltip, s
             transform={`translate(${position.x}, ${position.y})`}
             onClick={(e) => {
                 e.stopPropagation();
-                highlightElement(usedInterface.id, "modelElementId");
+                highlightElement(usedInterface.id, ResultType.Architecture_Model);
                 highlightInconsistencyWithModelId(usedInterface.id);
             }}
         >
-            {/* The highlighting styles are applied here */}
+
             <text
                 x={10}
                 y={25}
