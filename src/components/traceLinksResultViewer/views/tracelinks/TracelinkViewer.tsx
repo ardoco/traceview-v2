@@ -70,7 +70,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
      */
     const handleSortChange = useCallback((method: string) => {
         setSelectedSortMethod(method);
-        let linksToSort = [...traceLinks];
+        const linksToSort = [...traceLinks];
 
         if (method !== "Sort By") {
             const sorter = sortMethods[method as keyof typeof sortMethods];
@@ -100,18 +100,19 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
     }, [traceLinks, selectedSortMethod, handleSortChange]);
 
     if (loading) {
-        return <LoadingMessage title={"Generating traceLinks, this may take a few moments..."} />;
+        return <LoadingMessage title={"Generating traceLinks, this may take a few moments..."}/>;
     }
 
     if (sortedTraceLinks.length === 0) {
-        return <LoadingMessage title={"No traceLinks found."} />
+        return <LoadingMessage title={"No traceLinks found."}/>
     }
 
     return (
         <div className="px-2 pb-2">
             {/*/!* Sticky header for type and sort control *!/*/}
             <div
-                className={`sticky flex justify-between items-start bg-white z-10 border-b px-2 pt-2`} style={{top: `calc(var(--spacing) * ${headerOffset})`}}>
+                className={`sticky flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}
+                style={{top: `calc(var(--spacing) * ${headerOffset})`}}>
                 <div className="w-full">
                     <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
                         <div className="flex-1">

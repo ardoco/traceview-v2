@@ -38,9 +38,9 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     const jsonModel = parser.parse(rawXML);
 
     let components: AbstractComponent[] = [];
-    let edges: Edge[] = [];
+    const edges: Edge[] = [];
 
-    let elements = jsonModel["uml:Model"]["packagedElement"];
+    const elements = jsonModel["uml:Model"]["packagedElement"];
     if (!elements) return {components, edges};
 
     for (const element of elements) {
@@ -58,38 +58,9 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
         }
     }
 
-    console.log(edges)
-
-    // remove duplicates
     components = removeDuplicatesWithEquals(components);
 
-    // // remove duplicate edges
-    // edges = edges.filter((edge, index, self) =>
-    //     index === self.findIndex((e) => e.equals(edge)) // Check if the edge is the first occurrence
-    // );
-
     return {components, edges};
-}
-
-function getTransitiveEdges(edges: Edge[], components: AbstractComponent[]): Edge[] {
-
-    const usages: Edge[] = edges.filter((edge) => edge.type === "uml:Usage");
-    const providedInterfaces: Edge[] = edges.filter((edge) => edge.type === "uml:InterfaceRealization");
-    const otherEdges: Edge[] = edges.filter((edge) => edge.type !== "uml:Usage" && edge.type !== "uml:InterfaceRealization");
-    const umlComponentsMap = new Map<string, AbstractComponent>();
-    components.forEach((comp) => {
-        umlComponentsMap.set(comp.id, comp);
-    });
-
-    const final: Edge[] = otherEdges;
-    providedInterfaces.forEach((providedHalfEdge => {
-        usages.forEach((usageHalfEdge => {
-            if (providedHalfEdge.supplier === usageHalfEdge.supplier && umlComponentsMap.get(usageHalfEdge.supplier)?.type === "uml:Interface") {
-                final.push(new Edge(usageHalfEdge.client, providedHalfEdge.client, usageHalfEdge.type, umlComponentsMap.get(usageHalfEdge.supplier) as Interface));
-            }
-        }))
-    }))
-    return final;
 }
 
 function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[] {
@@ -130,7 +101,7 @@ function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[
         case "uml:Package":
             const components = Array.isArray(element["packagedElement"]) ? element["packagedElement"] : [element["packagedElement"]];
             // Recursively extract components from the package
-            let packagedElements: AbstractComponent[] = [];
+            const packagedElements: AbstractComponent[] = [];
             components
                 .filter((el: any) => el["@_xmi:type"] !== "uml:Usage")
                 .map((el: any) => extractPackagedElement(el, edges))

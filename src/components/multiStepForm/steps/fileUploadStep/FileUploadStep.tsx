@@ -22,23 +22,23 @@ function FileUploadStep() {
     // This function can be used to preselect the file type based on the file extension
     function preselectFileType(file: File): FileType {
         const extension = file.name.split('.').pop()?.toLowerCase();
-        const includesTraceLinkInName = file.name.toLowerCase().includes('trace') && allowedFileTypes.includes(FileType.traceLinks);
-        const includesInconsistenciesInName = file.name.toLowerCase().includes('inconsistenc') && allowedFileTypes.includes(FileType.inconsistencies);
+        const includesTraceLinkInName = file.name.toLowerCase().includes('trace') && allowedFileTypes.includes(FileType.TRACELINKS);
+        const includesInconsistenciesInName = file.name.toLowerCase().includes('inconsistenc') && allowedFileTypes.includes(FileType.INCONSISTENCIES);
 
         if (extension === 'uml') {
-            return FileType.architectureModelUML;
+            return FileType.ARCHITECTURE_MODEL_UML;
         } else if (extension === 'repository') {
-            return FileType.architectureModelPCM;
+            return FileType.ARCHITECTURE_MODEL_PCM;
         } else if (extension === 'txt') {
-            return FileType.documentation;
+            return FileType.DOCUMENTATION;
         } else if (extension === 'acm') {
-            return FileType.codeModel;
+            return FileType.CODE_MODEL;
         } else if (extension === 'json' && includesTraceLinkInName) {
-            return FileType.traceLinks;
+            return FileType.TRACELINKS;
         } else if (extension === 'json' && includesInconsistenciesInName) {
-            return FileType.inconsistencies;
+            return FileType.INCONSISTENCIES;
         } else {
-            return FileType.None;
+            return FileType.NONE;
         }
     }
 

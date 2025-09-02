@@ -75,8 +75,9 @@ export function FormProvider({children, allowedFileTypes}: FormProviderProps) {
                 const data: TraceLinkConfiguration = await response.json();
                 setOriginalTraceLinkConfiguration(data);
                 setFormData(prev => ({...prev, traceLinkConfiguration: data}));
-            } catch (e: any) {
-                setConfigurationError(e.message);
+            } catch (e) {
+                const error = e as Error;
+                setConfigurationError(error.message);
             } finally {
                 setConfigurationLoading(false);
             }
@@ -93,8 +94,6 @@ export function FormProvider({children, allowedFileTypes}: FormProviderProps) {
             if (newData.selectedTraceLinkType !== TraceLinkTypes.SAD_SAM) {
                 newData.findInconsistencies = false;
             }
-
-            console.log("Updated FormData:", newData);
             return newData;
         });
     };

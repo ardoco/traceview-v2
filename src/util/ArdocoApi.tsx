@@ -10,7 +10,6 @@ interface ArDoCoApiResponse {
 }
 
 export default async function fetchArDoCoAPI(apiAddress: string, projectName: string, selectedTraceLinkType: TraceLinkType | null, inputFiles: UploadedFile[], findInconsistencies: boolean, config?: TraceLinkConfiguration | null): Promise<ArDoCoApiResponse> {
-    console.log("Submitted data: ", projectName, selectedTraceLinkType, inputFiles);
 
     let result = null
     let usedFiles: UploadedFile[] = []
@@ -42,12 +41,12 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
     let inputTextFile
     let inputArchitectureFile
 
-    // create different form data depending on the selected tracelinktype
+    // create different form data depending on the selected traceLinkType
     switch (selectedTraceLinkType.name) {
         case TraceLinkTypes.SAD_SAM_CODE.name:
-            inputCodeFile = findFile(inputFiles, FileType.codeModel);
-            inputTextFile = findFile(inputFiles, FileType.documentation);
-            inputArchitectureFile = findFile(inputFiles, [FileType.architectureModelPCM, FileType.architectureModelUML]);
+            inputCodeFile = findFile(inputFiles, FileType.CODE_MODEL);
+            inputTextFile = findFile(inputFiles, FileType.DOCUMENTATION);
+            inputArchitectureFile = findFile(inputFiles, [FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML]);
             if (!inputCodeFile || !inputTextFile || !inputArchitectureFile) {
                 throw new Error("Missing required files for " + TraceLinkTypes.SAD_SAM_CODE.name + ".");
             }
@@ -60,8 +59,8 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
             break;
 
         case TraceLinkTypes.SAD_CODE.name:
-            inputCodeFile = findFile(inputFiles, FileType.codeModel);
-            inputTextFile = findFile(inputFiles, FileType.documentation);
+            inputCodeFile = findFile(inputFiles, FileType.CODE_MODEL);
+            inputTextFile = findFile(inputFiles, FileType.DOCUMENTATION);
             if (!inputCodeFile || !inputTextFile) {
                 throw new Error("Missing required files for " + TraceLinkTypes.SAD_CODE.name + ".");
             }
@@ -72,8 +71,8 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
             break;
 
         case TraceLinkTypes.SAM_CODE.name:
-            inputCodeFile = findFile(inputFiles, FileType.codeModel);
-            inputArchitectureFile = findFile(inputFiles, [FileType.architectureModelPCM, FileType.architectureModelUML]);
+            inputCodeFile = findFile(inputFiles, FileType.CODE_MODEL);
+            inputArchitectureFile = findFile(inputFiles, [FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML]);
             if (!inputCodeFile || !inputArchitectureFile) {
                 throw new Error("Missing required files for " + TraceLinkTypes.SAM_CODE.name + ".");
             }
@@ -85,8 +84,8 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
             break;
 
         case TraceLinkTypes.SAD_SAM.name:
-            inputTextFile = findFile(inputFiles, FileType.documentation);
-            inputArchitectureFile = findFile(inputFiles, [FileType.architectureModelPCM, FileType.architectureModelUML]);
+            inputTextFile = findFile(inputFiles, FileType.DOCUMENTATION);
+            inputArchitectureFile = findFile(inputFiles, [FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML]);
             if (!inputTextFile || !inputArchitectureFile) {
                 throw new Error("Missing required files for " + TraceLinkTypes.SAD_SAM.name + ".");
             }

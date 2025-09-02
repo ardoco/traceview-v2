@@ -15,7 +15,7 @@ import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsist
 import {
     parseInconsistenciesFromJSON
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
-import {getResultViewOption} from "@/components/dataTypes/ResultType";
+import {getResultViewOption} from "@/components/dataTypes/DisplayOption";
 
 interface TraceLinkResult {
     traceLinkType: TraceLinkType;
@@ -37,8 +37,8 @@ export default function ViewProvided() {
 
 
     const loadTraceLinks = async (fileId: string): Promise<TraceLinkResult> => {
-        const result = await loadProjectFile(fileId, FileType.traceLinks);
-        let data:TraceLink[] = [];
+        const result = await loadProjectFile(fileId, FileType.TRACELINKS);
+        let data: TraceLink[] = [];
         let traceLinkType = TraceLinkTypes.SAD_SAM_CODE;
 
         if (result?.content) {
@@ -56,8 +56,8 @@ export default function ViewProvided() {
     };
 
     const loadInconsistencies = async (fileId: string): Promise<Inconsistency[]> => {
-        const result = await loadProjectFile(fileId, FileType.inconsistencies);
-        let data:Inconsistency[] = [];
+        const result = await loadProjectFile(fileId, FileType.INCONSISTENCIES);
+        let data: Inconsistency[] = [];
 
         if (result?.content) {
             try {
@@ -73,7 +73,7 @@ export default function ViewProvided() {
 
     useEffect(() => {
         if (!id) {
-            console.log("ID is not provided, skipping loading of project files.");
+            console.warn("ID is not provided, skipping loading of project files.");
             return;
         }
 
@@ -84,13 +84,13 @@ export default function ViewProvided() {
             setUploadedFileTypes(uploadedFileTypes1);
 
             try {
-                if (uploadedFileTypes1.includes(FileType.traceLinks)) {
+                if (uploadedFileTypes1.includes(FileType.TRACELINKS)) {
                     const result = await loadTraceLinks(uriDecodedId);
                     setTraceLinks(result.traceLinks);
                     setTraceLinkType(result.traceLinkType);
                 }
 
-                if (uploadedFileTypes1.includes(FileType.inconsistencies)) {
+                if (uploadedFileTypes1.includes(FileType.INCONSISTENCIES)) {
                     const result = await loadInconsistencies(uriDecodedId);
                     setInconsistencies(result);
                 }
@@ -102,7 +102,7 @@ export default function ViewProvided() {
         };
         fetchAllData();
 
-    }, [id]);
+    }, [id, uriDecodedId]);
 
     useEffect(() => {
         setCurrentProjectId(uriDecodedId);

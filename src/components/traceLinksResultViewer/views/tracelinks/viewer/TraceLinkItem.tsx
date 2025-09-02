@@ -3,7 +3,7 @@ import React from "react";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import clsx from "clsx";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 /**
  * Defines the props for the TraceLinkItem component.
@@ -19,7 +19,7 @@ export function TraceLinkItem({link, showCode, showModel, showSentence}: TraceLi
     const {highlightSingleTraceLink, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
     const {resetHighlightedInconsistencies} = useInconsistencyContext();
 
-    const isSource = lastClickedSource?.type === ResultType.TraceLinks && lastClickedSource?.id === link.id;
+    const isSource = lastClickedSource?.type === DisplayOption.TRACELINKS && lastClickedSource?.id === link.id;
 
     return (
         <li

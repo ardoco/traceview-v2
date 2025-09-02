@@ -27,7 +27,6 @@ export function ApiAddressProvider({children}: { children: React.ReactNode }) {
     const setApiAddress = async (newAddress: string) => {
         // Clean the input to store a clean base URL (e.g., http://127.0.0.1:8081)
         const cleanedAddress = newAddress.replace(/\/api\/?.*$/, "").replace(/\/$/, "");
-        console.log("cleaned Address", cleanedAddress)
 
         try {
             const testUrl = `/api/health`;

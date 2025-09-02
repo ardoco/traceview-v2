@@ -8,7 +8,7 @@ import {
 
 export function parseInconsistenciesFromJSON(data: any): Inconsistency[] {
 
-    let inconsistencies = data.map((inconsistency: any) => {
+    return data.map((inconsistency: any) => {
         const reason = inconsistency.reason;
         if (inconsistency.type === InconsistencyType.MissingModelInstance) {
             const sentenceNumber = parseInt(inconsistency.sentenceNumber);
@@ -20,7 +20,4 @@ export function parseInconsistenciesFromJSON(data: any): Inconsistency[] {
             console.warn(`Unknown inconsistency type: ${inconsistency.type}. Defaulting to MissingModelInstance.`);
         }
     });
-    console.log(inconsistencies)
-
-    return inconsistencies;
 }

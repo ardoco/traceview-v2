@@ -3,20 +3,20 @@
 import React, {createContext, useContext, useState} from 'react';
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 import {MessageSource} from "@/components/dataTypes/MessageSource";
 
 interface HighlightTracelinksContextType {
     highlightedTraceLinks: TraceLink[];
-    highlightElement: (id: number | string | null, type: ResultType) => void;
+    highlightElement: (id: number | string | null, type: DisplayOption) => void;
     highlightSingleTraceLink: (traceLinks: TraceLink) => void;
     traceLinks: TraceLink[];
     traceLinkType: TraceLinkType;
     resetHighlightedTraceLinks: () => void;
     lastSearchTimestamp: number;
     messageSource: MessageSource;
-    lastClickedSource: { id: string | number | null; type: ResultType } | null;
-    setLastClickedSource: (id: string | number | null, type: ResultType) => void;
+    lastClickedSource: { id: string | number | null; type: DisplayOption } | null;
+    setLastClickedSource: (id: string | number | null, type: DisplayOption) => void;
     loading: boolean;
 }
 
@@ -49,11 +49,11 @@ export function HighlightProvider({
     const [messageSource, setMessageSource] = useState<MessageSource>(MessageSource.NONE);
     const [lastClickedSource, setLastClickedSource] = useState<{
         id: string | number | null;
-        type: ResultType
+        type: DisplayOption
     } | null>(null);
     const useTraceLinks = traceLinks && traceLinks.length > 0;
 
-    const highlightElement = (id: number | string | null, type: ResultType) => {
+    const highlightElement = (id: number | string | null, type: DisplayOption) => {
         if (!useTraceLinks) {
             return;
         }
@@ -61,14 +61,14 @@ export function HighlightProvider({
             setHighlightedTraceLinks([]);
             return;
         }
-        let matchingTraceLinks: TraceLink[] = [];
+        const matchingTraceLinks: TraceLink[] = [];
 
         for (const traceLink of traceLinks) {
-            if (type == ResultType.Documentation && traceLink.sentenceNumber && traceLink.sentenceNumber == id) {
+            if (type == DisplayOption.DOCUMENTATION && traceLink.sentenceNumber && traceLink.sentenceNumber == id) {
                 matchingTraceLinks.push(traceLink);
-            } else if (type == ResultType.Architecture_Model && traceLink.modelElementId == id) {
+            } else if (type == DisplayOption.ARCHITECTURE_MODEL && traceLink.modelElementId == id) {
                 matchingTraceLinks.push(traceLink);
-            } else if (type == ResultType.Code_Model && traceLink.codeElementId == id) {
+            } else if (type == DisplayOption.CODE_MODEL && traceLink.codeElementId == id) {
                 matchingTraceLinks.push(traceLink);
             }
         }
@@ -86,7 +86,7 @@ export function HighlightProvider({
         setHighlightedTraceLinks([traceLink]);
         setMessageSource(MessageSource.TRACELINK_ONLY);
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource({id: traceLink.id, type: ResultType.TraceLinks});
+        setLastClickedSource({id: traceLink.id, type: DisplayOption.TRACELINKS});
     }
 
     const resetHighlightedTraceLinks = () => {
@@ -95,7 +95,7 @@ export function HighlightProvider({
         setLastClickedSource(null);
     }
 
-    const setLastClickedSourceGlobal = (id: string | number | null, type: ResultType) => {
+    const setLastClickedSourceGlobal = (id: string | number | null, type: DisplayOption) => {
         setLastClickedSource({id, type});
     };
 

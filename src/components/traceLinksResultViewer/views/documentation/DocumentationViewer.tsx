@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {FileType} from "@/components/dataTypes/FileType";
 import {
     parseDocumentationText
@@ -16,13 +16,13 @@ import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
 export default function DisplayDocumentation({id}: ViewProps) {
 
     const loadDocumentation = async (id: string): Promise<LoaderResult<Sentence[]>> => {
-        const result = await loadProjectFile(id, FileType.documentation);
+        const result = await loadProjectFile(id, FileType.DOCUMENTATION);
         const fileContent = result?.content || null;
         let data = null;
         if (result && result.content) {
             try {
                 data = parseDocumentationText(result.content);
-            } catch (e: any) {
+            } catch (e) {
                 console.error("Failed to parse code model:", e);
                 throw new Error("Failed to parse the code model. The file might be corrupted or in an invalid format.");
             }
@@ -30,10 +30,10 @@ export default function DisplayDocumentation({id}: ViewProps) {
         return {data, fileContent}
     };
 
-    const { data: sentences, fileContent, isLoading, error } = useDataLoader<Sentence[]>(id, loadDocumentation);
+    const {data: sentences, isLoading, error} = useDataLoader<Sentence[]>(id, loadDocumentation);
 
     if (isLoading) {
-        return <LoadingMessage title="documentation" />;
+        return <LoadingMessage title="documentation"/>;
     }
 
     if (error) {

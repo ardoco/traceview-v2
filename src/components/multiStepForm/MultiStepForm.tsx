@@ -15,7 +15,6 @@ import fetchArDoCoAPI from "@/util/ArdocoApi";
 import {storeProjectFiles, storeProjectMetadata} from "@/util/ClientFileStorage";
 import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
-import {v4 as uuidv4} from "uuid";
 import LoadingErrorModal from "@/components/LoadingErrorModal";
 import {Dialog, DialogPanel, DialogTitle} from '@headlessui/react';
 import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
@@ -57,11 +56,11 @@ function MultiStepForm() {
         validation: () => FormValidation.validateSummary(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
 
-    let errors = steps[currentStep].validation();
+    const errors = steps[currentStep].validation();
 
     const nextStep = async () => {
         if (currentStep === steps.length - 1) {
-            let summary_validation = steps[currentStep].validation()
+            const summary_validation = steps[currentStep].validation()
             if (summary_validation && summary_validation.length > 0) {
                 return
             } else {
@@ -74,8 +73,6 @@ function MultiStepForm() {
                     setLoading(false);
                     return;
                 }
-
-                console.log(result);
                 const encodedId = encodeURIComponent(result.requestId);
                 const inconsistenciesParam = `&inconsistencies=${formData.findInconsistencies}`;
                 redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}${inconsistenciesParam}`);
@@ -101,7 +98,7 @@ function MultiStepForm() {
             result = await fetchArDoCoAPI(apiAddress!, formData.projectName, formData.selectedTraceLinkType, formData.files, formData.findInconsistencies, formData.traceLinkConfiguration);
             jsonResult = result.jsonResult
         } catch (error) {
-            console.log("Error submitting data:", error);
+            console.error("Error submitting data:", error);
             setLoading(false);
             setErrorModalApiErrorOpen(true);
             return
@@ -111,7 +108,6 @@ function MultiStepForm() {
             // Store project files in the client storage
             await storeProjectFiles(jsonResult.requestId, result.usedFiles);
             await storeProjectMetadata(jsonResult.requestId, formData.files)
-            console.log(`Project files for request ID ${jsonResult.requestId} stored successfully.`);
         } catch (error) {
             console.error("Error storing project files:", error);
             setLoading(false);
@@ -122,22 +118,6 @@ function MultiStepForm() {
 
         return jsonResult;
     };
-
-    const handleSubmitError = async () => {
-        let storageId = uuidv4(); // Generate a unique request ID
-        setLoading(true);
-        try {
-            await storeProjectFiles(storageId, formData.files);
-            await storeProjectMetadata(storageId, formData.files)
-            console.log(`Project files for ID ${storageId} stored successfully.`);
-
-        } catch (error) {
-            console.error("Error submitting data:", error);
-            setLoading(false);
-        }
-        return storageId;
-    };
-
 
     return (<FormLayout>
         <Stepper
@@ -189,7 +169,7 @@ function MultiStepForm() {
             }}
             onViewFiles={async () => {
                 setErrorModalApiErrorOpen(false);
-                let storageId = await handleSubmit();
+                const storageId = await handleSubmit();
                 const encodedId = encodeURIComponent(storageId);
                 redirect(`/view-provided/${encodedId}`);
             }}

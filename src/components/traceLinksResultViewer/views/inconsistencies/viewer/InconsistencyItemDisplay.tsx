@@ -8,15 +8,15 @@ import {
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import clsx from "clsx";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 
-export function InconsistencyItemDisplay({inconsistency, index}: { inconsistency: Inconsistency, index: number }) {
+export function InconsistencyItemDisplay({inconsistency}: { inconsistency: Inconsistency }) {
     const {highlightedInconsistencies, highlightSingleInconsistency} = useInconsistencyContext()
     const {resetHighlightedTraceLinks, lastClickedSource} = useHighlightContext()
     const showSentenceNumber = inconsistency.type === InconsistencyType.MissingModelInstance;
     const showModelElement = inconsistency.type === InconsistencyType.MissingTextForModelElement;
-    const isSource = lastClickedSource?.type === ResultType.Inconsistencies && lastClickedSource?.id === inconsistency.id;
+    const isSource = lastClickedSource?.type === DisplayOption.INCONSISTENCIES && lastClickedSource?.id === inconsistency.id;
 
     if (!inconsistency) {
         return null;

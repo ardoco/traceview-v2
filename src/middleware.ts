@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
     let targetUrl;
     try {
         targetUrl = new URL(targetApiUrlString);
-    } catch (error) {
+    } catch (_) {
         return new Response('Invalid URL format in X-Target-API header.', {status: 400});
     }
 

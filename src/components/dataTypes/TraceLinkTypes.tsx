@@ -1,6 +1,6 @@
 import {FileType} from "@/components/dataTypes/FileType";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 
 export interface TraceLinkType {
@@ -10,7 +10,7 @@ export interface TraceLinkType {
     info: string;
     checkCondition: (uploadedFiles: UploadedFile[]) => boolean; // Determines if the option is selectable
     providedFiles: FileType[];
-    resultViewOptions: ResultType[]; // The options for the result view
+    resultViewOptions: DisplayOption[]; // The options for the result view
 }
 
 export const TraceLinkTypes: Record<string, TraceLinkType> = {
@@ -21,8 +21,8 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds transitive traceLinks between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
-        providedFiles: [FileType.documentation, FileType.architectureModelPCM, FileType.architectureModelUML, FileType.codeModel],
-        resultViewOptions: [ResultType.Code_Model, ResultType.Architecture_Model, ResultType.Documentation],
+        providedFiles: [FileType.DOCUMENTATION, FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML, FileType.CODE_MODEL],
+        resultViewOptions: [DisplayOption.CODE_MODEL, DisplayOption.ARCHITECTURE_MODEL, DisplayOption.DOCUMENTATION],
 
     },
     "SAD_SAM": {
@@ -32,8 +32,8 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles),
-        providedFiles: [FileType.documentation, FileType.architectureModelPCM, FileType.architectureModelUML],
-        resultViewOptions: [ResultType.Architecture_Model, ResultType.Documentation],
+        providedFiles: [FileType.DOCUMENTATION, FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML],
+        resultViewOptions: [DisplayOption.ARCHITECTURE_MODEL, DisplayOption.DOCUMENTATION],
     },
     "SAD_CODE": {
         name: "ArDoCode",
@@ -42,8 +42,8 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded code",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles),
-        providedFiles: [FileType.documentation, FileType.codeModel],
-        resultViewOptions: [ResultType.Code_Model, ResultType.Documentation],
+        providedFiles: [FileType.DOCUMENTATION, FileType.CODE_MODEL],
+        resultViewOptions: [DisplayOption.CODE_MODEL, DisplayOption.DOCUMENTATION],
     },
     "SAM_CODE": {
         name: "ArCoTL",
@@ -52,8 +52,8 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds traceLinks between the Software Architecture Model (SAM) and the uploaded code",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles),
-        providedFiles: [FileType.architectureModelPCM, FileType.architectureModelUML, FileType.codeModel],
-        resultViewOptions: [ResultType.Code_Model, ResultType.Architecture_Model],
+        providedFiles: [FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML, FileType.CODE_MODEL],
+        resultViewOptions: [DisplayOption.CODE_MODEL, DisplayOption.ARCHITECTURE_MODEL],
     },
 };
 
@@ -68,10 +68,10 @@ export function getTraceLinkTypeByName(name: string): TraceLinkType | undefined 
 
 
 const hasArchitectureDocumentation = (files: UploadedFile[]): boolean =>
-    files.some(file => file.fileType === FileType.documentation);
+    files.some(file => file.fileType === FileType.DOCUMENTATION);
 
 const hasArchitectureModel = (files: UploadedFile[]): boolean =>
-    files.some(file => file.fileType === FileType.architectureModelPCM || file.fileType === FileType.architectureModelUML);
+    files.some(file => file.fileType === FileType.ARCHITECTURE_MODEL_PCM || file.fileType === FileType.ARCHITECTURE_MODEL_UML);
 
 const hasCodeModel = (files: UploadedFile[]): boolean =>
-    files.some(file => file.fileType === FileType.codeModel);
+    files.some(file => file.fileType === FileType.CODE_MODEL);

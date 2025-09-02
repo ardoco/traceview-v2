@@ -68,11 +68,10 @@ export async function loadProjectFile(projectId: string, fallbackType: FileType)
         const file = await fileHandle.getFile();
         const content = await file.text();
 
-        const result = {content: content, fileType: actualFileType};
-        console.log(`[ClientFileStorage] Loaded file ${actualFileName} of type ${actualFileType} for project ${projectId}.`);
-        return result;
+        return {content: content, fileType: actualFileType};
 
-    } catch (error: any) {
+    } catch (e) {
+        const error = e as Error;
         if (error.name === "NotFoundError") {
             console.error("File not found: ", error);
             return null;
@@ -101,7 +100,6 @@ export async function deleteProjectDirectory(projectId: string) {
     try {
         const fsHandle = await navigator.storage.getDirectory();
         await fsHandle.removeEntry(projectId, {recursive: true});
-        console.log(`[ClientFileStorage] Project directory ${projectId} and all its contents removed.`);
     } catch (error: any) {
         console.error(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);
     }
@@ -111,7 +109,7 @@ export async function deleteProjectDirectory(projectId: string) {
  * Small helper to resolve stored file names.
  */
 function getStoredFileName(fileType: FileType): string {
-    return fileType === FileType.architectureModelPCM || fileType === FileType.architectureModelUML
+    return fileType === FileType.ARCHITECTURE_MODEL_PCM || fileType === FileType.ARCHITECTURE_MODEL_UML
         ? "Architecture Model"
         : fileType;
 }

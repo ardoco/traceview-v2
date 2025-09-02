@@ -21,7 +21,8 @@ export default function ConfirmNavigationModal({isOpen, onConfirm, onCancel}: Co
                         </DialogTitle>
                         <div className="mt-4">
                             <p className="text-sm text-gray-600">
-                                Navigating away will delete the current project's data from your browser. Are you sure
+                                Navigating away will delete the current project&apos;s data from your browser. Are you
+                                sure
                                 you want to continue?
                             </p>
                         </div>

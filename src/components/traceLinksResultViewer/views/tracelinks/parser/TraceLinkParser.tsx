@@ -45,7 +45,6 @@ export function parseTraceLinksFromJSON(traceLinkType: any, traceLinksJson: any)
         } else {
             console.error('Error parsing JSON. Unknown trace link type:', traceLinkType);
         }
-        console.log(traceLinks);
         return traceLinks;
 
     } catch (error) {

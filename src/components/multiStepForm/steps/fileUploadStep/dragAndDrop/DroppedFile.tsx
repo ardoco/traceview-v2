@@ -46,9 +46,9 @@ export default function DroppedFile({
             <div className="flex-1 mx-4">
                 <Dropdown<FileType>
                     options={allowedFileTypes}
-                    selectedValue={fileType ? fileType : FileType.None}
+                    selectedValue={fileType ? fileType : FileType.NONE}
                     onChange={onFileTypeChange}
-                    placeholder={FileType.None}
+                    placeholder={FileType.NONE}
                 />
             </div>
 

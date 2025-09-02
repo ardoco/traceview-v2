@@ -24,16 +24,15 @@ function MultiStepFormLoadProject() {
         validation: () => FormValidation.validateExistingProject(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
 
-    let errors = steps[currentStep].validation();
+    const errors = steps[currentStep].validation();
 
     const nextStep = async () => {
         if (currentStep === steps.length - 1) {
-            let summary_validation = steps[currentStep].validation()
+            const summary_validation = steps[currentStep].validation()
             if (summary_validation && summary_validation.length > 0) {
                 return
             } else {
-                let storageId = await handleSubmit();
-                console.log(storageId);
+                const storageId = await handleSubmit();
                 const encodedId = encodeURIComponent(storageId);
                 redirect(`/view-provided/${encodedId}`);
             }
@@ -51,12 +50,11 @@ function MultiStepFormLoadProject() {
     };
 
     const handleSubmit = async () => {
-        let storageId = uuidv4(); // Generate a unique request ID
+        const storageId = uuidv4(); // Generate a unique request ID
         setLoading(true);
         try {
             await storeProjectFiles(storageId, formData.files);
             await storeProjectMetadata(storageId, formData.files)
-            console.log(`Project files for ID ${storageId} stored successfully.`);
 
         } catch (error) {
             console.error("Error submitting data:", error);

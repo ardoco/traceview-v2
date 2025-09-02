@@ -1,7 +1,7 @@
 import {Sentence} from "@/components/traceLinksResultViewer/views/documentation/dataModel/DocumentationSentence";
 
 export function parseDocumentationText(content: string): Sentence[] {
-    let sentences: Sentence[] = [];
+    const sentences: Sentence[] = [];
 
     const cleanedContent = content
         .replace(/\r\n/g, '\n')  // Normalize line endings

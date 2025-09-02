@@ -64,8 +64,7 @@ export function parsePCM(xmlString: string): { components: AbstractComponent[]; 
     const components: AbstractComponent[] = [];
     const edges: Edge[] = [];
 
-    // --- Step 1: Build Interface objects and populate the interfaceMap ---
-    // This pass ensures all interfaces are available for lookup before processing components.
+    // Step 1: Build Interface objects and populate the interfaceMap
     for (const rawIface of rawInterfaces) {
         const id = rawIface.id;
         const name = rawIface.entityName;
@@ -76,7 +75,7 @@ export function parsePCM(xmlString: string): { components: AbstractComponent[]; 
         }
     }
 
-    // --- Step 2: Build Component objects and their associated Edges ---
+    // Step 2: Build Component objects and their associated Edges  
     for (const rawComp of rawComponents) {
         const componentId = rawComp.id;
         const componentName = rawComp.entityName;
@@ -130,8 +129,7 @@ export function parsePCM(xmlString: string): { components: AbstractComponent[]; 
         }
     }
 
-    // --- Step 3: Add all parsed Interface objects to the components list ---
-    // This makes them available for rendering alongside components in the diagram.
+    // Step 3: Add all parsed Interface objects to the components list
     for (const iface of interfaceMap.values()) {
         components.push(iface);
     }

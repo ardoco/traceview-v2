@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import {ACMLayoutNode, CustomHierarchyNode} from "./ACMViewer";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 type ACMNodeProps = {
     node: ACMLayoutNode;       // node is from the layout (has x, y, id, and potentially _children from data)
@@ -19,7 +19,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
         node.data.path && traceLink.codeElementId === node.data.id
     );
 
-    const isSource = lastClickedSource?.type === ResultType.Code_Model && lastClickedSource?.id === node.data.id;
+    const isSource = lastClickedSource?.type === DisplayOption.CODE_MODEL && lastClickedSource?.id === node.data.id;
 
     function textSymbol() {
         // 'node' is an ACMLayoutNode. Its 'children' are visible children after layout.
@@ -50,7 +50,7 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
             setTreeDataRoot(Object.assign(Object.create(Object.getPrototypeOf(treeDataRoot)), treeDataRoot));
 
         } else {
-            highlightElement(node.data.id ?? null, ResultType.Code_Model);
+            highlightElement(node.data.id ?? null, DisplayOption.CODE_MODEL);
         }
     };
 

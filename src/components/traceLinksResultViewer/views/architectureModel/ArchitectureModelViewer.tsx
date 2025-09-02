@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {FileType} from "@/components/dataTypes/FileType";
 import parseUMLModel from "@/components/traceLinksResultViewer/views/architectureModel/parser/UMLParser";
 import UMLViewer from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
@@ -17,16 +17,19 @@ import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
 
 export default function DisplayArchitectureModel({id}: ViewProps) {
 
-    const loadArchitectureModel = async (fileId: string): Promise<LoaderResult<{ components: AbstractComponent[], edges: Edge[] }>> => {
-        const result = await loadProjectFile(fileId, FileType.architectureModelUML);
+    const loadArchitectureModel = async (fileId: string): Promise<LoaderResult<{
+        components: AbstractComponent[],
+        edges: Edge[]
+    }>> => {
+        const result = await loadProjectFile(fileId, FileType.ARCHITECTURE_MODEL_UML);
         const fileContent = result?.content || null;
         let data = null;
 
         if (result && fileContent) {
             try {
-                if (result.fileType === FileType.architectureModelPCM) {
+                if (result.fileType === FileType.ARCHITECTURE_MODEL_PCM) {
                     data = parsePCM(fileContent);
-                } else if (result.fileType === FileType.architectureModelUML) {
+                } else if (result.fileType === FileType.ARCHITECTURE_MODEL_UML) {
                     data = parseUMLModel(fileContent);
                 } else {
                     throw new Error("Unknown architecture file type.");
@@ -39,11 +42,14 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
         return {data, fileContent};
     }
 
-    const {data: architectureModel, fileContent, isLoading, error} = useDataLoader<{ components: AbstractComponent[], edges: Edge[] }>(id, loadArchitectureModel);
+    const {data: architectureModel, fileContent, isLoading, error} = useDataLoader<{
+        components: AbstractComponent[],
+        edges: Edge[]
+    }>(id, loadArchitectureModel);
 
 
     if (isLoading) {
-        return <LoadingMessage title="Loading code model..." />;
+        return <LoadingMessage title="Loading code model..."/>;
     }
 
     if (error) {
@@ -55,7 +61,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             {architectureModel ? (
                 <UMLViewer umlComponents={architectureModel.components} umlEdges={architectureModel.edges}/>
             ) : (
-                 <div className="whitespace-pre p-4">
+                <div className="whitespace-pre p-4">
                     {fileContent ? `Could not parse model. Raw content:\n\n${fileContent}` : "Architecture model not found or could not be loaded."}
                 </div>
             )}

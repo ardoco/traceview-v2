@@ -32,7 +32,6 @@ export function NavigationProvider({children}: { children: ReactNode }) {
     };
 
     const confirmAndNavigate = async () => {
-        console.log(`Deleting project directory for ID: ${currentProjectId}`);
         if (currentProjectId) {
             await deleteProjectDirectory(currentProjectId);
             setCurrentProjectId(null);

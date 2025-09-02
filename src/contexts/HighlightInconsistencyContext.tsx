@@ -6,7 +6,7 @@ import {
     MissingTextForModelElementInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 import {MessageSource} from "@/components/dataTypes/MessageSource";
 
 interface InconsistencyContextProps {
@@ -53,19 +53,19 @@ export function InconsistencyProvider({
     const {setLastClickedSource} = useHighlightContext();
     const useInconsistencies = inconsistencies && inconsistencies.length > 0;
 
-    let modelInconsistencies: MissingTextForModelElementInconsistency[] =
+    const modelInconsistencies: MissingTextForModelElementInconsistency[] =
         inconsistencies
             .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
 
-    let sentenceInconsistencies: MissingModelInstanceInconsistency[] =
+    const sentenceInconsistencies: MissingModelInstanceInconsistency[] =
         inconsistencies
             .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
 
-    let highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[] =
+    const highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[] =
         highlightedInconsistencies
             .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
 
-    let highlightedModelInconsistencies: MissingTextForModelElementInconsistency[] =
+    const highlightedModelInconsistencies: MissingTextForModelElementInconsistency[] =
         highlightedInconsistencies
             .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
 
@@ -77,7 +77,7 @@ export function InconsistencyProvider({
         setHighlightedInconsistencies([inconsistency]);
         setMessageSource(MessageSource.INCONSISTENCY_ONLY);
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource(inconsistency.id, ResultType.Inconsistencies);
+        setLastClickedSource(inconsistency.id, DisplayOption.INCONSISTENCIES);
     }
 
     const highlightInconsistencyWithSentence = (sentence: number) => {
@@ -95,7 +95,7 @@ export function InconsistencyProvider({
         }
         setMessageSource(MessageSource.ELEMENT_CLICK);
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource(sentence, ResultType.Documentation);
+        setLastClickedSource(sentence, DisplayOption.DOCUMENTATION);
     }
 
     const highlightInconsistencyWithModelId = (modelElementId: string) => {
@@ -112,7 +112,7 @@ export function InconsistencyProvider({
         }
         setMessageSource(MessageSource.ELEMENT_CLICK);
         setLastSearchTimestamp(Date.now());
-        setLastClickedSource(modelElementId, ResultType.Architecture_Model);
+        setLastClickedSource(modelElementId, DisplayOption.ARCHITECTURE_MODEL);
     }
 
     const resetHighlightedInconsistencies = () => {

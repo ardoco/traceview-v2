@@ -38,8 +38,8 @@ export function parseACMFile(content: string): CodeModelUnit {
     const idToUnitMap = new Map<string, CodeModelUnit>();
     const pathToPackageUnitMap = new Map<string, CodeModelUnit>();
 
-    // --- Pass 1: Create all CodeModelUnit instances from the repository ---
-    // This ensures every item exists as an object before we start building relationships.
+    // Step 1: Create all CodeModelUnit instances from the repository
+    // This ensures every item exists as an object before building relationships.
     for (const id in repository) {
         const rawItem = repository[id];
         let unitName = rawItem.name;
@@ -53,13 +53,12 @@ export function parseACMFile(content: string): CodeModelUnit {
         idToUnitMap.set(id, unit);
     }
 
-    // --- Pass 2: Build the folder/package hierarchy from pathElements ---
-    // This is the most reliable way to create the main tree structure.
+    // Step 2: Build the folder/package hierarchy from pathElements
     const artificialRoot = new CodeModelUnit("temp-synthetic-root", "Path Root", "CodeModel", []);
 
     for (const unit of idToUnitMap.values()) {
         const rawItem = repository[unit.id];
-        // We only care about files for building the path structure.
+
         if (unit.type === "CodeCompilationUnit" && rawItem.pathElements) {
             let currentParent = artificialRoot;
             const currentPathSegments: string[] = [];
@@ -90,8 +89,7 @@ export function parseACMFile(content: string): CodeModelUnit {
         }
     }
 
-    // --- Pass 3: Link contained children (methods in classes, classes in files) ---
-    // This pass adds the internal structure to the file units.
+    //   Step 3: Link contained children (methods in classes, classes in codeCompilationUnits)
     for (const unit of idToUnitMap.values()) {
         const rawItem = repository[unit.id];
         // Check if the item is a container (File, Class, Interface) and has content.
@@ -109,8 +107,7 @@ export function parseACMFile(content: string): CodeModelUnit {
         }
     }
 
-    // --- Pass 4: Merge sibling nodes with the same name and type ---
-    // This is crucial for creating a unified folder structure.
+    // Step 4: Merge sibling nodes with the same name and type to remove duplicates
     function mergeSiblingsRecursive(node: CodeModelUnit): void {
         if (!node.children || node.children.length === 0) return;
 
@@ -134,7 +131,6 @@ export function parseACMFile(content: string): CodeModelUnit {
                 // After adding new children, the merged node might need its own children merged.
                 mergeSiblingsRecursive(existingSibling);
             } else {
-                // This is the first time we've seen this name/type at this level.
                 distinctChildrenMap.set(childKey, child);
                 mergedChildren.push(child);
             }
@@ -144,27 +140,23 @@ export function parseACMFile(content: string): CodeModelUnit {
 
     mergeSiblingsRecursive(artificialRoot);
 
-    // --- Pass 5: Collapse single-child packages to simplify the tree view ---
+    // Step 5: Collapse single-child packages to simplify the tree view
     function collapseSingleChildPackagesRecursive(node: CodeModelUnit): void {
         if (!node.children) return;
 
-        // Recursively collapse children first (bottom-up approach)
         node.children.forEach(collapseSingleChildPackagesRecursive);
 
         const collapsedChildren: CodeModelUnit[] = [];
         for (const child of node.children) {
-            let current = child;
-            // While the current node is a package with exactly one child that is also a package...
+            const current = child;
+
             while (
                 current.type === "CodePackage" &&
                 current.children.length === 1 &&
                 current.children[0].type === "CodePackage"
                 ) {
                 const singleChildPackage = current.children[0];
-                // ...merge them.
-                // Combine names.
                 current.name = `${current.name}/${singleChildPackage.name}`;
-                // The parent now adopts the grandchildren.
                 current.children = singleChildPackage.children;
             }
             collapsedChildren.push(current);
@@ -174,23 +166,19 @@ export function parseACMFile(content: string): CodeModelUnit {
 
     collapseSingleChildPackagesRecursive(artificialRoot);
 
-    // --- Pass 6: Determine the final root node ---
+    // Step 6: Determine the final root node
     let root: CodeModelUnit;
     if (artificialRoot.children.length > 1) {
-        // If there are multiple top-level folders, keep the synthetic root.
         root = new CodeModelUnit("synthetic-root", "Code Model", "CodeModel", artificialRoot.children);
     } else if (artificialRoot.children.length === 1) {
-        // If there's only one top-level folder, make it the root.
         root = artificialRoot.children[0];
     } else {
-        // Fallback for empty data structures.
         root = new CodeModelUnit("synthetic-root-empty", "Code Model", "CodeModel", []);
     }
 
     // Recursively apply the merge again on the final root to catch any top-level merges.
     mergeSiblingsRecursive(root);
 
-    // --- Pass 6: Set the final, hierarchical paths for all nodes ---
     setCodeModelUnitPaths(root, "");
 
     return root;
@@ -206,14 +194,13 @@ export function setCodeModelUnitPaths(unit: CodeModelUnit, basePath: string): vo
         unit.path = unit.name;
         basePath = "";
     } else if (unit.type === "CodeCompilationUnit") {
-        // The path for a file is already absolute and was set in Pass 1.
-        // We just update the basePath for its children.
+        // The path for a file is already absolute and was set in Step 1.
         basePath = unit.path!;
 
     } else if (unit.type === "CodePackage") {
         unit.path = basePath ? `${basePath}/${unit.name}` : unit.name;
         basePath = unit.path;
-    } else { // ClassUnit, InterfaceUnit, ControlElement (methods, fields, etc.)
+    } else {
         unit.path = `${basePath}::${unit.name}`;
         basePath = unit.path;
     }

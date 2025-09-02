@@ -9,7 +9,7 @@ export default function startNewProject() {
         <div className="bg-white h-full z-1 relative">
             <FormProvider allowedFileTypes={
                 Object.values(FileType)
-                    .filter(type => type !== FileType.traceLinks && type !== FileType.inconsistencies)}>
+                    .filter(type => type !== FileType.TRACELINKS && type !== FileType.INCONSISTENCIES)}>
                 <MultiStepForm/>
             </FormProvider>
         </div>

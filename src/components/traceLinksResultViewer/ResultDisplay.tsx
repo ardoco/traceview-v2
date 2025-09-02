@@ -1,6 +1,6 @@
 'use client'
 
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 import React, {useState} from "react";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import FullScreenResultDialog from "@/components/traceLinksResultViewer/FullScreenResult";
@@ -11,11 +11,11 @@ import {PanelGroup, PanelResizeHandle} from "react-resizable-panels";
 interface ResultDisplayProps {
     id: string;
     traceLinkType: TraceLinkType;
-    displayOptions: ResultType[];
+    displayOptions: DisplayOption[];
 }
 
 export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplayProps) {
-    const [selectedDialogView, setSelectedDialogView] = useState<ResultType | null>(null);
+    const [selectedDialogView, setSelectedDialogView] = useState<DisplayOption | null>(null);
     const panelsToRender = displayOptions.slice(0, 3);
 
     return (

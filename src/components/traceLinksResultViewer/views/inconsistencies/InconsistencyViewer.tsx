@@ -68,11 +68,11 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
     }
 
     if (loading) {
-        return <LoadingMessage title={"Generating inconsistencies, this may take a few moments..."} />;
+        return <LoadingMessage title={"Generating inconsistencies, this may take a few moments..."}/>;
     }
 
     if (!loading && inconsistencies.length === 0) {
-        return <LoadingMessage title={"No inconsistencies found."} />;
+        return <LoadingMessage title={"No inconsistencies found."}/>;
 
     }
 
@@ -80,7 +80,8 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
         <div className="px-2 pb-2">
             {/* Sticky Top Bar */}
             <div
-                className={`sticky flex justify-between items-start bg-white z-10 border-b px-2 pt-2`} style={{top: `calc(var(--spacing) * ${headerOffset})`}}>
+                className={`sticky flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}
+                style={{top: `calc(var(--spacing) * ${headerOffset})`}}>
 
                 <div className="w-full">
 
@@ -116,7 +117,6 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
                 {filteredAndSorted.map((inconsistency, index) => (
                     <InconsistencyItemDisplay
                         inconsistency={inconsistency}
-                        index={index}
                         key={index}
                     />
                 ))}

@@ -13,7 +13,7 @@ import {
 import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 const COMPONENT_WIDTH = 140;
 const COMPONENT_HEIGHT = 70;
@@ -49,11 +49,10 @@ export default function UMLEdge({
                                 }: UMLEdgeProps) {
 
     const [hovered, setHovered] = useState(false);
-    if (!svgRef.current) return null;
 
     // Adjust client/supplier coordinates for component nodes to be closer to center
-    let startX = client.x + COMPONENT_CENTER_OFFSET_X;
-    let startY = client.y + COMPONENT_CENTER_OFFSET_Y;
+    const startX = client.x + COMPONENT_CENTER_OFFSET_X;
+    const startY = client.y + COMPONENT_CENTER_OFFSET_Y;
 
     let endX = supplier.x + COMPONENT_CENTER_OFFSET_X;
     let endY = supplier.y + COMPONENT_CENTER_OFFSET_Y;
@@ -68,13 +67,15 @@ export default function UMLEdge({
         highlightedModelInconsistencies,
     } = useInconsistencyContext();
 
+    if (!svgRef.current) return null;
+
     const isTraceLinkHighlighted = highlightedTraceLinks.some(link => link.modelElementId === edge.usedInterface?.id) || false;
     const isInconsistencyHighlighted = highlightedModelInconsistencies.some(inconsistency => inconsistency.id === edge.usedInterface?.id) || false;
 
     const fillColor =
         isTraceLinkHighlighted ? "var(--color-highlight-tracelink-text)" :
-        isInconsistencyHighlighted ? "var(--color-highlight-inconsistency-text)" :
-            hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR;
+            isInconsistencyHighlighted ? "var(--color-highlight-inconsistency-text)" :
+                hovered ? HOVER_COLOR : DEFAULT_STROKE_COLOR;
     const strokeWidth =
         (hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? HOVER_STROKE_WIDTH : DEFAULT_STROKE_WIDTH;
     const lollipopRadius =
@@ -96,11 +97,13 @@ export default function UMLEdge({
             </marker>
             <marker id={"arrow-inconsistencies"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
                     markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-inconsistency-text)"} strokeWidth={HOVER_STROKE_WIDTH}/>
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-inconsistency-text)"}
+                      strokeWidth={HOVER_STROKE_WIDTH}/>
             </marker>
             <marker id={"arrow-traceLinks"} markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"
                     markerUnits="strokeWidth">
-                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-tracelink-text)"} strokeWidth={HOVER_STROKE_WIDTH}/>
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke={"var(--color-highlight-tracelink-text)"}
+                      strokeWidth={HOVER_STROKE_WIDTH}/>
             </marker>
         </defs>
     );
@@ -127,19 +130,19 @@ export default function UMLEdge({
         return (
             <g
                 onMouseEnter={(e) => {
-                if (edge.usedInterface) {
-                    showInterfaceTooltip(svgRef, e.nativeEvent.layerX, e.nativeEvent.layerY, edge.usedInterface, setTooltip, "Provided");
-                }
-                setHovered(true);
+                    if (edge.usedInterface) {
+                        showInterfaceTooltip(svgRef, e.nativeEvent.layerX, e.nativeEvent.layerY, edge.usedInterface, setTooltip, "Provided");
+                    }
+                    setHovered(true);
                 }}
-               onMouseLeave={() => {
-                   hideTooltip(setTooltip)
-                   setHovered(false);
-               }}
+                onMouseLeave={() => {
+                    hideTooltip(setTooltip)
+                    setHovered(false);
+                }}
                 onClick={(e) => {
                     e.stopPropagation();
                     if (edge.usedInterface) {
-                        highlightElement(edge.usedInterface.id, ResultType.Architecture_Model);
+                        highlightElement(edge.usedInterface.id, DisplayOption.ARCHITECTURE_MODEL);
                         highlightInconsistencyWithModelId(edge.usedInterface.id);
                     }
                 }}
@@ -273,7 +276,7 @@ export default function UMLEdge({
                onClick={(e) => {
                    e.stopPropagation();
                    if (edge.usedInterface) {
-                       highlightElement(edge.usedInterface.id, ResultType.Architecture_Model);
+                       highlightElement(edge.usedInterface.id, DisplayOption.ARCHITECTURE_MODEL);
                        highlightInconsistencyWithModelId(edge.usedInterface.id);
                    }
                }}

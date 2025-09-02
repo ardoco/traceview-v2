@@ -2,7 +2,7 @@
 
 import {Panel} from "react-resizable-panels";
 import React, {useState} from "react";
-import {displayOptionName, ResultType} from "@/components/dataTypes/ResultType";
+import {displayOptionName, DisplayOption} from "@/components/dataTypes/DisplayOption";
 import {Button, Select} from "@headlessui/react";
 import {ArrowsPointingOutIcon} from "@heroicons/react/24/solid";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
@@ -11,9 +11,9 @@ import {getResultPanel} from "@/components/traceLinksResultViewer/TabContent";
 interface ResultPanelProps {
     id: string;
     collapsible: boolean;
-    displayOptions: ResultType[];
-    defaultView: ResultType;
-    setSelectedDialogView: (value: ResultType | null) => void;
+    displayOptions: DisplayOption[];
+    defaultView: DisplayOption;
+    setSelectedDialogView: (value: DisplayOption | null) => void;
     traceLinkType: TraceLinkType;
 }
 
@@ -27,7 +27,7 @@ export default function ResultPanel({
                                     }: ResultPanelProps) {
     const [selectedPanel, setSelectedPanel] = useState(defaultView);
 
-    const handleOptionChange = (value: ResultType) => {
+    const handleOptionChange = (value: DisplayOption) => {
         setSelectedPanel(value);
     };
 
@@ -41,7 +41,7 @@ export default function ResultPanel({
         >
             {/*drop down*/}
             <div className="sticky top-0 flex bg-white">
-                <Select value={selectedPanel} onChange={(e) => handleOptionChange(e.target.value as ResultType)}
+                <Select value={selectedPanel} onChange={(e) => handleOptionChange(e.target.value as DisplayOption)}
                         className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:outline-none">
                     {displayOptions
                         .map((option) => (

@@ -3,7 +3,7 @@ import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import React from "react";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import clsx from "clsx";
-import {ResultType} from "@/components/dataTypes/ResultType";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 export function SentenceView({sentence}: { sentence: Sentence }) {
     const {highlightElement, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
@@ -15,7 +15,7 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
     const traceLinkHighlight = highlightedTraceLinks.find(traceLink => traceLink.sentenceNumber === sentence.identifier) !== undefined;
     const inconsistencyHighlight = highlightedSentenceInconsistencies.find(inc => inc.sentenceNumber == sentence.identifier) !== undefined;
 
-    const isSource = lastClickedSource?.type ==  ResultType.Documentation && lastClickedSource?.id === sentence.identifier;
+    const isSource = lastClickedSource?.type == DisplayOption.DOCUMENTATION && lastClickedSource?.id === sentence.identifier;
 
     const backgroundClass = clsx(
         {
@@ -46,7 +46,7 @@ export function SentenceView({sentence}: { sentence: Sentence }) {
                 borderClass
             )}
             onClick={() => {
-                highlightElement(sentence.identifier, ResultType.Documentation)
+                highlightElement(sentence.identifier, DisplayOption.DOCUMENTATION)
                 highlightInconsistencyWithSentence(sentence.identifier);
             }}
         >
