@@ -28,16 +28,16 @@ export function displayOptionName(option: ResultType, traceLinkType: TraceLinkTy
 
 export function getResultViewOption(fileType: FileType): ResultType {
     switch (fileType) {
-        case FileType.Architecture_Documentation:
+        case FileType.documentation:
             return ResultType.Documentation;
-        case FileType.Architecture_Model_UML:
-        case FileType.Architecture_Model_PCM:
+        case FileType.architectureModelUML:
+        case FileType.architectureModelPCM:
             return ResultType.Architecture_Model;
-        case FileType.Code_Model:
+        case FileType.codeModel:
             return ResultType.Code_Model;
-        case FileType.Trace_Link_JSON:
+        case FileType.traceLinks:
             return ResultType.TraceLinks;
-        case FileType.Inconsistencies_JSON:
+        case FileType.inconsistencies:
             return ResultType.Inconsistencies;
         default:
             throw new Error(`No result view option defined for file type: ${fileType}`);

@@ -18,7 +18,7 @@ import {Sentence} from "@/components/traceLinksResultViewer/views/documentation/
 export default function DisplayCodeModel({id}: ViewProps) {
 
     const loadCodeModel = async (fileId: string): Promise<LoaderResult<CodeModelUnit>> => {
-        const result = await loadProjectFile(fileId, FileType.Code_Model, false);
+        const result = await loadProjectFile(fileId, FileType.codeModel);
         const fileContent = result?.content || null;
         let data = null;
 

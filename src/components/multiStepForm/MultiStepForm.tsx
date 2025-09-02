@@ -43,17 +43,17 @@ function MultiStepForm() {
     }, {
         stepperLabel: "Project Details",
         title: "Project Details",
-        description: "Enter the project name (this is used for finding the traceLinks) and select the type of traceLinks you want to retrieve. If you additionally want to find inconsistencies, check the corresponding box.",
+        description: "Enter the project name and select the type of traceLinks you want to retrieve. To additionally find inconsistencies, check the corresponding box.",
         validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     }, {
         stepperLabel: "Configuration",
         title: "Configure ArDoCo",
-        description: "Adjust the default configuration for finding traceLinks if desired, else proceed with defaults.",
+        description: "If you want you can adjust the default configuration for finding traceLinks, else proceed with the defaults.",
         validation: () => [],
     }, {
         stepperLabel: "Summary",
         title: "Summary",
-        description: "Review your provided data. If changes are required, return to the corresponding step and modify before calculating the traceLinks.",
+        description: "Review your provided data. If you want to change anything, return to the corresponding step before calculating the traceLinks.",
         validation: () => FormValidation.validateSummary(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
 
@@ -70,7 +70,7 @@ function MultiStepForm() {
                     result = await handleSubmit();
                 } catch (error) {
                     console.error("Error during submission:", error);
-                    errors.push("An error occurred while submitting the data. Please try again.");
+                    errors.push(`An error occurred while submitting the data. Please try again. Error: ${error}`);
                     setLoading(false);
                     return;
                 }
@@ -113,7 +113,7 @@ function MultiStepForm() {
             await storeProjectMetadata(jsonResult.requestId, formData.files)
             console.log(`Project files for request ID ${jsonResult.requestId} stored successfully.`);
         } catch (error) {
-            console.log("Error storing project files:", error);
+            console.error("Error storing project files:", error);
             setLoading(false);
             setErrorModalFileUpload(true);
             return;

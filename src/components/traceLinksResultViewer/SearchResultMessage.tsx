@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {ResultType} from "@/components/dataTypes/ResultType";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
+import {MessageSource} from "@/components/dataTypes/MessageSource";
 
 interface SearchResultMessageProps {
     displayOptions: ResultType[];
@@ -40,14 +41,14 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
 
         const source =
             traceLinkTimestamp > inconsistencyTimestamp
-                ? traceLinkSource || 'element-click'
+                ? traceLinkSource || MessageSource.ELEMENT_CLICK
                 : inconsistencyTimestamp > traceLinkTimestamp
-                    ? inconsistencySource || 'element-click'
-                    : traceLinkTimestamp > 0 ? 'element-click' : 'none';
+                    ? inconsistencySource || MessageSource.ELEMENT_CLICK
+                    : traceLinkTimestamp > 0 ? MessageSource.ELEMENT_CLICK : MessageSource.NONE;
 
         const parts: MessagePart[] = [];
 
-        if (source === 'tracelink-only' && displayTraceLinks) {
+        if (source === MessageSource.TRACELINK_ONLY && displayTraceLinks) {
             parts.push(
                 {
                     text: traceCount === 0 ? 'no traceLinks' :
@@ -56,7 +57,7 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
                 },
                 {text: ' found.', type: 'normal'}
             );
-        } else if (source === 'inconsistency-only' && displayInconsistencies) {
+        } else if (source === MessageSource.INCONSISTENCY_ONLY && displayInconsistencies) {
             parts.push(
                 {
                     text: inconsistencyCount === 0 ? 'no inconsistencies' :
@@ -65,7 +66,7 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
                 },
                 {text: ' found.', type: 'normal'}
             );
-        } else if (source === 'element-click') {
+        } else if (source === MessageSource.ELEMENT_CLICK) {
             if (displayTraceLinks) {
                 parts.push({
                     text: traceCount === 0 ? 'no traceLinks' :

@@ -16,7 +16,7 @@ import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
 export default function DisplayDocumentation({id}: ViewProps) {
 
     const loadDocumentation = async (id: string): Promise<LoaderResult<Sentence[]>> => {
-        const result = await loadProjectFile(id, FileType.Architecture_Documentation, false);
+        const result = await loadProjectFile(id, FileType.documentation);
         const fileContent = result?.content || null;
         let data = null;
         if (result && result.content) {

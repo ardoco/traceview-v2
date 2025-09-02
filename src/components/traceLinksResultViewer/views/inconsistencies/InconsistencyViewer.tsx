@@ -80,7 +80,7 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
         <div className="px-2 pb-2">
             {/* Sticky Top Bar */}
             <div
-                className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
+                className={`sticky flex justify-between items-start bg-white z-10 border-b px-2 pt-2`} style={{top: `calc(var(--spacing) * ${headerOffset})`}}>
 
                 <div className="w-full">
 

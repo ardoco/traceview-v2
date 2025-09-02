@@ -7,7 +7,7 @@ import {loadProjectFile, loadProjectMetaData} from "@/util/ClientFileStorage";
 import {FileType} from "@/components/dataTypes/FileType";
 import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
-import {getTraceLinkTypeByName, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {getTraceLinkTypeByName, TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {ErrorDisplay} from "@/app/view/[id]/page";
 import {useNavigation} from "@/contexts/NavigationContext";
 import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
@@ -17,20 +17,59 @@ import {
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
 import {getResultViewOption} from "@/components/dataTypes/ResultType";
 
+interface TraceLinkResult {
+    traceLinkType: TraceLinkType;
+    traceLinks: TraceLink[];
+}
+
 export default function ViewProvided() {
     const {id} = useParams<{ id: string }>();
+    const uriDecodedId = decodeURIComponent(id);
+    const {setCurrentProjectId} = useNavigation();
 
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
     const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setIsLoading] = useState<boolean>(true);
+
     const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE);
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
-    const {setCurrentProjectId} = useNavigation();
 
-    const [findInconsistencies, setFindInconsistencies] = useState(false);
-    const [findTraceLinks, setFindTraceLinks] = useState(false);
-    const uriDecodedId = decodeURIComponent(id);
+
+    const loadTraceLinks = async (fileId: string): Promise<TraceLinkResult> => {
+        const result = await loadProjectFile(fileId, FileType.traceLinks);
+        let data:TraceLink[] = [];
+        let traceLinkType = TraceLinkTypes.SAD_SAM_CODE;
+
+        if (result?.content) {
+            try {
+                const rawJson = JSON.parse(result.content);
+                data = parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks)
+                traceLinkType = getTraceLinkTypeByName(rawJson.traceLinkType) || TraceLinkTypes.SAD_SAM_CODE;
+
+            } catch (e: any) {
+                console.error("Failed to parse trace links:", e);
+                throw new Error("Failed to parse the trace links. The file might be corrupted or in an invalid format.");
+            }
+        }
+        return {traceLinks: data, traceLinkType: traceLinkType};
+    };
+
+    const loadInconsistencies = async (fileId: string): Promise<Inconsistency[]> => {
+        const result = await loadProjectFile(fileId, FileType.inconsistencies);
+        let data:Inconsistency[] = [];
+
+        if (result?.content) {
+            try {
+                const inconsistenciesJson = JSON.parse(result?.content);
+                data = parseInconsistenciesFromJSON(inconsistenciesJson.inconsistencies);
+            } catch (e: any) {
+                console.error("Failed to parse inconsistencies:", e);
+                throw new Error("Failed to parse the inconsistencies. The file might be corrupted or in an invalid format.");
+            }
+        }
+        return data;
+    };
 
     useEffect(() => {
         if (!id) {
@@ -38,75 +77,45 @@ export default function ViewProvided() {
             return;
         }
 
-        async function loadModel() {
-            setLoading(true);
-
-            // get the uploaded file types from the metadata
+        const fetchAllData = async () => {
+            setIsLoading(true);
+            setError(null);
             const uploadedFileTypes1 = await loadProjectMetaData(id);
             setUploadedFileTypes(uploadedFileTypes1);
-            setFindInconsistencies(uploadedFileTypes1.includes(FileType.Inconsistencies_JSON));
-            setFindTraceLinks(uploadedFileTypes1.includes(FileType.Trace_Link_JSON));
-            setError(null);
+
             try {
-                // Ensure loadProjectFile is only called client-side
-                if (typeof window !== "undefined") {
-                    if (uploadedFileTypes1.includes(FileType.Inconsistencies_JSON)) {
-                        const inconsistenciesFile = await loadProjectFile(id, FileType.Inconsistencies_JSON, false);
-                        if (inconsistenciesFile) {
-                            const inconsistenciesJson = JSON.parse(inconsistenciesFile.content);
-                            setInconsistencies(parseInconsistenciesFromJSON(inconsistenciesJson.inconsistencies));
-                        } else {
-                            console.warn("No inconsistencies file found for ID:", id);
-                            setInconsistencies([]);
-                        }
-                    }
+                if (uploadedFileTypes1.includes(FileType.traceLinks)) {
+                    const result = await loadTraceLinks(uriDecodedId);
+                    setTraceLinks(result.traceLinks);
+                    setTraceLinkType(result.traceLinkType);
+                }
 
-                    if (uploadedFileTypes1.includes(FileType.Trace_Link_JSON)) {
-                        // parse file with provided traceLinks
-                        const result = await loadProjectFile(id, FileType.Trace_Link_JSON, false);
-                        if (result) {
-                            const rawJson = JSON.parse(result.content);
-                            setTraceLinks(parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks));
-                            setTraceLinkType(getTraceLinkTypeByName(rawJson.traceLinkType) ?? TraceLinkTypes.SAD_SAM_CODE);
-                        } else {
-                            console.warn("No project file found for ID:", id);
-                            setTraceLinks([]);
-                            return;
-                        }
-                    }
-
-                } else {
-                    console.log("loadModel called on server, skipping ClientFileStorage.");
+                if (uploadedFileTypes1.includes(FileType.inconsistencies)) {
+                    const result = await loadInconsistencies(uriDecodedId);
+                    setInconsistencies(result);
                 }
             } catch (e: any) {
-                console.warn("Failed to load or parse provided traceLinks:", e);
-                setError(`Failed to load or parse provided traceLinks: ${e.message}`);
-                setTraceLinks([]);
+                setError(`Failed to load data: ${e.message}`);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
-        }
-
-        loadModel();
+        };
+        fetchAllData();
 
     }, [id]);
 
     useEffect(() => {
         setCurrentProjectId(uriDecodedId);
-
-        // Clear the project ID when the component unmounts (navigates away)
-        return () => {
-            setCurrentProjectId(null);
-        };
+        // return () => setCurrentProjectId(null);
     }, [uriDecodedId, setCurrentProjectId]);
+
 
     return (
         <>
             {error && <ErrorDisplay message={error} onRetry={() => {
             }} retryAllowed={false}/>}
-            <HighlightProvider traceLinks={traceLinks} traceLinkType={traceLinkType} useTraceLinks={findTraceLinks} loading={loading}>
-                <InconsistencyProvider inconsistencies={inconsistencies} useInconsistencies={findInconsistencies}
-                                       loading={loading}>
+            <HighlightProvider traceLinks={traceLinks} traceLinkType={traceLinkType} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} loading={loading}>
                     <ResultDisplay
                         id={uriDecodedId}
                         traceLinkType={traceLinkType}

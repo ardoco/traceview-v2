@@ -70,7 +70,7 @@ export function FormProvider({children, allowedFileTypes}: FormProviderProps) {
                     },
                 });
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! status: ${response.status}. Are you connected to the correct API?`);
                 }
                 const data: TraceLinkConfiguration = await response.json();
                 setOriginalTraceLinkConfiguration(data);

@@ -4,8 +4,7 @@ import React, {createContext, useContext, useState} from 'react';
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {ResultType} from "@/components/dataTypes/ResultType";
-
-type MessageSource = 'tracelink-only' | 'element-click' | null;
+import {MessageSource} from "@/components/dataTypes/MessageSource";
 
 interface HighlightTracelinksContextType {
     highlightedTraceLinks: TraceLink[];
@@ -25,7 +24,6 @@ interface HighlightProviderProps {
     children: React.ReactNode;
     traceLinks: TraceLink[];
     traceLinkType: TraceLinkType;
-    useTraceLinks?: boolean;
     loading?: boolean; // indicates loading state
 
 }
@@ -44,16 +42,16 @@ export function HighlightProvider({
                                       children,
                                       traceLinks,
                                       traceLinkType,
-                                      useTraceLinks = true,
                                       loading = false
                                   }: HighlightProviderProps) {
     const [highlightedTraceLinks, setHighlightedTraceLinks] = useState<TraceLink[]>([]);
     const [lastSearchTimestamp, setLastSearchTimestamp] = useState(0);
-    const [messageSource, setMessageSource] = useState<MessageSource>(null);
+    const [messageSource, setMessageSource] = useState<MessageSource>(MessageSource.NONE);
     const [lastClickedSource, setLastClickedSource] = useState<{
         id: string | number | null;
         type: ResultType
     } | null>(null);
+    const useTraceLinks = traceLinks && traceLinks.length > 0;
 
     const highlightElement = (id: number | string | null, type: ResultType) => {
         if (!useTraceLinks) {
@@ -76,7 +74,7 @@ export function HighlightProvider({
         }
 
         setHighlightedTraceLinks(matchingTraceLinks);
-        setMessageSource('element-click');
+        setMessageSource(MessageSource.ELEMENT_CLICK);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource({id, type});
     };
@@ -86,14 +84,14 @@ export function HighlightProvider({
             return;
         }
         setHighlightedTraceLinks([traceLink]);
-        setMessageSource('tracelink-only');
+        setMessageSource(MessageSource.TRACELINK_ONLY);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource({id: traceLink.id, type: ResultType.TraceLinks});
     }
 
     const resetHighlightedTraceLinks = () => {
         setHighlightedTraceLinks([]);
-        setMessageSource(null);
+        setMessageSource(MessageSource.NONE);
         setLastClickedSource(null);
     }
 

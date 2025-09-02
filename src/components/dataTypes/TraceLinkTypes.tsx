@@ -21,7 +21,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds transitive traceLinks between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
-        providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
+        providedFiles: [FileType.documentation, FileType.architectureModelPCM, FileType.architectureModelUML, FileType.codeModel],
         resultViewOptions: [ResultType.Code_Model, ResultType.Architecture_Model, ResultType.Documentation],
 
     },
@@ -32,7 +32,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasArchitectureModel(uploadedFiles),
-        providedFiles: [FileType.Architecture_Documentation, FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML],
+        providedFiles: [FileType.documentation, FileType.architectureModelPCM, FileType.architectureModelUML],
         resultViewOptions: [ResultType.Architecture_Model, ResultType.Documentation],
     },
     "SAD_CODE": {
@@ -42,7 +42,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds traceLinks between the Software Architecture Documentation (SAD) and the uploaded code",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureDocumentation(uploadedFiles) && hasCodeModel(uploadedFiles),
-        providedFiles: [FileType.Architecture_Documentation, FileType.Code_Model],
+        providedFiles: [FileType.documentation, FileType.codeModel],
         resultViewOptions: [ResultType.Code_Model, ResultType.Documentation],
     },
     "SAM_CODE": {
@@ -52,7 +52,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         info: "Finds traceLinks between the Software Architecture Model (SAM) and the uploaded code",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles),
-        providedFiles: [FileType.Architecture_Model_PCM, FileType.Architecture_Model_UML, FileType.Code_Model],
+        providedFiles: [FileType.architectureModelPCM, FileType.architectureModelUML, FileType.codeModel],
         resultViewOptions: [ResultType.Code_Model, ResultType.Architecture_Model],
     },
 };
@@ -68,10 +68,10 @@ export function getTraceLinkTypeByName(name: string): TraceLinkType | undefined 
 
 
 const hasArchitectureDocumentation = (files: UploadedFile[]): boolean =>
-    files.some(file => file.fileType === FileType.Architecture_Documentation);
+    files.some(file => file.fileType === FileType.documentation);
 
 const hasArchitectureModel = (files: UploadedFile[]): boolean =>
-    files.some(file => file.fileType === FileType.Architecture_Model_PCM || file.fileType === FileType.Architecture_Model_UML);
+    files.some(file => file.fileType === FileType.architectureModelPCM || file.fileType === FileType.architectureModelUML);
 
 const hasCodeModel = (files: UploadedFile[]): boolean =>
-    files.some(file => file.fileType === FileType.Code_Model);
+    files.some(file => file.fileType === FileType.codeModel);

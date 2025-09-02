@@ -18,15 +18,15 @@ import {LoaderResult, useDataLoader} from "@/util/useDataLoader";
 export default function DisplayArchitectureModel({id}: ViewProps) {
 
     const loadArchitectureModel = async (fileId: string): Promise<LoaderResult<{ components: AbstractComponent[], edges: Edge[] }>> => {
-        const result = await loadProjectFile(fileId, FileType.Architecture_Model_UML, false);
+        const result = await loadProjectFile(fileId, FileType.architectureModelUML);
         const fileContent = result?.content || null;
         let data = null;
 
         if (result && fileContent) {
             try {
-                if (result.fileType === FileType.Architecture_Model_PCM) {
+                if (result.fileType === FileType.architectureModelPCM) {
                     data = parsePCM(fileContent);
-                } else if (result.fileType === FileType.Architecture_Model_UML) {
+                } else if (result.fileType === FileType.architectureModelUML) {
                     data = parseUMLModel(fileContent);
                 } else {
                     throw new Error("Unknown architecture file type.");

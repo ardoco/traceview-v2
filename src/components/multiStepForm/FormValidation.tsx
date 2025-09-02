@@ -22,7 +22,7 @@ export default class FormValidation {
         });
 
         // Special rule: Ensure no more than one Architecture Model file (PCM/UML)
-        const architectureModelCount = (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) + (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
+        const architectureModelCount = (fileTypeCount.get(FileType.architectureModelUML) || 0) + (fileTypeCount.get(FileType.architectureModelPCM) || 0);
 
         if (architectureModelCount > 1) {
             errors.push("Please upload no more than one file of type PCM/UML to avoid ambiguities.");
@@ -30,7 +30,7 @@ export default class FormValidation {
 
         // General rule: Ensure Nn more than one file of other types
         fileTypeCount.forEach((count, fileType) => {
-            if (count > 1 && ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)) {
+            if (count > 1 && ![FileType.architectureModelUML, FileType.architectureModelPCM, FileType.None].includes(fileType)) {
                 errors.push(`Only one file of type ${fileType} can be uploaded.`);
             }
         });
@@ -50,7 +50,7 @@ export default class FormValidation {
         });
 
         // Special rule: Ensure no more than one Architecture Model file (PCM/UML)
-        const architectureModelCount = (fileTypeCount.get(FileType.Architecture_Model_UML) || 0) + (fileTypeCount.get(FileType.Architecture_Model_PCM) || 0);
+        const architectureModelCount = (fileTypeCount.get(FileType.architectureModelUML) || 0) + (fileTypeCount.get(FileType.architectureModelPCM) || 0);
 
         if (architectureModelCount > 1) {
             errors.push("Please upload no more than one file of type PCM/UML to avoid ambiguities.");
@@ -58,7 +58,7 @@ export default class FormValidation {
 
         // General rule: Ensure Nn more than one file of other types
         fileTypeCount.forEach((count, fileType) => {
-            if (count > 1 && ![FileType.Architecture_Model_UML, FileType.Architecture_Model_PCM, FileType.None].includes(fileType)) {
+            if (count > 1 && ![FileType.architectureModelUML, FileType.architectureModelPCM, FileType.None].includes(fileType)) {
                 errors.push(`Only one file of type ${fileType} can be uploaded.`);
             }
         });

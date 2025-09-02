@@ -103,7 +103,6 @@ export default function UMLNode({component, position}: UMLNodeProps) {
     );
 
     const isSource = lastClickedSource?.type === ResultType.Architecture_Model && lastClickedSource?.id === component.id;
-
     const gradientId = `gradient-${component.id}`;
 
     return (

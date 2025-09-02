@@ -111,7 +111,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
         <div className="px-2 pb-2">
             {/*/!* Sticky header for type and sort control *!/*/}
             <div
-                className={`sticky top-${headerOffset} flex justify-between items-start bg-white z-10 border-b px-2 pt-2`}>
+                className={`sticky flex justify-between items-start bg-white z-10 border-b px-2 pt-2`} style={{top: `calc(var(--spacing) * ${headerOffset})`}}>
                 <div className="w-full">
                     <div className="flex flex-wrap justify-between items-center gap-1 mb-2">
                         <div className="flex-1">
