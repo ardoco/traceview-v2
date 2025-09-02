@@ -37,11 +37,11 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     const parser = new XMLParser(options);
     const jsonModel = parser.parse(rawXML);
 
-    let components:AbstractComponent[] = [];
-    let edges:Edge[] = [];
+    let components: AbstractComponent[] = [];
+    const edges: Edge[] = [];
 
-    let elements = jsonModel["uml:Model"]["packagedElement"];
-    if (!elements) return { components, edges };
+    const elements = jsonModel["uml:Model"]["packagedElement"];
+    if (!elements) return {components, edges};
 
     for (const element of elements) {
         const packagedElements = extractPackagedElement(element, edges);
@@ -58,44 +58,15 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
         }
     }
 
-    console.log(edges)
-
-    // remove duplicates
     components = removeDuplicatesWithEquals(components);
 
-    // // remove duplicate edges
-    // edges = edges.filter((edge, index, self) =>
-    //     index === self.findIndex((e) => e.equals(edge)) // Check if the edge is the first occurrence
-    // );
-
-    return { components, edges };
+    return {components, edges};
 }
 
-function getTransitiveEdges(edges:Edge[], components:AbstractComponent[]): Edge[] {
-
-    const usages: Edge[] = edges.filter((edge) => edge.type === "uml:Usage");
-    const providedInterfaces: Edge[] = edges.filter((edge) => edge.type === "uml:InterfaceRealization");
-    const otherEdges: Edge[] = edges.filter((edge) => edge.type !== "uml:Usage" && edge.type !== "uml:InterfaceRealization");
-    const umlComponentsMap = new Map<string, AbstractComponent>();
-    components.forEach((comp) => {
-        umlComponentsMap.set(comp.id, comp);
-    });
-
-    const final: Edge[] = otherEdges;
-    providedInterfaces.forEach((providedHalfEdge => {
-        usages.forEach((usageHalfEdge => {
-            if (providedHalfEdge.supplier === usageHalfEdge.supplier && umlComponentsMap.get(usageHalfEdge.supplier)?.type === "uml:Interface") {
-                final.push(new Edge(usageHalfEdge.client, providedHalfEdge.client, usageHalfEdge.type, umlComponentsMap.get(usageHalfEdge.supplier) as Interface));
-            }
-        }))
-    }))
-    return final;
-}
-
-function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[] {
+function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[] {
     const type = element["@_xmi:type"];
 
-    const addedEdges:EdgeTypes = addEdges(element, edges);
+    const addedEdges: EdgeTypes = addEdges(element, edges);
 
     // Process element based on its type
     switch (type) {
@@ -130,7 +101,7 @@ function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[]
         case "uml:Package":
             const components = Array.isArray(element["packagedElement"]) ? element["packagedElement"] : [element["packagedElement"]];
             // Recursively extract components from the package
-            let packagedElements: AbstractComponent[] = [];
+            const packagedElements: AbstractComponent[] = [];
             components
                 .filter((el: any) => el["@_xmi:type"] !== "uml:Usage")
                 .map((el: any) => extractPackagedElement(el, edges))
@@ -153,7 +124,7 @@ function extractPackagedElement(element: any, edges:Edge[]): AbstractComponent[]
     return [];
 }
 
-function addEdges(element: any, edges:Edge[]): EdgeTypes {
+function addEdges(element: any, edges: Edge[]): EdgeTypes {
     const usages = extractUsage(element);
     const providedInterfaces = extractInterfaceRealizations(element);
 
@@ -161,7 +132,7 @@ function addEdges(element: any, edges:Edge[]): EdgeTypes {
     edges.push(...providedInterfaces);
     edges.push(...usages);
 
-    return {usages:usages, providedInterfaces:providedInterfaces} as EdgeTypes;
+    return {usages: usages, providedInterfaces: providedInterfaces} as EdgeTypes;
 }
 
 function extractOperations(element: any): Operation[] {
@@ -232,9 +203,9 @@ function extractUsage(element: any): Edge[] {
             .filter((el: any) => el["@_xmi:type"] === "uml:Usage")
             .map((usage: any) =>
                 new Edge(
-                usage["@_client"], // element that uses the target component
-                usage["@_supplier"], // id of the component that is being used
-                "uml:Usage" // type of the edge
+                    usage["@_client"], // element that uses the target component
+                    usage["@_supplier"], // id of the component that is being used
+                    "uml:Usage" // type of the edge
                 )
             );
     }

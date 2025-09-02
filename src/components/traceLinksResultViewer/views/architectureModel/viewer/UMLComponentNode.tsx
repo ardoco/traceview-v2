@@ -1,7 +1,9 @@
 import React from "react";
-import { Position } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
-import { useHighlightContext } from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {Component} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
+import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 // --- Utility to measure text width ---
 function measureTextWidth(text: string, font: string): number {
@@ -68,9 +70,13 @@ function wrapText(text: string, maxWidth: number, font: string): string[] {
     return lines;
 }
 
-export default function UMLNode({ component, position }: UMLNodeProps) {
-    const { x: posX, y: posY } = position;
-    const { highlightElement, highlightedTraceLinks, highlightingColor } = useHighlightContext();
+export default function UMLNode({component, position}: UMLNodeProps) {
+    const {x: posX, y: posY} = position;
+    const {highlightElement, highlightedTraceLinks, lastClickedSource} = useHighlightContext();
+    const {
+        highlightInconsistencyWithModelId,
+        highlightedModelInconsistencies,
+    } = useInconsistencyContext();
 
     const fontSize = 12;
     const fontFamily = "sans-serif";
@@ -88,26 +94,48 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
     const calculatedWidth = Math.min(Math.max(widestLine + padding, minWidth), maxWidth);
     const calculatedHeight = 40 + textLines.length * lineHeight; // 40 for <<component>>#
 
-    const isHighlighted = highlightedTraceLinks.some(
+    const isTraceLinkHighlighted = highlightedTraceLinks.some(
         traceLink => traceLink.modelElementId === component.id
     );
+
+    const isInconsistencyHighlighted = highlightedModelInconsistencies.some(
+        inc => inc.modelElementId === component.id
+    );
+
+    const isSource = lastClickedSource?.type === DisplayOption.ARCHITECTURE_MODEL && lastClickedSource?.id === component.id;
+    const gradientId = `gradient-${component.id}`;
 
     return (
         <g
             transform={`translate(${posX}, ${posY})`}
             onClick={(event) => {
                 event.stopPropagation();
-                highlightElement(component.id ?? null, "modelElementId");
+                highlightElement(component.id ?? null, DisplayOption.ARCHITECTURE_MODEL);
+                highlightInconsistencyWithModelId(component.id ?? null);
             }}
         >
             {component.name}
 
+            <defs>
+                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"
+                          stopColor={isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" : "var(--color-highlight-none)"}/>
+                    <stop offset="100%"
+                          stopColor={isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" : isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : "var(--color-highlight-none)"}/>
+                </linearGradient>
+            </defs>
+
             <rect
                 width={calculatedWidth}
                 height={calculatedHeight}
-                fill={isHighlighted ? highlightingColor : "#ffffff"}
-                stroke="#4b5563"
+                fill={`url(#${gradientId})`}
+                stroke={isSource && isTraceLinkHighlighted ? "var(--color-highlight-tracelink-text)" :
+                    isSource && isInconsistencyHighlighted ? "var(--color-highlight-inconsistency-text)" :
+                        "#4b5563"
+                }
+                strokeWidth={isSource ? 3 : 1}
             />
+
             <text
                 x={calculatedWidth / 2}
                 y={lineHeight}
@@ -133,9 +161,9 @@ export default function UMLNode({ component, position }: UMLNodeProps) {
 
             {/* UML component symbol (top-right corner) */}
             <g transform={`translate(${calculatedWidth - 16}, 6)`}>
-                <rect width={10} height={14} fill="white" stroke="black" />
-                <rect y={2} x={-4} width={8} height={3} fill="white" stroke="black" />
-                <rect y={7} x={-4} width={8} height={3} fill="white" stroke="black" />
+                <rect width={10} height={14} fill="white" stroke="black"/>
+                <rect y={2} x={-4} width={8} height={3} fill="white" stroke="black"/>
+                <rect y={7} x={-4} width={8} height={3} fill="white" stroke="black"/>
             </g>
         </g>
     );

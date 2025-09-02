@@ -1,74 +1,113 @@
 'use client';
 
 import {useParams, useSearchParams} from "next/navigation";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
-import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {getTraceLinkTypeByName, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import Button from "@/components/Button";
-import {HighlightProvider} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
+import {useApiAddressContext} from "@/contexts/ApiAddressContext";
+import {useNavigation} from "@/contexts/NavigationContext";
+import LoadingErrorModal from "@/components/LoadingErrorModal";
+import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
+import {
+    parseInconsistenciesFromJSON
+} from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
+import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
 
 // Utility function for polling the API
-const pollForResult = async (id: string, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
+const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
     let elapsedSeconds = 0;
 
     while (elapsedSeconds < maxSeconds) {
-        try {
-            const response = await fetch(`/api/get-result/${id}`);
-
-            const data = await response.json();
-            if (data.status === "OK") {
-                return data; // Stop polling if we have valid result
-            } else if (data.status !== "ACCEPTED") {
-                console.error(`Polling failed with HTTP ${response.status}`);
-                throw new Error(data.message || "An unexpected error occurred.");
-            }
-
-            console.log(`Polling... waiting for result (${elapsedSeconds}s elapsed)`);
-            await new Promise((resolve) => setTimeout(resolve, intervalSeconds * 1000)); // Wait before next attempt
-            elapsedSeconds += intervalSeconds;
-        } catch (error) {
-            console.error("Polling encountered an error:", error);
-            throw new Error("An error occurred while polling the result.");
+        if (signal.aborted) {
+            throw new Error("Polling was aborted.");
         }
-    }
 
-    throw new Error("The result is still processing. Please try again.");
+        const response = await fetch(`/api/get-result/${id}`, {
+            method: "GET",
+            headers: {
+                'X-Target-API': apiAddress,
+            },
+            signal: signal,
+        });
+
+        const data = await response.json();
+        if (data.status === "OK") {
+            return data;
+        } else if (data.status !== "ACCEPTED") {
+            // Throw an error with the message from the server
+            throw new Error("An error occurred while running the pipeline in ArDoCo: \n" + data.message);
+        }
+
+        // Keep polling
+        await new Promise((resolve) => setTimeout(resolve, intervalSeconds * 1000));
+        elapsedSeconds += intervalSeconds;
+    }
+    throw new Error("The result is still processing. Please try again later.");
 };
 
 // Main Component
 export default function NewUploadProject() {
-    const {id} = useParams<{ id: string }>(); // Get the `id` from the path
+    const {id} = useParams<{ id: string }>();
     const searchParams = useSearchParams();
-    const type = searchParams.get("type"); // Get the `type` from the query params
+    const type = searchParams.get("type");
+    const findInconsistencies = searchParams.get("inconsistencies") === 'true';
+    const {setCurrentProjectId, controller} = useNavigation();
 
+    const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
-    const [result, setResult] = useState<any>(null);
+    const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [retryAllowed, setRetryAllowed] = useState(false);
 
-
-    const traceLinkType = TraceLinkTypes[type || "SAD-SAM-Code"] ?? TraceLinkTypes["SAD-SAM-Code"];
+    const traceLinkType = getTraceLinkTypeByName(type!) || TraceLinkTypes.SAD_SAM_CODE;
     const uriDecodedId = decodeURIComponent(id);
 
-    const fetchResult = async () => {
+    const displayOptions = useMemo(() => {
+        const options = [...traceLinkType.resultViewOptions];
+        options.unshift(DisplayOption.TRACELINKS); // Always show traceLinks first
+        if (findInconsistencies) {
+            options.push(DisplayOption.INCONSISTENCIES);
+        }
+        return options;
+    }, []);
+
+
+    const handleRetry = () => {
+        setError(null);
+        const controller = new AbortController();
+        fetchResult(controller.signal);
+    };
+
+    const handleViewFiles = () => {
+        setError(null);
+        setLoading(false);
+    };
+
+    const fetchResult = async (signal: AbortSignal) => {
+        if (!apiAddress) return;
         setLoading(true);
         setError(null);
-        setRetryAllowed(false);
 
         try {
-            const response = await pollForResult(id, 240); // Poll for up to 4 minutes
-            setResult(response);
-            const parsedTraceLinks = parseTraceLinksFromJSON(response);
-            setTraceLinks(parsedTraceLinks); // Step 2: Store in context
-            console.log("Parsed Trace Links:", parsedTraceLinks);
+            const response = await pollForResult(apiAddress, id, signal, 240); // Poll for up to 4 minutes
+            const parsedTraceLinks = parseTraceLinksFromJSON(response.traceLinkType, response.result.traceLinks);
+            setTraceLinks(parsedTraceLinks);
 
+            // If inconsistencies are present and asked for, parse them as well
+            if (findInconsistencies && response.result.inconsistencies) {
+                const parsedInconsistencies = parseInconsistenciesFromJSON(response.result.inconsistencies);
+                setInconsistencies(parsedInconsistencies);
+            }
 
         } catch (err: any) {
-            setError(err.message || "An unexpected error occurred.");
-            setRetryAllowed(true);
+            if (err.name !== 'AbortError') {
+                setError(err.message || "An unexpected error occurred.");
+            }
         } finally {
             setLoading(false);
         }
@@ -76,22 +115,37 @@ export default function NewUploadProject() {
 
     // Fetch & initialize data when component mounts
     useEffect(() => {
-        fetchResult();
-    }, [id]);
+        fetchResult(controller.signal);
+    }, [id, apiAddress]);
+
+    useEffect(() => {
+        setCurrentProjectId(uriDecodedId);
+
+        // Clear the project ID when the component unmounts (navigates away)
+        return () => {
+            setCurrentProjectId(null);
+        };
+    }, [uriDecodedId, setCurrentProjectId]);
 
     return (
         <>
             {loading && <LoadingBanner/>}
-            {error && <ErrorDisplay message={error} onRetry={fetchResult} retryAllowed={retryAllowed}/>}
-            <HighlightProvider traceLinks={traceLinks}>
-                <ResultDisplay result={result} id={uriDecodedId} traceLinkType={traceLinkType}/>
+            <LoadingErrorModal
+                isOpen={!!error}
+                message={error || ''}
+                onRetry={handleRetry}
+                onViewFiles={handleViewFiles}
+            />
+            <HighlightProvider traceLinks={traceLinks} traceLinkType={traceLinkType} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} loading={loading}>
+                    <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>
+                </InconsistencyProvider>
             </HighlightProvider>
         </>
     );
 }
 
 
-// Loading Banner
 function LoadingBanner() {
     return (
         <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
@@ -100,25 +154,23 @@ function LoadingBanner() {
     );
 }
 
-function ErrorDisplay({message, onRetry, retryAllowed}: {
+export function ErrorDisplay({message, onRetry, retryAllowed}: {
     message: string;
-    onRetry: () => void;
+    onRetry: (signal: AbortSignal) => void;
     retryAllowed: boolean
 }) {
+    const {controller} = useNavigation();
+
     return (
-        <div className="relative bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center w-80">
-                <p className="text-red-600 font-bold text-lg">Error</p>
-                <p className="text-gray-700 mt-2">{message}</p>
-                {retryAllowed && (
-                    <Button
-                        text="Retry"
-                        onButtonClicked={onRetry}
-                        disabled={false}
-                    />
-                )}
-            </div>
+        <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
+            {message}
+            {retryAllowed && (
+                <Button
+                    text="Retry"
+                    onButtonClicked={() => onRetry(controller.signal)}
+                    disabled={false}
+                />
+            )}
         </div>
     );
 }
-

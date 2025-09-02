@@ -1,5 +1,3 @@
-'use client'
-
 import {Position} from "@/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer";
 import React, {useState} from "react";
 import {
@@ -7,6 +5,9 @@ import {
     showInterfaceTooltip
 } from "@/components/traceLinksResultViewer/views/architectureModel/viewer/InterfaceTooltip";
 import {Interface} from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
+import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
+import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 
 interface UMLInterfaceNodeProps {
     usedInterface: Interface;
@@ -16,21 +17,38 @@ interface UMLInterfaceNodeProps {
 }
 
 export default function UMLInterfaceNode({usedInterface, position, setTooltip, svgRef}: UMLInterfaceNodeProps) {
+    const {highlightElement, highlightedTraceLinks} = useHighlightContext();
+    const {
+        highlightInconsistencyWithModelId,
+        highlightedModelInconsistencies,
+    } = useInconsistencyContext();
+
     const displayName = usedInterface?.name.length > 20 ? usedInterface?.name.slice(0, 20) + "…" : usedInterface.name;
     const [hovered, setHovered] = useState(false);
+
+    const isTraceLinkHighlighted = highlightedTraceLinks.some(link => link.modelElementId === usedInterface.id);
+    const isInconsistencyHighlighted = highlightedModelInconsistencies.some(inconsistency => inconsistency.id === usedInterface.id);
 
     if (!svgRef.current) return null;
 
     return (
-        <g transform={`translate(${position.x}, ${position.y})`}>
+        <g
+            transform={`translate(${position.x}, ${position.y})`}
+            onClick={(e) => {
+                e.stopPropagation();
+                highlightElement(usedInterface.id, DisplayOption.ARCHITECTURE_MODEL);
+                highlightInconsistencyWithModelId(usedInterface.id);
+            }}
+        >
+
             <text
                 x={10}
-                y={25} // Position text below the circle
+                y={25}
                 fontSize="12"
                 fontFamily="sans-serif"
-                textAnchor="middle" // Center the text horizontally
-                fill={hovered ? "#00876c" : "black"}
-                fontWeight={hovered ? "bold" : "normal"}
+                textAnchor="middle"
+                fill={isTraceLinkHighlighted ? "var(--color-highlight-tracelink)" : isInconsistencyHighlighted ? "var(--color-highlight-inconsistency)" : hovered ? "#00876c" : "black"}
+                fontWeight={(hovered || isTraceLinkHighlighted || isInconsistencyHighlighted) ? "bold" : "normal"}
                 style={{userSelect: 'none', cursor: 'default'}}
                 onMouseEnter={(e) => {
                     setHovered(true);

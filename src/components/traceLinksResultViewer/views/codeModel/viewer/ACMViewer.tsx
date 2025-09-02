@@ -5,12 +5,12 @@ import * as d3 from "d3";
 import {CodeModelUnit} from "@/components/traceLinksResultViewer/views/codeModel/dataModel/ACMDataModel";
 import ACMNode from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMNode";
 import ACMLink from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMLink";
-import {useHighlightContext} from "@/components/traceLinksResultViewer/views/HighlightContextType";
+import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 
 
 export type HierarchyData = CodeModelUnit;
 
-// Base D3 HierarchyNode with our custom 'id' and '_children' properties.
+// Base D3 HierarchyNode
 export interface CustomHierarchyNode extends d3.HierarchyNode<HierarchyData> {
     id: string;
     _children?: CustomHierarchyNode[];
@@ -18,7 +18,7 @@ export interface CustomHierarchyNode extends d3.HierarchyNode<HierarchyData> {
 
 export interface ACMLayoutNode extends d3.HierarchyPointNode<HierarchyData> {
     id: string;
-    _children?: ACMLayoutNode[] | null; // If _children are also to be layout nodes
+    _children?: ACMLayoutNode[] | null;
 }
 
 
@@ -32,16 +32,19 @@ const dy = 200; // horizontal space between levels
 export default function ACMViewer({codeModel}: ACMViewerProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
     const zoomRef = useRef<SVGGElement | null>(null);
+    const {highlightedTraceLinks} = useHighlightContext();
+    const copyExpandedTree = useRef<CustomHierarchyNode | null>(null);
 
     const [treeDataState, setTreeDataState] = useState<CustomHierarchyNode>(() => {
         const root = d3.hierarchy<HierarchyData>(codeModel, d => d.children);
-
         const collapseDepth = 2; // change as needed
 
         root.eachBefore(dAny => {
             const d = dAny as CustomHierarchyNode;
             d.id = d.data.id;
         });
+
+        copyExpandedTree.current = root.copy() as CustomHierarchyNode;
 
         function collapseAllDeeper(node: CustomHierarchyNode) {
             if (node.children) {
@@ -65,23 +68,29 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
         return root as CustomHierarchyNode;
     });
 
+    const enhanceNode = (node: d3.HierarchyPointNode<HierarchyData>): ACMLayoutNode => {
+        const acmLayoutNode = node as ACMLayoutNode;
+        acmLayoutNode.id = node.data.id;
+
+        if (acmLayoutNode.children) {
+            acmLayoutNode.children = acmLayoutNode.children.map(child => enhanceNode(child as d3.HierarchyPointNode<HierarchyData>)) as ACMLayoutNode[];
+        }
+        return acmLayoutNode;
+    }
+
 
     const layoutedTreeRoot: ACMLayoutNode = useMemo(() => {
         const layout = d3.tree<HierarchyData>().nodeSize([dx, dy])(treeDataState);
+        return enhanceNode(layout);
+    }, [treeDataState]);
 
-        function enhanceNode(node: d3.HierarchyPointNode<HierarchyData>): ACMLayoutNode {
-            const acmLayoutNode = node as ACMLayoutNode;
-            acmLayoutNode.id = node.data.id; // Set id from original data
-
-            if (acmLayoutNode.children) {
-                acmLayoutNode.children = acmLayoutNode.children.map(child => enhanceNode(child as d3.HierarchyPointNode<HierarchyData>)) as ACMLayoutNode[];
-            }
-            return acmLayoutNode;
-        }
+    const layoutedTreeRootStatic: ACMLayoutNode = useMemo(() => {
+        const layout = d3.tree<HierarchyData>().nodeSize([dx, dy])(copyExpandedTree.current!);
         return enhanceNode(layout);
     }, [treeDataState]);
 
     const nodes: ACMLayoutNode[] = useMemo(() => layoutedTreeRoot.descendants(), [layoutedTreeRoot]);
+    const nodes_all: ACMLayoutNode[] = useMemo(() => layoutedTreeRootStatic.descendants(), [layoutedTreeRootStatic]);
 
     const links = useMemo(() => {
         return layoutedTreeRoot.links() as unknown as d3.HierarchyPointLink<ACMLayoutNode>[];
@@ -93,32 +102,30 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
         .x(dNode => dNode.y)
         .y(dNode => dNode.x);
 
-    const {highlightedTraceLinks} = useHighlightContext();
 
-    const highlightedPaths = useMemo(() => {
-        const paths = new Set<string>();
-        if (highlightedTraceLinks.length > 0 && nodes.length > 0) {
+    const getPathsToHighlight = useMemo(() => {
+        const getPathsToHighlight = new Set<string>();
+        if (highlightedTraceLinks.length > 0 && nodes_all.length > 0) {
             for (const traceLink of highlightedTraceLinks) {
-                const matchingNode = nodes.find(n =>
-                    traceLink.codeElementId === n.data.path ||
-                    (n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
-                );
+                const matchingNode = nodes_all.find(n =>
+                    traceLink.codeElementId === n.data.id);
+                if (!matchingNode) continue;
+                const ancestor_ids = matchingNode.ancestors().map(n => (n as CustomHierarchyNode).id);
 
-                let current: ACMLayoutNode | null | undefined = matchingNode;
-                while (current && current.parent) {
-                    const parentNode = current.parent as ACMLayoutNode; // Parent from layouted tree is ACMLayoutNode
-                    const key = `${parentNode.id}->${current.id}`;
-                    paths.add(key);
-                    current = parentNode;
+                // Create paths from ancestors to the matching node
+                for (let i = ancestor_ids.length - 1; i > 0; i--) {
+                    const key = `${ancestor_ids[i]}->${ancestor_ids[i - 1]}`;
+                    getPathsToHighlight.add(key);
                 }
             }
         }
-        return paths;
-    }, [highlightedTraceLinks, nodes]);
+        return getPathsToHighlight;
+    }, [highlightedTraceLinks, nodes_all]);
 
 
     function getAllNodesForBBox(root: ACMLayoutNode): ACMLayoutNode[] {
         const allNodesList: ACMLayoutNode[] = [];
+
         function traverse(node: ACMLayoutNode) {
             allNodesList.push(node);
 
@@ -129,6 +136,7 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
                 }
             }
         }
+
         traverse(root);
         return allNodesList;
     }
@@ -144,7 +152,7 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
             if (node.x < minY) minY = node.x;
             if (node.x > maxY) maxY = node.x;
         }
-        return { x: minX, y: minY, width: Math.max(maxX - minX, dy), height: Math.max(maxY - minY, dx) };
+        return {x: minX, y: minY, width: Math.max(maxX - minX, dy), height: Math.max(maxY - minY, dx)};
     }
 
 
@@ -188,27 +196,28 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
     useEffect(() => {
         if (!highlightedTraceLinks.length) return;
 
-        const allDataNodes = treeDataState.descendants();
-
         for (const traceLink of highlightedTraceLinks) {
-            let current: CustomHierarchyNode | undefined = allDataNodes.find(n =>
-                n.data.path === traceLink.codeElementId ||
-                (n.data.path && traceLink.codeElementId.startsWith(n.data.path + "."))
-            ) as CustomHierarchyNode | undefined;
-            while (current && current.parent) {
-                const parentNode = current.parent as CustomHierarchyNode;
-                if (parentNode._children) {
-                    parentNode.children = parentNode._children;
-                    parentNode._children = undefined;
+            const current = layoutedTreeRootStatic.find(n =>
+                n.data.id === traceLink.codeElementId);
+            if (!current) continue;
+            const ancestor_ids = current.ancestors().map(n => (n as CustomHierarchyNode).id);
+            ancestor_ids.shift(); // Remove the current node itself from the ancestors
+            if (!ancestor_ids) continue;
+            for (const anchestor_id of ancestor_ids.reverse()) {
+                const ancestorNode = layoutedTreeRoot.descendants().find(n => n.id == anchestor_id);
+                if (ancestorNode) {
+                    // expand the ancestor node if it is collapsed
+                    if (ancestorNode._children && ancestorNode.children === undefined) {
+                        ancestorNode.children = ancestorNode._children;
+                        ancestorNode._children = undefined;
+                    }
                 }
-                current = parentNode;
             }
         }
-        // Force re-render by creating a new reference
+        //Force re-render by creating a new reference
         setTreeDataState(Object.assign(Object.create(Object.getPrototypeOf(treeDataState)), treeDataState));
 
     }, [highlightedTraceLinks]);
-
 
     return (
         <div className="relative w-full h-full bg-white overflow-hidden">
@@ -219,7 +228,7 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
                             diagonal={diagonal}
                             link={link}
                             key={`${link.source.id}-${link.target.id}-${index}`}
-                            isHighlighted={highlightedPaths.has(`${link.source.id}->${link.target.id}`)}
+                            isHighlighted={getPathsToHighlight.has(`${link.source.id}->${link.target.id}`)}
                         />
                     ))}
                     {nodes.map((node) => (

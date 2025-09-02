@@ -1,5 +1,5 @@
-import { Button } from "@headlessui/react";
-import {useFormContext} from "@/components/multiStepForm/ProjectFormContext";
+import {Button} from "@headlessui/react";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import Dropdown from "@/components/inputComponents/Dropdown";
 import {FileType} from "@/components/dataTypes/FileType";
 
@@ -11,13 +11,14 @@ interface FileListItemProps {
 }
 
 export default function DroppedFile({
-                                         index,
-                                         file,
-                                         fileType,
-                                         onDelete,
-                                     }: FileListItemProps) {
+                                        index,
+                                        file,
+                                        fileType,
+                                        onDelete,
 
-    const { formData, updateFormData } = useFormContext();
+                                    }: FileListItemProps) {
+
+    const {formData, updateFormData, allowedFileTypes} = useFormContext();
 
     const onFileTypeChange = (newType: FileType) => {
 
@@ -25,15 +26,16 @@ export default function DroppedFile({
         const updatedFiles = [...formData.files];
 
         // Update the fileType of the file at the specified index
-        updatedFiles[index] = { ...updatedFiles[index], fileType: newType };
+        updatedFiles[index] = {...updatedFiles[index], fileType: newType};
 
         // Update the formData with the modified files array
-        updateFormData({ files: updatedFiles });
+        updateFormData({files: updatedFiles});
     };
 
 
     return (
-        <div className="flex flex-row items-center w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 shadow-xs bg-white mt-2">
+        <div
+            className="flex flex-row items-center w-full border border-gray-300 rounded-lg px-4 py-2 mb-2 shadow-xs bg-white mt-2">
             <div
                 className="flex-1 truncate text-sm font-medium text-gray-700"
                 title={file.name}
@@ -43,10 +45,10 @@ export default function DroppedFile({
 
             <div className="flex-1 mx-4">
                 <Dropdown<FileType>
-                    options={Object.values(FileType)}
-                    selectedValue={fileType? fileType : FileType.None}
+                    options={allowedFileTypes}
+                    selectedValue={fileType ? fileType : FileType.NONE}
                     onChange={onFileTypeChange}
-                    placeholder={FileType.None}
+                    placeholder={FileType.NONE}
                 />
             </div>
 

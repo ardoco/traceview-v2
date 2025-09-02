@@ -1,14 +1,14 @@
 import DroppedFile from "@/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFile";
-import {useFormContext} from "@/components/multiStepForm/ProjectFormContext";
+import {useFormContext} from "@/contexts/ProjectUploadContext";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 
 interface FileListDragDropProps {
     files: UploadedFile[];
 }
 
-export default function DroppedFilesList({ files}: FileListDragDropProps) {
+export default function DroppedFilesList({files}: FileListDragDropProps) {
 
-    const { formData, updateFormData } = useFormContext();
+    const {formData, updateFormData} = useFormContext();
 
     const deleteFile = (deletedFile: UploadedFile) => {
         updateFormData({
