@@ -2,7 +2,7 @@
 
 import {FormProvider} from "@/contexts/ProjectUploadContext";
 import {FileType} from "@/components/dataTypes/FileType";
-import MultiStepFormLoadProject from "@/components/loadExistingProject/MultiStepFormLoadProject";
+import MultiStepFormLoadProject from "@/components/multiStepForm/MultiStepFormLoadProject";
 
 export default function Page() {
 

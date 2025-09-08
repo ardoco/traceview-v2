@@ -26,7 +26,7 @@ export interface Step {
     validation: () => string[]
 }
 
-function MultiStepForm() {
+export default function MultiStepFormNewProject() {
     const {formData} = useFormContext();
     const {apiAddress} = useApiAddressContext();
     const [currentStep, setCurrentStep] = useState(0);
@@ -221,5 +221,3 @@ export function ErrorModalFileUpload({isOpen, message, onClose}: {
     </Dialog>);
 
 }
-
-export default MultiStepForm;

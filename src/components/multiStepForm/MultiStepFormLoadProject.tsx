@@ -8,7 +8,7 @@ import Stepper from "@/components/multiStepForm/stepProgressBar/Stepper";
 import StepContainer from "@/components/multiStepForm/steps/StepContainer";
 import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/FileUploadStep";
 import Button from "@/components/Button";
-import {Step} from "@/components/multiStepForm/MultiStepForm";
+import {Step} from "@/components/multiStepForm/MultiStepFormNewProject";
 import {v4 as uuidv4} from 'uuid';
 import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
 

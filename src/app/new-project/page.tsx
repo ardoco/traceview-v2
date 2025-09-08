@@ -1,7 +1,7 @@
 'use client'
 
 import {FormProvider} from "@/contexts/ProjectUploadContext";
-import MultiStepForm from "@/components/multiStepForm/MultiStepForm";
+import MultiStepFormNewProject from "@/components/multiStepForm/MultiStepFormNewProject";
 import {FileType} from "@/components/dataTypes/FileType";
 
 export default function startNewProject() {
@@ -10,7 +10,7 @@ export default function startNewProject() {
             <FormProvider allowedFileTypes={
                 Object.values(FileType)
                     .filter(type => type !== FileType.TRACELINKS && type !== FileType.INCONSISTENCIES)}>
-                <MultiStepForm/>
+                <MultiStepFormNewProject/>
             </FormProvider>
         </div>
     )
