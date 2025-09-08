@@ -61,7 +61,7 @@ export default function UMLViewer({umlComponents, umlEdges}: UMLViewerProps) {
     });
 
     return (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full overflow-hidden">
             <svg ref={svgRef} style={{width: "100%", height: "100%"}} viewBox={viewBox || "-10 -10 600 800"}>
                 <g ref={zoomRef}>
                     {processedEdges.map((edge, index) => {
@@ -112,8 +112,8 @@ export default function UMLViewer({umlComponents, umlEdges}: UMLViewerProps) {
                 <div
                     style={{
                         position: 'absolute',
-                        left: tooltip.x,
-                        top: tooltip.y,
+                        left: Math.min(svgRef.current.width.baseVal.value - 240, tooltip.x),
+                        top: Math.min(svgRef.current.height.baseVal.value - 150, tooltip.y),
                         background: 'white',
                         border: '1px solid #ccc',
                         borderRadius: '8px',

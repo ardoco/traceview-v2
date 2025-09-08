@@ -35,11 +35,11 @@ function HeroContent() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
                 <Link
                     href="/new-project"
-                    className="rounded-md bg-cerulean-600 px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:text-white hover:bg-lila-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-cerulean-600 px-3.5 py-2.5  font-semibold text-black hover:text-white hover:bg-lila-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                     Start
                 </Link>
-                <Link href="https://ardoco.de/" className="text-sm font-semibold text-black-600 hover:text-black">
+                <Link href="https://ardoco.de/" className=" font-semibold text-black-600 hover:text-black">
                     About ArDoCo <span>→</span>
                 </Link>
             </div>
