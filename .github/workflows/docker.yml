@@ -2,17 +2,16 @@ name: Docker Push
 
 on:
   workflow_dispatch:
-#  push:
-#    # Publish `main` as Docker `latest` image.
-#    branches:
-#      - main
-#    paths-ignore:
-#      - '**.md'
-#      - '.github/**'
-
+  push:
+    # Publish `main` as Docker `latest` image.
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
     # Publish `v1.2.3` tags as releases.
-#    tags:
-#      - v*
+    tags:
+      - v*
 
 jobs:
   push:
