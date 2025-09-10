@@ -1,24 +1,18 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# TraceView 2
 
-First, run the development server:
+TraceView 2 is a web-based visualization tool designed to enhance the capabilities of
+[ARDoCo](https://github.com/ardoco/ardoco). \
+It provides a clear, visual way to explore tracelinks and find inconsistencies between software architecture models and
+documentation in software projects.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+It is built using Next.js and React.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+
 
 ## Docker
 
@@ -27,4 +21,6 @@ To run this project in a Docker container, you can use the following commands:
 docker build -t traceview2 .
 docker run -p 3000:3000 traceview2
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

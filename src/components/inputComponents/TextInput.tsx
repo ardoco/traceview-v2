@@ -9,6 +9,7 @@ interface TextInputProps {
 export default function TextInput({placeholderText, value, onChange}: TextInputProps) {
     return (
         <input
+            id={"project-name"}
             type="text"
             value={value}
             onChange={onChange}

@@ -1,6 +1,7 @@
 export enum MessageSource {
-    TRACELINK_ONLY,
-    ELEMENT_CLICK,
-    INCONSISTENCY_ONLY,
+    TRACELINK,
+    PROVIDED_PROJECT_ELEMENT,
+    /** e.g. a code element, a sentence from Documentation or an element from an architecture Element */
+    INCONSISTENCY,
     NONE
 }

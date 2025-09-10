@@ -8,7 +8,6 @@ import {FileType} from "@/components/dataTypes/FileType";
 import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {getTraceLinkTypeByName, TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
-import {ErrorDisplay} from "@/app/view/[id]/page";
 import {useNavigation} from "@/contexts/NavigationContext";
 import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
 import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
@@ -16,6 +15,7 @@ import {
     parseInconsistenciesFromJSON
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
 import {getResultViewOption} from "@/components/dataTypes/DisplayOption";
+import Button from "@/components/Button";
 
 interface TraceLinkResult {
     traceLinkType: TraceLinkType;
@@ -124,5 +124,26 @@ export default function ViewProvided() {
                 </InconsistencyProvider>
             </HighlightProvider>
         </>
+    );
+}
+
+function ErrorDisplay({message, onRetry, retryAllowed}: {
+    message: string;
+    onRetry: (signal: AbortSignal) => void;
+    retryAllowed: boolean
+}) {
+    const {controller} = useNavigation();
+
+    return (
+        <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
+            {message}
+            {retryAllowed && (
+                <Button
+                    text="Retry"
+                    onButtonClicked={() => onRetry(controller.signal)}
+                    disabled={false}
+                />
+            )}
+        </div>
     );
 }

@@ -4,7 +4,6 @@ import {useParams, useSearchParams} from "next/navigation";
 import React, {useEffect, useMemo, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {getTraceLinkTypeByName, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
-import Button from "@/components/Button";
 import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
 import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
@@ -145,7 +144,6 @@ export default function NewUploadProject() {
     );
 }
 
-
 function LoadingBanner() {
     return (
         <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
@@ -154,23 +152,3 @@ function LoadingBanner() {
     );
 }
 
-export function ErrorDisplay({message, onRetry, retryAllowed}: {
-    message: string;
-    onRetry: (signal: AbortSignal) => void;
-    retryAllowed: boolean
-}) {
-    const {controller} = useNavigation();
-
-    return (
-        <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
-            {message}
-            {retryAllowed && (
-                <Button
-                    text="Retry"
-                    onButtonClicked={() => onRetry(controller.signal)}
-                    disabled={false}
-                />
-            )}
-        </div>
-    );
-}

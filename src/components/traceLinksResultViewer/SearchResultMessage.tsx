@@ -41,14 +41,15 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
 
         const source =
             traceLinkTimestamp > inconsistencyTimestamp
-                ? traceLinkSource || MessageSource.ELEMENT_CLICK
+                ? traceLinkSource || MessageSource.TRACELINK
                 : inconsistencyTimestamp > traceLinkTimestamp
-                    ? inconsistencySource || MessageSource.ELEMENT_CLICK
-                    : traceLinkTimestamp > 0 ? MessageSource.ELEMENT_CLICK : MessageSource.NONE;
+                    ? inconsistencySource || MessageSource.PROVIDED_PROJECT_ELEMENT
+                    : traceLinkTimestamp > 0 ? MessageSource.PROVIDED_PROJECT_ELEMENT : MessageSource.NONE;
 
         const parts: MessagePart[] = [];
 
-        if (source === MessageSource.TRACELINK_ONLY && displayTraceLinks) {
+
+        if (source == MessageSource.TRACELINK && displayTraceLinks) {
             parts.push(
                 {
                     text: traceCount === 0 ? 'no traceLinks' :
@@ -57,7 +58,7 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
                 },
                 {text: ' found.', type: 'normal'}
             );
-        } else if (source === MessageSource.INCONSISTENCY_ONLY && displayInconsistencies) {
+        } else if (source === MessageSource.INCONSISTENCY && displayInconsistencies) {
             parts.push(
                 {
                     text: inconsistencyCount === 0 ? 'no inconsistencies' :
@@ -66,7 +67,7 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
                 },
                 {text: ' found.', type: 'normal'}
             );
-        } else if (source === MessageSource.ELEMENT_CLICK) {
+        } else if (source === MessageSource.PROVIDED_PROJECT_ELEMENT) {
             if (displayTraceLinks) {
                 parts.push({
                     text: traceCount === 0 ? 'no traceLinks' :

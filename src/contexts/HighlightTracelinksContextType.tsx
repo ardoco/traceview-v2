@@ -74,7 +74,7 @@ export function HighlightProvider({
         }
 
         setHighlightedTraceLinks(matchingTraceLinks);
-        setMessageSource(MessageSource.ELEMENT_CLICK);
+        setMessageSource(MessageSource.PROVIDED_PROJECT_ELEMENT);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource({id, type});
     };
@@ -84,7 +84,7 @@ export function HighlightProvider({
             return;
         }
         setHighlightedTraceLinks([traceLink]);
-        setMessageSource(MessageSource.TRACELINK_ONLY);
+        setMessageSource(MessageSource.TRACELINK);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource({id: traceLink.id, type: DisplayOption.TRACELINKS});
     }

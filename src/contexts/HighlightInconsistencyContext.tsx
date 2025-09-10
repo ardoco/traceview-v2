@@ -75,7 +75,7 @@ export function InconsistencyProvider({
             return;
         }
         setHighlightedInconsistencies([inconsistency]);
-        setMessageSource(MessageSource.INCONSISTENCY_ONLY);
+        setMessageSource(MessageSource.INCONSISTENCY);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource(inconsistency.id, DisplayOption.INCONSISTENCIES);
     }
@@ -93,7 +93,7 @@ export function InconsistencyProvider({
             setHighlightedInconsistencies([]);
             console.warn(`No inconsistency found for sentence number ${sentence}`);
         }
-        setMessageSource(MessageSource.ELEMENT_CLICK);
+        setMessageSource(MessageSource.PROVIDED_PROJECT_ELEMENT);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource(sentence, DisplayOption.DOCUMENTATION);
     }
@@ -110,7 +110,7 @@ export function InconsistencyProvider({
             setHighlightedInconsistencies([]);
             console.warn(`No inconsistency found for model element ID ${modelElementId}`);
         }
-        setMessageSource(MessageSource.ELEMENT_CLICK);
+        setMessageSource(MessageSource.PROVIDED_PROJECT_ELEMENT);
         setLastSearchTimestamp(Date.now());
         setLastClickedSource(modelElementId, DisplayOption.ARCHITECTURE_MODEL);
     }

@@ -14,7 +14,7 @@ const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = { // those metadatas are the ones that are used for every page in the application. They can be overridden on a page by page basis.
     title: ' ArDoCo TraceView 2',
-    description: 'This is a demo project',
+    description: 'Is a web application for ARDoCo to visualize tracelinks and inconsistencies between software architecture models and documentation.',
     icons: {
         icon: '/ardoco-logo.png',
     }
