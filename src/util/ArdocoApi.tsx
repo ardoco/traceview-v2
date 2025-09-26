@@ -54,7 +54,7 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
             requestData.append("inputCode", inputCodeFile.file);
             requestData.append("inputText", inputTextFile.file);
             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-            requestData.append("architectureModelType", inputArchitectureFile.fileType);
+            requestData.append("inputArchitectureModelFormat", inputArchitectureFile.fileType);
             usedFiles = [inputCodeFile, inputTextFile, inputArchitectureFile]
             break;
 
@@ -79,7 +79,7 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
 
             requestData.append("inputCode", inputCodeFile.file);
             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-            requestData.append("architectureModelType", inputArchitectureFile.fileType);
+            requestData.append("inputArchitectureModelFormat", inputArchitectureFile.fileType);
             usedFiles = [inputCodeFile, inputArchitectureFile]
             break;
 
@@ -92,7 +92,7 @@ export default async function fetchArDoCoAPI(apiAddress: string, projectName: st
 
             requestData.append("inputText", inputTextFile.file);
             requestData.append("inputArchitectureModel", inputArchitectureFile.file);
-            requestData.append("architectureModelType", inputArchitectureFile.fileType);
+            requestData.append("inputArchitectureModelFormat", inputArchitectureFile.fileType);
             usedFiles = [inputTextFile, inputArchitectureFile]
             break;
         default:
