@@ -22,7 +22,7 @@ interface TraceLinkViewProps {
  * It integrates with a highlight context to manage active trace link highlights.
  *
  * @param {TraceLinkViewProps} props - The props for the component.
- * @returns {JSX.Element} The rendered component displaying the traceLinks.
+ * @returns {JSX.Element} The rendered component displaying the trace links.
  */
 export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
     const {traceLinks, traceLinkType, highlightedTraceLinks, loading} = useHighlightContext();
@@ -65,7 +65,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
 
     /**
      * Handles the change in the selected sorting method.
-     * Sorts the traceLinks and updates the state.
+     * Sorts the trace links and updates the state.
      * @param {string} method - The selected sorting method.
      */
     const handleSortChange = useCallback((method: string) => {

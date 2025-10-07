@@ -8,20 +8,21 @@ import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import EditApiAddressModal from "@/components/EditApiAddressModal";
 import {useNavigation} from "@/contexts/NavigationContext";
 import clsx from "clsx";
+import { FaGithub, FaRegQuestionCircle } from "react-icons/fa";
 
-// Navigation menu items
+// Navigation menu items (icons can be defined per item)
 const navigation = [
     {name: 'New Project', href: '/new-project'},
     {name: 'Load Project', href: '/load-project'},
-    {name: 'About', href: 'https://ardoco.de/'},
-    {name: 'GitHub', href: 'https://github.com/ArDoCo'},
+    {name: 'About', href: 'https://ardoco.de/', icon: FaRegQuestionCircle},
+    {name: 'GitHub', href: 'https://github.com/ardoco', icon: FaGithub},
 ];
 
-interface ArDoCoLogoProps {
+interface ArdocoLogoProps {
     onClick: (href: string, event: any) => void;
 }
 
-export function ArDoCoLogo({onClick}: ArDoCoLogoProps) {
+export function ArdocoLogo({onClick}: ArdocoLogoProps) {
     const href = "/";
 
     const handleClick = (event: any) => {
@@ -35,7 +36,7 @@ export function ArDoCoLogo({onClick}: ArDoCoLogoProps) {
             onClick={handleClick}
         >
             <img
-                alt="ArDoCo Logo"
+                alt="ARDoCo logo"
                 src="/ardoco-logo.png"
                 className={clsx(`w-auto h-3/4`)}
             />
@@ -60,7 +61,7 @@ export default function NavBar() {
                 <nav aria-label="Global" className="flex items-center justify-between p-3 lg:px-8 h-24">
                     {/* Logo */}
                     <div className="flex lg:flex-1">
-                        <ArDoCoLogo onClick={onClickNavigation}/>
+                        <ArdocoLogo onClick={onClickNavigation}/>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -76,7 +77,7 @@ export default function NavBar() {
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden lg:flex lg:gap-x-12">
+                    <div className="hidden lg:flex lg:gap-x-6">
 
                         {/* Styled API Address Display */}
                         <div
@@ -90,14 +91,26 @@ export default function NavBar() {
                             </button>
                         </div>
 
-                        {navigation.map((item) => (
-                            <a key={item.name}
-                               href={item.href}
-                               onClick={(e) => onClickNavigation(item.href, e)}
-                               className="py-2 text-sm font-semibold text-white">
-                                {item.name}
-                            </a>
-                        ))}
+                        {navigation.map((item) => {
+                            const Icon = (item as any).icon;
+                            return (
+                                <a
+                                    key={item.name}
+                                    href={item.href}
+                                    onClick={(e) => onClickNavigation(item.href, e)}
+                                    className="py-2 text-sm font-semibold text-white hover:opacity-90"
+                                >
+                                    {Icon ? (
+                                        <>
+                                            <Icon className="h-5 w-5" aria-hidden="true" />
+                                            <span className="sr-only">{item.name}</span>
+                                        </>
+                                    ) : (
+                                        item.name
+                                    )}
+                                </a>
+                            );
+                        })}
                     </div>
                 </nav>
 
@@ -114,7 +127,7 @@ export default function NavBar() {
                     <DialogPanel
                         className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-white px-6 py-6 sm:ring-1 sm:ring-gray-900/10">
                         <div className="flex items-center justify-between">
-                            <ArDoCoLogo onClick={onClickNavigation}/>
+                            <ArdocoLogo onClick={onClickNavigation}/>
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}
@@ -126,15 +139,19 @@ export default function NavBar() {
                         </div>
                         <div className="mt-6">
                             <div className="space-y-2">
-                                {navigation.map((item) => (
-                                    <a
-                                        key={item.name}
-                                        href={item.href}
-                                        className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
-                                    >
-                                        {item.name}
-                                    </a>
-                                ))}
+                                {navigation.map((item) => {
+                                    const Icon = (item as any).icon;
+                                    return (
+                                        <a
+                                            key={item.name}
+                                            href={item.href}
+                                            className="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50"
+                                        >
+                                            {Icon && <Icon className="h-5 w-5 inline-block mr-2" aria-hidden="true" />}
+                                            <span>{item.name}</span>
+                                        </a>
+                                    );
+                                })}
                             </div>
                         </div>
                     </DialogPanel>

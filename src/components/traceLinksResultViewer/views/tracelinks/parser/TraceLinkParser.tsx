@@ -4,7 +4,7 @@ import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 export function parseTraceLinksFromJSON(traceLinkType: any, traceLinksJson: any): TraceLink[] {
 
     try {
-        // Ensure the traceLinks property exists
+        // Ensure the trace links property exists
         const traceLinksData: TraceLink[] = traceLinksJson || [];
         let traceLinks: TraceLink[] = [];
 

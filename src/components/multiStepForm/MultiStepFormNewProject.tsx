@@ -11,7 +11,7 @@ import Stepper from "@/components/multiStepForm/stepProgressBar/Stepper";
 import StepContainer from "@/components/multiStepForm/steps/StepContainer";
 import FormValidation from "@/components/multiStepForm/FormValidation";
 import Button from "@/components/Button";
-import fetchArDoCoAPI from "@/util/ArdocoApi";
+import fetchArdocoApi from "@/util/ArdocoApi";
 import {storeProjectFiles, storeProjectMetadata} from "@/util/ClientFileStorage";
 import ConfigurationStep from "@/components/multiStepForm/steps/configurationStep/ConfigurationStep";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
@@ -46,13 +46,13 @@ export default function MultiStepFormNewProject() {
         validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     }, {
         stepperLabel: "Configuration",
-        title: "Configure ArDoCo",
+        title: "Configure ardoco",
         description: "If you want you can adjust the default configuration for finding traceLinks, else proceed with the defaults.",
         validation: () => [],
     }, {
         stepperLabel: "Summary",
         title: "Summary",
-        description: "Review your provided data. If you want to change anything, return to the corresponding step before calculating the traceLinks.",
+        description: "Review your provided data. If you want to change anything, return to the corresponding step before calculating the trace links.",
         validation: () => FormValidation.validateSummary(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
 
@@ -95,7 +95,7 @@ export default function MultiStepFormNewProject() {
         let result = null;
         setLoading(true);
         try {
-            result = await fetchArDoCoAPI(apiAddress!, formData.projectName, formData.selectedTraceLinkType, formData.files, formData.findInconsistencies, formData.traceLinkConfiguration);
+            result = await fetchArdocoApi(apiAddress!, formData.projectName, formData.selectedTraceLinkType, formData.files, formData.findInconsistencies, formData.traceLinkConfiguration);
             jsonResult = result.jsonResult
         } catch (error) {
             console.error("Error submitting data:", error);

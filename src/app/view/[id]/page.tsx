@@ -39,7 +39,7 @@ const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal
             return data;
         } else if (data.status !== "ACCEPTED") {
             // Throw an error with the message from the server
-            throw new Error("An error occurred while running the pipeline in ArDoCo: \n" + data.message);
+            throw new Error("An error occurred while running the pipeline in ardoco: \n" + data.message);
         }
 
         // Keep polling

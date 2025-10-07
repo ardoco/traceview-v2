@@ -4,12 +4,12 @@ import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {TraceLinkConfiguration} from "@/contexts/ProjectUploadContext";
 
-interface ArDoCoApiResponse {
+interface ArdocoApiResponse {
     jsonResult: any;
     usedFiles: UploadedFile[];
 }
 
-export default async function fetchArDoCoAPI(apiAddress: string, projectName: string, selectedTraceLinkType: TraceLinkType | null, inputFiles: UploadedFile[], findInconsistencies: boolean, config?: TraceLinkConfiguration | null): Promise<ArDoCoApiResponse> {
+export default async function fetchArdocoApi(apiAddress: string, projectName: string, selectedTraceLinkType: TraceLinkType | null, inputFiles: UploadedFile[], findInconsistencies: boolean, config?: TraceLinkConfiguration | null): Promise<ArdocoApiResponse> {
 
     let result = null
     let usedFiles: UploadedFile[] = []

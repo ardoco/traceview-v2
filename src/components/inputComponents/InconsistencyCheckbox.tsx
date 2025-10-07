@@ -36,7 +36,7 @@ export default function InconsistencyCheckbox({checked, onChange, disabled}: Inc
                 title={"Inconsistencies"}
                 descriptionToRender={
                     <div>
-                        <p>When selected, ArDoCo additionally finds inconsistencies between the documentation and the
+                        <p>When selected, ardoco additionally finds inconsistencies between the documentation and the
                             architecture model.</p>
                         <p className="mt-2">An inconsistency can be:</p>
                         <ul className="list-disc list-inside pl-2">

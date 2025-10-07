@@ -20,7 +20,7 @@ function MultiStepFormLoadProject() {
     const steps: Step[] = [{
         stepperLabel: "Upload Files",
         title: "Upload the Project Files and TraceLinks",
-        description: "Upload your existing project files and the JSON file containing the traceLinks.",
+        description: "Upload your existing project files and the JSON file containing the trace links.",
         validation: () => FormValidation.validateExistingProject(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
 

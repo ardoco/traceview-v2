@@ -59,7 +59,7 @@ export default function EditApiAddressModal({isOpen, onClose}: EditApiAddressMod
                         </DialogTitle>
                         <div className="mt-4">
                             <p className="text-sm text-gray-600">
-                                Enter the base URL for the ArDoCo REST API.
+                                Enter the base URL for the ardoco REST API.
                             </p>
                             <input
                                 type="url"
