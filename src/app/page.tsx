@@ -15,9 +15,9 @@ export default function Home() {
 // Hero Section Component
 function HeroSection() {
     return (
-        <div className="flex justify-center items-center h-5/6">
+        <div className="flex justify-center items-center min-h-[50vh]">
             <div className="relative isolate px-6 pt-14 lg:px-8">
-                <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+                <div className="mx-auto max-w-2xl py-16 sm:py-20 lg:py-24">
                     <HeroContent/>
                 </div>
             </div>
@@ -35,12 +35,9 @@ function HeroContent() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
                 <Link
                     href="/new-project"
-                    className="rounded-md bg-cerulean-600 px-3.5 py-2.5  font-semibold text-black hover:text-white hover:bg-lila-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="inline-flex justify-center items-center w-48 sm:w-56 rounded-lg border-2 border-black/30 dark:border-white/40 bg-cerulean-600 px-6 py-3 text-lg sm:px-8 sm:py-4 sm:text-xl font-semibold text-black transition-colors duration-150 hover:text-white hover:bg-lila-500 hover:border-black/50 dark:hover:border-white/60 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                     Start
-                </Link>
-                <Link href="https://ardoco.de/" className=" font-semibold text-black-600 hover:text-black">
-                    About <span>→</span>
                 </Link>
             </div>
         </div>
