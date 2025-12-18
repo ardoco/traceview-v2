@@ -6,7 +6,7 @@ import {TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import FullScreenResultDialog from "@/components/traceLinksResultViewer/FullScreenResult";
 import {SearchResultMessage} from "@/components/traceLinksResultViewer/SearchResultMessage";
 import ResultPanel from "@/components/traceLinksResultViewer/ResultPanel";
-import {PanelGroup, PanelResizeHandle} from "react-resizable-panels";
+import {Group, Separator} from "react-resizable-panels";
 
 interface ResultDisplayProps {
     id: string;
@@ -22,7 +22,7 @@ export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplay
         <div className="bg-white z-1 relative h-full">
 
             {/*panel*/}
-            <PanelGroup direction="horizontal" className="h-full">
+            <Group orientation="horizontal" className="h-full">
                 {panelsToRender.map((resultViewOption, index) => (
                     <React.Fragment key={index}>
                         <ResultPanel
@@ -33,10 +33,10 @@ export function ResultDisplay({id, traceLinkType, displayOptions}: ResultDisplay
                             id={id}
                             traceLinkType={traceLinkType}
                         />
-                        {index !== panelsToRender.length - 1 && <PanelResizeHandle className="w-0.5 bg-gruen"/>}
+                        {index !== panelsToRender.length - 1 && <Separator className="w-0.5 bg-gruen"/>}
                     </React.Fragment>
                 ))}
-            </PanelGroup>
+            </Group>
 
             <FullScreenResultDialog
                 selectedView={selectedDialogView}
