@@ -1,12 +1,12 @@
 import type {NextRequest} from 'next/server';
 import {NextResponse} from 'next/server';
 
-// the middleware will run for any request to /api/*
+// Run for any /api/* request
 export const config = {
     matcher: '/api/:path*',
 };
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const targetApiUrlString = request.headers.get('X-Target-API');
 
     if (!targetApiUrlString) {
