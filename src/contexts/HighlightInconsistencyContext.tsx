@@ -2,8 +2,8 @@ import React, {createContext, useContext, useState} from "react";
 import {
     Inconsistency,
     InconsistencyType,
-    MissingModelInstanceInconsistency,
-    MissingTextForModelElementInconsistency
+    TextEntityAbsentFromModelInconsistency,
+    ModelEntityAbsentFromTextInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
 import {DisplayOption} from "@/components/dataTypes/DisplayOption";
@@ -17,11 +17,11 @@ interface InconsistencyContextProps {
 
 interface InconsistencyContextType {
     highlightedInconsistencies: Inconsistency[];
-    highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[];
-    highlightedModelInconsistencies: MissingTextForModelElementInconsistency[];
+    highlightedSentenceInconsistencies: TextEntityAbsentFromModelInconsistency[];
+    highlightedModelInconsistencies: ModelEntityAbsentFromTextInconsistency[];
     inconsistencies: Inconsistency[];
-    modelInconsistencies: MissingTextForModelElementInconsistency[];
-    sentenceInconsistencies: MissingModelInstanceInconsistency[];
+    modelInconsistencies: ModelEntityAbsentFromTextInconsistency[];
+    sentenceInconsistencies: TextEntityAbsentFromModelInconsistency[];
     highlightInconsistencyWithSentence: (sentence: number) => void;
     highlightInconsistencyWithModelId: (modelElementId: string) => void;
     resetHighlightedInconsistencies: () => void;
@@ -53,21 +53,21 @@ export function InconsistencyProvider({
     const {setLastClickedSource} = useHighlightContext();
     const useInconsistencies = inconsistencies && inconsistencies.length > 0;
 
-    const modelInconsistencies: MissingTextForModelElementInconsistency[] =
+    const modelInconsistencies: ModelEntityAbsentFromTextInconsistency[] =
         inconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.ModelEntityAbsentFromText) as ModelEntityAbsentFromTextInconsistency[];
 
-    const sentenceInconsistencies: MissingModelInstanceInconsistency[] =
+    const sentenceInconsistencies: TextEntityAbsentFromModelInconsistency[] =
         inconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.TextEntityAbsentFromModel) as TextEntityAbsentFromModelInconsistency[];
 
-    const highlightedSentenceInconsistencies: MissingModelInstanceInconsistency[] =
+    const highlightedSentenceInconsistencies: TextEntityAbsentFromModelInconsistency[] =
         highlightedInconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingModelInstance) as MissingModelInstanceInconsistency[];
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.TextEntityAbsentFromModel) as TextEntityAbsentFromModelInconsistency[];
 
-    const highlightedModelInconsistencies: MissingTextForModelElementInconsistency[] =
+    const highlightedModelInconsistencies: ModelEntityAbsentFromTextInconsistency[] =
         highlightedInconsistencies
-            .filter((inconsistency) => inconsistency.type === InconsistencyType.MissingTextForModelElement) as MissingTextForModelElementInconsistency[];
+            .filter((inconsistency) => inconsistency.type === InconsistencyType.ModelEntityAbsentFromText) as ModelEntityAbsentFromTextInconsistency[];
 
 
     const highlightSingleInconsistency = (inconsistency: Inconsistency) => {
@@ -86,7 +86,7 @@ export function InconsistencyProvider({
         }
 
         const inconsistency = inconsistencies
-            .filter(inc => inc.type === InconsistencyType.MissingModelInstance && (inc as MissingModelInstanceInconsistency).sentenceNumber === sentence);
+            .filter(inc => inc.type === InconsistencyType.TextEntityAbsentFromModel && (inc as TextEntityAbsentFromModelInconsistency).sentenceNumber === sentence);
         if (inconsistency) {
             setHighlightedInconsistencies(inconsistency);
         } else {
@@ -103,7 +103,7 @@ export function InconsistencyProvider({
             return;
         }
         const inconsistency = inconsistencies
-            .filter(inc => inc.type == InconsistencyType.MissingTextForModelElement && (inc as MissingTextForModelElementInconsistency).modelElementId === modelElementId);
+            .filter(inc => inc.type == InconsistencyType.ModelEntityAbsentFromText && (inc as ModelEntityAbsentFromTextInconsistency).modelElementId === modelElementId);
         if (inconsistency) {
             setHighlightedInconsistencies(inconsistency);
         } else {

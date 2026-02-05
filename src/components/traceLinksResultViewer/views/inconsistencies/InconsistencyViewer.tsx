@@ -6,8 +6,8 @@ import {
 } from "@/components/traceLinksResultViewer/views/inconsistencies/viewer/InconsistencyItemDisplay";
 import {
     InconsistencyType,
-    MissingModelInstanceInconsistency,
-    MissingTextForModelElementInconsistency
+    TextEntityAbsentFromModelInconsistency,
+    ModelEntityAbsentFromTextInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
 import LoadingMessage from "@/components/traceLinksResultViewer/Loading";
@@ -37,14 +37,14 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
             const typeCompare = a.type.localeCompare(b.type);
             if (typeCompare !== 0) return typeCompare;
 
-            // Sentence number (only for MissingModelInstanceInconsistency)
-            if (a instanceof MissingModelInstanceInconsistency && b instanceof MissingModelInstanceInconsistency) {
+            // Sentence number (only for TextEntityAbsentFromModelInconsistency)
+            if (a instanceof TextEntityAbsentFromModelInconsistency && b instanceof TextEntityAbsentFromModelInconsistency) {
                 const sentenceCompare = a.sentenceNumber - b.sentenceNumber;
                 if (sentenceCompare !== 0) return sentenceCompare;
             }
 
-            // Model element ID (only for MissingTextForModelElementInconsistency)
-            if (a instanceof MissingTextForModelElementInconsistency && b instanceof MissingTextForModelElementInconsistency) {
+            // Model element ID (only for ModelEntityAbsentFromTextInconsistency)
+            if (a instanceof ModelEntityAbsentFromTextInconsistency && b instanceof ModelEntityAbsentFromTextInconsistency) {
                 const idCompare = a.modelElementId.localeCompare(b.modelElementId);
                 if (idCompare !== 0) return idCompare;
             }
@@ -95,10 +95,9 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
                                 className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
                             >
                                 <option value="All">All Types</option>
-                                <option value={InconsistencyType.MissingModelInstance}>Missing Model Instance
+                                <option value={InconsistencyType.TextEntityAbsentFromModel}>Text Entity Absent From Model
                                 </option>
-                                <option value={InconsistencyType.MissingTextForModelElement}>Missing Text For
-                                    Model
+                                <option value={InconsistencyType.ModelEntityAbsentFromText}>Model Entity Absent From Text
                                 </option>
                             </select>
                         </div>

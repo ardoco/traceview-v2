@@ -2,8 +2,8 @@ import React from "react";
 import {
     Inconsistency,
     InconsistencyType,
-    MissingModelInstanceInconsistency,
-    MissingTextForModelElementInconsistency
+    TextEntityAbsentFromModelInconsistency,
+    ModelEntityAbsentFromTextInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import {useInconsistencyContext} from "@/contexts/HighlightInconsistencyContext";
 import {useHighlightContext} from "@/contexts/HighlightTracelinksContextType";
@@ -14,8 +14,8 @@ import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 export function InconsistencyItemDisplay({inconsistency}: { inconsistency: Inconsistency }) {
     const {highlightedInconsistencies, highlightSingleInconsistency} = useInconsistencyContext()
     const {resetHighlightedTraceLinks, lastClickedSource} = useHighlightContext()
-    const showSentenceNumber = inconsistency.type === InconsistencyType.MissingModelInstance;
-    const showModelElement = inconsistency.type === InconsistencyType.MissingTextForModelElement;
+    const showSentenceNumber = inconsistency.type === InconsistencyType.TextEntityAbsentFromModel;
+    const showModelElement = inconsistency.type === InconsistencyType.ModelEntityAbsentFromText;
     const isSource = lastClickedSource?.type === DisplayOption.INCONSISTENCIES && lastClickedSource?.id === inconsistency.id;
 
     if (!inconsistency) {
@@ -38,14 +38,14 @@ export function InconsistencyItemDisplay({inconsistency}: { inconsistency: Incon
             {showSentenceNumber && (
                 <p className="flex-1 text-black">
                     <strong>Sentence: </strong>
-                    {(inconsistency as MissingModelInstanceInconsistency).sentenceNumber?.toString() || "N/A"}
+                    {(inconsistency as TextEntityAbsentFromModelInconsistency).sentenceNumber?.toString() || "N/A"}
                 </p>
             )}
 
             {showModelElement && (
                 <p className="flex-1 text-black">
                     <strong>Model Id: </strong>
-                    {(inconsistency as MissingTextForModelElementInconsistency).modelElementId?.toString() || "N/A"}
+                    {(inconsistency as ModelEntityAbsentFromTextInconsistency).modelElementId?.toString() || "N/A"}
                 </p>
             )}
 
