@@ -1,6 +1,6 @@
 export enum InconsistencyType {
-    MissingModelInstance = 'MissingModelInstance',
-    MissingTextForModelElement = 'MissingTextForModelElement',
+    TextEntityAbsentFromModel = 'TextEntityAbsentFromModel',
+    ModelEntityAbsentFromText = 'ModelEntityAbsentFromText',
 }
 
 export class Inconsistency {
@@ -19,34 +19,34 @@ export class Inconsistency {
     }
 }
 
-export class MissingModelInstanceInconsistency extends Inconsistency {
+export class TextEntityAbsentFromModelInconsistency extends Inconsistency {
     sentenceNumber: number;
 
     constructor(reason: string, sentenceNumber: number) {
-        super(InconsistencyType.MissingModelInstance, reason);
+        super(InconsistencyType.TextEntityAbsentFromModel, reason);
         this.sentenceNumber = sentenceNumber
         this.id = `${this.type}-${this.reason}-${sentenceNumber}`;
     }
 
     equals(other: Inconsistency): boolean {
-        if (!(other instanceof MissingModelInstanceInconsistency)) {
+        if (!(other instanceof TextEntityAbsentFromModelInconsistency)) {
             return false;
         }
         return super.equals(other) && this.sentenceNumber === other.sentenceNumber;
     }
 }
 
-export class MissingTextForModelElementInconsistency extends Inconsistency {
+export class ModelEntityAbsentFromTextInconsistency extends Inconsistency {
     modelElementId: string;
 
     constructor(reason: string, modelElementId: string) {
-        super(InconsistencyType.MissingTextForModelElement, reason);
+        super(InconsistencyType.ModelEntityAbsentFromText, reason);
         this.modelElementId = modelElementId;
         this.id = `${this.type}-${this.reason}-${modelElementId}`;
     }
 
     equals(other: Inconsistency): boolean {
-        if (!(other instanceof MissingTextForModelElementInconsistency)) {
+        if (!(other instanceof ModelEntityAbsentFromTextInconsistency)) {
             return false;
         }
         return super.equals(other) && this.modelElementId === other.modelElementId;
