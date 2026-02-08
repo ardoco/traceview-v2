@@ -51,25 +51,14 @@ function AboutSection() {
             <div className="w-full max-w-5xl text-left bg-gray-100/70 dark:bg-gray-800/60 rounded-lg p-6 sm:p-8 shadow-sm">
                 <h2 className="py-4 text-xl">ARDoCo - Automating Requirements and Documentation Comprehension</h2>
                 <p className="py-2">
-                    In this research project, we aim to provide consistency analyses between different kinds of
-                    documentation, namely formal models and informal (textual) documentation.
+                    ARDoCo is a research project focused on traceability link recovery and consistency analysis between software artifacts. The project connects architecture documentation and models while identifying missing or deviating elements (inconsistencies). An element can be any representable item of the model, like a component or a relation.
                 </p>
                 <p className="py-2">
-                    Documenting the architecture of a software system is important, especially to capture reasoning
-                    and design decisions. A lot of tacit knowledge is easily lost when the documentation is
-                    incomplete, resulting in threats for the software system’s success and increased costs. However,
-                    software architecture documentation is often missing or outdated. One explanation for this
-                    phenomenon is the tedious and costly process of creating documentation in comparison to
-                    (perceived) low beneﬁts. With our project, we want to step forward in our long-term vision,
-                    where we plan to persist information from any sources, e.g., from whiteboard discussions, to
-                    avoid losing crucial information about a system. A core problem in this vision is the possible
-                    inconsistency of information from different sources. A major challenge of ensuring consistency
-                    is the consistency between formal artefacts, i.e., models, and informal documentation. We plan to
-                    address consistency analyses between models and textual natural language artefacts using natural
-                    language understanding and plan to include knowledge bases to improve these analyses. After
-                    extracting information out of the natural language documents, we plan to create traceability
-                    links and check whether statements within the textual documentation are consistent with the
-                    software architecture models.
+                    ARDoCo enables traceability link recovery across various artifact types, including requirements-to-code, documentation-to-code, and architecture-to-code tracing. We provide different approaches to support your specific needs in automating comprehension and consistency analysis. You can find our detailed approaches and other information on the {' '}
+                    <Link href="https://ardoco.de/approaches/" className="underline underline-offset-2 hover:opacity-80">approaches page</Link>.
+                </p>
+                <p className="py-2">
+                    Documenting the architecture of a software system is important, especially to capture reasoning and design decisions. However, documentation is often incomplete, outdated, or missing, leading to loss of crucial knowledge and increased risks. Our long-term vision is to persist information from various sources, such as whiteboard discussions, to avoid losing essential system knowledge. A key challenge is ensuring consistency between formal artifacts (e.g., models) and informal documentation. We address this by applying natural language understanding and knowledge bases to analyze consistency and create traceability links between models and textual artifacts.
                 </p>
                 <p className="py-2">
                     ARDoCo is actively developed by researchers of the{' '}
