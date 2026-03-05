@@ -3,30 +3,21 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "11:00"
-      timezone: "Europe/Berlin"
+      interval: "monthly"
     commit-message:
       prefix: "Dependency"
       include: "scope"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "11:00"
-      timezone: "Europe/Berlin"
+      interval: "monthly"
     commit-message:
       prefix: "Dependency"
       include: "scope"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "11:00"
-      timezone: "Europe/Berlin"
+      interval: "monthly"
     commit-message:
       prefix: "Dependency"
       include: "scope"      
