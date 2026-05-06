@@ -1,26 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ARDoCo TraceView
 
-# TraceView 2
+**TraceView** is a browser-based, installation-free frontend for [ARDoCo](https://github.com/ardoco/ardoco)'s traceability link recovery (TLR) pipelines.
+It is part of the [ARDoCo tool landscape](https://ardoco.de) and is publicly available at **[tv.ardoco.de](https://tv.ardoco.de)**.
 
-TraceView 2 is a web-based visualization tool designed to enhance the capabilities of
-[ARDoCo](https://github.com/ardoco/ardoco). \
-It provides a clear, visual way to explore tracelinks and find inconsistencies between software architecture models and
-documentation in software projects.
+![TraceView screenshot showing Documentation, Architecture Model, and Trace Links side by side](.images/traceview.png)
 
-It is built using Next.js and React.
+TraceView visualizes recovered trace links and detected inconsistencies between software architecture documentation (SAD), architecture models (SAM), and source code.
+Its interactive multi-panel layout lets users explore all three artifact types simultaneously and navigate across them by clicking on any element.
 
+---
 
+## Features
 
+- **Guided project wizard** — four-step wizard for uploading artifacts (SAD, SAM, code model), naming the project, selecting a TLR pipeline, and reviewing before submission
+- **Supported pipelines** — SAD-SAM (SWATTR), SAM-Code (ArCoTL), SAD-Code (ArDoCode), and transitive SAD-SAM-Code (TransArC)
+- **Multi-panel result view** — up to three resizable, side-by-side panels for SAD, SAM, and source code
+- **Cross-artifact highlighting** — selecting any trace link highlights the linked elements across all open panels
+- **Inconsistency detection** — TEAM (Text Entity Absent from Model) and MEAT (Model Entity Absent from Text) results shown alongside trace links
+- **No local installation required** — communicates with the [ARDoCo REST API](https://rest.ardoco.de)
 
+---
 
+## Tech Stack
 
-## Docker
+- [Next.js](https://nextjs.org) / [React](https://react.dev) (TypeScript)
+- [Tailwind CSS](https://tailwindcss.com)
+- [D3.js](https://d3js.org) for architecture model rendering
+- [Headless UI](https://headlessui.com) for accessible UI primitives
 
-To run this project in a Docker container, you can use the following commands:
+---
+
+## Getting Started
+
+### Development
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Production build
+
+```bash
+npm run build
+npm start
+```
+
+### Docker
+
 ```bash
 docker build -t traceview2 .
 docker run -p 3000:3000 traceview2
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or use the provided Docker Compose template:
+
+```bash
+cp docker-compose-template.yml docker-compose.yml
+docker compose up -d
+```
 
