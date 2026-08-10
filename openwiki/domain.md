@@ -1,3 +1,15 @@
+---
+type: "Reference"
+title: "Domain model"
+description: "ARDoCo traceability domain in TraceView: artifact file types, supported trace-link pipeline combinations, inconsistency analysis, and project identity for both new and loaded projects."
+tags: [traceview, domain, traceability, pipelines]
+openwiki:
+  roles: [domain, integration]
+  change_kinds: [public-api]
+  source_paths: ["src/components/dataTypes/FileType.tsx", "src/components/dataTypes/TraceLinkTypes.tsx", "src/util/ArdocoApi.tsx", "src/components/multiStepForm/MultiStepFormLoadProject.tsx", "src/util/ClientFileStorage.tsx"]
+  validation_commands: ["npm run build"]
+---
+
 # Domain model
 
 TraceView operates in the ARDoCo traceability domain. The application is less about generic file upload and more about combining specific software engineering artifacts into traceability and inconsistency-analysis runs.
@@ -39,13 +51,14 @@ This means inconsistency handling is a feature layered on top of a specific trac
 
 ## Project and result identity
 
-A project is identified by a request/result ID returned by the backend. That ID is used to:
+A project is identified by a request/result ID. The ID is used to:
 
 - redirect from submission into the result view
-- poll for completion
+- poll for completion (new-project flow)
 - load stored local file metadata for later navigation
+- key the browser-side project directory used by `ClientFileStorage`
 
-The ID is URI-encoded when inserted into routes, which matters if future changes alter how project IDs are generated or displayed.
+The ID originates differently depending on the flow. In the new-project flow the backend returns the request ID after the pipeline starts. In the load-project flow the ID is a client-generated UUID created by `MultiStepFormLoadProject.tsx`, because there is no backend round trip. In both cases the ID is URI-encoded when inserted into routes, which matters if future changes alter how project IDs are generated or displayed.
 
 ## User-facing concepts to keep stable
 
@@ -53,10 +66,12 @@ The ID is URI-encoded when inserted into routes, which matters if future changes
 - The user chooses one supported trace-link type, not an arbitrary backend job.
 - Architecture models may come in PCM or UML form, but both are treated as architecture-model inputs.
 - The result viewer is centered on side-by-side comparison across artifact types.
+- A loaded project reuses the same viewer but skips the backend: trace links must already be present in the uploaded files.
 
 ## Source of truth for domain rules
 
 - `README.md` for product description and supported pipelines
 - `src/components/dataTypes/` for file and result type definitions
 - `src/util/ArdocoApi.tsx` for pipeline validation and request assembly
+- `src/components/multiStepForm/MultiStepFormLoadProject.tsx` for the locally-generated project identity used by the load-project flow
 - `src/components/traceLinksResultViewer/views/` for result domain models and parsers

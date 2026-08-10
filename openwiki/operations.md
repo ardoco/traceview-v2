@@ -1,3 +1,15 @@
+---
+type: "Reference"
+title: "Operations"
+description: "Practical setup, build, lint, Docker, CI, and storage notes for working in the TraceView repository."
+tags: [traceview, operations, ci, docker]
+openwiki:
+  roles: [operations, delivery]
+  change_kinds: [lifecycle]
+  source_paths: ["package.json", "next.config.ts", ".github/workflows/verify.yml", ".github/workflows/docker.yml", "src/util/ClientFileStorage.tsx"]
+  validation_commands: ["npm run build", "npm run lint"]
+---
+
 # Operations
 
 This page covers the practical setup, validation, and CI details that matter when working in the repository.

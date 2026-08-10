@@ -1,6 +1,18 @@
+---
+type: "Reference"
+title: "OpenWiki quickstart"
+description: "Entry point for the TraceView wiki: what the app does, how the docs are organized, where to start in source, and how to run it."
+tags: [traceview, quickstart, navigation]
+openwiki:
+  roles: [repository, architecture]
+  change_kinds: [navigation]
+  source_paths: [src/app/page.tsx, src/components/NavBar.tsx, package.json]
+  validation_commands: ["npm run build"]
+---
+
 # OpenWiki quickstart
 
-TraceView is a Next.js/React frontend for ARDoCo traceability link recovery. It lets a user create a project, upload architecture/documentation/code artifacts, send them to an ARDoCo backend, and inspect the returned trace links and inconsistencies in a multi-panel viewer.
+TraceView is a Next.js/React frontend for ARDoCo traceability link recovery. It lets a user create a project, upload architecture/documentation/code artifacts, send them to an ARDoCo backend, and inspect the returned trace links and inconsistencies in a multi-panel viewer. A second entry point, "Load Project", lets a user visualize pre-computed trace links stored locally without invoking the backend.
 
 ## What this repository does
 
@@ -14,24 +26,28 @@ The repository README describes the same product framing and confirms the suppor
 ## Major sections
 
 - [Architecture](architecture.md) — app structure, routing, state, and backend integration
-- [Workflows](workflows.md) — user journeys from the home page through result review
+- [Workflows](workflows.md) — user journeys from the home page and NavBar through result review, including the new-project and load-project flows
 - [Domain model](domain.md) — traceability concepts, file types, and supported pipeline combinations
 - [Operations](operations.md) — development, build, Docker, and CI notes
 
 ## Best starting points in source
 
-- `src/app/page.tsx` — landing page and entry path into the wizard
+- `src/components/NavBar.tsx` — top navigation exposing New Project and Load Project entry points
+- `src/app/page.tsx` — landing page and entry path into the new-project wizard
 - `src/app/new-project/page.tsx` — file-type gate and project setup entry
-- `src/components/multiStepForm/MultiStepFormNewProject.tsx` — submission flow and navigation
-- `src/app/view/[id]/page.tsx` — result polling and result viewer bootstrap
+- `src/app/load-project/page.tsx` — entry for loading an existing project with pre-computed trace links
+- `src/components/multiStepForm/MultiStepFormNewProject.tsx` — new-project submission flow and navigation
+- `src/components/multiStepForm/MultiStepFormLoadProject.tsx` — load-project flow that stores files locally and redirects to the provided result view
+- `src/app/view/[id]/page.tsx` — result polling and result viewer bootstrap for new-project runs
+- `src/app/view-provided/[id]/page.tsx` — loads stored files and renders the same viewer for loaded projects
 - `src/util/ArdocoApi.tsx` — request construction for the ARDoCo backend
 
 ## Repository shape
 
-- `src/app/` holds the Next.js app router pages.
-- `src/components/` contains form, viewer, and shared UI components.
+- `src/app/` holds the Next.js app router pages, including `/new-project`, `/load-project`, `/view/[id]` (polling result view), and `/view-provided/[id]` (stored result view).
+- `src/components/` contains the NavBar, form, viewer, and shared UI components.
 - `src/contexts/` contains client-side state providers for API address, navigation, highlighting, and upload state.
-- `src/util/` contains API and browser storage helpers.
+- `src/util/` contains API and browser storage helpers (`ClientFileStorage.tsx` persists project artifacts locally for the load-provided flow).
 - `.github/workflows/` contains build and Docker CI automation.
 - `test/` currently contains a sample SAD/SAM JSON fixture used for local testing or examples.
 

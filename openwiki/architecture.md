@@ -1,13 +1,27 @@
+---
+type: "Reference"
+title: "Architecture"
+description: "TraceView app structure: Next.js App Router routes, React contexts, backend integration via proxy API routes, multi-panel result viewer, and the two submission/storage flows."
+tags: [traceview, architecture, routing, state]
+openwiki:
+  roles: [architecture, integration]
+  change_kinds: [routing, lifecycle]
+  source_paths: ["src/app/layout.tsx", "src/app/page.tsx", "src/app/new-project/page.tsx", "src/app/load-project/page.tsx", "src/app/view/[id]/page.tsx", "src/app/view-provided/[id]/page.tsx", "src/contexts/ProjectUploadContext.tsx", "src/util/ArdocoApi.tsx", "src/util/ClientFileStorage.tsx"]
+  validation_commands: ["npm run build"]
+---
+
 # Architecture
 
-TraceView is a client-heavy Next.js app built with the App Router. The UI is organized around three core areas: project creation, backend submission/polling, and result visualization.
+TraceView is a client-heavy Next.js app built with the App Router. The UI is organized around three core areas: project creation, backend submission/polling, and result visualization. Project creation has two variants — a new-project flow that submits to ARDoCo, and a load-project flow that visualizes pre-computed trace links stored locally.
 
 ## Top-level application structure
 
 - `src/app/page.tsx` is the landing page. It introduces the product and links to the new-project flow.
+- `src/components/NavBar.tsx` provides the persistent top navigation, exposing New Project (`/new-project`), Load Project (`/load-project`), and external About/GitHub links.
 - `src/app/new-project/page.tsx` mounts the multi-step upload wizard and limits which file types can be uploaded.
+- `src/app/load-project/page.tsx` mounts the load-project wizard, which accepts pre-computed trace-link (and optional inconsistency) files and stores them locally for viewing.
 - `src/app/view/[id]/page.tsx` polls for a completed traceability result and then renders the result viewer.
-- `src/app/view-provided/[id]/page.tsx` exists as an alternate result path for stored/provided projects.
+- `src/app/view-provided/[id]/page.tsx` is the result path for loaded projects: it reads stored files from `ClientFileStorage` instead of polling the backend and renders the same `ResultDisplay`.
 - `src/app/layout.tsx` and `src/app/globals.css` provide the application shell and global styling.
 
 The app uses `pageExtensions` set in `next.config.ts` to support `.tsx`, `.ts`, and `.mdx` pages.
@@ -33,7 +47,7 @@ Key client-side integration code lives in:
 - `src/app/view/[id]/page.tsx` — polls `/api/get-result/{id}` until the backend returns `OK`.
 - `src/contexts/ProjectUploadContext.tsx` — fetches configuration before the form is used.
 
-This structure keeps the UI independent from the actual backend host while still requiring a configured target API address.
+This structure keeps the UI independent from the actual backend host while still requiring a configured target API address. The load-project flow intentionally bypasses this layer: it stores files locally and renders them via the same viewer without a backend round trip.
 
 ## Rendering model
 
@@ -55,7 +69,9 @@ Result-specific data is parsed before rendering so the display layer can work wi
 - submission to ARDoCo
 - browser-side storage of selected files and metadata
 
-The form uses `src/util/ClientFileStorage.tsx` to persist project artifacts locally after submission, which supports later review flows.
+The form uses `src/util/ClientFileStorage.tsx` to persist project artifacts locally after submission, which supports later review flows. The stored artifacts are also what the load-project flow visualizes.
+
+`src/components/multiStepForm/MultiStepFormLoadProject.tsx` is the parallel orchestration component for loading an existing project. It reuses the same upload context and `ClientFileStorage` helpers, but has a single step: it validates that a project name, trace-link type, and files are present, generates a UUID storage ID client-side, stores the files and metadata, and redirects to `/view-provided/{id}`. It does not call ARDoCo.
 
 ## Important implementation conventions
 
@@ -67,6 +83,8 @@ The form uses `src/util/ClientFileStorage.tsx` to persist project artifacts loca
 ## Where to start when changing the architecture
 
 - For routing or page-level behavior, start in `src/app/`.
-- For upload state or form rules, start in `src/contexts/ProjectUploadContext.tsx` and `src/components/multiStepForm/`.
+- For navigation surface, start in `src/components/NavBar.tsx`.
+- For upload state or form rules, start in `src/contexts/ProjectUploadContext.tsx` and `src/components/multiStepForm/` (both the new-project and load-project forms).
 - For backend request or polling logic, start in `src/util/ArdocoApi.tsx` and `src/app/view/[id]/page.tsx`.
+- For local file persistence and the provided-result view, start in `src/util/ClientFileStorage.tsx` and `src/app/view-provided/[id]/page.tsx`.
 - For result visualization, start in `src/components/traceLinksResultViewer/`.
