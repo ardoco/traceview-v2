@@ -1,3 +1,10 @@
+---
+type: "Reference"
+title: "Architecture"
+description: "TraceView client-side Next.js App Router architecture: routing, React contexts, backend integration, result rendering, and change navigation."
+tags: [architecture, nextjs, react-contexts, result-viewer]
+---
+
 # Architecture
 
 TraceView is a client-heavy Next.js app built with the App Router. The UI is organized around three core areas: project creation, backend submission/polling, and result visualization.

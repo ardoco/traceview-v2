@@ -1,3 +1,10 @@
+---
+type: "Reference"
+title: "Domain model"
+description: "ARDoCo traceability domain concepts for TraceView: artifact types, supported trace-link pipeline combinations, inconsistency analysis, and project identity."
+tags: [domain, traceability, pipelines, artifact-types]
+---
+
 # Domain model
 
 TraceView operates in the ARDoCo traceability domain. The application is less about generic file upload and more about combining specific software engineering artifacts into traceability and inconsistency-analysis runs.
