@@ -1,3 +1,10 @@
+---
+type: "Reference"
+title: "OpenWiki quickstart"
+description: "Entry point to the TraceView wiki: product overview, major sections, best starting points in source, and development commands."
+tags: [quickstart, navigation, traceview]
+---
+
 # OpenWiki quickstart
 
 TraceView is a Next.js/React frontend for ARDoCo traceability link recovery. It lets a user create a project, upload architecture/documentation/code artifacts, send them to an ARDoCo backend, and inspect the returned trace links and inconsistencies in a multi-panel viewer.
@@ -25,6 +32,18 @@ The repository README describes the same product framing and confirms the suppor
 - `src/components/multiStepForm/MultiStepFormNewProject.tsx` — submission flow and navigation
 - `src/app/view/[id]/page.tsx` — result polling and result viewer bootstrap
 - `src/util/ArdocoApi.tsx` — request construction for the ARDoCo backend
+
+## Task routing
+
+| Change area or intent | Wiki page | Source entry points | Important symbols / types | Focused tests | Minimal validation |
+| --- | --- | --- | --- | --- | --- |
+| Add or change a trace-link pipeline / request payload | [Domain model](domain.md), [Workflows](workflows.md) | `src/util/ArdocoApi.tsx` | `TraceLinkTypes` (`src/components/dataTypes/TraceLinkTypes.tsx`), pipeline validation | none (build-only) | `npm run build` |
+| Change upload wizard steps or validation | [Workflows](workflows.md) | `src/components/multiStepForm/MultiStepFormNewProject.tsx`, `src/components/multiStepForm/FormValidation.tsx` | `ProjectUploadContext` (`src/contexts/ProjectUploadContext.tsx`) | none | `npm run build && npm run lint` |
+| Change result polling / result lifecycle | [Workflows](workflows.md), [Architecture](architecture.md) | `src/app/view/[id]/page.tsx` | result status (`OK` accepted state), `NavigationContext` | none | `npm run build` |
+| Add or modify a result viewer panel | [Architecture](architecture.md) | `src/components/traceLinksResultViewer/ResultDisplay.tsx`, `views/*` | `ViewProps` (`views/ViewProps.tsx`), highlight contexts | none | `npm run build` |
+| Change client state (API address, upload, highlight) | [Architecture](architecture.md) | `src/contexts/*.tsx` | `ApiAddressContext`, `ProjectUploadContext`, `Highlight*Context` | none | `npm run build` |
+| Change routing or page shell | [Architecture](architecture.md) | `src/app/layout.tsx`, `src/app/page.tsx`, `next.config.ts` | `pageExtensions`, `output: 'standalone'` | none | `npm run build` |
+| Change build, lint, Docker, or CI | [Operations](operations.md) | `package.json`, `.github/workflows/verify.yml`, `Dockerfile` | npm scripts (`dev`, `build`, `lint`) | `verify.yml` build job | `npm run build` |
 
 ## Repository shape
 

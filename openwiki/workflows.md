@@ -1,3 +1,10 @@
+---
+type: "Reference"
+title: "Workflows"
+description: "TraceView user journeys from landing page through project setup, backend submission, result polling, and multi-panel result exploration."
+tags: [workflows, user-journey, submission, result-polling]
+---
+
 # Workflows
 
 This repository's user journeys are centered on one main flow: create a project, upload the relevant artifacts, submit to ARDoCo, and inspect the results.

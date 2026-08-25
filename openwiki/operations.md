@@ -1,3 +1,10 @@
+---
+type: "Reference"
+title: "Operations"
+description: "TraceView development, build, lint, Docker, CI, and operational dependencies and risks."
+tags: [operations, build, docker, ci, dependencies]
+---
+
 # Operations
 
 This page covers the practical setup, validation, and CI details that matter when working in the repository.
