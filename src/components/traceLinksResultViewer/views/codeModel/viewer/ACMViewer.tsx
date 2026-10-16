@@ -185,9 +185,9 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
             const fitScale = Math.min(scaleX, scaleY);
             const scale = Math.min(Math.max(fitScale, minInitialScale), 1.5);
 
-            // If the whole tree fits, center it. Otherwise start at the root on the left.
+            // If the whole tree fits, center it. Otherwise start at the root, leaving room for its label on the left.
             const fits = scale <= fitScale;
-            const translateX = fits ? (svgWidth / 2) - scale * (bbox.x + bbox.width / 2) : padding - scale * bbox.x;
+            const translateX = fits ? (svgWidth / 2) - scale * (bbox.x + bbox.width / 2) : Math.min(svgWidth / 3, 320) - scale * bbox.x;
             const translateY = fits ? (svgHeight / 2) - scale * (bbox.y + bbox.height / 2) : (svgHeight / 2) - scale * layoutedTreeRoot.x;
 
             const initialTransform = d3.zoomIdentity.translate(translateX, translateY).scale(scale);
