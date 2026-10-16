@@ -10,14 +10,14 @@ import {
     ModelEntityAbsentFromTextInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
-import LoadingMessage from "@/components/traceLinksResultViewer/Loading";
+import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
 
 interface InconsistencyViewerProps {
     headerOffset?: number;
 }
 
 export default function InconsistencyViewer({headerOffset = 10}: InconsistencyViewerProps) {
-    const {inconsistencies, loading} = useInconsistencyContext();
+    const {inconsistencies, loading, error} = useInconsistencyContext();
     const [filterType, setFilterType] = useState<InconsistencyType | "All">("All");
 
     const prepareDataToExport = () => {
@@ -65,6 +65,10 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
                 console.warn(`Unknown inconsistency type: ${value}`);
             }
         }
+    }
+
+    if (error) {
+        return <ErrorMessage error={error}/>;
     }
 
     if (loading) {

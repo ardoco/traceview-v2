@@ -5,7 +5,7 @@ import {useState} from "react";
 import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/FileUploadStep";
 import ProjectDetailsStep from "@/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep";
 import SummaryStep from "@/components/multiStepForm/steps/summayStep/SummaryStep";
-import {redirect, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import FormLayout from "@/components/multiStepForm/FormLayout";
 import Stepper from "@/components/multiStepForm/stepProgressBar/Stepper";
 import StepContainer from "@/components/multiStepForm/steps/StepContainer";
@@ -19,6 +19,17 @@ import LoadingErrorModal from "@/components/LoadingErrorModal";
 import {Dialog, DialogPanel, DialogTitle} from '@headlessui/react';
 import {v4 as uuidv4} from "uuid";
 import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
+
+/**
+ * Value of the `inconsistencies` URL parameter of the result view:
+ * "true" = the inconsistencies are part of the trace link run (SWATTR), an id = separate inconsistency run,
+ * "failed" = the separate run could not be started, "false" = not requested.
+ */
+function inconsistenciesParam(requestId: string, inconsistencyRequestId?: string, inconsistencyError?: string): string {
+    if (inconsistencyError) return "failed";
+    if (!inconsistencyRequestId) return "false";
+    return inconsistencyRequestId === requestId ? "true" : inconsistencyRequestId;
+}
 
 export interface Step {
     stepperLabel: string;
@@ -86,13 +97,19 @@ export default function MultiStepFormNewProject() {
                     result = await handleSubmit();
                 } catch (error) {
                     console.error("Error during submission:", error);
-                    errors.push(`An error occurred while submitting the data. Please try again. Error: ${error}`);
                     setLoading(false);
+                    setErrorModalApiErrorOpen(true);
                     return;
                 }
-                const encodedId = encodeURIComponent(result.requestId);
-                const inconsistenciesParam = `&inconsistencies=${formData.findInconsistencies}`;
-                redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}${inconsistenciesParam}`);
+                if (!result) {
+                    return; // handleSubmit already shows the error
+                }
+                const requestId = result.jsonResult.requestId;
+                const params = new URLSearchParams({
+                    type: formData.selectedTraceLinkType?.name ?? "",
+                    inconsistencies: inconsistenciesParam(requestId, result.inconsistencyRequestId, result.inconsistencyError),
+                });
+                router.push(`/view/${encodeURIComponent(requestId)}?${params.toString()}`);
             }
         } else {
             goToStep(Math.min(currentStep + 1, steps.length - 1));
@@ -120,7 +137,7 @@ export default function MultiStepFormNewProject() {
         try {
             // Store project files in the client storage
             await storeProjectFiles(jsonResult.requestId, result.usedFiles);
-            await storeProjectMetadata(jsonResult.requestId, formData.files)
+            await storeProjectMetadata(jsonResult.requestId, formData.files, {inconsistencyRequestId: result.inconsistencyRequestId})
         } catch (error) {
             console.error("Error storing project files:", error);
             setLoading(false);
@@ -129,7 +146,7 @@ export default function MultiStepFormNewProject() {
         }
 
 
-        return jsonResult;
+        return result;
     };
 
     // Show only the uploaded files (no API call), e.g. after the API request failed.

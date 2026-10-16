@@ -43,9 +43,10 @@ export default function InconsistencyCheckbox({checked, onChange, disabled}: Inc
                             <li>A sentence in the documentation not represented in the architecture model.</li>
                             <li>An element in the architecture model not described in the documentation.</li>
                         </ul>
-                        <p className="mt-2 font-semibold text-blau-600">This option is only available when
-                            the &apos;SWATTR&apos;
-                            traceLink type is selected.</p>
+                        <p className="mt-2 font-semibold text-blau-600">This option is available when
+                            documentation and an architecture model are uploaded.</p>
+                        <p className="mt-2">For approaches other than SWATTR, the inconsistencies come from a separate
+                            SAD-SAM analysis and may differ slightly from the shown trace links.</p>
                     </div>
                 }
                 disabled={disabled}

@@ -1,7 +1,7 @@
 import TextInput from "@/components/inputComponents/TextInput";
 import MultiOptionSelectWithInfo from "@/components/inputComponents/RadioInput";
 import {useFormContext} from "@/contexts/ProjectUploadContext";
-import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {canFindInconsistencies, TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import React from "react";
 import InconsistencyCheckbox from "@/components/inputComponents/InconsistencyCheckbox";
 
@@ -13,7 +13,7 @@ export default function ProjectDetailsStep() {
     }
 
     // Determine if the "Find Inconsistencies" checkbox should be disabled.
-    const isFindInconsistenciesDisabled = formData.selectedTraceLinkType?.name !== TraceLinkTypes.SAD_SAM.name;
+    const isFindInconsistenciesDisabled = !canFindInconsistencies(formData.files);
 
     const handleInconsistencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateFormData({findInconsistencies: e.target.checked});

@@ -16,6 +16,7 @@ import {
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
 import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
+import {loadInconsistencyRequestId} from "@/util/ClientFileStorage";
 
 // Utility function for polling the API
 const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
@@ -49,32 +50,77 @@ const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal
     throw new Error("The result is still processing. Please try again later.");
 };
 
+/**
+ * Where the inconsistencies of this result come from, based on the `inconsistencies` URL parameter:
+ * "true" = same run as the trace links (SWATTR), an id = separate inconsistency run,
+ * "failed" = the separate run could not be started, "false" = not requested.
+ */
+type InconsistencySource =
+    { kind: "none" } | { kind: "same" } | { kind: "separate", requestId: string } | { kind: "failed" };
+
+function toInconsistencySource(value: string | null | undefined, traceLinkRequestId: string): InconsistencySource {
+    if (!value || value === "false") return {kind: "none"};
+    if (value === "true" || value === traceLinkRequestId) return {kind: "same"};
+    if (value === "failed") return {kind: "failed"};
+    return {kind: "separate", requestId: value};
+}
+
 // Main Component
 export default function NewUploadProject() {
     const {id} = useParams<{ id: string }>();
     const searchParams = useSearchParams();
     const type = searchParams.get("type");
-    const findInconsistencies = searchParams.get("inconsistencies") === 'true';
+    const inconsistenciesParam = searchParams.get("inconsistencies");
     const {setCurrentProjectId, controller} = useNavigation();
 
     const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
     const [traceLinks, setTraceLinks] = useState<TraceLink[]>([]);
-    const [inconsistencies, setInconsistencies] = useState<Inconsistency[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     const traceLinkType = getTraceLinkTypeByName(type!) || TraceLinkTypes.SAD_SAM_CODE;
     const uriDecodedId = decodeURIComponent(id);
 
+    // null until known: without URL parameter, the stored project metadata is checked.
+    const [inconsistencySource, setInconsistencySource] = useState<InconsistencySource | null>(
+        inconsistenciesParam === null ? null : toInconsistencySource(inconsistenciesParam, uriDecodedId));
+    // inconsistencies contained in the trace link result (SWATTR)
+    const [sameRunInconsistencies, setSameRunInconsistencies] = useState<Inconsistency[]>([]);
+    // inconsistencies of a separate inconsistency run (other trace link types)
+    const [separateInconsistencies, setSeparateInconsistencies] = useState<Inconsistency[]>([]);
+    const [separateLoading, setSeparateLoading] = useState(false);
+    const [separateError, setSeparateError] = useState<string | null>(null);
+
+    const showInconsistencies = inconsistencySource !== null && inconsistencySource.kind !== "none";
+
     const displayOptions = useMemo(() => {
         const options = [...traceLinkType.resultViewOptions];
         options.unshift(DisplayOption.TRACELINKS); // Always show traceLinks first
-        if (findInconsistencies) {
+        if (showInconsistencies) {
+            // inconsistencies refer to the documentation and the architecture model
+            for (const option of [DisplayOption.ARCHITECTURE_MODEL, DisplayOption.DOCUMENTATION]) {
+                if (!options.includes(option)) {
+                    options.push(option);
+                }
+            }
             options.push(DisplayOption.INCONSISTENCIES);
         }
         return options;
-    }, []);
+    }, [showInconsistencies]);
 
+    let inconsistencies: Inconsistency[] = [];
+    let inconsistenciesLoading = false;
+    let inconsistenciesError: string | null = null;
+    if (inconsistencySource?.kind === "same") {
+        inconsistencies = sameRunInconsistencies;
+        inconsistenciesLoading = loading;
+    } else if (inconsistencySource?.kind === "separate") {
+        inconsistencies = separateInconsistencies;
+        inconsistenciesLoading = separateLoading;
+        inconsistenciesError = separateError;
+    } else if (inconsistencySource?.kind === "failed") {
+        inconsistenciesError = "Could not start the inconsistency detection.";
+    }
 
     const handleRetry = () => {
         setError(null);
@@ -97,10 +143,9 @@ export default function NewUploadProject() {
             const parsedTraceLinks = parseTraceLinksFromJSON(response.traceLinkType, response.result.traceLinks);
             setTraceLinks(parsedTraceLinks);
 
-            // If inconsistencies are present and asked for, parse them as well
-            if (findInconsistencies && response.result.inconsistencies) {
-                const parsedInconsistencies = parseInconsistenciesFromJSON(response.result.inconsistencies);
-                setInconsistencies(parsedInconsistencies);
+            // SWATTR runs with inconsistency detection contain the inconsistencies as well
+            if (response.result.inconsistencies) {
+                setSameRunInconsistencies(parseInconsistenciesFromJSON(response.result.inconsistencies));
             }
 
         } catch (err: any) {
@@ -112,10 +157,42 @@ export default function NewUploadProject() {
         }
     };
 
+    // Only the inconsistencies of the separate run are used. Its SAD-SAM trace links are ignored.
+    const fetchSeparateInconsistencies = async (requestId: string, signal: AbortSignal) => {
+        if (!apiAddress) return;
+        setSeparateLoading(true);
+        setSeparateError(null);
+        try {
+            const response = await pollForResult(apiAddress, encodeURIComponent(requestId), signal, 240);
+            setSeparateInconsistencies(parseInconsistenciesFromJSON(response.result.inconsistencies ?? []));
+        } catch (err: any) {
+            if (err.name !== 'AbortError' && !signal.aborted) {
+                setSeparateError(err.message || "The inconsistency detection failed.");
+            }
+        } finally {
+            setSeparateLoading(false);
+        }
+    };
+
     // Fetch & initialize data when component mounts
     useEffect(() => {
         fetchResult(controller.signal);
     }, [id, apiAddress]);
+
+    // Without URL parameter, use the inconsistency run stored with the project (if any)
+    useEffect(() => {
+        if (inconsistencySource !== null) return;
+        loadInconsistencyRequestId(uriDecodedId)
+            .then((requestId) => setInconsistencySource(toInconsistencySource(requestId, uriDecodedId)));
+    }, [inconsistencySource, uriDecodedId]);
+
+    // The separate inconsistency run is fetched at the same time as the trace links
+    const separateRequestId = inconsistencySource?.kind === "separate" ? inconsistencySource.requestId : null;
+    useEffect(() => {
+        if (separateRequestId) {
+            fetchSeparateInconsistencies(separateRequestId, controller.signal);
+        }
+    }, [separateRequestId, apiAddress]);
 
     useEffect(() => {
         setCurrentProjectId(uriDecodedId);
@@ -136,7 +213,8 @@ export default function NewUploadProject() {
                 onViewFiles={handleViewFiles}
             />
             <HighlightProvider traceLinks={traceLinks} traceLinkType={traceLinkType} loading={loading}>
-                <InconsistencyProvider inconsistencies={inconsistencies} loading={loading}>
+                <InconsistencyProvider inconsistencies={inconsistencies} loading={inconsistenciesLoading}
+                                       error={inconsistenciesError}>
                     <ResultDisplay id={uriDecodedId} traceLinkType={traceLinkType} displayOptions={displayOptions}/>
                 </InconsistencyProvider>
             </HighlightProvider>
