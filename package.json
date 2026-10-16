@@ -14,7 +14,7 @@
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
     "fast-xml-parser": "^5.10.1",
-    "next": "^16.3.3",
+    "next": "^16.4.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.5",
     "react-icons": "^5.7.0",
@@ -28,10 +28,24 @@
     "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9.39.5",
-    "eslint-config-next": "16.2.7",
+    "eslint": "^10.12.0",
+    "eslint-config-next": "^16.4.2",
     "postcss": "^8",
     "tailwindcss": "^4.2.4",
     "typescript": "^6"
+  },
+  "overrides": {
+    "eslint-plugin-react": {
+      "eslint": "$eslint"
+    },
+    "eslint-plugin-import": {
+      "eslint": "$eslint"
+    },
+    "eslint-plugin-jsx-a11y": {
+      "eslint": "$eslint"
+    }
+  },
+  "allowScripts": {
+    "unrs-resolver": false
   }
 }
