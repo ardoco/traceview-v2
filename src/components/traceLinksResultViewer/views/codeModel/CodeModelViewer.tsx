@@ -54,7 +54,7 @@ export default function DisplayCodeModel({id}: ViewProps) {
                 title="Instructions"
                 instructions={[
                     {keyCombo: "Click", description: "Find trace links"},
-                    {keyCombo: "Ctrl + Click", description: "Collapse/Expand node"},
+                    {keyCombo: "Ctrl/Cmd + Click", description: "Collapse/Expand node"},
                 ]}
             />
         </div>
