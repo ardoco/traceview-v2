@@ -5,7 +5,7 @@ import {useState} from "react";
 import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/FileUploadStep";
 import ProjectDetailsStep from "@/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep";
 import SummaryStep from "@/components/multiStepForm/steps/summayStep/SummaryStep";
-import {redirect} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 import FormLayout from "@/components/multiStepForm/FormLayout";
 import Stepper from "@/components/multiStepForm/stepProgressBar/Stepper";
 import StepContainer from "@/components/multiStepForm/steps/StepContainer";
@@ -17,6 +17,7 @@ import ConfigurationStep from "@/components/multiStepForm/steps/configurationSte
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import LoadingErrorModal from "@/components/LoadingErrorModal";
 import {Dialog, DialogPanel, DialogTitle} from '@headlessui/react';
+import {v4 as uuidv4} from "uuid";
 import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
 
 export interface Step {
@@ -29,6 +30,7 @@ export interface Step {
 export default function MultiStepFormNewProject() {
     const {formData} = useFormContext();
     const {apiAddress} = useApiAddressContext();
+    const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
     const [errorModalApiErrorOpen, setErrorModalApiErrorOpen] = useState(false);
@@ -119,6 +121,21 @@ export default function MultiStepFormNewProject() {
         return jsonResult;
     };
 
+    // Show only the uploaded files (no API call), e.g. after the API request failed.
+    const viewFilesOnly = async () => {
+        setErrorModalApiErrorOpen(false);
+        const storageId = uuidv4();
+        try {
+            await storeProjectFiles(storageId, formData.files);
+            await storeProjectMetadata(storageId, formData.files);
+        } catch (error) {
+            console.error("Error storing project files:", error);
+            setErrorModalFileUpload(true);
+            return;
+        }
+        router.push(`/view-provided/${encodeURIComponent(storageId)}`);
+    };
+
     return (<FormLayout>
         <Stepper
             steps={steps.map((step) => step.stepperLabel)}
@@ -167,12 +184,7 @@ export default function MultiStepFormNewProject() {
             onRetry={() => {
                 setErrorModalApiErrorOpen(false);
             }}
-            onViewFiles={async () => {
-                setErrorModalApiErrorOpen(false);
-                const storageId = await handleSubmit();
-                const encodedId = encodeURIComponent(storageId);
-                redirect(`/view-provided/${encodedId}`);
-            }}
+            onViewFiles={viewFilesOnly}
         />)}
 
         {errorModalFileUpload && (<ErrorModalFileUpload
