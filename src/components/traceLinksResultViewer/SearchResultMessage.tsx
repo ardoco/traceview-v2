@@ -98,9 +98,8 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
     useEffect(() => {
         if (!currentMessage.shouldShow) return;
 
-        setMessageParts(currentMessage.parts);
-
         requestAnimationFrame(() => {
+            setMessageParts(currentMessage.parts);
             const el = messageRef.current;
             if (el) {
                 // Remove and re-add the class to restart the animation

@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect} from "react";
+import React, {useEffect, useEffectEvent} from "react";
 import {getTraceLinkTypes, TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import clsx from "clsx";
@@ -23,8 +23,9 @@ export default function MultiOptionSelectWithInfo({
                                                   }: MultiOptionSelectWithInfoProps) {
     const traceLinkTypes = getTraceLinkTypes();
 
-    // Automatically preselect the first valid option if no option is selected
-    useEffect(() => {
+    // Automatically preselect the first valid option if no option is selected.
+    // This only reacts to changed files, not to the (always new) callbacks or the selection itself.
+    const preselectOption = useEffectEvent(() => {
         if (selectedValue === null || !checkCanBeSelected(selectedValue)) {
             const preselectedOption = traceLinkTypes.find((option) => option.checkCondition(uploadedFiles));
             if (preselectedOption) {
@@ -33,6 +34,10 @@ export default function MultiOptionSelectWithInfo({
                 handleOptionChange(null);
             }
         }
+    });
+
+    useEffect(() => {
+        preselectOption();
     }, [uploadedFiles]);
 
     return (

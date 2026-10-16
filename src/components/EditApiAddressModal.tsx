@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {Dialog, DialogPanel, DialogTitle} from '@headlessui/react';
 import {useApiAddressContext} from '@/contexts/ApiAddressContext';
 
@@ -20,9 +20,13 @@ export default function EditApiAddressModal({isOpen, onClose}: EditApiAddressMod
         onClose();
     };
 
-    useEffect(() => {
+    // Keep the input in sync when the stored address changes (adjusting state during render,
+    // see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes)
+    const [prevApiAddress, setPrevApiAddress] = useState(apiAddress);
+    if (prevApiAddress !== apiAddress) {
+        setPrevApiAddress(apiAddress);
         setInput(apiAddress ?? "");
-    }, [apiAddress]);
+    }
 
     const handleSave = async () => {
         if (!input.trim()) {
@@ -32,7 +36,7 @@ export default function EditApiAddressModal({isOpen, onClose}: EditApiAddressMod
         try {
             // Check if the URL format is valid
             new URL(input);
-        } catch (_) {
+        } catch {
             setWarningMessage('Please enter a valid URL format (e.g., http://example.com).');
             return;
         }

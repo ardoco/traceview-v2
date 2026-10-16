@@ -65,7 +65,7 @@ export default class FormValidation {
         return errors;
     }
 
-    static validateProjectDetails(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]) {
+    static validateProjectDetails(projectName: string, selectedTraceLinkType: string | null) {
         const errors: string[] = [];
 
         if (!projectName || projectName === "") {
@@ -78,7 +78,7 @@ export default class FormValidation {
     }
 
     static validateSummary(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]): string[] {
-        const validationMethods = [() => FormValidation.validateFiles(projectName, selectedTraceLinkType, uploadedFiles), () => FormValidation.validateProjectDetails(projectName, selectedTraceLinkType, uploadedFiles),];
+        const validationMethods = [() => FormValidation.validateFiles(projectName, selectedTraceLinkType, uploadedFiles), () => FormValidation.validateProjectDetails(projectName, selectedTraceLinkType),];
 
         const errors: string[] = [];
         const stepsWithErrors: number[] = [];

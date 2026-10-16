@@ -31,54 +31,58 @@ const dy = 240; // horizontal space between levels
 // Initial zoom never goes below this, so the labels (see ACMNode) stay readable. Users can still zoom out.
 const minInitialScale = 1;
 
+const collapseDepth = 2; // change as needed
+
+function buildInitialTrees(codeModel: CodeModelUnit): { expanded: CustomHierarchyNode, collapsed: CustomHierarchyNode } {
+    const root = d3.hierarchy<HierarchyData>(codeModel, d => d.children);
+
+    root.eachBefore(dAny => {
+        const d = dAny as CustomHierarchyNode;
+        d.id = d.data.id;
+    });
+
+    const expanded = root.copy() as CustomHierarchyNode;
+
+    function collapseAllDeeper(node: CustomHierarchyNode) {
+        if (node.children) {
+            node._children = node.children.map(child => {
+                const childNode = child as CustomHierarchyNode;
+                collapseAllDeeper(childNode);
+                return childNode;
+            });
+            node.children = undefined;
+        }
+    }
+
+    root.eachBefore(dAny => {
+        const d = dAny as CustomHierarchyNode;
+        if (d.depth === collapseDepth && d.children) {
+            for (const child of d.children) {
+                collapseAllDeeper(child as CustomHierarchyNode);
+            }
+        }
+    });
+    return {expanded, collapsed: root as CustomHierarchyNode};
+}
+
+const enhanceNode = (node: d3.HierarchyPointNode<HierarchyData>): ACMLayoutNode => {
+    const acmLayoutNode = node as ACMLayoutNode;
+    acmLayoutNode.id = node.data.id;
+
+    if (acmLayoutNode.children) {
+        acmLayoutNode.children = acmLayoutNode.children.map(child => enhanceNode(child as d3.HierarchyPointNode<HierarchyData>)) as ACMLayoutNode[];
+    }
+    return acmLayoutNode;
+}
+
 export default function ACMViewer({codeModel}: ACMViewerProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
     const zoomRef = useRef<SVGGElement | null>(null);
     const {highlightedTraceLinks} = useHighlightContext();
-    const copyExpandedTree = useRef<CustomHierarchyNode | null>(null);
-
-    const [treeDataState, setTreeDataState] = useState<CustomHierarchyNode>(() => {
-        const root = d3.hierarchy<HierarchyData>(codeModel, d => d.children);
-        const collapseDepth = 2; // change as needed
-
-        root.eachBefore(dAny => {
-            const d = dAny as CustomHierarchyNode;
-            d.id = d.data.id;
-        });
-
-        copyExpandedTree.current = root.copy() as CustomHierarchyNode;
-
-        function collapseAllDeeper(node: CustomHierarchyNode) {
-            if (node.children) {
-                node._children = node.children.map(child => {
-                    const childNode = child as CustomHierarchyNode;
-                    collapseAllDeeper(childNode);
-                    return childNode;
-                });
-                node.children = undefined;
-            }
-        }
-
-        root.eachBefore(dAny => {
-            const d = dAny as CustomHierarchyNode;
-            if (d.depth === collapseDepth && d.children) {
-                for (const child of d.children) {
-                    collapseAllDeeper(child as CustomHierarchyNode);
-                }
-            }
-        });
-        return root as CustomHierarchyNode;
-    });
-
-    const enhanceNode = (node: d3.HierarchyPointNode<HierarchyData>): ACMLayoutNode => {
-        const acmLayoutNode = node as ACMLayoutNode;
-        acmLayoutNode.id = node.data.id;
-
-        if (acmLayoutNode.children) {
-            acmLayoutNode.children = acmLayoutNode.children.map(child => enhanceNode(child as d3.HierarchyPointNode<HierarchyData>)) as ACMLayoutNode[];
-        }
-        return acmLayoutNode;
-    }
+    // Both the expanded tree (used for highlighting) and the initially collapsed tree are built once.
+    const [initialTrees] = useState(() => buildInitialTrees(codeModel));
+    const copyExpandedTree = initialTrees.expanded;
+    const [treeDataState, setTreeDataState] = useState<CustomHierarchyNode>(initialTrees.collapsed);
 
 
     const layoutedTreeRoot: ACMLayoutNode = useMemo(() => {
@@ -87,9 +91,9 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
     }, [treeDataState]);
 
     const layoutedTreeRootStatic: ACMLayoutNode = useMemo(() => {
-        const layout = d3.tree<HierarchyData>().nodeSize([dx, dy])(copyExpandedTree.current!);
+        const layout = d3.tree<HierarchyData>().nodeSize([dx, dy])(copyExpandedTree);
         return enhanceNode(layout);
-    }, [treeDataState]);
+    }, [copyExpandedTree]);
 
     const nodes: ACMLayoutNode[] = useMemo(() => layoutedTreeRoot.descendants(), [layoutedTreeRoot]);
     const nodes_all: ACMLayoutNode[] = useMemo(() => layoutedTreeRootStatic.descendants(), [layoutedTreeRootStatic]);
@@ -196,31 +200,34 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
     }, [layoutedTreeRoot, nodes]);
 
 
-    useEffect(() => {
-        if (!highlightedTraceLinks.length) return;
-
-        for (const traceLink of highlightedTraceLinks) {
-            const current = layoutedTreeRootStatic.find(n =>
-                n.data.id === traceLink.codeElementId);
-            if (!current) continue;
-            const ancestor_ids = current.ancestors().map(n => (n as CustomHierarchyNode).id);
-            ancestor_ids.shift(); // Remove the current node itself from the ancestors
-            if (!ancestor_ids) continue;
-            for (const anchestor_id of ancestor_ids.reverse()) {
-                const ancestorNode = layoutedTreeRoot.descendants().find(n => n.id == anchestor_id);
-                if (ancestorNode) {
-                    // expand the ancestor node if it is collapsed
-                    if (ancestorNode._children && ancestorNode.children === undefined) {
-                        ancestorNode.children = ancestorNode._children;
-                        ancestorNode._children = undefined;
+    // When the highlighted trace links change, expand the ancestors of the highlighted nodes.
+    // The tree is mutated in place (like the d3 layout itself), so a new reference is needed to re-render.
+    // Adjusting state during render, see https://react.dev/learn/you-might-not-need-an-effect
+    const [prevHighlightedTraceLinks, setPrevHighlightedTraceLinks] = useState<typeof highlightedTraceLinks | null>(null);
+    if (prevHighlightedTraceLinks !== highlightedTraceLinks) {
+        setPrevHighlightedTraceLinks(highlightedTraceLinks);
+        if (highlightedTraceLinks.length) {
+            for (const traceLink of highlightedTraceLinks) {
+                const current = layoutedTreeRootStatic.find(n =>
+                    n.data.id === traceLink.codeElementId);
+                if (!current) continue;
+                const ancestor_ids = current.ancestors().map(n => (n as CustomHierarchyNode).id);
+                ancestor_ids.shift(); // Remove the current node itself from the ancestors
+                for (const anchestor_id of ancestor_ids.reverse()) {
+                    const ancestorNode = layoutedTreeRoot.descendants().find(n => n.id == anchestor_id);
+                    if (ancestorNode) {
+                        // expand the ancestor node if it is collapsed
+                        if (ancestorNode._children && ancestorNode.children === undefined) {
+                            ancestorNode.children = ancestorNode._children;
+                            ancestorNode._children = undefined;
+                        }
                     }
                 }
             }
+            //Force re-render by creating a new reference
+            setTreeDataState(Object.assign(Object.create(Object.getPrototypeOf(treeDataState)), treeDataState));
         }
-        //Force re-render by creating a new reference
-        setTreeDataState(Object.assign(Object.create(Object.getPrototypeOf(treeDataState)), treeDataState));
-
-    }, [highlightedTraceLinks]);
+    }
 
     return (
         <div className="relative w-full h-full bg-white overflow-hidden">

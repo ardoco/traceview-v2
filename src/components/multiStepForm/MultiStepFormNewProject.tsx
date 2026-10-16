@@ -58,7 +58,7 @@ export default function MultiStepFormNewProject() {
         stepperLabel: "Project Details",
         title: "Project Details",
         description: "Enter the project name and select the type of trace links you want to retrieve. To additionally find inconsistencies, check the corresponding box.",
-        validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
+        validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null),
     }, {
         stepperLabel: "Configuration",
         title: "Configure ARDoCo",

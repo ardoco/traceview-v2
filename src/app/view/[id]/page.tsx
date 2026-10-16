@@ -1,25 +1,39 @@
 'use client';
 
 import {useParams, useSearchParams} from "next/navigation";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {ResultDisplay} from "@/components/traceLinksResultViewer/ResultDisplay";
 import {getTraceLinkTypeByName, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {HighlightProvider} from "@/contexts/HighlightTracelinksContextType";
-import {parseTraceLinksFromJSON} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
+import {parseTraceLinksFromJSON, RawTraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import {useNavigation} from "@/contexts/NavigationContext";
 import LoadingErrorModal from "@/components/LoadingErrorModal";
 import {Inconsistency} from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import {
-    parseInconsistenciesFromJSON
+    parseInconsistenciesFromJSON,
+    RawInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser";
 import {DisplayOption} from "@/components/dataTypes/DisplayOption";
 import {InconsistencyProvider} from "@/contexts/HighlightInconsistencyContext";
 import {loadInconsistencyRequestId} from "@/util/ClientFileStorage";
 
+interface PollResponse {
+    status: string;
+    message?: string;
+    traceLinkType: string;
+    result: {
+        traceLinks?: RawTraceLink[];
+        inconsistencies?: RawInconsistency[];
+    };
+}
+
+const errorMessage = (err: unknown): string | undefined => err instanceof Error ? err.message : undefined;
+const isAbortError = (err: unknown): boolean => err instanceof Error && err.name === 'AbortError';
+
 // Utility function for polling the API
-const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<any> => {
+const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal, maxSeconds: number = 240, intervalSeconds: number = 5): Promise<PollResponse> => {
     let elapsedSeconds = 0;
 
     while (elapsedSeconds < maxSeconds) {
@@ -35,7 +49,7 @@ const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal
             signal: signal,
         });
 
-        const data = await response.json();
+        const data: PollResponse = await response.json();
         if (data.status === "OK") {
             return data;
         } else if (data.status !== "ACCEPTED") {
@@ -71,7 +85,7 @@ export default function NewUploadProject() {
     const searchParams = useSearchParams();
     const type = searchParams.get("type");
     const inconsistenciesParam = searchParams.get("inconsistencies");
-    const {setCurrentProjectId, controller} = useNavigation();
+    const {setCurrentProjectId} = useNavigation();
 
     const {apiAddress} = useApiAddressContext();
     const [loading, setLoading] = useState(true);
@@ -87,9 +101,12 @@ export default function NewUploadProject() {
     // inconsistencies contained in the trace link result (SWATTR)
     const [sameRunInconsistencies, setSameRunInconsistencies] = useState<Inconsistency[]>([]);
     // inconsistencies of a separate inconsistency run (other trace link types)
-    const [separateInconsistencies, setSeparateInconsistencies] = useState<Inconsistency[]>([]);
-    const [separateLoading, setSeparateLoading] = useState(false);
-    const [separateError, setSeparateError] = useState<string | null>(null);
+    // The outcome is tagged with the request it belongs to, so that "loading" and the error are derived during render.
+    const [separateOutcome, setSeparateOutcome] = useState<{
+        key: string;
+        inconsistencies: Inconsistency[];
+        error: string | null;
+    } | null>(null);
 
     const showInconsistencies = inconsistencySource !== null && inconsistencySource.kind !== "none";
 
@@ -106,7 +123,13 @@ export default function NewUploadProject() {
             options.push(DisplayOption.INCONSISTENCIES);
         }
         return options;
-    }, [showInconsistencies]);
+    }, [traceLinkType.resultViewOptions, showInconsistencies]);
+
+    const separateRequestId = inconsistencySource?.kind === "separate" ? inconsistencySource.requestId : null;
+    const separateKey = apiAddress && separateRequestId ? `${apiAddress}|${separateRequestId}` : null;
+    const separateInconsistencies = separateOutcome?.inconsistencies ?? [];
+    const separateLoading = separateKey !== null && separateOutcome?.key !== separateKey;
+    const separateError = separateOutcome?.key === separateKey ? separateOutcome.error : null;
 
     let inconsistencies: Inconsistency[] = [];
     let inconsistenciesLoading = false;
@@ -122,18 +145,7 @@ export default function NewUploadProject() {
         inconsistenciesError = "Could not start the inconsistency detection.";
     }
 
-    const handleRetry = () => {
-        setError(null);
-        const controller = new AbortController();
-        fetchResult(controller.signal);
-    };
-
-    const handleViewFiles = () => {
-        setError(null);
-        setLoading(false);
-    };
-
-    const fetchResult = async (signal: AbortSignal) => {
+    const fetchResult = useCallback(async (signal: AbortSignal) => {
         if (!apiAddress) return;
         setLoading(true);
         setError(null);
@@ -148,36 +160,35 @@ export default function NewUploadProject() {
                 setSameRunInconsistencies(parseInconsistenciesFromJSON(response.result.inconsistencies));
             }
 
-        } catch (err: any) {
-            if (err.name !== 'AbortError') {
-                setError(err.message || "An unexpected error occurred.");
+        } catch (err) {
+            if (!isAbortError(err)) {
+                setError(errorMessage(err) || "An unexpected error occurred.");
             }
         } finally {
-            setLoading(false);
+            // a superseded (aborted) run must not touch the state of the run that replaced it
+            if (!signal.aborted) {
+                setLoading(false);
+            }
         }
+    }, [apiAddress, id]);
+
+    const handleRetry = () => {
+        setError(null);
+        const controller = new AbortController();
+        fetchResult(controller.signal);
     };
 
-    // Only the inconsistencies of the separate run are used. Its SAD-SAM trace links are ignored.
-    const fetchSeparateInconsistencies = async (requestId: string, signal: AbortSignal) => {
-        if (!apiAddress) return;
-        setSeparateLoading(true);
-        setSeparateError(null);
-        try {
-            const response = await pollForResult(apiAddress, encodeURIComponent(requestId), signal, 240);
-            setSeparateInconsistencies(parseInconsistenciesFromJSON(response.result.inconsistencies ?? []));
-        } catch (err: any) {
-            if (err.name !== 'AbortError' && !signal.aborted) {
-                setSeparateError(err.message || "The inconsistency detection failed.");
-            }
-        } finally {
-            setSeparateLoading(false);
-        }
+    const handleViewFiles = () => {
+        setError(null);
+        setLoading(false);
     };
 
     // Fetch & initialize data when component mounts
     useEffect(() => {
+        const controller = new AbortController();
         fetchResult(controller.signal);
-    }, [id, apiAddress]);
+        return () => controller.abort();
+    }, [fetchResult]);
 
     // Without URL parameter, use the inconsistency run stored with the project (if any)
     useEffect(() => {
@@ -186,13 +197,33 @@ export default function NewUploadProject() {
             .then((requestId) => setInconsistencySource(toInconsistencySource(requestId, uriDecodedId)));
     }, [inconsistencySource, uriDecodedId]);
 
-    // The separate inconsistency run is fetched at the same time as the trace links
-    const separateRequestId = inconsistencySource?.kind === "separate" ? inconsistencySource.requestId : null;
+    // The separate inconsistency run is fetched at the same time as the trace links.
+    // Only its inconsistencies are used. Its SAD-SAM trace links are ignored.
     useEffect(() => {
-        if (separateRequestId) {
-            fetchSeparateInconsistencies(separateRequestId, controller.signal);
-        }
-    }, [separateRequestId, apiAddress]);
+        if (!apiAddress || !separateRequestId || !separateKey) return;
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        (async () => {
+            try {
+                const response = await pollForResult(apiAddress, encodeURIComponent(separateRequestId), signal, 240);
+                const parsed = parseInconsistenciesFromJSON(response.result.inconsistencies ?? []);
+                if (!signal.aborted) {
+                    setSeparateOutcome({key: separateKey, inconsistencies: parsed, error: null});
+                }
+            } catch (err) {
+                if (!isAbortError(err) && !signal.aborted) {
+                    setSeparateOutcome((prev) => ({
+                        key: separateKey,
+                        inconsistencies: prev?.inconsistencies ?? [],
+                        error: errorMessage(err) || "The inconsistency detection failed.",
+                    }));
+                }
+            }
+        })();
+
+        return () => controller.abort();
+    }, [apiAddress, separateRequestId, separateKey]);
 
     useEffect(() => {
         setCurrentProjectId(uriDecodedId);
