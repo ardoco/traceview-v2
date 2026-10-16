@@ -28,8 +28,8 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className={`h-full relative ${plexSans.variable} ${plexMono.variable}`}>
-        <body className="h-full font-sans">
+        <html lang="en" className={`h-full relative ${plexSans.variable} ${plexMono.variable}`} suppressHydrationWarning>
+        <body className="h-full font-sans" suppressHydrationWarning>
         <ApiAddressProvider>
             <NavigationProvider>
                 <NavBar/>
