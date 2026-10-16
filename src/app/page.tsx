@@ -51,14 +51,8 @@ function AboutSection() {
             <div className="w-full max-w-5xl text-left bg-gray-100/70 dark:bg-gray-800/60 rounded-lg p-6 sm:p-8 shadow-sm">
                 <h2 className="py-4 text-xl">ARDoCo - Automating Requirements and Documentation Comprehension</h2>
                 <p className="py-2">
-                    ARDoCo is a research project focused on traceability link recovery and consistency analysis between software artifacts. The project connects architecture documentation and models while identifying missing or deviating elements (inconsistencies). An element can be any representable item of the model, like a component or a relation.
-                </p>
-                <p className="py-2">
-                    ARDoCo enables traceability link recovery across various artifact types, including requirements-to-code, documentation-to-code, and architecture-to-code tracing. We provide different approaches to support your specific needs in automating comprehension and consistency analysis. You can find our detailed approaches and other information on the {' '}
-                    <Link href="https://ardoco.de/approaches/" className="underline underline-offset-2 hover:opacity-80">approaches page</Link>.
-                </p>
-                <p className="py-2">
-                    Documenting the architecture of a software system is important, especially to capture reasoning and design decisions. However, documentation is often incomplete, outdated, or missing, leading to loss of crucial knowledge and increased risks. Our long-term vision is to persist information from various sources, such as whiteboard discussions, to avoid losing essential system knowledge. A key challenge is ensuring consistency between formal artifacts (e.g., models) and informal documentation. We address this by applying natural language understanding and knowledge bases to analyze consistency and create traceability links between models and textual artifacts.
+                    Learn what ArDoCo does and watch{' '}
+                    <Link href="https://ardoco.de/c/ase26-tools" className="underline underline-offset-2 hover:opacity-80">the introduction video</Link>{' '}on ardoco.de.
                 </p>
                 <p className="py-2">
                     ARDoCo is actively developed by researchers of the{' '}
