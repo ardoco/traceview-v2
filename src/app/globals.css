@@ -3,27 +3,42 @@
 @plugin "@tailwindcss/forms";
 
 @theme {
-    --color-gruen-100: #001b15;
-    --color-gruen-200: #00352a;
-    --color-gruen-300: #005040;
-    --color-gruen-400: #006a55;
-    --color-gruen-500: #00876c;
-    --color-gruen-600: #00d0a6;
-    --color-gruen-700: #1dffd2;
-    --color-gruen-800: #68ffe1;
-    --color-gruen-900: #b4fff0;
-    --color-gruen: #00876c;
+    /*
+      Colors aligned with ardoco.de (https://ardoco.de, :root in its main stylesheet).
+      gruen is based on the ardoco.de teal (#4ec2e0), blau on its azure (#7aa2f7).
+      Darker shades keep the same hue and are chosen so that blau-400/500/600 reach
+      WCAG AA (>= 4.5:1) as text on white and with white text on top.
+    */
+    --color-gruen-100: #092b34;
+    --color-gruen-200: #0f4857;
+    --color-gruen-300: #156579;
+    --color-gruen-400: #1a7b93;
+    --color-gruen-500: #1d8aa5;
+    --color-gruen-600: #4ec2e0;
+    --color-gruen-700: #8ed9ee;
+    --color-gruen-800: #b1e4f1;
+    --color-gruen-900: #dcf3f9;
+    --color-gruen: #1d8aa5;
 
-    --color-blau-100: #0e1422;
-    --color-blau-200: #1c2844;
-    --color-blau-300: #2a3c66;
-    --color-blau-400: #385088;
-    --color-blau-500: #4664aa;
-    --color-blau-600: #6581c0;
-    --color-blau-700: #8ca0d0;
-    --color-blau-800: #b2c0e0;
-    --color-blau-900: #d9dfef;
-    --color-blau: #4664aa;
+    --color-blau-100: #0c1831;
+    --color-blau-200: #142852;
+    --color-blau-300: #1f3c7a;
+    --color-blau-400: #274c9b;
+    --color-blau-500: #3363cc;
+    --color-blau-600: #4370d0;
+    --color-blau-700: #7aa2f7;
+    --color-blau-800: #a8c3fb;
+    --color-blau-900: #d9e4fd;
+    --color-blau: #3363cc;
+
+    /* Dark surface and text colors of the ardoco.de header and footer */
+    --color-ardoco-bg: #0b0e13;
+    --color-ardoco-surface: #171d28;
+    --color-ardoco-border: #ffffff17;
+    --color-ardoco-text: #eceff4;
+    --color-ardoco-muted: #a3adbe;
+    --color-ardoco-accent: #4ec2e0;
+    --color-ardoco-accent-strong: #8ed9ee;
 
     --color-black-100: #000000;
     --color-black-200: #000000;
@@ -60,6 +75,10 @@
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);
+
+    /* IBM Plex as on ardoco.de; the variables are set by next/font in layout.tsx */
+    --font-sans: var(--font-ibm-plex-sans), system-ui, sans-serif;
+    --font-mono: var(--font-ibm-plex-mono), ui-monospace, "SF Mono", SFMono-Regular, monospace;
 
     --color-highlight-tracelink: var(--color-blau-800);
     /*--color-highlight-inconsistency: var(--color-lila-900);*/

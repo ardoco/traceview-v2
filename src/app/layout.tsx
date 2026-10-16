@@ -3,13 +3,14 @@
 // specified in every page.
 
 import type {Metadata} from "next";
-import {Inter} from 'next/font/google' // use one font for every page.
+import {IBM_Plex_Mono, IBM_Plex_Sans} from 'next/font/google' // same fonts as ardoco.de
 import './globals.css' // load the globals.css for every page we have
 import NavBar from "@/components/NavBar";
 import {ApiAddressProvider} from "@/contexts/ApiAddressContext";
 import {NavigationProvider} from "@/contexts/NavigationContext";
 
-const inter = Inter({subsets: ['latin']});
+const plexSans = IBM_Plex_Sans({subsets: ['latin'], variable: '--font-ibm-plex-sans'});
+const plexMono = IBM_Plex_Mono({subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-ibm-plex-mono'});
 
 
 export const metadata: Metadata = { // those metadatas are the ones that are used for every page in the application. They can be overridden on a page by page basis.
@@ -26,8 +27,8 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className="h-full relative">
-        <body className={`h-full ${inter.className}`}>
+        <html lang="en" className={`h-full relative ${plexSans.variable} ${plexMono.variable}`}>
+        <body className="h-full font-sans">
         <ApiAddressProvider>
             <NavigationProvider>
                 <NavBar/>
