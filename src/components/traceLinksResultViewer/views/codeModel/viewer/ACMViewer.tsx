@@ -26,8 +26,10 @@ type ACMViewerProps = {
     codeModel: CodeModelUnit;
 }
 
-const dx = 10; // vertical space between nodes
-const dy = 200; // horizontal space between levels
+const dx = 18; // vertical space between nodes (must be larger than the label font size)
+const dy = 240; // horizontal space between levels
+// Initial zoom never goes below this, so the labels (see ACMNode) stay readable. Users can still zoom out.
+const minInitialScale = 1;
 
 export default function ACMViewer({codeModel}: ACMViewerProps) {
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -180,12 +182,13 @@ export default function ACMViewer({codeModel}: ACMViewerProps) {
             const padding = 50;
             const scaleX = (svgWidth - padding * 2) / bbox.width;
             const scaleY = (svgHeight - padding * 2) / bbox.height;
-            let scale = Math.min(scaleX, scaleY);
-            scale = Math.min(scale, 1.5);
-            scale = Math.max(scale, 0.1);
+            const fitScale = Math.min(scaleX, scaleY);
+            const scale = Math.min(Math.max(fitScale, minInitialScale), 1.5);
 
-            const translateX = (svgWidth / 2) - scale * (bbox.x + bbox.width / 2);
-            const translateY = (svgHeight / 2) - scale * (bbox.y + bbox.height / 2);
+            // If the whole tree fits, center it. Otherwise start at the root on the left.
+            const fits = scale <= fitScale;
+            const translateX = fits ? (svgWidth / 2) - scale * (bbox.x + bbox.width / 2) : padding - scale * bbox.x;
+            const translateY = fits ? (svgHeight / 2) - scale * (bbox.y + bbox.height / 2) : (svgHeight / 2) - scale * layoutedTreeRoot.x;
 
             const initialTransform = d3.zoomIdentity.translate(translateX, translateY).scale(scale);
             svg.call(zoomBehavior.transform, initialTransform);

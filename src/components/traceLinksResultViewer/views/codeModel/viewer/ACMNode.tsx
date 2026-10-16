@@ -72,13 +72,13 @@ export default function ACMNode({node, treeDataRoot, setTreeDataRoot}: ACMNodePr
             {textSymbol()}
             <text
                 dy={"0.34em"}
-                x={node.children || node._children ? -10 : 10}
+                x={node.children || node._children ? -12 : 12}
                 textAnchor={node.children || node._children ? "end" : "start"}
                 fill={"#333"}
-                fontSize={8}
+                fontSize={12}
                 paintOrder={"stroke"}
                 stroke={"white"}
-                strokeWidth={0.5}
+                strokeWidth={2}
             >
                 {node.data.name}
             </text>
