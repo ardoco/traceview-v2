@@ -11,6 +11,7 @@ interface MultiOptionSelectWithInfoProps {
     handleOptionChange: (value: TraceLinkType | null) => void;
     checkCanBeSelected: (option: TraceLinkType) => boolean;
     uploadedFiles: UploadedFile[];
+    labelledBy?: string; // id of the element that labels the radio group
 }
 
 export default function MultiOptionSelectWithInfo({
@@ -18,6 +19,7 @@ export default function MultiOptionSelectWithInfo({
                                                       handleOptionChange,
                                                       checkCanBeSelected,
                                                       uploadedFiles,
+                                                      labelledBy,
                                                   }: MultiOptionSelectWithInfoProps) {
     const traceLinkTypes = getTraceLinkTypes();
 
@@ -34,7 +36,7 @@ export default function MultiOptionSelectWithInfo({
     }, [uploadedFiles]);
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-3" role="radiogroup" aria-labelledby={labelledBy}>
             {traceLinkTypes.map((traceLinkType) => (
                 <label
                     key={traceLinkType.name}
@@ -52,7 +54,7 @@ export default function MultiOptionSelectWithInfo({
                         checked={selectedValue?.name === traceLinkType.name}
                         onChange={() => handleOptionChange(traceLinkType)}
                         disabled={!checkCanBeSelected(traceLinkType)}
-                        className="h-4 w-4 text-blau-500 focus:ring-blau-500 rounded border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="h-4 w-4 shrink-0 text-blau-500 focus:ring-blau-500 rounded-full border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
 
                     <span
