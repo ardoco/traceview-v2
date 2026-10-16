@@ -21,33 +21,38 @@ export function TraceLinkItem({link, showCode, showModel, showSentence}: TraceLi
 
     const isSource = lastClickedSource?.type === DisplayOption.TRACELINKS && lastClickedSource?.id === link.id;
 
+    const isHighlighted = highlightedTraceLinks.includes(link);
+
     return (
-        <li
-            className={clsx("p-2 border rounded-lg cursor-pointer",
-                highlightedTraceLinks.includes(link) ? "bg-highlight-tracelink" : "bg-highlight-none hover:bg-gray-100",
-                isSource && "border-2 border-highlight-tracelink-text shadow-highlight-tracelink-text",
-            )
-            }
-            onClick={() => {
-                resetHighlightedInconsistencies();
-                highlightSingleTraceLink(link);
-            }}
-        >
-            {showCode && (
-                <div className={"truncate"} title={`id: ${link.codeElementId}`}>
-                    <strong>Code Name:</strong> {link.codeElementName || link.codeElementId || "N/A"}
-                </div>
-            )}
-            {showModel && (
-                <div className={"truncate max-w-full"} title={`id: ${link.modelElementId}`}>
-                    <strong>Model Name:</strong> {link.modelElementName || link.modelElementId || "N/A"}
-                </div>
-            )}
-            {showSentence && (
-                <div className={"truncate max-w-full"} title={link.sentenceNumber?.toString()}>
-                    <strong>Sentence:</strong> {link.sentenceNumber?.toString() || "N/A"}
-                </div>
-            )}
+        <li>
+            <button
+                type="button"
+                aria-pressed={isHighlighted}
+                className={clsx("block w-full text-left p-2 border rounded-lg cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blau-500",
+                    isHighlighted ? "bg-highlight-tracelink" : "bg-highlight-none hover:bg-gray-100",
+                    isSource && "border-2 border-highlight-tracelink-text shadow-highlight-tracelink-text",
+                )}
+                onClick={() => {
+                    resetHighlightedInconsistencies();
+                    highlightSingleTraceLink(link);
+                }}
+            >
+                {showCode && (
+                    <span className="block truncate" title={`id: ${link.codeElementId}`}>
+                        <strong>Code Name:</strong> {link.codeElementName || link.codeElementId || "N/A"}
+                    </span>
+                )}
+                {showModel && (
+                    <span className="block truncate max-w-full" title={`id: ${link.modelElementId}`}>
+                        <strong>Model Name:</strong> {link.modelElementName || link.modelElementId || "N/A"}
+                    </span>
+                )}
+                {showSentence && (
+                    <span className="block truncate max-w-full" title={link.sentenceNumber?.toString()}>
+                        <strong>Sentence:</strong> {link.sentenceNumber?.toString() || "N/A"}
+                    </span>
+                )}
+            </button>
         </li>
     );
 }

@@ -114,10 +114,9 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
             {/* List of Inconsistencies */}
             <ul className="space-y-2 max-h-full overflow-y-auto pt-2">
                 {filteredAndSorted.map((inconsistency, index) => (
-                    <InconsistencyItemDisplay
-                        inconsistency={inconsistency}
-                        key={index}
-                    />
+                    <li key={index}>
+                        <InconsistencyItemDisplay inconsistency={inconsistency}/>
+                    </li>
                 ))}
             </ul>
 
