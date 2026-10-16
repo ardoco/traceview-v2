@@ -43,7 +43,7 @@ function MultiStepFormLoadProject() {
 
     const prevStep = () => {
         if (currentStep === 0) {
-            redirect("/");
+            redirect("/new-project");
         } else {
             setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
         }
@@ -67,7 +67,9 @@ function MultiStepFormLoadProject() {
         <Stepper
             steps={[""].concat(steps.map((step) => step.stepperLabel))}
             currentStep={currentStep + 1}
-            onStepChange={(step: number) => setCurrentStep(step)}
+            onStepChange={() => {
+            }}
+            isStepReachable={() => false}
         />
 
         <div className="content-center flex flex-col w-full mt-8">
@@ -94,7 +96,7 @@ function MultiStepFormLoadProject() {
             <Button
                 text={currentStep === steps.length - 1 ? "Visualize TraceLinks" : "Next"}
                 onButtonClicked={nextStep}
-                disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+                disabled={loading || errors.length > 0}
             >
 
             </Button>

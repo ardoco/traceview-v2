@@ -1,18 +1,20 @@
 interface StepTitleProps {
     title: string;
     active: boolean;
+    // Steps that cannot be selected yet
+    muted?: boolean;
 }
 
-export default function StepTitle({title, active}: StepTitleProps) {
+export default function StepTitle({title, active, muted}: StepTitleProps) {
     return (
-        <h2
-            className={`text-base sm:text-lg font-medium text-center ${
+        <span
+            className={`block text-sm sm:text-lg font-medium text-center ${
                 active
-                    ? "text-blau bg-clip-text"
-                    : "text-black-700"
+                    ? "text-blau"
+                    : muted ? "text-gray-500" : "text-black-700"
             }`}
         >
             {title}
-        </h2>
+        </span>
     );
 }

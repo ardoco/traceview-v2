@@ -32,6 +32,8 @@ export default function MultiStepFormNewProject() {
     const {apiAddress} = useApiAddressContext();
     const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
+    // furthest step the user has reached so far, used to allow jumping forward to completed steps
+    const [furthestStep, setFurthestStep] = useState(0);
     const [loading, setLoading] = useState(false);
     const [errorModalApiErrorOpen, setErrorModalApiErrorOpen] = useState(false);
     const [errorModalFileUpload, setErrorModalFileUpload] = useState(false);
@@ -60,7 +62,20 @@ export default function MultiStepFormNewProject() {
 
     const errors = steps[currentStep].validation();
 
+    // A step can be selected in the stepper if it is an earlier step or if it was already reached
+    // and all steps before it are valid.
+    const isStepReachable = (step: number) =>
+        step < currentStep || (step <= furthestStep && steps.slice(0, step).every((s) => s.validation().length === 0));
+
+    const goToStep = (step: number) => {
+        setCurrentStep(step);
+        setFurthestStep((furthest) => Math.max(furthest, step));
+    };
+
     const nextStep = async () => {
+        if (errors.length > 0) {
+            return;
+        }
         if (currentStep === steps.length - 1) {
             const summary_validation = steps[currentStep].validation()
             if (summary_validation && summary_validation.length > 0) {
@@ -80,16 +95,12 @@ export default function MultiStepFormNewProject() {
                 redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}${inconsistenciesParam}`);
             }
         } else {
-            setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
+            goToStep(Math.min(currentStep + 1, steps.length - 1));
         }
     };
 
     const prevStep = () => {
-        if (currentStep === 0) {
-            redirect("/");
-        } else {
-            setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
-        }
+        setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
     };
 
     const handleSubmit = async () => {
@@ -140,7 +151,8 @@ export default function MultiStepFormNewProject() {
         <Stepper
             steps={steps.map((step) => step.stepperLabel)}
             currentStep={currentStep}
-            onStepChange={(step: number) => setCurrentStep(step)}
+            onStepChange={goToStep}
+            isStepReachable={isStepReachable}
         />
 
         <div className="content-center flex flex-col w-full mt-8">
@@ -168,11 +180,11 @@ export default function MultiStepFormNewProject() {
 
         {/* Navigation buttons */}
         <div className="flex justify-between w-full mt-8">
-            <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
+            {currentStep === 0 ? <span/> : <Button text="Back" onButtonClicked={prevStep}/>}
             <Button
                 text={currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
                 onButtonClicked={nextStep}
-                disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+                disabled={loading || errors.length > 0}
             >
 
             </Button>
