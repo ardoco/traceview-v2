@@ -81,7 +81,7 @@ export default function EditApiAddressModal({isOpen, onClose}: EditApiAddressMod
                                 Cancel
                             </button>
                             <button type="button"
-                                    className="rounded-md bg-blau-500 px-4 py-2 text-sm font-medium text-white hover:bg-blau-400 focus:outline-none"
+                                    className="rounded-md bg-blau-500 px-4 py-2 text-sm font-medium text-white hover:bg-blau-400 focus:outline-hidden"
                                     onClick={handleSave}>
                                 Save
                             </button>

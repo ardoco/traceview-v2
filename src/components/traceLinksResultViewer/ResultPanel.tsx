@@ -42,7 +42,7 @@ export default function ResultPanel({
             {/*drop down*/}
             <div className="sticky top-0 flex bg-white">
                 <Select value={selectedPanel} onChange={(e) => handleOptionChange(e.target.value as DisplayOption)}
-                        className="border-none flex-grow focus:ring-2 focus:ring-gruen focus:outline-none">
+                        className="border-none grow focus:ring-2 focus:ring-gruen focus:outline-hidden">
                     {displayOptions
                         .map((option) => (
                             <option key={option} value={option}>

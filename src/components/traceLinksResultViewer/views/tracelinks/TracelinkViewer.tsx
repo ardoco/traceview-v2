@@ -121,7 +121,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
                             <select
                                 value={selectedSortMethod}
                                 onChange={(e) => handleSortChange(e.target.value)}
-                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                                className={`border-gray-300 rounded-sm px-2 py-1 pr-8 focus:ring-2 focus:outline-hidden text-sm`}
                             >
                                 <option value="None">None</option>
                                 {availableSortOptions.map((option) => (
@@ -133,7 +133,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
                         </div>
 
                         <Button
-                            className={`rounded px-3 py-0.5 text-sm transition-colors border ${
+                            className={`rounded-sm px-3 py-0.5 text-sm transition-colors border ${
                                 prioritizeHighlights
                                     ? "border-blau text-blau bg-blau/10 hover:text-blau-600 hover:bg-blau-600/10 hover:border-blau-600"
                                     : "border-gray-300 text-gray-700 hover:bg-gray-200"

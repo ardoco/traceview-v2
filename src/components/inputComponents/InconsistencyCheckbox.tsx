@@ -26,7 +26,7 @@ export default function InconsistencyCheckbox({checked, onChange, disabled}: Inc
                 checked={checked}
                 onChange={onChange}
                 disabled={disabled}
-                className="h-4 w-4 text-blau-500 focus:ring-blau-500 rounded border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-4 w-4 text-blau-500 focus:ring-blau-500 rounded-sm border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
             />
             <span className={`block text-sm font-medium ${!disabled ? 'text-gray-800' : 'text-gray-400'}`}>
                 Find Inconsistencies

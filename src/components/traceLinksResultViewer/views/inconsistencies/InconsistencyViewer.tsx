@@ -96,7 +96,7 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
                             <select
                                 value={filterType}
                                 onChange={(e) => setFilterTypeFromString(e.target.value)}
-                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                                className={`border-gray-300 rounded-sm px-2 py-1 pr-8 focus:ring-2 focus:outline-hidden text-sm`}
                             >
                                 <option value="All">All Types</option>
                                 <option value={InconsistencyType.TextEntityAbsentFromModel}>Text Entity Absent From Model
