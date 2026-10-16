@@ -51,7 +51,7 @@ function AboutSection() {
             <div className="w-full max-w-5xl text-left bg-gray-100/70 dark:bg-gray-800/60 rounded-lg p-6 sm:p-8 shadow-sm">
                 <h2 className="py-4 text-xl">ARDoCo - Automating Requirements and Documentation Comprehension</h2>
                 <p className="py-2">
-                    Learn what ArDoCo does and watch{' '}
+                    Learn what ARDoCo does and watch{' '}
                     <Link href="https://ardoco.de/c/ase26-tools" className="underline underline-offset-2 hover:opacity-80">the introduction video</Link>{' '}on ardoco.de.
                 </p>
                 <p className="py-2">
