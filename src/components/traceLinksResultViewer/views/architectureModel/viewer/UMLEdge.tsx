@@ -67,8 +67,6 @@ export default function UMLEdge({
         highlightedModelInconsistencies,
     } = useInconsistencyContext();
 
-    if (!svgRef.current) return null;
-
     const isTraceLinkHighlighted = highlightedTraceLinks.some(link => link.modelElementId === edge.usedInterface?.id) || false;
     const isInconsistencyHighlighted = highlightedModelInconsistencies.some(inconsistency => inconsistency.id === edge.usedInterface?.id) || false;
 
