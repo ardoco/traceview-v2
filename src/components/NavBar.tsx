@@ -44,6 +44,21 @@ export function ArdocoLogo({onClick}: ArdocoLogoProps) {
     );
 }
 
+function ApiAddressDisplay({apiAddress, onEdit}: { apiAddress: string | null, onEdit: () => void }) {
+    return (
+        <div
+            className="flex min-w-0 items-center gap-x-2 rounded-full border border-white/15 bg-ardoco-surface px-3 py-1 hover:border-white/30">
+            <span className="min-w-0 truncate text-ardoco-muted" title={apiAddress ?? "loading"}>
+                Connected API: <span className="font-semibold text-ardoco-text">{apiAddress ?? "loading"}</span>
+            </span>
+            <button type="button" onClick={onEdit} className="shrink-0 text-ardoco-muted hover:text-ardoco-accent">
+                <span className="sr-only">Edit API Address</span>
+                <PencilIcon className="h-4 w-4" aria-hidden="true"/>
+            </button>
+        </div>
+    );
+}
+
 export default function NavBar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,6 +68,12 @@ export default function NavBar() {
     const onClickNavigation = (href: string, event: any) => {
         event.preventDefault();
         handleNavigation(href);
+    }
+
+    // same as desktop (including the confirm-navigation check), but also closes the menu
+    const onClickMobileNavigation = (href: string, event: any) => {
+        setMobileMenuOpen(false);
+        onClickNavigation(href, event);
     }
 
     return (
@@ -79,17 +100,7 @@ export default function NavBar() {
                     {/* Desktop Navigation */}
                     <div className="hidden lg:flex lg:items-center lg:gap-x-5 font-mono text-[0.8125rem]">
 
-                        {/* Styled API Address Display */}
-                        <div
-                            className="flex items-center gap-x-2 rounded-full border border-white/15 bg-ardoco-surface px-3 py-1 hover:border-white/30">
-                            <span className="text-ardoco-muted" title={apiAddress ?? "loading"}>
-                                Connected API: <span className="font-semibold text-ardoco-text">{apiAddress ?? "loading"}</span>
-                            </span>
-                            <button onClick={() => setIsModalOpen(true)} className="text-ardoco-muted hover:text-ardoco-accent">
-                                <span className="sr-only">Edit API Address</span>
-                                <PencilIcon className="h-4 w-4"/>
-                            </button>
-                        </div>
+                        <ApiAddressDisplay apiAddress={apiAddress} onEdit={() => setIsModalOpen(true)}/>
 
                         {navigation.map((item) => {
                             const Icon = (item as any).icon;
@@ -127,7 +138,7 @@ export default function NavBar() {
                     <DialogPanel
                         className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-ardoco-bg px-6 py-4 font-mono text-ardoco-text sm:border-l sm:border-ardoco-border">
                         <div className="flex items-center justify-between">
-                            <ArdocoLogo onClick={onClickNavigation}/>
+                            <ArdocoLogo onClick={onClickMobileNavigation}/>
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}
@@ -137,6 +148,12 @@ export default function NavBar() {
                                 <XMarkIcon aria-hidden="true" className="h-6 w-6"/>
                             </button>
                         </div>
+                        <div className="mt-6 text-sm">
+                            <ApiAddressDisplay apiAddress={apiAddress} onEdit={() => {
+                                setMobileMenuOpen(false);
+                                setIsModalOpen(true);
+                            }}/>
+                        </div>
                         <div className="mt-6">
                             <div className="space-y-2">
                                 {navigation.map((item) => {
@@ -145,6 +162,7 @@ export default function NavBar() {
                                         <a
                                             key={item.name}
                                             href={item.href}
+                                            onClick={(e) => onClickMobileNavigation(item.href, e)}
                                             className="block rounded-lg px-3 py-2 text-sm text-ardoco-muted hover:bg-ardoco-surface hover:text-ardoco-accent"
                                         >
                                             {Icon && <Icon className="h-5 w-5 inline-block mr-2" aria-hidden="true" />}
