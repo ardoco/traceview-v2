@@ -6,6 +6,23 @@ import {
     Interface
 } from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 
+interface PcmRole {
+    providedInterface__OperationProvidedRole: string;
+    requiredInterface__OperationRequiredRole: string;
+}
+
+interface PcmElement {
+    id?: string;
+    entityName?: string;
+    providedRoles_InterfaceProvidingEntity?: PcmRole | PcmRole[];
+    requiredRoles_InterfaceRequiringEntity?: PcmRole | PcmRole[];
+}
+
+interface PcmRepository {
+    components__Repository?: PcmElement | PcmElement[];
+    interfaces__Repository?: PcmElement | PcmElement[];
+}
+
 /**
  * Ensures a given item is always returned as an array.
  * If the item is already an array, it's returned as is.
@@ -44,7 +61,7 @@ export function parsePCM(xmlString: string): { components: AbstractComponent[]; 
         attributeNamePrefix: '' // Preserve attribute names as they are (e.g., 'id', 'entityName')
     });
 
-    let jsonObj: any;
+    let jsonObj: { [rootElement: string]: PcmRepository | undefined };
     try {
         jsonObj = parser.parse(xmlString);
     } catch (error) {

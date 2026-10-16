@@ -65,20 +65,20 @@ export default class FormValidation {
         return errors;
     }
 
-    static validateProjectDetails(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]) {
+    static validateProjectDetails(projectName: string, selectedTraceLinkType: string | null) {
         const errors: string[] = [];
 
         if (!projectName || projectName === "") {
             errors.push("Project name is required.")
         }
         if (selectedTraceLinkType === null) {
-            errors.push("No traceLink type could be selected. Please upload files with different types.")
+            errors.push("No trace link type could be selected. Please upload files with different types.")
         }
         return errors;
     }
 
     static validateSummary(projectName: string, selectedTraceLinkType: string | null, uploadedFiles: UploadedFile[]): string[] {
-        const validationMethods = [() => FormValidation.validateFiles(projectName, selectedTraceLinkType, uploadedFiles), () => FormValidation.validateProjectDetails(projectName, selectedTraceLinkType, uploadedFiles),];
+        const validationMethods = [() => FormValidation.validateFiles(projectName, selectedTraceLinkType, uploadedFiles), () => FormValidation.validateProjectDetails(projectName, selectedTraceLinkType),];
 
         const errors: string[] = [];
         const stepsWithErrors: number[] = [];

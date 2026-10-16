@@ -1,15 +1,16 @@
 'use client'
 
 interface TextInputProps {
+    id?: string;
     placeholderText?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function TextInput({placeholderText, value, onChange}: TextInputProps) {
+export default function TextInput({id, placeholderText, value, onChange}: TextInputProps) {
     return (
         <input
-            id={"project-name"}
+            id={id}
             type="text"
             value={value}
             onChange={onChange}

@@ -26,7 +26,7 @@ export default function InconsistencyCheckbox({checked, onChange, disabled}: Inc
                 checked={checked}
                 onChange={onChange}
                 disabled={disabled}
-                className="h-4 w-4 text-blau-500 focus:ring-blau-500 rounded border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-4 w-4 text-blau-500 focus:ring-blau-500 rounded-sm border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
             />
             <span className={`block text-sm font-medium ${!disabled ? 'text-gray-800' : 'text-gray-400'}`}>
                 Find Inconsistencies
@@ -36,16 +36,17 @@ export default function InconsistencyCheckbox({checked, onChange, disabled}: Inc
                 title={"Inconsistencies"}
                 descriptionToRender={
                     <div>
-                        <p>When selected, ardoco additionally finds inconsistencies between the documentation and the
+                        <p>When selected, ARDoCo additionally finds inconsistencies between the documentation and the
                             architecture model.</p>
                         <p className="mt-2">An inconsistency can be:</p>
                         <ul className="list-disc list-inside pl-2">
                             <li>A sentence in the documentation not represented in the architecture model.</li>
                             <li>An element in the architecture model not described in the documentation.</li>
                         </ul>
-                        <p className="mt-2 font-semibold text-blau-600">This option is only available when
-                            the &apos;SWATTR&apos;
-                            traceLink type is selected.</p>
+                        <p className="mt-2 font-semibold text-blau-600">This option is available when
+                            documentation and an architecture model are uploaded.</p>
+                        <p className="mt-2">For approaches other than SWATTR, the inconsistencies come from a separate
+                            SAD-SAM analysis and may differ slightly from the shown trace links.</p>
                     </div>
                 }
                 disabled={disabled}

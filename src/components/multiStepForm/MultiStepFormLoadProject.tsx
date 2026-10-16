@@ -19,7 +19,7 @@ function MultiStepFormLoadProject() {
 
     const steps: Step[] = [{
         stepperLabel: "Upload Files",
-        title: "Upload the Project Files and TraceLinks",
+        title: "Upload the Project Files and Trace Links",
         description: "Upload your existing project files and the JSON file containing the trace links.",
         validation: () => FormValidation.validateExistingProject(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
@@ -43,7 +43,7 @@ function MultiStepFormLoadProject() {
 
     const prevStep = () => {
         if (currentStep === 0) {
-            redirect("/");
+            redirect("/new-project");
         } else {
             setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
         }
@@ -67,7 +67,9 @@ function MultiStepFormLoadProject() {
         <Stepper
             steps={[""].concat(steps.map((step) => step.stepperLabel))}
             currentStep={currentStep + 1}
-            onStepChange={(step: number) => setCurrentStep(step)}
+            onStepChange={() => {
+            }}
+            isStepReachable={() => false}
         />
 
         <div className="content-center flex flex-col w-full mt-8">
@@ -92,9 +94,9 @@ function MultiStepFormLoadProject() {
         <div className="flex justify-between w-full mt-8">
             <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
             <Button
-                text={currentStep === steps.length - 1 ? "Visualize TraceLinks" : "Next"}
+                text={currentStep === steps.length - 1 ? "Visualize Trace Links" : "Next"}
                 onButtonClicked={nextStep}
-                disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+                disabled={loading || errors.length > 0}
             >
 
             </Button>

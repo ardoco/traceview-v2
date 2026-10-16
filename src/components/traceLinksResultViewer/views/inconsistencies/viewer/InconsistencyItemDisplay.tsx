@@ -22,10 +22,14 @@ export function InconsistencyItemDisplay({inconsistency}: { inconsistency: Incon
         return null;
     }
 
+    const isHighlighted = highlightedInconsistencies.includes(inconsistency);
+
     return (
-        <div
-            className={clsx("p-2 border rounded-lg transition cursor-pointer ",
-                highlightedInconsistencies.includes(inconsistency) ? "bg-highlight-inconsistency" : "bg-highlight-none hover:bg-gray-100",
+        <button
+            type="button"
+            aria-pressed={isHighlighted}
+            className={clsx("block w-full text-left p-2 border rounded-lg transition cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blau-500",
+                isHighlighted ? "bg-highlight-inconsistency" : "bg-highlight-none hover:bg-gray-100",
                 isSource && "border-2 border-highlight-inconsistency-text shadow-highlight-inconsistency-text",
             )}
             onClick={() => {
@@ -33,27 +37,26 @@ export function InconsistencyItemDisplay({inconsistency}: { inconsistency: Incon
                 highlightSingleInconsistency(inconsistency)
             }}
         >
-            <p className="flex-1 text-black"><strong>Type: </strong>{inconsistency.type}</p>
+            <span className="block text-black"><strong>Type: </strong>{inconsistency.type}</span>
 
             {showSentenceNumber && (
-                <p className="flex-1 text-black">
+                <span className="block text-black">
                     <strong>Sentence: </strong>
                     {(inconsistency as TextEntityAbsentFromModelInconsistency).sentenceNumber?.toString() || "N/A"}
-                </p>
+                </span>
             )}
 
             {showModelElement && (
-                <p className="flex-1 text-black">
+                <span className="block text-black">
                     <strong>Model Id: </strong>
                     {(inconsistency as ModelEntityAbsentFromTextInconsistency).modelElementId?.toString() || "N/A"}
-                </p>
+                </span>
             )}
 
-            <p className="flex-1 text-black">
+            <span className="block text-black">
                 <strong>Reason: </strong>
-                {inconsistency.reason || "No provided provided"}
-            </p>
-        </div>
+                {inconsistency.reason || "No reason provided"}
+            </span>
+        </button>
     )
 }
-

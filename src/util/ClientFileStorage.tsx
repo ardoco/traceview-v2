@@ -18,9 +18,20 @@ export async function storeProjectFiles(projectId: string, uploadedFiles: Upload
     }
 }
 
+export interface StoredFileMetadata {
+    fileType: string;
+    storedFileName: string;
+}
+
+export interface ProjectMetadataExtras {
+    // Request id of the inconsistency detection (may differ from the project id, see ArdocoApi)
+    inconsistencyRequestId?: string;
+}
+
 export async function storeProjectMetadata(
     projectId: string,
-    uploadedFiles: UploadedFile[]
+    uploadedFiles: UploadedFile[],
+    extras: ProjectMetadataExtras = {}
 ) {
     if (typeof window === "undefined") {
         throw new Error("This function must be executed on the client side.");
@@ -35,7 +46,7 @@ export async function storeProjectMetadata(
         originalName: file.file.name
     }));
 
-    await writeMetadataToFile(projectDirHandle, metadata);
+    await writeMetadataToFile(projectDirHandle, {files: metadata, ...extras});
 }
 
 export async function loadProjectFile(projectId: string, fallbackType: FileType): Promise<{
@@ -54,7 +65,7 @@ export async function loadProjectFile(projectId: string, fallbackType: FileType)
 
         // Load metadata to get the actual file type and stored name
         try {
-            const metadata = await readMetadataFromFile(projectDirHandle);
+            const metadata = (await readMetadataFromFile(projectDirHandle)).files;
             const fileMeta = metadata.find(m => m.storedFileName === fileName);
             if (fileMeta) {
                 actualFileType = convertStringToFileType(fileMeta.fileType);
@@ -88,8 +99,25 @@ export async function loadProjectMetaData(projectId: string) {
     const fsHandle = await navigator.storage.getDirectory();
     const projectDirHandle = await fsHandle.getDirectoryHandle(projectId);
 
-    const metadata = await readMetadataFromFile(projectDirHandle);
+    const metadata = (await readMetadataFromFile(projectDirHandle)).files;
     return metadata.map(m => convertStringToFileType(m.fileType));
+}
+
+/**
+ * Returns the stored request id of the inconsistency detection, or undefined if there is none.
+ */
+export async function loadInconsistencyRequestId(projectId: string): Promise<string | undefined> {
+    if (typeof window === "undefined") {
+        throw new Error("This function must be executed on the client side.");
+    }
+    try {
+        const fsHandle = await navigator.storage.getDirectory();
+        const projectDirHandle = await fsHandle.getDirectoryHandle(projectId);
+        return (await readMetadataFromFile(projectDirHandle)).inconsistencyRequestId;
+    } catch (e) {
+        console.warn("No project metadata found for", projectId, e);
+        return undefined;
+    }
 }
 
 export async function deleteProjectDirectory(projectId: string) {
@@ -100,7 +128,7 @@ export async function deleteProjectDirectory(projectId: string) {
     try {
         const fsHandle = await navigator.storage.getDirectory();
         await fsHandle.removeEntry(projectId, {recursive: true});
-    } catch (error: any) {
+    } catch (error) {
         console.error(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);
     }
 }
@@ -117,17 +145,18 @@ function getStoredFileName(fileType: FileType): string {
 /**
  * Reads metadata from the project's meta.json file.
  */
-async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle): Promise<any[]> {
+async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle): Promise<{ files: StoredFileMetadata[] } & ProjectMetadataExtras> {
     const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`);
     const metaFile = await metaHandle.getFile();
-    const text = await metaFile.text();
-    return JSON.parse(text);
+    const parsed = JSON.parse(await metaFile.text());
+    // older projects stored only the list of files
+    return Array.isArray(parsed) ? {files: parsed} : parsed;
 }
 
 /**
  * Writes metadata to the project's meta.json file.
  */
-async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, metadata: any[]) {
+async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, metadata: { files: StoredFileMetadata[] } & ProjectMetadataExtras) {
     const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`, {create: true});
     const metaWritable = await metaHandle.createWritable();
     await metaWritable.write(JSON.stringify(metadata, null, 2));

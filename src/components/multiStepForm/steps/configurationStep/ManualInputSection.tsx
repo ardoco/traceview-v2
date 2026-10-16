@@ -66,6 +66,7 @@ export default function ManualInputSection({onReset}: Props) {
                             </label>
                             <div className="w-full sm:w-1/2">
                                 <TextInput
+                                    id={`config-${key}`}
                                     value={String(value ?? '')}
                                     onChange={e => handleChange(key, e.target.value)}
                                 />

@@ -22,7 +22,7 @@ export default function FileUploadSection({uploadedFile, fileParseError, handleF
                     'File successfully uploaded. You can now switch to the manual input tab to edit the configuration.'
                 }
                 {!uploadedFile && !fileParseError &&
-                    'Upload a JSON file containing your custom TraceLink configuration.'
+                    'Upload a JSON file containing your custom trace link configuration.'
                 }
             </p>
         </div>

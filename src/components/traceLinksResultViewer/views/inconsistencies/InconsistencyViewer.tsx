@@ -10,14 +10,14 @@ import {
     ModelEntityAbsentFromTextInconsistency
 } from "@/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency";
 import DownloadFileComponent from "@/util/DownloadFileComponent";
-import LoadingMessage from "@/components/traceLinksResultViewer/Loading";
+import LoadingMessage, {ErrorMessage} from "@/components/traceLinksResultViewer/Loading";
 
 interface InconsistencyViewerProps {
     headerOffset?: number;
 }
 
 export default function InconsistencyViewer({headerOffset = 10}: InconsistencyViewerProps) {
-    const {inconsistencies, loading} = useInconsistencyContext();
+    const {inconsistencies, loading, error} = useInconsistencyContext();
     const [filterType, setFilterType] = useState<InconsistencyType | "All">("All");
 
     const prepareDataToExport = () => {
@@ -67,6 +67,10 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
         }
     }
 
+    if (error) {
+        return <ErrorMessage error={error}/>;
+    }
+
     if (loading) {
         return <LoadingMessage title={"Generating inconsistencies, this may take a few moments..."}/>;
     }
@@ -92,7 +96,7 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
                             <select
                                 value={filterType}
                                 onChange={(e) => setFilterTypeFromString(e.target.value)}
-                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                                className={`border-gray-300 rounded-sm px-2 py-1 pr-8 focus:ring-2 focus:outline-hidden text-sm`}
                             >
                                 <option value="All">All Types</option>
                                 <option value={InconsistencyType.TextEntityAbsentFromModel}>Text Entity Absent From Model
@@ -114,10 +118,9 @@ export default function InconsistencyViewer({headerOffset = 10}: InconsistencyVi
             {/* List of Inconsistencies */}
             <ul className="space-y-2 max-h-full overflow-y-auto pt-2">
                 {filteredAndSorted.map((inconsistency, index) => (
-                    <InconsistencyItemDisplay
-                        inconsistency={inconsistency}
-                        key={index}
-                    />
+                    <li key={index}>
+                        <InconsistencyItemDisplay inconsistency={inconsistency}/>
+                    </li>
                 ))}
             </ul>
 

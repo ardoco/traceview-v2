@@ -33,7 +33,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
     const {data: sentences, isLoading, error} = useDataLoader<Sentence[]>(id, loadDocumentation);
 
     if (isLoading) {
-        return <LoadingMessage title="documentation"/>;
+        return <LoadingMessage title="Loading documentation..."/>;
     }
 
     if (error) {
@@ -50,7 +50,7 @@ export default function DisplayDocumentation({id}: ViewProps) {
                 title="Instructions"
                 position="bottom-right"
                 instructions={[
-                    {keyCombo: "Click", description: "Highlight TraceLink from TraceLInks"},
+                    {keyCombo: "Click", description: "Highlight the trace links of a sentence"},
                 ]}
             />
         </div>

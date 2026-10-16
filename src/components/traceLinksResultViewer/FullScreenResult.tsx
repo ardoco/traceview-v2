@@ -45,12 +45,12 @@ export default function FullScreenResultDialog({
                       className="flex flex-col h-full">
 
                 {/* Header */}
-                <TabList className="flex-shrink-0 flex items-center bg-gray-100 border-b border-gray-300 px-4 z-1001">
+                <TabList className="shrink-0 flex items-center bg-gray-100 border-b border-gray-300 px-4 z-1001">
                     {displayOptions.map((option) => (<Tab
                         key={option}
                         className="
                                 px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200 ease-in-out
-                                focus:outline-none rounded-t-md
+                                focus:outline-hidden rounded-t-md
                                 data-[selected]:text-blau-600 data-[selected]:border-blau-500
                                 data-[not-selected]:text-gray-600 data-[not-selected]:border-transparent
                                 data-[not-selected]:hover:bg-gray-200 data-[not-selected]:hover:text-gray-800
@@ -58,17 +58,17 @@ export default function FullScreenResultDialog({
                     >
                         {displayOptionName(option, traceLinkType)}
                     </Tab>))}
-                    <div className="flex-grow"/>
+                    <div className="grow"/>
 
                     {/* Close button */}
                     <Button onClick={onClose}
-                            className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full focus:outline-none">
+                            className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full focus:outline-hidden">
                         <XMarkIcon className="w-6 h-6"/>
                     </Button>
                 </TabList>
 
                 {/* Content Panels */}
-                <TabPanels className="flex-grow overflow-y-auto">
+                <TabPanels className="grow overflow-y-auto">
                     {displayOptions.map((option) => (<TabPanel key={option} className="h-full">
                         {getResultPanel(option, id, 0)}
                     </TabPanel>))}

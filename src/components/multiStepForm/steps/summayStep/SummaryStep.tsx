@@ -7,7 +7,7 @@ export default function SummaryStep() {
     const [isConfigExpanded, setIsConfigExpanded] = useState(false);
 
     const formatKey = (key: string): string => {
-        let formatted = key.replace(/::/g, ':: ');
+        let formatted = key.replace(/::/g, ' › ');
         formatted = formatted.trim();
         // Capitalize first letter of each word, handle special cases
         formatted = formatted.split(' ').map(word => {
@@ -28,7 +28,7 @@ export default function SummaryStep() {
             <div className="flex flex-col space-y-1">
                 {visibleEntries.map(([key, value]) => (
                     <div key={key} className="flex text-sm">
-                        <span className="font-medium text-gray-700 w-2/5 flex-shrink-0">{formatKey(key)}:</span>
+                        <span className="font-medium text-gray-700 w-2/5 shrink-0">{formatKey(key)}:</span>
                         <span className="text-gray-700 w-3/5 text-wrap text-ellipsis ml-2 break-all">
                             {String(value) === "" ? "Default/Empty" : String(value)}
                         </span>
@@ -54,7 +54,7 @@ export default function SummaryStep() {
                 marginBottom={1}
             />
             <SummaryItem
-                label={"Selected TraceLink Type"}
+                label={"Selected Trace Link Type"}
                 inlineValue={formData.selectedTraceLinkType ? formData.selectedTraceLinkType.name : "None"}
                 marginBottom={1}
             />

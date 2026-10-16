@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {TraceLink} from "@/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink";
 import {TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {Button} from "@headlessui/react";
@@ -26,7 +26,6 @@ interface TraceLinkViewProps {
  */
 export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
     const {traceLinks, traceLinkType, highlightedTraceLinks, loading} = useHighlightContext();
-    const [sortedTraceLinks, setSortedTraceLinks] = useState<TraceLink[]>(traceLinks);
     const [selectedSortMethod, setSelectedSortMethod] = useState<string>("Sort By");
     const [prioritizeHighlights, setPrioritizeHighlights] = useState(false);
 
@@ -57,34 +56,30 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
         });
     }, [sortMethods, traceLinkType.name]);
 
-    // Reset sortedTraceLinks when the original traceLinks array changes
-    useEffect(() => {
-        setSortedTraceLinks(traceLinks);
+    // Reset the sort method when the original traceLinks array changes
+    // (adjusting state during render, see https://react.dev/learn/you-might-not-need-an-effect)
+    const [prevTraceLinks, setPrevTraceLinks] = useState(traceLinks);
+    if (prevTraceLinks !== traceLinks) {
+        setPrevTraceLinks(traceLinks);
         setSelectedSortMethod("Sort By");
-    }, [traceLinks]);
+    }
 
-    /**
-     * Handles the change in the selected sorting method.
-     * Sorts the trace links and updates the state.
-     * @param {string} method - The selected sorting method.
-     */
-    const handleSortChange = useCallback((method: string) => {
-        setSelectedSortMethod(method);
+    // The displayed list is derived from the trace links, the sort method and the highlights
+    const sortedTraceLinks = useMemo(() => {
         const linksToSort = [...traceLinks];
 
-        if (method !== "Sort By") {
-            const sorter = sortMethods[method as keyof typeof sortMethods];
+        if (selectedSortMethod !== "Sort By") {
+            const sorter = sortMethods[selectedSortMethod as keyof typeof sortMethods];
             linksToSort.sort(sorter);
         }
 
         if (prioritizeHighlights) {
             const highlightedSorted = linksToSort.filter(link => highlightedTraceLinks.includes(link));
             const nonHighlightedSorted = linksToSort.filter(link => !highlightedTraceLinks.includes(link));
-            setSortedTraceLinks([...highlightedSorted, ...nonHighlightedSorted]);
-        } else {
-            setSortedTraceLinks(linksToSort);
+            return [...highlightedSorted, ...nonHighlightedSorted];
         }
-    }, [traceLinks, sortMethods, highlightedTraceLinks, prioritizeHighlights]);
+        return linksToSort;
+    }, [traceLinks, selectedSortMethod, sortMethods, highlightedTraceLinks, prioritizeHighlights]);
 
     const prepareDataToExport = () => {
         const dataToExport = {
@@ -94,17 +89,12 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
         return JSON.stringify(dataToExport, null, 2);
     }
 
-    // Re-sort whenever traceLinks or highlights change.
-    useEffect(() => {
-        handleSortChange(selectedSortMethod);
-    }, [traceLinks, selectedSortMethod, handleSortChange]);
-
     if (loading) {
-        return <LoadingMessage title={"Generating traceLinks, this may take a few moments..."}/>;
+        return <LoadingMessage title={"Generating trace links, this may take a few moments..."}/>;
     }
 
     if (sortedTraceLinks.length === 0) {
-        return <LoadingMessage title={"No traceLinks found."}/>
+        return <LoadingMessage title={"No trace links found."}/>
     }
 
     return (
@@ -120,8 +110,8 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
 
                             <select
                                 value={selectedSortMethod}
-                                onChange={(e) => handleSortChange(e.target.value)}
-                                className={`border-gray-300 rounded px-2 py-1 pr-8 focus:ring-2 focus:outline-none text-sm`}
+                                onChange={(e) => setSelectedSortMethod(e.target.value)}
+                                className={`border-gray-300 rounded-sm px-2 py-1 pr-8 focus:ring-2 focus:outline-hidden text-sm`}
                             >
                                 <option value="None">None</option>
                                 {availableSortOptions.map((option) => (
@@ -133,7 +123,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
                         </div>
 
                         <Button
-                            className={`rounded px-3 py-0.5 text-sm transition-colors border ${
+                            className={`rounded-sm px-3 py-0.5 text-sm transition-colors border ${
                                 prioritizeHighlights
                                     ? "border-blau text-blau bg-blau/10 hover:text-blau-600 hover:bg-blau-600/10 hover:border-blau-600"
                                     : "border-gray-300 text-gray-700 hover:bg-gray-200"
@@ -147,7 +137,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
                         <DownloadFileComponent
                             fileName={"tracelinks.json"}
                             prepareDataToExport={prepareDataToExport}
-                            title={"Download Tracelinks"}
+                            title={"Download trace links"}
                         />
 
                     </div>
