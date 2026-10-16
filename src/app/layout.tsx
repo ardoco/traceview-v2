@@ -13,8 +13,8 @@ const inter = Inter({subsets: ['latin']});
 
 
 export const metadata: Metadata = { // those metadatas are the ones that are used for every page in the application. They can be overridden on a page by page basis.
-    title: ' ARDoCo TraceView',
-    description: 'Is a web application for ardoco to visualize tracelinks and inconsistencies between software architecture models and documentation.',
+    title: 'ARDoCo TraceView',
+    description: 'Recover and explore trace links between architecture documentation, models and code, and detect inconsistencies.',
     icons: {
         icon: '/ardoco-logo.png',
     }
@@ -26,14 +26,14 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className="h-full dark:bg-cerulean-100 relative">
+        <html lang="en" className="h-full relative">
         <body className={`h-full ${inter.className}`}>
         <ApiAddressProvider>
             <NavigationProvider>
                 <NavBar/>
                 <div
                     className="fixed top-0 left-0 h-[80vh] -z-1 w-full bg-linear-to-b from-gruen via-blau-700 to-95%"></div>
-                <div className="fixed top-24 left0 h-[calc(100%-96px)] w-full overflow-y-auto">
+                <div className="fixed top-24 left-0 h-[calc(100%-96px)] w-full overflow-y-auto">
                     <div className="h-full">{children}</div>
                 </div>
             </NavigationProvider>

@@ -121,7 +121,7 @@ export default function NavBar() {
                     className="lg:hidden"
                 >
                     {/* Overlay */}
-                    <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50"/>
+                    <div className="fixed inset-0 z-50 bg-gray-800/50"/>
 
                     {/* Mobile Menu Panel */}
                     <DialogPanel
