@@ -6,6 +6,7 @@ import type {Metadata} from "next";
 import {IBM_Plex_Mono, IBM_Plex_Sans} from 'next/font/google' // same fonts as ardoco.de
 import './globals.css' // load the globals.css for every page we have
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 import {ApiAddressProvider} from "@/contexts/ApiAddressContext";
 import {NavigationProvider} from "@/contexts/NavigationContext";
 
@@ -32,10 +33,9 @@ export default function RootLayout({
         <ApiAddressProvider>
             <NavigationProvider>
                 <NavBar/>
-                <div
-                    className="fixed top-0 left-0 h-[80vh] -z-1 w-full bg-linear-to-b from-gruen via-blau-700 to-95%"></div>
-                <div className="fixed top-24 left-0 h-[calc(100%-96px)] w-full overflow-y-auto">
-                    <div className="h-full">{children}</div>
+                <div className="fixed top-16 bottom-0 left-0 w-full flex flex-col">
+                    <main className="flex-1 min-h-0 overflow-y-auto">{children}</main>
+                    <Footer/>
                 </div>
             </NavigationProvider>
         </ApiAddressProvider>
