@@ -1,7 +1,10 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
+import type {MouseEvent} from "react";
 import {useState} from "react";
+import type {IconType} from "react-icons";
 import {Bars3Icon, PencilIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {Dialog, DialogPanel} from "@headlessui/react";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
@@ -10,7 +13,7 @@ import {useNavigation} from "@/contexts/NavigationContext";
 import { FaGithub, FaRegQuestionCircle } from "react-icons/fa";
 
 // Navigation menu items (icons can be defined per item)
-const navigation = [
+const navigation: { name: string; href: string; icon?: IconType }[] = [
     {name: 'New Project', href: '/new-project'},
     {name: 'Load Project', href: '/load-project'},
     {name: 'About', href: 'https://ardoco.de/', icon: FaRegQuestionCircle},
@@ -18,13 +21,13 @@ const navigation = [
 ];
 
 interface ArdocoLogoProps {
-    onClick: (href: string, event: any) => void;
+    onClick: (href: string, event: MouseEvent<HTMLElement>) => void;
 }
 
 export function ArdocoLogo({onClick}: ArdocoLogoProps) {
     const href = "/new-project";
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: MouseEvent<HTMLElement>) => {
         onClick(href, event);
     }
 
@@ -34,9 +37,11 @@ export function ArdocoLogo({onClick}: ArdocoLogoProps) {
             className="inline-flex items-center gap-2 font-mono font-semibold tracking-tight text-ardoco-text hover:text-ardoco-accent"
             onClick={handleClick}
         >
-            <img
+            <Image
                 alt=""
                 src="/ardoco-logo.png"
+                width={480}
+                height={600}
                 className="h-7 w-auto rounded-md"
             />
             <span>ARDoCo TraceView</span>
@@ -65,13 +70,13 @@ export default function NavBar() {
     const {apiAddress} = useApiAddressContext();
     const {handleNavigation} = useNavigation();
 
-    const onClickNavigation = (href: string, event: any) => {
+    const onClickNavigation = (href: string, event: MouseEvent<HTMLElement>) => {
         event.preventDefault();
         handleNavigation(href);
     }
 
     // same as desktop (including the confirm-navigation check), but also closes the menu
-    const onClickMobileNavigation = (href: string, event: any) => {
+    const onClickMobileNavigation = (href: string, event: MouseEvent<HTMLElement>) => {
         setMobileMenuOpen(false);
         onClickNavigation(href, event);
     }
@@ -103,7 +108,7 @@ export default function NavBar() {
                         <ApiAddressDisplay apiAddress={apiAddress} onEdit={() => setIsModalOpen(true)}/>
 
                         {navigation.map((item) => {
-                            const Icon = (item as any).icon;
+                            const Icon = item.icon;
                             return (
                                 <a
                                     key={item.name}
@@ -157,7 +162,7 @@ export default function NavBar() {
                         <div className="mt-6">
                             <div className="space-y-2">
                                 {navigation.map((item) => {
-                                    const Icon = (item as any).icon;
+                                    const Icon = item.icon;
                                     return (
                                         <a
                                             key={item.name}

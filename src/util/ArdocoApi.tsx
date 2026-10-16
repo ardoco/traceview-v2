@@ -4,8 +4,13 @@ import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
 import {TraceLinkConfiguration} from "@/contexts/ProjectUploadContext";
 
+export interface StartRunResponse {
+    requestId: string;
+    [key: string]: unknown;
+}
+
 interface ArdocoApiResponse {
-    jsonResult: any;
+    jsonResult: StartRunResponse;
     usedFiles: UploadedFile[];
     // Request id of the inconsistency detection. Equals jsonResult.requestId for SWATTR (same run),
     // a separate id for the other trace link types, and undefined if no inconsistencies were requested.
@@ -145,13 +150,13 @@ function createBaseFormData(projectName: string, config?: TraceLinkConfiguration
 
     // filter config to exclude empty entries and convert to JSON string
     if (config) {
-        const filteredConfig = Object.fromEntries(Object.entries(config).filter(([_, value]) => value !== ""));
+        const filteredConfig = Object.fromEntries(Object.entries(config).filter(([, value]) => value !== ""));
         formData.append("additionalConfigs", JSON.stringify(filteredConfig));
     }
     return formData;
 }
 
-async function startRun(apiAddress: string, apiEndpoint: string, requestData: FormData): Promise<any> {
+async function startRun(apiAddress: string, apiEndpoint: string, requestData: FormData): Promise<StartRunResponse> {
     try {
         const response = await fetch(apiEndpoint, {
             method: "POST",

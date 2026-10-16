@@ -18,6 +18,11 @@ export async function storeProjectFiles(projectId: string, uploadedFiles: Upload
     }
 }
 
+export interface StoredFileMetadata {
+    fileType: string;
+    storedFileName: string;
+}
+
 export interface ProjectMetadataExtras {
     // Request id of the inconsistency detection (may differ from the project id, see ArdocoApi)
     inconsistencyRequestId?: string;
@@ -123,7 +128,7 @@ export async function deleteProjectDirectory(projectId: string) {
     try {
         const fsHandle = await navigator.storage.getDirectory();
         await fsHandle.removeEntry(projectId, {recursive: true});
-    } catch (error: any) {
+    } catch (error) {
         console.error(`[ClientFileStorage] Failed to remove project directory ${projectId}:`, error);
     }
 }
@@ -140,7 +145,7 @@ function getStoredFileName(fileType: FileType): string {
 /**
  * Reads metadata from the project's meta.json file.
  */
-async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle): Promise<{ files: any[] } & ProjectMetadataExtras> {
+async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle): Promise<{ files: StoredFileMetadata[] } & ProjectMetadataExtras> {
     const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`);
     const metaFile = await metaHandle.getFile();
     const parsed = JSON.parse(await metaFile.text());
@@ -151,7 +156,7 @@ async function readMetadataFromFile(projectDirHandle: FileSystemDirectoryHandle)
 /**
  * Writes metadata to the project's meta.json file.
  */
-async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, metadata: { files: any[] } & ProjectMetadataExtras) {
+async function writeMetadataToFile(projectDirHandle: FileSystemDirectoryHandle, metadata: { files: StoredFileMetadata[] } & ProjectMetadataExtras) {
     const metaHandle = await projectDirHandle.getFileHandle(`project.meta.json`, {create: true});
     const metaWritable = await metaHandle.createWritable();
     await metaWritable.write(JSON.stringify(metadata, null, 2));
