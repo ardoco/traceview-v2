@@ -54,6 +54,8 @@ export default function DroppedFile({
 
             <Button
                 onClick={onDelete}
+                aria-label={`Remove ${file.name}`}
+                title="Remove file"
                 className="text-red-600 hover:text-red-800 transition-colors"
             >
                 X

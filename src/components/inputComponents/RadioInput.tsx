@@ -66,7 +66,7 @@ export default function MultiOptionSelectWithInfo({
                     </span>
 
                     <DisplayInformationQuestionMark
-                        title={traceLinkType.name + " (" + traceLinkType.alternative_name + ") TraceLinks"}
+                        title={traceLinkType.name + " (" + traceLinkType.alternative_name + ") Trace Links"}
                         descriptionToRender={<span>{traceLinkType.info}</span>}
                         disabled={!checkCanBeSelected(traceLinkType)}
                     />

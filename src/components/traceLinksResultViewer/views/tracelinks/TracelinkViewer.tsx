@@ -100,11 +100,11 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
     }, [traceLinks, selectedSortMethod, handleSortChange]);
 
     if (loading) {
-        return <LoadingMessage title={"Generating traceLinks, this may take a few moments..."}/>;
+        return <LoadingMessage title={"Generating trace links, this may take a few moments..."}/>;
     }
 
     if (sortedTraceLinks.length === 0) {
-        return <LoadingMessage title={"No traceLinks found."}/>
+        return <LoadingMessage title={"No trace links found."}/>
     }
 
     return (
@@ -147,7 +147,7 @@ export default function TraceLinkView({headerOffset = 10}: TraceLinkViewProps) {
                         <DownloadFileComponent
                             fileName={"tracelinks.json"}
                             prepareDataToExport={prepareDataToExport}
-                            title={"Download Tracelinks"}
+                            title={"Download trace links"}
                         />
 
                     </div>

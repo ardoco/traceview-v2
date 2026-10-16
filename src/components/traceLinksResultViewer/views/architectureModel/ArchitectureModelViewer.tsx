@@ -69,7 +69,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             <TooltipInstruction
                 title="Instructions"
                 instructions={[
-                    {keyCombo: "Click", description: "Highlight traceLinks"},
+                    {keyCombo: "Click", description: "Highlight trace links"},
                     {keyCombo: "Hover over interface's name", description: "display details"},
                 ]}
             />

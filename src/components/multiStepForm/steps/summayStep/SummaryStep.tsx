@@ -7,7 +7,7 @@ export default function SummaryStep() {
     const [isConfigExpanded, setIsConfigExpanded] = useState(false);
 
     const formatKey = (key: string): string => {
-        let formatted = key.replace(/::/g, ':: ');
+        let formatted = key.replace(/::/g, ' › ');
         formatted = formatted.trim();
         // Capitalize first letter of each word, handle special cases
         formatted = formatted.split(' ').map(word => {
@@ -54,7 +54,7 @@ export default function SummaryStep() {
                 marginBottom={1}
             />
             <SummaryItem
-                label={"Selected TraceLink Type"}
+                label={"Selected Trace Link Type"}
                 inlineValue={formData.selectedTraceLinkType ? formData.selectedTraceLinkType.name : "None"}
                 marginBottom={1}
             />

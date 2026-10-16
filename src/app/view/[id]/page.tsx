@@ -39,7 +39,7 @@ const pollForResult = async (apiAddress: string, id: string, signal: AbortSignal
             return data;
         } else if (data.status !== "ACCEPTED") {
             // Throw an error with the message from the server
-            throw new Error("An error occurred while running the pipeline in ardoco: \n" + data.message);
+            throw new Error("An error occurred while running the pipeline in ARDoCo: \n" + data.message);
         }
 
         // Keep polling
@@ -147,7 +147,7 @@ export default function NewUploadProject() {
 function LoadingBanner() {
     return (
         <div className="w-full bg-gray-100 text-gray-700 p-3 text-center font-semibold border-gray-300 animate-fade-in">
-            Generating Trace-Links, please wait...
+            Generating trace links, please wait...
         </div>
     );
 }

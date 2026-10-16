@@ -72,7 +72,7 @@ export default class FormValidation {
             errors.push("Project name is required.")
         }
         if (selectedTraceLinkType === null) {
-            errors.push("No traceLink type could be selected. Please upload files with different types.")
+            errors.push("No trace link type could be selected. Please upload files with different types.")
         }
         return errors;
     }

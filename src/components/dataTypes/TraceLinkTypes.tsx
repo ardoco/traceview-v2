@@ -18,7 +18,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         name: "TransArC",
         alternative_name: "sad-sam-code",
         api_name: "TransArC",
-        info: "Finds transitive traceLinks between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
+        info: "Finds transitive trace links between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
         providedFiles: [FileType.DOCUMENTATION, FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML, FileType.CODE_MODEL],

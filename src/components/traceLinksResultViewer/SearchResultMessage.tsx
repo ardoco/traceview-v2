@@ -52,8 +52,8 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
         if (source == MessageSource.TRACELINK && displayTraceLinks) {
             parts.push(
                 {
-                    text: traceCount === 0 ? 'no traceLinks' :
-                        traceCount === 1 ? '1 traceLink' : `${traceCount} traceLinks`,
+                    text: traceCount === 0 ? 'no trace links' :
+                        traceCount === 1 ? '1 trace link' : `${traceCount} trace links`,
                     type: 'tracelink'
                 },
                 {text: ' found.', type: 'normal'}
@@ -70,8 +70,8 @@ export function SearchResultMessage({displayOptions}: SearchResultMessageProps) 
         } else if (source === MessageSource.PROVIDED_PROJECT_ELEMENT) {
             if (displayTraceLinks) {
                 parts.push({
-                    text: traceCount === 0 ? 'no traceLinks' :
-                        traceCount === 1 ? '1 traceLink' : `${traceCount} traceLinks`,
+                    text: traceCount === 0 ? 'no trace links' :
+                        traceCount === 1 ? '1 trace link' : `${traceCount} trace links`,
                     type: 'tracelink'
                 });
             }

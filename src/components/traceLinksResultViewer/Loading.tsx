@@ -17,7 +17,7 @@ interface ErrorMessageProps {
 export function ErrorMessage({error}: ErrorMessageProps) {
     return (
         <div className="flex justify-center items-center h-full text-red-500">
-            An error occurred: ${error}
+            {`An error occurred: ${error}`}
         </div>
     );
 }

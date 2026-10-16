@@ -19,7 +19,7 @@ function MultiStepFormLoadProject() {
 
     const steps: Step[] = [{
         stepperLabel: "Upload Files",
-        title: "Upload the Project Files and TraceLinks",
+        title: "Upload the Project Files and Trace Links",
         description: "Upload your existing project files and the JSON file containing the trace links.",
         validation: () => FormValidation.validateExistingProject(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     },];
@@ -94,7 +94,7 @@ function MultiStepFormLoadProject() {
         <div className="flex justify-between w-full mt-8">
             <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
             <Button
-                text={currentStep === steps.length - 1 ? "Visualize TraceLinks" : "Next"}
+                text={currentStep === steps.length - 1 ? "Visualize Trace Links" : "Next"}
                 onButtonClicked={nextStep}
                 disabled={loading || errors.length > 0}
             >

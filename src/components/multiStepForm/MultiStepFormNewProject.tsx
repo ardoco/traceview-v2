@@ -46,12 +46,12 @@ export default function MultiStepFormNewProject() {
     }, {
         stepperLabel: "Project Details",
         title: "Project Details",
-        description: "Enter the project name and select the type of traceLinks you want to retrieve. To additionally find inconsistencies, check the corresponding box.",
+        description: "Enter the project name and select the type of trace links you want to retrieve. To additionally find inconsistencies, check the corresponding box.",
         validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
     }, {
         stepperLabel: "Configuration",
-        title: "Configure ardoco",
-        description: "If you want you can adjust the default configuration for finding traceLinks, else proceed with the defaults.",
+        title: "Configure ARDoCo",
+        description: "If you want you can adjust the default configuration for finding trace links, else proceed with the defaults.",
         validation: () => [],
     }, {
         stepperLabel: "Summary",
@@ -182,7 +182,7 @@ export default function MultiStepFormNewProject() {
         <div className="flex justify-between w-full mt-8">
             {currentStep === 0 ? <span/> : <Button text="Back" onButtonClicked={prevStep}/>}
             <Button
-                text={currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
+                text={currentStep === steps.length - 1 ? "Calculate Trace Links" : "Next"}
                 onButtonClicked={nextStep}
                 disabled={loading || errors.length > 0}
             >
