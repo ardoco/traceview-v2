@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:19a103c2c69be49ab1a5f41b2067906bb29f4ce521f646871c4991f603286b3b",
+  "claims": [
+    {
+      "id": "claim_8c7dbfb226d847a18e7f4be125d5ba9b",
+      "statement": "src/app/layout.tsx wraps every page in ApiAddressProvider -> NavigationProvider, renders NavBar above a fixed scrollable content area, and loads globals.css, the Inter font, and global metadata, so the backend address and navigation guard are available to all routes without per-page wiring.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/layout.tsx#L23-L44",
+          "version": "repo-lines-v1:sha256:694db417bfff973a5cc959400372b376c3f891acd5b03eb375b0bd14c46cd969:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MDIwOTgwNzA2OTc3YTZiZDU0NGI1OTVhYWQ4ZjgwYTc1M2IyMTNmMmI3NzVjNzgxZGFiZTQ0NmFmN2YzYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwYzFmMTg4ZjE0MmVkN2E4MjQ2ODBiMjA3MTcyYzU1MTliYzYxNGE0OGZkYTdjZjE2N2VkYjhkZGY3OTk1NmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2fcaa01f1e94479dbf567fcf4c0277f7",
+      "statement": "src/proxy.ts is the app-wide handler for /api/* requests (config matcher '/api/:path*'): it reads the X-Target-API header, rejects a missing header or unparseable URL with 400 and a non-http/https target with 403, and otherwise rewrites the request with NextResponse.rewrite to `${target.origin}/api/<path>` while preserving the original headers; the repo defines no local API route handlers.",
+      "evidence": [
+        {
+          "resource": "repo://src/proxy.ts#L5-L35",
+          "version": "repo-lines-v1:sha256:f9fcbe9891d0523e1c92fa7de4bd6d536f6e469add15ceb70eb5fedda4dc805f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4ZmY3NzdmNGMyMjBjYTI2YWQyY2UzNmQ5ZWM4NTY1YmFlZjJlNmNiZWQ0ZjZkYzllNDM4NDkzMWQ4YTA2OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNDhmNTk3ZThjOTljNGRiMDlkMjNmNDJmNDg5MWM3MDgxOTY1NGY2NzU3MTlkZWU0MGNhY2VkMWY2OWM4Y2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fea3afe7088d49c885e4fa28db857611",
+      "statement": "All backend access from the browser goes through /api/* fetches that carry the X-Target-API header: ApiAddressContext probes /api/health, ProjectUploadContext fetches /api/configuration, fetchArdocoApi posts the pipeline start endpoint, and the /view/[id] page polls /api/get-result/{id}.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L29-L35",
+          "version": "repo-lines-v1:sha256:33efec7dca0027739f913ad711681945169e85d436c3f886da376805b6dadf88:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDUyZDhlMzBmMTkyMzYzYmE2OTNhYmY5NzA0M2QzMzI2NTkzMWJlYmY3NjQxY2JlOWE2NWRhNTRiMjFkNWM4NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM1Yzc0MDdkMjBmMmQ0MWQ3NDZlOWRjOTBkY2EwMWZhYTZmYWQ5NzJmNmY1ZWExMGY2ODU2MzQ2MDJlMGI5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjAyMzU3M2Y1YWQwN2U4YTEyZjlhMGI1NGY2ZTZiZTM2MWQ4NzUyMWE1N2IyYjBjYWUyMGQ3NmVkOTdkMjcwZiJ9"
+        },
+        {
+          "resource": "repo://src/contexts/ApiAddressContext.tsx#L31-L39",
+          "version": "repo-lines-v1:sha256:01a2f60182de518e1091d791da2cb68490f3047ca4e514fe0d3bd097f009d5c1:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg3OGEwN2Y1ZTcwYWEyNTU1NmVhMDBhZWRmZWE0ZGY5ZWY5OWVlODZkMjc0Mjc1ZTAzYjdlOTdiNGZjYWQ0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU0NjJiZDg1ZWEzNTIyODIyYTlhZDNlYjI0MDk5YjAzMmExYjYyN2JlY2ZkN2M1ODMxZTk5MjdkNGJhYzQwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWE3MTc1YjFkNmI3MzYwNTM4YjRlY2IxOGMzODNlNjBjNTNjNTRlYTU3ZDQ3ZmFhZjBkYWI1YWJlMTY2NmU1ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjI1NWE4Y2I0N2FhYjRkNmMwZjc2YTgxZmU4NTJhYTU4ZDg5Y2JhMWVjNTkzODk2OWMzYTZkODRmZTFjZThiZCJ9"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L66-L71",
+          "version": "repo-lines-v1:sha256:d0b738644069bb997782373968156edd230864859373e8fa5603b3ba940db736:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNiNWVlZTk1YmY1MTZjZTAzZGE0MTVkOGI3YmQwYTI0ZTE0ZTBiZjhiNTU5YThiY2FmZDY4NzAxMmRjNWQ0MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q5OWU3YzQ5NzEzYzMzNzY2NzcxMjkxZGJjY2MzNzY0YzQ5OTU3ZTk3ZTQ2ODI3ZTc4MjEzOWIzYWJmOTk0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDg4OWRhNmU3YTgyYzRhZGFlOGU5Y2NiMGRhZGMzOTQ2MTBmYzVlNmM5ZjAzNDYzNjlmNTA1Njc3MWU2ZDNlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTc4NGQxZGY1MGU3OGViZTQ1YTc5ZWMyYmMzNWNkNDc5YjhlNmY2MDEwZDgzMWU3ZTUxMjAzZmMxOTNhNTI5NiJ9"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L102-L109",
+          "version": "repo-lines-v1:sha256:3087eaef982582bf45d79b4f00822244d80c40539f670b7819b3aea4c8cb59e0:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTFkZjg3YTQ3MzE2YzcwOGM1NTAyMDk4ZTlhZjZjNDQ1MzRlYjgwYmVhZGNmNjA2MzAyOGVmY2E4NTkzN2FiZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTljMTM1OTA2NjU2MzIzZDFjNWVhNDE2NTRlZTY2YWZiNTg1YWNkY2ZhZWFjYTEyMWQ1ZTMwYmYxOTNlZWRkNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODVmNmU5ZDBmNDAwMTQyMTJmNWFjZWFkMTZlYzY0Njk4ZjQwMTA1YmMxNGMxYzcxMGZjZjFhZWQzM2EyZGY1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjUwZGM5ZWY1NzhjNTU1YjU0OGYxOTY2MzI3ZDFhNDExMDYyNmI3OGJhZDAzM2RhNzliNmE5ZGU2MDkwNmFmZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3cfa04b138344dc1959d57e979e04b9e",
+      "statement": "ApiAddressContext defaults the backend address to https://rest.ardoco.de, hydrates it from the localStorage key 'apiAddress' on mount, and setApiAddress normalizes the input (strips any /api/ suffix and trailing slash), probes it via GET /api/health through the middleware, and only persists to localStorage and applies the address when the probe succeeds.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/ApiAddressContext.tsx#L6-L53",
+          "version": "repo-lines-v1:sha256:029b5b17894bdfd65707e01164f73662357999840bebc44a70850732fb03894e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MzYwMzI4NTU1YzU0MWYwZGU1OWIxMjFhNjg4MTBkMmMwY2NjNDU4NGJjNGViOTliYjk1NjNkMTU4NjMyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3OGI2YzZhMTgxZGExYmFmYzlhMDQ1MjMxZDQwNjk0ZmQyNzk0NjlkYTg5MTQ2MGM5MTVjYzEwNWIwMTI3NmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyOWE4YTZiYzI1NTk3NjlmYTRlYjI4YjcyZTUzNTY4NGIwNmYzOGE3NGI2OGNhMzE2NGYwOTBlYzJmMGI2ZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_186bb69b83e048ce84da07348dacc063",
+      "statement": "ProjectUploadContext owns the wizard form state (projectName, selectedTraceLinkType, files, errors, traceLinkConfiguration, findInconsistencies); FormProvider takes an allowedFileTypes prop from the route and fetches /api/configuration with X-Target-API whenever it runs with an apiAddress, exposing configurationLoading/configurationError plus originalTraceLinkConfiguration, and updateFormData automatically resets findInconsistencies to false whenever the resulting selected type is not SAD_SAM.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L46-L99",
+          "version": "repo-lines-v1:sha256:74ee417a3a5aab4494ef816ee7e8dfea343b53d7526142a94caebaa632135d43:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwMmZkNjVjOTY4MjI3YmQ0NmY4Zjc4OGY2YjhmNzAxZDJhMTBhM2I5Y2Q1YzFhY2NiYjI2MzcyMzQ1MDgxOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1M2EyOTJmZjAyYzRkMTc4OWEyYjY5NmM5ZWUzMGU5NzM3NWY1ODZkZjQ5ZjY4YjNlZTcyNzhhYzY1NjdjZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ZTVjZGMxZjFkOTdlZDY2YjRmYTlkNGU0MGU2YzI2YzY1MGIwNWVhNzk2OGRiYWJiNmQyOTU5ZmFjNzY1NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a7bdefff975d4c3a90729d487f3e1ab7",
+      "statement": "NavigationContext tracks the current project id; when one is set, handleNavigation opens ConfirmNavigationModal instead of navigating immediately, and confirming deletes the project's OPFS directory via deleteProjectDirectory, clears the id, aborts the shared AbortController (exposed so the /view/[id] polling fetch can be cancelled), and only then routes.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L25-L57",
+          "version": "repo-lines-v1:sha256:0646afb273fe2a5b41ddbf5239243cb46b3dffd43a80091e273534440c30b710:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OTcyNjEzMTljNTA3NmI1NzhmZDhhMjViZDk1ZDcxN2ViYWYwNjc2Y2VhMDYyMzcyMWY3M2M4ZjNlZDdkYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjM2EwY2ZlNGNjNDE5YzIzN2IxMDQ1OWNlNzU0ZDQ5YzYwMjZhYTE2NTJiNDhjZmIxMzQxOTRlNzI5MjViOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NWU1MjY4NWI0MzIwYmZjMTkwY2I4ODcxMWYwZjU2NjJhOWM4YTJhZGI0YmU4ZTJhYTk4YzZmZjRmN2RjODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_30f6dc587c9a40d08fbb09094250a37e",
+      "statement": "The route map is: / (landing), /new-project (FormProvider with allowedFileTypes excluding TRACELINKS and INCONSISTENCIES, four-step wizard), /load-project (FormProvider with all FileType values allowed, single-step local-storage flow), /view/[id] (backend polling), and /view-provided/[id] (locally stored projects).",
+      "evidence": [
+        {
+          "resource": "repo://src/app/load-project/page.tsx#L10-L13",
+          "version": "repo-lines-v1:sha256:fb69ca28ef81500d2425bb0b4e0eeff841b51e4f5a64346d6fc8615368ee0043:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDMyZWRlNjNjYzhjZTQzNzQ0Mjg1ZjZkNDY3OThkZDBkOGVlZDliN2I2ODMyOWY5OGZmN2RiMmU3MDdkMjAwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWIzYmIwNGRlZjUxNDIzNDhjZDU5Y2FhNDRkY2I3YjM5YWRjZjVlMmJjOGM3YWQ3ODA4ZWRhZGJmNTIxZWEyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjVhOGY4MjA2Y2NjNGQ2MjcwN2ZlYjhlNmNlZGIyMzgwY2UxMGU5YjE5NWE3NTIzYjE2OWVjZjcyZWZlMWIxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjVhOWNhZmM3NjFhODA2NmYxZjYwMmM1OTM4MDA5NTNlN2U4OTlkMWZhZWNkZWRkYmI3NjgxNDIyOTcyYmIyMyJ9"
+        },
+        {
+          "resource": "repo://src/app/new-project/page.tsx#L10-L14",
+          "version": "repo-lines-v1:sha256:184ed0fe482b415a0a90f609c9f291f6901655d1a59ff2199b651dac09dc4f2b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU2MTM3MTZlZWY0ZDZkMWFjMDAyMmFmNzc2MTYwZmI3Yzk2NzFjYWM3NjMzMGFmYjUxZTIzYTE3Mzk0ZDNkMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWIzYmIwNGRlZjUxNDIzNDhjZDU5Y2FhNDRkY2I3YjM5YWRjZjVlMmJjOGM3YWQ3ODA4ZWRhZGJmNTIxZWEyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDU2ODMxMjhjOWJlYjFhZTI0M2M3ZDI3MzljNWY2OGEwZjZmOTVmZDhkMjA4MTkzNTE5YTc1MTcwOGFhZWNlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmJlMGQ2YzY2MDNlOGRhMDAzY2UxYzdhMzVkMzAxMmY3YjdhMjhiYWMyZjYwODBhMTgwMjI4MzMwOGIwZThjNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fbc3559c352b47cfb991f9778cd3f143",
+      "statement": "The landing page's Start button is a Next.js Link to /new-project, routing users into the project wizard.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/page.tsx#L36-L41",
+          "version": "repo-lines-v1:sha256:63c40bf8ee9807fdd19b4bb27743f947c939f4df0df523991e7d779bfc343a92:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTM5ZWU1MzljZjQwOTI5YTAxYzU0ZTM2MWEwOTlmNjE1YjhlODk0ZjQzMTE1ZGZhYWQxMzNhYjg0OTcxN2I4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RlZTI5ZmRiMGMxZGNmNDQwOTEwZjJjNGI2YzhlYTI5NmZkMWFiYTU3ZTdkMzVlYTlkODgyNzc0ZDRkNTE4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDNiODFiZDBkMmE1M2JmOTc5YjFhMDAxYzQ4NTZkOTk1YWZjZDY1OWUyMDBmMWMzOWI2OGM4ZDJiZjkyZWQwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmNjNzRmZmExNjg3NzUzNjM2MGU5Y2E3MjAxYjAxYzkyOTlmNTFlOWRmZDJmNTg3NmY4MzUzMWFhZjg4MmI4YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1156bc8b76914f46925ccff2a87690e5",
+      "statement": "next.config.ts sets pageExtensions to [mdx, tsx, ts] and output to 'standalone', and the Dockerfile builds once and runs the standalone server.js on port 3000.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L39-L49",
+          "version": "repo-lines-v1:sha256:3dd1b96750938a4c5cd5149d157bfd48001384bf2f71cfff0c47809cd18f788a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5Y2M2YmU1MmRkOTUwZDk2ZmFlNWRiMWU4MDhlYzk5ZmJlMDE5YTA4ZDRjNDIyNDBlZjc1NzI5OGExM2U5MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YjlmMGM1NjYzOTRhNjc4MzUzMjhlMTFkM2YzYWE2MTBjNWI2NTRiZWUwNjhlZDUxZTBmMzE0YTY3ZTFjMjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhNTdjODQzZjdjMzliZjZkMmZmMjFmODA2MmMzODRhMzNhODhiMTUzOWQwNzViYWRiOGM1NTY3YTQ4MGRjZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxOWM4MTQxMzI3MjE4YmFmNjUwYmM0NDU0YzUxZDQzNjg1MzNhMGQ2Mjg4ZGQ2ZjBiZTk2MjJkZjRkZDkyMTYifQ"
+        },
+        {
+          "resource": "repo://next.config.ts#L3-L7",
+          "version": "repo-lines-v1:sha256:406f641cca2c18c6367ec60576323286ae7f7c5bbfa0eb179340b6356b9d1c36:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI4Mzk1ZDdhNzlmNjgyNDRkZGE2ZDdiZjliMmMwZjFkODVmZjhlZTNhMDkxYmJiYzI5Njc2MGJiYzE3OWFjOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWExZDFhNjMzOTAyMjljNzk4MzQ3ZTgzYTA0MDU0NDFjOTQwMDAzNTI4NGFkMTY4YzFiZjZjZGYxZDcwYTM3MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2M1MGQ1Njg1NDE3MmFjYjhkNTFmM2JjZDc1ZGQzZjlhMmMzMjIyOTViNTc5MTc4MDQ2MjRiYTI3ODM4MmEyMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWNjYTZiOTM1MDc4ZTNmYTFhM2U1ZjJmM2Q5MTAwZTU2YWE4MmI1MTdmODA2ZDM5ZmYyOGQ3YmUxZTc2MDVmNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_261ad7bf96e342578176f7b511bcc566",
+      "statement": "On the wizard's final step, MultiStepFormNewProject submits via fetchArdocoApi, stores the submitted files (result.usedFiles) and metadata for all uploaded files under the returned requestId, then redirects to /view/{encodedRequestId}?type={traceLinkType}&inconsistencies={bool}.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L76-L78",
+          "version": "repo-lines-v1:sha256:df2dd76d21c01982539c6ba472c3d8c4331add87b38d8d90c1bfd6c2cd10b7b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk4MzU5MTBiNzI4NTcwYWExZGJhYjlmY2EzNmZkZTcxYTAzYTk5ZWM0MDM1MzBiZWU0ZWFkMDdmZjFkOGE1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWM0ZDg1ZjQ5N2NiMWM2ODYzODBhMTJmYTQwMWQ0MzNlOGNjOTAzM2NlZGRjMDJlN2E5YWRmNDdkY2RiMmJlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmViODI4MWExMzZmYmY2NDZhNjNhNDIxYTQ1Y2IzYjkxYjVmMzRhZmEzZWEzY2E4M2Q1YTBlNjgwYWZkNTQ1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTcxOTU3ZjI4NWNmM2Y2MmFmZTAzNDdlMTVkNTY3MzBhNWE0ZjIwM2IyN2M4MjdhZTNmZTE1MWZmNzBjNzdiZCJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L93-L120",
+          "version": "repo-lines-v1:sha256:21258f5cde2efe679957c8e907c25c0cbb8910eff1c2ed745781a0de0695ad3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51603f5f358641629391d1de28361fc2",
+      "statement": "fetchArdocoApi validates the pipeline's required file combination, builds a multipart request with projectName, additionalConfigs JSON (empty values filtered out), and per-pipeline inputCode/inputText/inputArchitectureModel fields plus inputArchitectureModelFormat (PCM/UML discriminant), and posts to /api/{api_name lowercased}/start or to /api/find-inconsistencies/start when findInconsistencies is set (only permitted for SAD_SAM); it rejects a response without requestId and returns the used files.",
+      "evidence": [
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L102-L123",
+          "version": "repo-lines-v1:sha256:cb054b7a509f330baf8d761ecc4fd51395d818fa471b8e67dc822a41bb1b0bee:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExZGY4N2E0NzMxNmM3MDhjNTUwMjA5OGU5YWY2YzQ0NTM0ZWI4MGJlYWRjZjYwNjMwMjhlZmNhODU5MzdhYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZjZlOWQwZjQwMDE0MjEyZjVhY2VhZDE2ZWM2NDY5OGY0MDEwNWJjMTRjMWM3MTBmY2YxYWVkMzNhMmRmNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4ODk3YTU5YmI4Yjg2YzM4ZWM1MjlkYWUwNjJiNzkyZDBkNmQ5ZjljMzA0YzgxZTdkNWI0YzVmZTk1MzI4MWUifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L17-L100",
+          "version": "repo-lines-v1:sha256:4e7b86041d264111ff5ba5a463a37b8435a19a9ef6cc328b0da6939198a57f17:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxNTNmYTE5ZWY5YzRjNWU3ZDhiNzAzYjM2MTNkNDYyNzU2MGUwNTJkYTNkZjNkYjRmMWY3ZWFmMzdjM2E4NzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmMjA2N2EyM2I1ODYzYjQ3YWE2OWNiMDY5ODYxZmIxNjZiNGM0Y2Q3MWVjOTQ2MWFlZDBhZWQyOWQzMThkYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzNzY5ZmM5NDdkODIyZjhkNWFiNWZiM2FjYmE0NDZhZWFkZmQ2ZmQwMDMzOGQyZGI5MmJhYjc4YjYyMWFiNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1426073d99842f6aa979a30ddb768ab",
+      "statement": "The /view/[id] page polls /api/get-result/{id} every 5 seconds for up to 240 seconds using the NavigationContext AbortController signal: status OK returns the payload, ACCEPTED keeps polling, any other status raises an error carrying the backend message, and the timeout raises a still-processing error; AbortErrors are swallowed so navigation away ends polling silently, and failures surface in a LoadingErrorModal with Retry and View Files Only options.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L106-L113",
+          "version": "repo-lines-v1:sha256:9110c7da407d1d0b8ddad3acdf83e45ac56806354335ac7054bf7dcb00695d9f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYThlMDBmNTEzMmQ5ZjcxYmUwNjQwOGQyNDBhMjJiODE5OWJkZGQ2ODFiOThiNGQ4OWI4NTQ5MjRjYmE3MTdkMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTg0NGU3NjgwZjg2ZWIwNTY1YmFlNTg4ODNmYmI0ZjM4M2RlYzJkZmNkMzQxMWMzZDExN2UzODJlNzhlMjNiYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2U3NzUzMzM4ZWYxMDEyY2YxODJhMzVlYTljNzQ1YmVhMDcyMDgwNTVlN2RmOTI3NDQyNWRmMTA0NjNkYTc3YiJ9"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L21-L50",
+          "version": "repo-lines-v1:sha256:78fe7273ecd31616b768d8880ad20378ee329b0c1cca6e35375b3f7399558fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYWNmODk1OGU4YmMwMTE2NGU0NzlkMjZkMjI4Nzc0MTliZGM2MmVhZTJkZjBhZDBlNDk3ZGM3YmE0MzJiOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjM2MDIxZmRlNDQ0ZjlkNWI2MDY1Mjg4NzU0Njg4ZmFiNDYyNTRjMDZlNGUzZTdkMGY3ZDI1ZmVjMjgxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_329b1a94d561429fa054947493877f55",
+      "statement": "The backend result fetched via /api/get-result/{id} contains only trace-link and optional inconsistency JSON: on OK the /view/[id] page parses response.result.traceLinks and, only when the inconsistencies query parameter was set and result.inconsistencies is present, response.result.inconsistencies; displayOptions are the trace-link type's resultViewOptions with TRACELINKS unshifted first and INCONSISTENCIES appended when requested, with the type taken from the type query parameter (fallback SAD_SAM_CODE).",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L66-L76",
+          "version": "repo-lines-v1:sha256:a83ed13b42c5c543bbe2be38ec7b1102644aad6bde818443f2daa3e340b3c1d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkMWNjMDQ2OGQ1YmE0MGM1YTZhNmMzYWRiODVjNmYzZjFkMDM2NjIxMTExYWFkZmU2ZWZkNDFhZTljY2UwMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3OThkNjY2MzI2Y2Q4ZGMzYTVlY2ZiMjIzYzZmZWY3NTQ4OGU3ZmU1NDIxNTQ3NTRhM2Q1ODcyZGE1MGQ5NGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZTQ4MzBlNjA4ZTM3NTVjMDRkZTI4OTM3OWQ4NTQxMjBjYTIxMzI1N2I1NmQ1ZDZjZWRjM2IzZGViZjE0NjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyZWY1MjBjZTUyMGZiNzkxODQ1MWNmMjQ4NTJmMmU5M2I0MTBiZTdkOGVlYTdmZTViZTJiOWU3MWE5Yjk5ODMifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L97-L104",
+          "version": "repo-lines-v1:sha256:e3480228aac6ad9e1931b9914b53cec83d414195bee91a49d0db4c7796736a07:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE5N2IyZTgwMjY5NTc3ODRiMTU1YzQ0YTg3NDVhMmQ5MTZhNGFmMDc4M2U4M2Q0OTQ2NjFjZGE4MzhkOThlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUyMmM0MmNkMTljNmQwM2Q4MDhjNDUyNzIwNTUyODI1YjdlYTFjNWI0OTFiMjE4NTExY2FjNzQxNWNmOWQ5YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzhkNzZhY2VlNjQ1M2Q1ZGQ0OWM3ZWYxZGUyMDZhNmE4MzA1M2M0M2QzZGQ3N2Q0NmUxNTcwZGE1Mjc4YTU1ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWYwMDNhNWY5MGRjZWFiZGQ0MWM0M2FmYTQwNTJjMGY5NjQ0YzhhZGJhNWZhZTQ2NWE0YTk0YWZiNGVhNjRhOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6cb6fa13686f429a87bb49d578184a43",
+      "statement": "/view-provided/[id] reconstructs a result purely from browser storage with no backend call: loadProjectMetaData returns the stored file types, stored TRACELINKS JSON (traceLinkType + traceLinks) and INCONSISTENCIES JSON are parsed into typed models, and displayOptions are derived via getResultViewOption.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L113-L127",
+          "version": "repo-lines-v1:sha256:b4df6b5ef76ef3b4f35e03c4cd2b9224a703426b2466374d49da6d866f5b1820:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNjdhMGIzM2E5OTAwZDVjMDRhMjBhNDk2YjNiMjI1MGQ5ZDAwMzhiNjg2NWJmYmU3NzI1YjViODI4YWY4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1NmU3ZmE4YWUzOTUyMTJjNGQ1NGE5MDUwZjc1YTc0NDBhNzFlOTk0ZTBlNzcyZjEwNzU2M2ZiODc3YmQ3ZWIifQ"
+        },
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L74-L105",
+          "version": "repo-lines-v1:sha256:f85741d66def36eab402e26d455313161e180c70b78d25f03b0f2a8a1ef34389:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NTdjY2YzNzc0Y2Y1OGM1OTQyZWNmZGI1YTBhZGUyOTEzYWMyNWFhYzQ2MjY0ZTkyY2QwN2FkZTZmMWYzMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4ZmFkMGNkMTI5MjIzZGE5MDEyYTIzMDIxOTAyYmVlMmQ1ZWViZTQ2MGI4NzA1ZjBmNDQ2YTNhZDdhYjJlZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzYzE1YjdlODI1OTUzNjM3ZDk5OTlhNDNiOTZmOTViNWYzZTVhZWU2NDI2ZWY4NDY5OWQ3OWMzYzk3YTE5ZDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7bc17b2f98e4d1ea2b6542ede66eb17",
+      "statement": "ClientFileStorage persists each project in a per-request-id directory under navigator.storage.getDirectory() (OPFS), writes files under canonical stored names where both architecture-model variants share the name 'Architecture Model' (the actual format is resolved via project.meta.json), stores metadata as JSON, and supports recursive deletion of the project directory.",
+      "evidence": [
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L6-L39",
+          "version": "repo-lines-v1:sha256:25f82842de6fd09ebc083671e3de697ec0063afc859e0f9af6b82635ad67d35e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxMWFhMmNkNzM2MTdjZDEzZTVlMWFiNDlkZTRjN2M5YzkyNTY2MTM4NmRkY2Y5YmViYzQ4ZWFjZDA4NTBiYTUifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L95-L115",
+          "version": "repo-lines-v1:sha256:3c95385b988abac1d82a71db61127395db2101d38cb8d22f6f7dfb772715b7d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YjJiNTJlODM5MDQ5MjA5MGE3NDA4NGY5NmRlMDI1NmMzYWIzZThlOTM1NWY5M2UxZTc2YWRjZWQ0MzNmZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkNDI4ZTM5ZmM1NGMzNWI1ZDRiMTFiNjUyOWI2ZjVhMjFiMzQ0OWQ3Mzk4YzU3MTEzNTY1OTk0NGU3MzU3YTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyNWQ0YmUxNTUwNmJkODg5YWI5NGUyZjZjM2JlYmU1M2NkYjY1NDdkYjY1YTAyMjhjODE2OTgzN2M1OTFjNzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8b92c636736458fb09ed0d4db5bf24e",
+      "statement": "The result viewer renders up to three resizable panels (displayOptions.slice(0,3)) with only the first and last collapsible, a per-panel view select plus a fullscreen tabbed dialog over all displayOptions, and a transient search-result toast; TabContent.getResultPanel maps each DisplayOption to one of five viewers (documentation, architectureModel, codeModel, tracelinks, inconsistencies), and the artifact viewers load their input from OPFS via useDataLoader + loadProjectFile and parse it into typed view models.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultDisplay.tsx#L17-L54",
+          "version": "repo-lines-v1:sha256:eed2302c0528aafb064d6b28d473b1896e68dc45e44803009e62b06a37a1e5a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyZmJkMjIwMjNhMmM5MjAyNWU1Njk1ZWZjOWVlZmU2ZGVmNzkzNTYxYjgzZWY2ZTI3NzQ0ODQ3YjlmZTAwMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMjEwOTliNTkwMjBjMDI4NDgzZWRiNjA1ZDY0NmIzZDA4NGRkNTZmNWI0ODkxMjUyNzBkYzVkZGE3NzU2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/TabContent.tsx#L11-L26",
+          "version": "repo-lines-v1:sha256:ce09dcc6e9d3e08413c67c13d6225641ce03a60bdc222dc2acecc68c2e81e246:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMzIwNTQ4NjIwMGM4MjE2YTAzYTUxNzY5OGJiZjFlZDIxMDlhMWZmYzRkMTRlNTI3YzRkNjk3YWYyNzQxNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTAzN2M5NzRkMmU1MGU0ODM1NTkyN2VkYjI1YjdiNjMyYmI5OTdlY2VjZGNjZDA5NDA1ZGYzZmY2YjIxYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/DocumentationViewer.tsx#L18-L33",
+          "version": "repo-lines-v1:sha256:822830a89da5cacaf75978ee7765d0bbe601ecac65d19f752ce7ff4bf7f0e49a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MjAxYjI0NGJmZjE1YjJkMmEzODUxMTZjNGU2OGFmZmI5NmI5NTFiYzg3YTFiYWJiODdiZDQxYzlmMDI5M2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZmNlOWQyYTUyMjI1MTViYjI2OTdlNWNhN2NjMzFlMWRmODgzMzBlOTZiMDI1ZWI3NjdlYjI3YTk5NGZmOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNTZhMThmYjcwOTkxNDdjNzkzZGJlODg3YWRiOWU3ZjEzNzAxYjA0NjJjYzliNjEyZDcwYTUxZTU4M2JjNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwZTUwNWFmYWJjNmExMjA4MTI2ODRjOTAzZjY2ZGUxYWM0MTAxMGU5YWQxODdlNWQ1ZjIzNDUxZTJjNTExYWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_908c8adad43348edb301333d3a1906d1",
+      "statement": "Both result routes wrap ResultDisplay in HighlightProvider and InconsistencyProvider, making the highlight contexts the shared state layer that the tracelinks and inconsistencies panels read while artifact panels push highlight events into them.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L117-L126",
+          "version": "repo-lines-v1:sha256:e81a1549522344fb51c2152dcd457582e89535fb32f4e1ec600aa6e11577862a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhOGY3YmU4Njg4NDkyNmI4MTdmOTM2Y2JkNGQwMjYyNTkxMzBmNTMyNTI4NTNkNzAzOWI5NDJjNWZiNDA5NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNzlkMDkyYmRmMzNmZDU2YzA5ZjE5MmJkNmQxZDAzZjhkZWEwM2U0YWNmZjcxMWQ3MjliMWZiMGYyZjI2NGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzYWE4ZWRkZmI4NDcxY2I4MDA2YmNhN2E2NTE5OGFhNWFkYmY5NTg1YTdhYzc0NDMwODVkODBkMjI3MGViZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1OTM3Njc5MWU2OTQ3NmY3YTA3MTg5NmRjMjViOTEzN2VmODQyM2UzZTk2MzQwY2NmYWMzMzIzZDQyY2E1MWUifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L138-L141",
+          "version": "repo-lines-v1:sha256:91fbc423b800896d1baef5163b330facc95102ceeb18f4fc793d0417c3238f92:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE4ZjdiZTg2ODg0OTI2YjgxN2Y5MzZjYmQ0ZDAyNjI1OTEzMGY1MzI1Mjg1M2Q3MDM5Yjk0MmM1ZmI0MDk1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmVjNDQ0MjEyNjBhZmFkNjEwMzg4YTMzNTA5MWExYmI0ZjdjMWM5MGI4Y2ZiNmU4MDg2MWI4NTRjNTcyZWE4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTEwNWI5ZTc4NTE1MTJjZTAzODRjNjE0YzUyZTQwNmI3NDdlZWVmMzliODUwYzAxYmU3NjM2ODVjMDliNTU5ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2E2YjkzMDdiMDFmMzYyZTRlZTk0NDE1MmU0Mzg5OTVmMmZiOWIxY2NmNmJlZWI1YWQ2NDlhZjZkNTc5Y2NhYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_02d43c8fc1464cfeb3a8c91e1e032d8e",
+      "statement": "NavBar displays the connected API address from ApiAddressContext (placeholder 'loading' until hydrated) with an edit button opening EditApiAddressModal, and intercepts desktop navigation clicks through NavigationContext.handleNavigation so the leave-project guard applies.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/NavBar.tsx#L53-L56",
+          "version": "repo-lines-v1:sha256:d15992f308d9b446b08fc4ad95279d2b58af546b5cdb870df34913a464b6fd76:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzYWU1NGJlNWM4ZDQ2NWJmMGUyNDViZTQ0N2I0NTg2ZjZmYWQ1Y2Q0NTlhNGM4NDcyODM1M2EyNmYxYTZjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmRlYTEyOGM5MmExMDEyOGVkYzI2OWIwMDVkODJlYmUzYjVlZTI3NWVkNWJmZjU4NzBhODgxMjg4MmQwOWU3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg4MjlmMTFlODNhZGE1MWU5NzhlZWNjMTk5OTRlOTEzMzc5NmQxYzcxNjhjYjA3NzBlMTdiYmM5NGU0YmQ2ZCJ9"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L83-L91",
+          "version": "repo-lines-v1:sha256:ed3f533b4d71bf299a2b276b91f5b1e4f13059d55d56cf892124cfe5a828e906:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmE4MjVhMjg0OGMyOWQ0MWUwN2Y1YTg4MTcyYjAzMGJlMzQ4MmNjZGE2MjQ1YTBkY2U0NTMwM2NiMDIwMDg0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDk4YTI3MjY1ZTUzMTRhZTdhYzdhOWMzZDU2NWZmYjUyYTI5ZmZiOWU4YTQxOWU4MjQ4MjI2OWNmZmQzYzExZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzIzZjIzYWJmYmU2ODU5NDQ0MmZmYTEwNDgwOTYyMmZlMmY0N2Q2MjcwOGQ2OWJjOTViMGU4MzI1YzY4OTk4MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjgyYzU2YmU3MGFhM2UzNmEwYThjN2U3OTk3MWE2ZWU2YWRkZWNkZDk2NjJmYTliZmIxMDgwMGYwNzlmMjc2ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_983917e1fb9d4c43a42ca86a8541d314",
+      "statement": "The /load-project flow (MultiStepFormLoadProject) generates a uuid v4 storage id, stores the uploaded files and metadata under it, and redirects to /view-provided/{encodedId}.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L35-L38",
+          "version": "repo-lines-v1:sha256:a552f1626bf309413e466b9463ce78094e2195ac61036b8fd0805f5b58f4468a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RiMjMyOGQ2OTZkZGM4YTVkMDIzZTAxMWQ4NmY1NzdiYzNhMDIwMDVlZTdmMzViZmI4YWMyMjAxNzdiOTFjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUyMmM0MmNkMTljNmQwM2Q4MDhjNDUyNzIwNTUyODI1YjdlYTFjNWI0OTFiMjE4NTExY2FjNzQxNWNmOWQ5YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTljZjhjZGU5MmQ2YzkzYjE2ZjNjNjRmNzgwMWRiYWM1MTdkMDE4MDE5ODQ2MmI4NWFjYjViZWNhYzZlNmM0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNhNDk4YWU2NTg0Y2RhMDk5OTEzY2ZjMDRmOWM1NjNmZTc3NGUxOTEzMjAzZDY4ZmU5YTUwNGEyMzc2YmYyOCJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L52-L64",
+          "version": "repo-lines-v1:sha256:e82db8bf805ac634ebc4fc57756932ede8e3d70e83270d95b4f793ce7ff89b52:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dca6c3dda2854384868b407f3d075bae",
+      "statement": "When the backend submission call fails, the wizard's error modal offers View Files Only, which stores the project files under the requestId and routes to /view-provided/{requestId} so artifacts remain inspectable without a backend result.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L164-L176",
+          "version": "repo-lines-v1:sha256:8fcf8144b02f7b6ceecde5cecc5a7d90093be919066ef70e4489a687560a6d88:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjOTNlYmY4OTMwNjljZmY5NDlhNjM0OTI3Zjk5OGQwMDYxNzE5NmMzMThlZGM3Y2E1ZWU0NmJjNDNmMzQzMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NzI0ZjMxYjZiMDc4YWZiMzdlODI2YWFlNTM1Y2E5ZGFkOTZkMDEwMjAxYWFkNzNmMzAzZGRiZTA0OTk4ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5OGM1YWRhMDg4ZWE0NjFjZmNjZDRlMzBjMzAwMGZiMjAxZjAwZTVjZjQ5NzdjYmYyOGE1MTgyODJhZTY1YWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzYzM4ZGNiNGQ0NTEwZWI5MzhkMTk3MjNmMTEwMDY1ODIwNzU3NjAxMDMzOTBiMGIyYzFiNGFkNThmOGQ4YWUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}
