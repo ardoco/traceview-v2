@@ -1,0 +1,428 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:913839f264a3e75f91e7e480bced4999b649ccca0db2a2c818a5b4b23d8adf25",
+  "claims": [
+    {
+      "id": "claim_3dbef89258234168bedc36edcc177f6d",
+      "statement": "TabContent.getResultPanel is the single DisplayOption-to-viewer mapping: TRACELINKS -> TraceLinkView, CODE_MODEL -> DisplayCodeModel, ARCHITECTURE_MODEL -> DisplayArchitectureModel, DOCUMENTATION -> DisplayDocumentation, INCONSISTENCIES -> InconsistencyViewer; unknown options return null. Adding a panel requires updating this switch, the DisplayOption enum/labels, and the per-route option lists.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/TabContent.tsx#L11-L26",
+          "version": "repo-lines-v1:sha256:ce09dcc6e9d3e08413c67c13d6225641ce03a60bdc222dc2acecc68c2e81e246:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMzIwNTQ4NjIwMGM4MjE2YTAzYTUxNzY5OGJiZjFlZDIxMDlhMWZmYzRkMTRlNTI3YzRkNjk3YWYyNzQxNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTAzN2M5NzRkMmU1MGU0ODM1NTkyN2VkYjI1YjdiNjMyYmI5OTdlY2VjZGNjZDA5NDA1ZGYzZmY2YjIxYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a2e609244e544d428d69f46aa1bb0faa",
+      "statement": "ResultDisplay renders up to three panels (displayOptions.slice(0, 3)) in a react-resizable-panels Group with a Separator between adjacent panels; only the first and last panels are collapsible. Each ResultPanel's dropdown lists ALL displayOptions (labels from displayOptionName; the tracelinks option renders as \"<name> (<alternative_name>) TraceLinks\"), and FullScreenResultDialog provides one tab per option, so options beyond three remain reachable.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/dataTypes/DisplayOption.tsx#L12-L27",
+          "version": "repo-lines-v1:sha256:256cd01a91ae29f89e185b1339391b6fedc590e71c8376e5ea495d5c0b70f2da:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNzViNmU0NDNjZmYxNDQ0MGE3ODgxY2M2N2JlZmI2ZGFmZDMwNjFhNzg5NjQwMjE4NzRiYWNkYWFiY2ZjMjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkZGRiM2YzYmUyYjQxNzY3OWFlNzhmYjQ2ZGMyMWNmNWYxMGY2YmNkZDY2N2QwYTM5OWVlY2RmZWM2OTg5MjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0ZTQwNGYwOGI2ZTlhYWE5ZDAwZTQ2MWJhMjdmMDU3ZTFhZTQ2NzAyMWEyNTIxZTE4M2NiMDI2ODNjNmIxYzgifQ"
+        },
+        {
+          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L16-L58",
+          "version": "repo-lines-v1:sha256:b21ca75e6fc28999861140a512cd044aecb66bc8a1e41cd9ccf5c7321c8fd4b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxOTgxYThmMzY2NTEyZDgzODIzYTNjMzBhYmQ1OGRhZGJlMzA2Y2ZkNDg0ZWFiZjUwY2Q1OGQ0ZDNiZjUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3MDk5NDQ2OWRmMWExNzVkZjk4YTI5NzZlYWMyOTgwMDc3Y2U0MjkzZjllYjY3YTA3M2IyYWE0MTFhZTIwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwOGZmNjczN2I5ODYyODg4ZGM4ZTU1OGNjNDMzNDMwZTViZDI3ZDczOGY0YTYzYWJlMzNmYzRjYzk5ODRiZGMifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/FullScreenResult.tsx#L15-L75",
+          "version": "repo-lines-v1:sha256:a301e6e07d3b2c167c9061384492a423415881f723db80a5192449077d1efa4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4OTdlZDA5ODMzNzE2MTFlNzJlZGZiMTQ0MGIxNGViMTg3NjA0MDk1ZDAxOGZkYjU2M2Q2NGM5NmNkODdkMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5N2Y4YTJiYzVhOGMyNmMzZDE4ZWVjOGZiOTBmODU5NTM4NjExNDJjYTdjMjZiMTZhMDNiMWJjYTBhZmRkZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1YjdlNjBlMmJmMmE4OWYwNzQ5M2FlYjFmOTk3MzI1YTdhM2VlOWEyMTIwOTYwY2I4MzBjOTA2MTcwMmQyOGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzOThjODZlMTljODNmNmMxMzZmMjhlOTc5MmQzNTM5ZDAwMTRkZjQ3YjRlOTk0NTA3MTYxZmEzMmQzMzViYjIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultDisplay.tsx#L17-L54",
+          "version": "repo-lines-v1:sha256:eed2302c0528aafb064d6b28d473b1896e68dc45e44803009e62b06a37a1e5a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyZmJkMjIwMjNhMmM5MjAyNWU1Njk1ZWZjOWVlZmU2ZGVmNzkzNTYxYjgzZWY2ZTI3NzQ0ODQ3YjlmZTAwMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMjEwOTliNTkwMjBjMDI4NDgzZWRiNjA1ZDY0NmIzZDA4NGRkNTZmNWI0ODkxMjUyNzBkYzVkZGE3NzU2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultPanel.tsx#L34-L60",
+          "version": "repo-lines-v1:sha256:f6df141d9f6fb991255bff5f961dc8078dce0d7cead3152784811701aee6a836:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhMTE0OWVjZGU1MmNkMWUxMWM0YzYyYjA0ZjYyZDFlOGEwOGI0MjhlMDM0NWNhOTIxOWJlMGNhMjdhMTFiYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2MjdjN2M0NzAzMzJiNjAwMWFmNzNhZTgyY2JkZThjNjE4NjUzNWU3M2QzMjUwNGUwNGRkZjEzYjU4MzkyNzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4MWUzMmFjMzliMjFiOWRhYmUxNjA2ZWFjYzE0NWI5MjNjZWVkN2FjYjEyZGMzYzgzNjc5ODNlM2FiMzI1MDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f39e4e33ce0d46e9b91cf73810431f35",
+      "statement": "ResultPanel passes headerOffset=10 to its viewer so viewer-internal sticky bars sit below the panel dropdown, while FullScreenResultDialog passes headerOffset=0 because there is no panel dropdown above; the value is threaded through TabContent.getResultPanel(option, projectId, headerOffset) to the tracelinks and inconsistencies viewers.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/FullScreenResult.tsx#L50-L72",
+          "version": "repo-lines-v1:sha256:1bc4b55700b4f9157acd4c1a3dc8fb4e3c65850fc12bde7ed6d5cbf33cb313c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjODBkOTExNzgyZWY5MDBiZmQzZDMyOGE5ZmMzYWQ4MDVmYmI4ZGY0ZDgyZTk5MDAxODgwNWVjMmRkZTYxNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxNWFiYzhhNzgzYWQ4ZWRkYjJlMTk1NmZhN2UxMzY1NTBjZjcxMzEzZjkyMTM4MDdlYzZjODA2Mzg5YzVmZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlZDUwZTlkYTEwY2ZlNWVhMWY2M2ZjZDA1MDFkYmQ1YWE0ZTJhNWY0Y2VkYjRmZmMxYzM4MTRlYjdkYzQwZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkOGU2NTc0MTkzNThjNDU3OGIwNDczY2Q0ZGRlYjQ2YzlmYWE4N2YzOGNkYzg1NzJjNzY1MmRiNDg3ZTRjODIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultPanel.tsx#L43-L58",
+          "version": "repo-lines-v1:sha256:19d671414f8f9ae5bd4ca227be3eb25ac3dd851307a95d567e262e9776a36a24:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxMzE5MDdjZGJlZDgwZDI1OGI1YTE0OWIyNWMwMTllNjcwNGYzM2ZjYjZkMGYwMWM1MjE4NDcwZTYzZTAzN2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxY2QwNzQ3ZjIzYzMxZDA0MzRlODJlZDMxNzRlZjE1MjcwZjYzZTE2NGI3MDQxOTlhMTBiM2FjNjY2OTIyZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmNTBhNjE1OTExNzQ4ZGY1ZmM0NDlkOTdjMDA4OTkxNDEzNjQ3ODYwZWUzZWI5ZjUxZmI5NzRiNGM3ODhkYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmMDMwOGMwYmU3OGY0YTYxMzgyN2I1OWQyNmNiZDA1YzNmMGM1MTA0MTRlZTQ3NTk3NzczY2M1NzQzY2M2YjIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/TabContent.tsx#L11-L26",
+          "version": "repo-lines-v1:sha256:ce09dcc6e9d3e08413c67c13d6225641ce03a60bdc222dc2acecc68c2e81e246:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwMzIwNTQ4NjIwMGM4MjE2YTAzYTUxNzY5OGJiZjFlZDIxMDlhMWZmYzRkMTRlNTI3YzRkNjk3YWYyNzQxNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOTAzN2M5NzRkMmU1MGU0ODM1NTkyN2VkYjI1YjdiNjMyYmI5OTdlY2VjZGNjZDA5NDA1ZGYzZmY2YjIxYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56b18c6885c54912b2a51f03c3425e19",
+      "statement": "The backend result page only supplies two arrays: /view/[id] parses response.result.traceLinks and (when the query requested them) response.result.inconsistencies into HighlightProvider and InconsistencyProvider, and the TracelinkViewer and InconsistencyViewer read their data exclusively from those contexts without own data loading.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L90-L113",
+          "version": "repo-lines-v1:sha256:efcbd1b947a1aabb18883b37b97735bfd066531f8dcca25cbeb04fd2e3c56cf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZDg0NjkxMGIxYTA5ZjY4MGJjNTc2ODFjNzBkMWYwMmUxMDExYmFlY2VjZGE1ZTNkZDViNzc5NjYyNmE4YmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjMmUyMGFlMTQwZWQzZTg3YzU5MzQ1Yjg5ZWNmNmJkOTE0MzI3ZDU3MmY3M2VhZjRlYzg5ZjAyY2M2NzM3ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNzc1MzMzOGVmMTAxMmNmMTgyYTM1ZWE5Yzc0NWJlYTA3MjA4MDU1ZTdkZjkyNzQ0MjVkZjEwNDYzZGE3N2IifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer.tsx#L19-L26",
+          "version": "repo-lines-v1:sha256:7917586c5e2bac809b2a1eca76b2c921a671a4efad9517c229fb74bab951e26a:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg5YzFjM2FmNWRkNWQ4ZGI0MmU0NWYyMzQyYmRlOTYxMGEyZTBmNDEyYjViZWY5NDRiMDJjYzA0MDE3YWUzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDI2ZGUyMWU1YjJkNmFkNzQ2NzJjYmI4NjMzOTBlMzZmM2UyMmFlODdmNjdkMDRmMDYzNTc1Mzg4Yzg0MjM0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzU3YTM0NTlkMzk1YWIyNWZhYjA5NzhhNTQ3OTQ0NWFmOGIzODYxZjUzNmM3M2ZkOTA1NDIyZjE1Mjk1NGI2MCJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer.tsx#L27-L35",
+          "version": "repo-lines-v1:sha256:c85c4fad337e40bee67a8d6374401e2824cb40d7f442d4b9145299b951eac5b4:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2IxMGQ0MzNiNDc0YTUyYTZjZWZhZGYzN2ZmZjRiNzQyMGUxYmVmMzA3MjRkZTZlNjg1MWUxNzU3NTU4MTlkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDVmMzYyMzc0OTA1NjYxNTUwMmUxNzU2ZGYyNDU3YzhlZWYyOWI3OWY3NzEwNmQ3NDVkNWRhM2E3ZTFhMThiMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTUyYWEyNDcxMTg3YWVjMDE3ODZhYTU2MWVmMTgxZWY0MDlhY2NjYTc3NjA3ODFmZDJkZWFhMzMzOGE3MjBlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjI4ZTJkODZkODcyMGEzZGIzN2YzMjk3NTIwN2YwNDkxMDAzMjJiYjQxYzI2ZmZhMDAyYTczMTZiYWE5YmVkYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4b1488594bec4c4180ea1f6a232d487c",
+      "statement": "Every artifact panel (documentation, architecture model, code model) loads its own file from browser OPFS via the generic useDataLoader hook calling loadProjectFile: the hook guards on mount (no loading before mount or with falsy id), resets state per id, and surfaces { data, fileContent, isLoading, error } with loader throws presented as \"Failed to load or parse data: <message>\"; the backend result never returns artifact data.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/ArchitectureModelViewer.tsx#L18-L48",
+          "version": "repo-lines-v1:sha256:10e9fe57d75058560722d735f45da6941ab9671c4ca51859665bcf3461bf8e8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwY2ZjZjcxMTk4MzNiNGJkMzYzZjI5NmRkNjFmOGUxM2M4NjRkNGE1NDNmMmFjNzNkZjQwYTM0ODgwNGRkMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiOGM5MTc0NjgzMTllOWRiMzQ3NjE0ODRlZDdmZjhhOGJmZmY5OTI4NTc5Zjk3YzFhNjZkZmZlZjkxYzhiYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2YzlhNWMzMWRkNGNiNmVmODk4MTI5MjUxMmUwZGEwZDEyZWUwZTgyYTgxMTBlY2M0MzNlNWIyNGQ5ZjM3YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwNjMwODZjNTZiNTdjMjRmOTYyYjY3NTg2Yzk5ZmI5Yjg3NDVhMzM4NGRiZmJkNGYxNzQ3OTM1M2QwNmZmZTIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/CodeModelViewer.tsx#L14-L40",
+          "version": "repo-lines-v1:sha256:b8819dce12ccb8a567f18281289aee77487e3ef82944c7760fcf27eae22e32b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZjhhZTNiOWI3MTc0ZGZjMjM2ZjFhN2EwYWJkNmQ0YzU0ZjJmYTgwY2M1NDk5YzFlMDYzMmM1ZWM4NjJlYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2YzlhNWMzMWRkNGNiNmVmODk4MTI5MjUxMmUwZGEwZDEyZWUwZTgyYTgxMTBlY2M0MzNlNWIyNGQ5ZjM3YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlMTJmYzVkN2Y4NzY1NWM5MWYyNTYyMmMyZTRkNjI3MmUzMDE1YmY5ZDdjZTE5NWQxYjJjY2RhYWQ5ZWYyN2YifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/DocumentationViewer.tsx#L16-L41",
+          "version": "repo-lines-v1:sha256:1271ee16aa738f8fe6dd3e8165cd000713af3763ba81b4c08da04c8b85979c94:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiZDMwN2RkYTYyNGViNmQwODVjZGJmZWI3YzgzNDcyNzgyYTIxNjEzMjAzNmMxOTdjYzIwODE4NGJmNWVmY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2YzlhNWMzMWRkNGNiNmVmODk4MTI5MjUxMmUwZGEwZDEyZWUwZTgyYTgxMTBlY2M0MzNlNWIyNGQ5ZjM3YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4OGM3MzIwZTRlZTU3OTllZTE5Njc1MTgxYjUyY2YyNThiNWY1YWI4YTE3MGM1ZjZkOTI1Y2VhMjE1N2U5ZmMifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L41-L81",
+          "version": "repo-lines-v1:sha256:19c2b286aa88666b8957d01af091e58aa615edd72a691f1e08e052300616cf9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NTNhZDMyMGI1MTUyMmI4NTBhZmIyNzFlZTA2MzU2NzRiOWJkZjg0ZjQxNDRkNjI0ZjAxNjYwZjI3NDQ4YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ZjZlNzMzMDM2ODczZDU5OTc0Y2JlMjMzOGNmYjkzMDI2YWY2YTMzYmU5ZThhOWZhNmY2YzhjM2M3ZWIxNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwODA5ZjJjZDZhYjU4NTNiOGU0ZmVkMjJkZTAwOWZmZDlkNDBlNzU3YTkwZjc2ODA5YjI0NDk2YmJmOGE0YjQifQ"
+        },
+        {
+          "resource": "repo://src/util/useDataLoader.ts#L22-L60",
+          "version": "repo-lines-v1:sha256:bb3ed050544aef83960529441607a46bb7e1cdb1cf4f3b97a22f7f3e0e2870d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMWQxNTE1M2JhNmViZDA2YzMzZTVmNTI1NDA3MzkzNjM1ZDE5YWZmYzRkMWQzYTVmZTUyNzc5YmM3YTgyYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkYjNlYjZjZTZlZjkyMWE2ZDhkZDE5ZGQ1ODVhY2RhNzIxMDI2ZmUzYTU2YWViM2VlYWEyZmRkNWFmYTUxODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38d17b2e94c04c1ea6debae28489375d",
+      "statement": "Failure semantics are split by layer: a missing stored file is not an error - loadProjectFile resolves null on NotFoundError, the loader returns null data/fileContent, and the viewer renders its not-found or raw-content fallback - whereas a parse failure thrown inside the loader surfaces as ErrorMessage (\"An error occurred: ...\").",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/Loading.tsx#L13-L23",
+          "version": "repo-lines-v1:sha256:3f3c5ecaae2f8e91569de4a0f43289f82f0858f5f51a1f73056772057cccaf93:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhMzk0NWU3MjBiMTg1NmRiOTRkZjA0NDgyZjdmMTUyMzlhMDI0MjVjZWQ1Mzc4MzI2MWE2ZjJlZTIzODUwNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1OTM3Njc5MWU2OTQ3NmY3YTA3MTg5NmRjMjViOTEzN2VmODQyM2UzZTk2MzQwY2NmYWMzMzIzZDQyY2E1MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/ArchitectureModelViewer.tsx#L59-L67",
+          "version": "repo-lines-v1:sha256:66b5c257d1dd8e3462264d3bcda8b565ad8e12e0d6744f352fae2c7220223373:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzM3NmJjZmU3YzhkN2VlYzg1NWUwMTk3MmM5NTBjMjJlYmYwODhiNzQzMThkNDUxNDBjMTBlZGM4ZjQzMGNmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ0NGEzMWQ4ZWM3ZTg4Zjg1NTcxNTI2YmYyN2M5NTg4MjBkZmZkMjlmNjg1MjFkMGMwNWI3NzA1YTFmMThiNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzY2YmUyYjhjY2I5NWE4Zjc5ZTY5YjIwYTc5NjhiYjFmYjgzMmE5NmI2NjU1NzllMjZkZjY5YjM0MjA2ZGM4OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWRhNDEzODc5YmU4NzgzYTFkMzgwNGVhYTc5Y2YwZTBmNjRkNjA0MzI2MzliNTRjNTQwZjFhZmUzYTM3Njc5MCJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/CodeModelViewer.tsx#L42-L56",
+          "version": "repo-lines-v1:sha256:b41cd0764d32a470d9f1aa0a631399cf46006bcb50d04959f7f592e60f916901:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYzQ3ZDQ2YTUyMGNjZjMzN2Y4OThlNGRhMDliZWFmM2E1YmQ5ZGNlYmI0NDQ3Y2VjN2U5NzBiNTI3NWE2NGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2NmJlMmI4Y2NiOTVhOGY3OWU2OWIyMGE3OTY4YmIxZmI4MzJhOTZiNjY1NTc5ZTI2ZGY2OWIzNDIwNmRjODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwOTBhMzkxOTdiNGQ2ZWVkODQ1ODFkN2NjZWRmOWQ5MWEwM2JmNWZiZjJmM2FiNDYzYzNjMTZiMmY3MWI5YWQifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L73-L80",
+          "version": "repo-lines-v1:sha256:58c55ff403b8dea039056ae065c4f2228b89d4dd7185dc61e808af858e324850:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjFiNTFhMTY0OGMzNjQ3MjczZTM3MWRkZGJjNjYwNjQxNzRjMjFjM2E0MzM1OGNhYTA2MjQ1ZjYwNzU2OWI5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTYwN2E2ZjA1ZmM2OTEwZjY2MzQ1MTQ1MzU4MWZlNGZkMmQ3M2RiZTFjNzY2NmYzZWE0OGViYmJmOGY0MjhiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWNiOTAzNTZjNWZmMTk3N2JlNjkzMzI5ZDg1NjIzNGM0NjQzYjI3YWExMjIxNDBiOWRmYzkwY2NhZGYyMGE5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd6aaf91f43c4ac880781d58eada544c",
+      "statement": "parsePCM parses Palladio repository:Repository XML via fast-xml-parser: interfaces become an id-to-Interface map, components become Component objects, and provided/required roles (providedInterface__OperationProvidedRole / requiredInterface__OperationRequiredRole) become uml:InterfaceRealization and uml:Usage edges carrying the resolved usedInterface; roles referencing unknown interface ids are skipped with a warning and malformed XML or a missing repository root throws.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/parser/PCMParser.tsx#L41-L138",
+          "version": "repo-lines-v1:sha256:8878711088e9f37e1e491795c437e690b04279daad6ff81de7d7f6f205b7a615:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2YThiMjFlOGMwNTczMTAxNjdjM2VhNjIzNDkzMWM1ZWJlNWQxYjBjOGZiMTM0ZGY1NTYwYTJkNWZlMjQ5NDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZTk2MjIzZWM2YTQ5Mjg0ZGY1MmNjYTMwOWZlNTUwMDg4NmU4YmIwYTNiMzFlODlkZTQ2ZjM4OTk3MzY4M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_981486da0b9d42c49c259a7d8a51b5ad",
+      "statement": "parseUMLModel parses XMI uml:Model files via fast-xml-parser: packagedElements (uml:Class, uml:Component, uml:Interface, uml:Package with recursive descent that skips nested uml:Usage) become AbstractComponent subclasses with owned attributes/operations, generalization/interfaceRealization/usage entries become Edges, a post-pass resolves edge.usedInterface for realization/usage edges whose supplier is an Interface, and components are deduplicated via equals.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/parser/UMLParser.tsx#L30-L135",
+          "version": "repo-lines-v1:sha256:34962dc089863dc2f050c6f6209f13ec03fc2d7f574f1c38d96579e73a28905b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMjJmMDY2YjRmMjRjNGZhMWFiNDFlNWEwYTJhODU4YWUxMWUzYjdjZTVkMTk1MGUxNjc5ZTNiNzBjZGE5ZTg1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmNzQzNTRkZWQyZWQ5MjhmZWI0MTVhOGU2OWNjMzZjYTkzYjc3NmI3ODczZGRjNDk3NWYzNzcxMTI3NDRkZGU5IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJiYTdjOTM5OTZlNjE1MmMxOTEzYTFhMDQ1NTYzYTU1OTgyYWZiM2IxMDgyYTg3OTczNzhhZjA5YWRjNmJhYzNiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlMWYxNzBjZmRkNmU0NmJlYzIwN2FkM2IzNThiZTUxNTZiZGMzY2FiM2FlMmJkMWZiMjQ4ZGU5OTEwMzE4YzVkIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_47881a3d55cd405592e3f82728a1a96c",
+      "statement": "Because both architecture variants share the stored file name \"Architecture Model\" in OPFS, DisplayArchitectureModel loads with fallback FileType.ARCHITECTURE_MODEL_UML and dispatches on the metadata-resolved result.fileType: ARCHITECTURE_MODEL_PCM -> parsePCM, ARCHITECTURE_MODEL_UML -> parseUMLModel, anything else throws \"Unknown architecture file type.\"",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/ArchitectureModelViewer.tsx#L20-L41",
+          "version": "repo-lines-v1:sha256:a6415b76ff29ec8768689158d856b7a91782df2a766d26ec265d8a85e25c060a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMGNiODIxOTBiNThiOGIwNGY5OTMxMmFmZDg0MTZiYWYzYWY1YTBjNTlhZTY4M2U3NWM0ZDQyMjhiMGU1YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlNmUyMzRjMWY1NjhkNzBkYmZlMmUwZTJkMDkwNTI1MmU4MjYzNTZmMjZmZTI3NTRiNDQ4ZTRmMjkyYjBhMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdkZDFjZDJlMDJiYTIzMTdkMTQ5ZWU5M2U5MWQ1NDEyYjkxY2QzZGEyMjM2OWI1ZWU0Zjk3MmNlNjY2YzA5ZmIifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L111-L115",
+          "version": "repo-lines-v1:sha256:0af5076f12ab166a41b1cabdb942ddf9830ea1b10373c3b3bf8cfc8db537f12a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDVjNTdjNDUxNjQyYmJiNTQzMjYwYzdkZDEwNWQyNDJiNTY3NmVmNDg5NDYzNmUwMTQ3MTk4NDA5ODQwZDU5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWY0YTZjYThjMDRkYTE0MzcyZjUzZDRjNjZjZTVlZWFjN2E0ODVjNDg4MzUxOGYyNDVlMDk2Y2ViYjY1Yzk1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzI1ZDRiZTE1NTA2YmQ4ODlhYjk0ZTJmNmMzYmViZTUzY2RiNjU0N2RiNjVhMDIyOGM4MTY5ODM3YzU5MWM3OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea419b24fd2c47b3b54e2bcb2ecbb430",
+      "statement": "UMLViewer is d3-powered SVG rendering over the { components, edges } ArchitectureDataModel: processUMLData turns a once-provided and once-used interface into a pass-through virtual:mergedEdge between provider and user drawn as paired provided/required lollipop symbols labeled with the interface name; positions come from a d3 force simulation (link distance 200, many-body -400, collide radius 120) whose end event sets the SVG viewBox to the padded bounding box for auto-fit; d3.zoom enables pan/zoom; component boxes are canvas-measured camelCase-wrapped label rectangles with the <<component>> stereotype and a highlight gradient. Clicking any element calls highlightElement(id, DisplayOption.ARCHITECTURE_MODEL) plus highlightInconsistencyWithModelId(id), and hovering an interface name opens the provided/required tooltip listing its operations.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel.tsx#L105-L142",
+          "version": "repo-lines-v1:sha256:ffbf40fe6676ab9c1a6a2b9b73a98e005c7b86d4b8940373780735dfb12c7342:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViYmQzN2Y4NmM0MTFiOGNkMTVmZjlkZmQ2MmU5YzIwMzk3ODg1ZjRiOGFjZGVkOGNlNmE1MmJjNGQ2NTRiYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/InterfaceTooltip.tsx#L5-L46",
+          "version": "repo-lines-v1:sha256:3b466f136a240d0d9971e88675d423009880d127399e07d52f62ef54e201db61:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyMzI2YzAxOTY2MmJkZGI3YjMyYzU5MDhjZGIyOTJhNWE1ZDIxNTg2NmIwZTg0ZDNjNWU1MDVhM2VhNDRiN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4OGQ4MTZhZTk4ODM1YjA2ZWI2ZjdmYjkxMGVjNGU4YjM1ODY1NzRkZmE4NTM1MDNmMWRhYjJmMTMyNDllNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmN2NkNGQwMjRkM2Y1OTFlZTVkOTQ4YjI3ZTZkZDZmZWVjZWQyZmMwY2Y1ZjFiZGFjY2ZhNDYyMzkwMGIxYWYifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/LollipopEdges.tsx#L11-L49",
+          "version": "repo-lines-v1:sha256:d53255af352911e30bc350f5e5d0c282a07fc0bfebebfc250cbeb3afca946220:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyOGZiOWU0NDU5MTNjNGNmNDA4YTQ0YjYzMWE3NTU4NmNlNjM1ZWIzN2YyY2I2ODg0MGJiZGUwZDAxYTQwYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxNzAzZjRjMDJjMTEyNTlhNjZjZjQwNDdmMjlkMWQ5MGRlNjk4NTVlOWIzNWFhNDEwZmQ2YTUyMGMzNzkzZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhMzI5Y2YwYmIyMTliMzAxYWUyOTkwMjU5YTZmYzZkOWE0NWRkNGY4ZWJiMGM4NzFjZGRlOTA3MWViNDBjYWYifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLComponentNode.tsx#L73-L170",
+          "version": "repo-lines-v1:sha256:211e924bbbf0b7bf3436031af1bd551829548d594bf4f742cef457aa798f1165:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzYjQ0ZTU0YmJmOGM4YzhlMmYyNGMyNjY2YzRmMjYxYWRhYzYxNmY4ZDZmNjU0MDMzNTgxZDljM2YzY2QxYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI1OTAzODViOGVkMDQ2YmRjMGE3YTMzYjYwNWRlMzIxYzE1MWJkOGI0YzQxNzkwNzFmOGI0NTc2NWMwMTM3ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer.tsx#L25-L198",
+          "version": "repo-lines-v1:sha256:b60d47235a87f339dfeca8c09ad2fd3be89b18203e7ef0e3059251f312ae07a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMmY1ZDgyMWU0YTYyNTRjNGE0OTE1MDE4Y2Y3ZWMzYjc0NjIyZjE1MjZlZmJkYThmNGIyMWIwNmE0MzQzOWRkIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmMjEyMzRlOWRlZWZlMGRmYTM0NzY4ZmZmYWI2MjQ3ZGI3Nzg1ZDdmMDEyMTFhZjQzY2E0MjU1NjUyMjhiZjlkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJkOGNmOWJhM2ViYWFhYTNjMjVhNTViZDlmMzBiYmMyYjRlYjM1ZGFkZDEzYzEwZjIzY2ZjZmM3NjEyMWVmZDYyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c6b223617ff49a3a4673c8198deeb71",
+      "statement": "parseACMFile converts the flat ACM JSON repository (rawJson.codeItemRepository.repository, an id-to-item map; missing repository throws) into a nested CodeModelUnit tree: CodeCompilationUnit names gain their extension and full path, CodePackage chains are synthesized from pathElements keyed by stable sanitized-path ids, content id lists link children (classes into files, methods into classes), same-name-and-type siblings merge bottom-up, single-child CodePackage chains collapse joining names with \"/\", a synthetic \"Code Model\" root is used when several top-level entries exist, and setCodeModelUnitPaths recomputes absolute paths.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/parser/ACMParser.tsx#L30-L185",
+          "version": "repo-lines-v1:sha256:103a3edfb960850a56d3b5ee2b5cd5bd1f279d226b7e21407a8a376982cee434:eyJzZWxlY3RlZExpbmVDb3VudCI6MTU2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyOWVjMmVkOGVmNTFkMGE5NzIyZGJiMjJlZTZmN2JmMWQ3YjRhMDRmMmNkZDk1ZWNhMTU1OGY3MjkzNjE4MTAxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzNGZkMDZiYmI2YmNiOTQ5ODUwYWVlODI2ZjdhZmVjMTJmOGQ1YWMwM2MxMjgxOTEyMmQxOTBmMGRkZWRlYmNkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4ZDdlNTllYmE2YjZjZjUxMDU3MzZmOWE1MWI2MWFjY2JiZmVhNzg2MDZiNzMwZDExNzFlODFiNTAyY2M2YzExIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_81665163ba8c42349a6d5d5f3c7ba1ea",
+      "statement": "ACMViewer renders the code model as a d3 tree layout (nodeSize 10 x 200) initially collapsed below depth 2 while keeping a full-tree copy in a ref so highlight computation sees the whole hierarchy; d3.zoom is installed with an initial fit transform (scale clamped 0.1-1.5, 50px padding). A plain click on an ACMNode calls highlightElement(node.data.id, DisplayOption.CODE_MODEL); Ctrl+Click toggles the node's subtree between children (expanded) and _children (collapsed) and forces a re-render via a copied reference. Trace links matched by codeElementId highlight every ancestor path edge as a thick ACMLink stroke and auto-expand collapsed ancestors of the matched nodes so they become visible.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMLink.tsx#L10-L19",
+          "version": "repo-lines-v1:sha256:85fca00e2a5b02d718b5b9536fd8d9b18643b74eb5026a222b30326943c49d7d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4Y2RjZTU4NDMyNDZhMjQyY2Q0ZjM5YTVkYTdhZjRjN2MwMWM4ZmI3ZTk2YWEyMjNiNmE4ZjI5ZTBhNjc5MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3MWQyMDIwZmFjZjU5MjM5NDIzOTczZmFmNzEzNWEwYTYzZTU0YzNiYzgwOGJjMzg2N2VmNWNjMDA2ZGU3M2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMNode.tsx#L24-L55",
+          "version": "repo-lines-v1:sha256:ce56df585743b997e07f5678d4a5995d2f56261e77157afceed8a35ded04efe6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZWU0NmE3MDI3NWQxMmIzNzVlMWQ0MzJjODcwMzJmN2NjN2E5ZTNiODg1YjgyOTUxZjhmMWRlNTY4ZDQzMzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwOTU1ZTcyZWNmYTkyNTI5MDc1NTY3Yjc1MTY4ZDc0Y2FlNDRkYWU0ODg0MWJjNTE5ZWE2MWJkMTNhZDY2Y2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwNWQzOWNmNWFkZmZhYmNiZWY0YTc3NDE3MjQ4MjkzZTljNDkzMGZmMGRhM2EzNTgzZjJkMmQzNzA0ODc0M2QifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer.tsx#L159-L220",
+          "version": "repo-lines-v1:sha256:6f85e017aed923da95e49b7007e6742370750ecc5bd3f54e088dea7399f6e736:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYmMyNGQxYWQ2ODA4MGEwNzhiZDY0ZDk4MmU1OTNiZTUxZjVmOGE5MDk4MjA5NmVkNzQ1Nzc2N2FmMjcxZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4OTRlZWRkMTYxZTc0NGJmYzQ2YzVmMTliMmM2YzNhZDcwYTRiNmY0MGIzNTA5YzI2ZTVkZmVmNTQ5YTc1MTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer.tsx#L29-L97",
+          "version": "repo-lines-v1:sha256:d9f147fc988ab130f397a377121aac1434b87f76f5c5a5077278f536bae35acd:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiYTRmNmNiN2ZhYjQwYjkzNDc2NTU5MjQ4M2RkZmQzZTRmYWU4MDlmOTg2MWEyMGQ3MzY5Njk2YzMyZjZiM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkY2FhYzkzMTcxYTZmMmQzNmYwY2QxZGVjOWMzNWViZTcxM2U0YWY1MDdhZTJkZDY1NDAxZDA5ZmViY2JiMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ZjMzZjdkMzY1MDI3ZGMyODdiNTNiNTQ0YjkzZjEzODBkYjI1OTAyMWExMDhmMzBiMjYwZjAxOTFmNzE1M2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNmMDU0ZDRhMTExYmFkZWVhYzc0ZDAxODYxNzViZDA2ZWM5Y2Q4ODZlMmY0YjUxYzQxYjQ4YzM3M2RmNzg2MjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d1fef4f0e7442b28a0f1c60429f5dca",
+      "statement": "parseDocumentationText normalizes line endings, collapses excessive blank lines, and splits into sentences on ., !, or ? followed by whitespace/newline/end, assigning incrementing 1-based Sentence identifiers; DocumentationViewer renders the list via SentenceView rows whose background reflects trace-link highlight, inconsistency highlight, a gradient when both, or a lastClickedSource border, and clicking a sentence calls highlightElement(identifier, DOCUMENTATION) and highlightInconsistencyWithSentence(identifier) together. TraceLinkParser shifts backend sentence numbers +1 so both sides share the 1-based numbering.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/DocumentationViewer.tsx#L18-L57",
+          "version": "repo-lines-v1:sha256:135a82748b5ad0ac036726a4219de10af47f3a0a64df60abd67ce85083f82ff3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MjAxYjI0NGJmZjE1YjJkMmEzODUxMTZjNGU2OGFmZmI5NmI5NTFiYzg3YTFiYWJiODdiZDQxYzlmMDI5M2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNTZhMThmYjcwOTkxNDdjNzkzZGJlODg3YWRiOWU3ZjEzNzAxYjA0NjJjYzliNjEyZDcwYTUxZTU4M2JjNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzOGRlNzRiZTk3YmYzYWJhNzg3MmE2MWJhMGU0MjA4NDAwOGM4MWU4YTIwMmE2MTIxMzRjNzU1YWFmN2ZhMDYifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/parser/DocumentationParser.tsx#L3-L44",
+          "version": "repo-lines-v1:sha256:77a8369127d2fd7ed90b3ab5f36ef099d236fb72c24f5d0885a18c44529703fd:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMzc1NWViM2U4ODFhNjA0M2Y1MTM2MjFmYjI0ZmE5Y2NiNmY2NDM0ZGQ0YWUxNjkxMmRjN2FhMzYxMzE1ZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlODQ2NGY2ZTA2YmYyN2Q3N2JiZjIyNGJhY2RkZjczNzlhNGZiMDk3YTEzN2JjZTkwYmYyOTFhMWE4YzAzNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/viewer/SentenceView.tsx#L8-L57",
+          "version": "repo-lines-v1:sha256:9648ac27309c7f8556cc58bf2ec41e327c5ff4ab15507159195c04a4932fc192:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMjFkZmRiNjJmZTFlM2QyMGQ3OGE2NGU1NjFiYWE3OWEyN2NjZjBhYzA3MWJmYzE4NGRiNWQ5ZmU3YWUzZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4YjI5ODhmYWUyYmY2YTAwYTM3MjNmNWYyN2UxNWZiOGNkZDI2ZjM4MTc1ODQ2YTFjODIzM2M5YTljNzZiN2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L11-L17",
+          "version": "repo-lines-v1:sha256:9f90cf67dc99a54532d7128d63238908d2e3adb4d41030b19875ac94823043f6:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzEyMGQxZWZjNTY5YWQyYjNkZTdiYTRkZGE0ZDA5NjIwMGIzNWVkOWE5OGRmZDJiMDdhYTlhNWYyYTFmZjgyMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU0NjJiZDg1ZWEzNTIyODIyYTlhZDNlYjI0MDk5YjAzMmExYjYyN2JlY2ZkN2M1ODMxZTk5MjdkNGJhYzQwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODZkYzU1NTAyYjk0ODJkYzhjZjFjMGVjMDJlZjU4ODg2MWZkMjFjODNjMzM1MDIzNDU2MzM0YjUzOGQ0NGE5ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDk2ZDVhNjllNjc2MTY2YmQyOGNkYWJmNWVjZTIxZTY4M2I1ZTI2YzIwNWI0NWQ3YTFmZGJhNWJiYjZiYzIwNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_295c24e465074bd68e97e220c45e3fb5",
+      "statement": "parseTraceLinksFromJSON maps raw result entries into TraceLink objects per pipeline type: ArDoCode (SAD_CODE) parses the sentence number (backend +1) plus code element, ArCoTL (SAM_CODE) model plus code element, TransArC (SAD_SAM_CODE) sentence number (+1) plus model plus code, SWATTR (SAD_SAM) sentence number (+1) plus model; unknown types log an error and exceptions are caught, both yielding an empty list. TraceLink's composite id \"modelElementId-codeElementId-sentenceNumber\" serves as the selection-origin key in the highlight context.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink.tsx#L4-L28",
+          "version": "repo-lines-v1:sha256:91567d8d983ebd453808bd4891b7bbebe58fdc4b963bc813ad6a610f8d59ae39:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNmE2OTdkZTBkN2ZjNDhkNTk3ZWVlN2Y1Y2IzYTM0YzU5YmZmZjRiNGVmZjBmMTJkMjlhOTFhZGExMDg5MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2YjRjOTFjZTNmMGNiZjIyNTM2NjY1ZWJkYWQwNGViNWRiMDBjMGFhOTQzMTgxNzg0NjY0MDM1ZGNhOGI0NTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlZmEwYWViZmVmOGRlYmFkYTU1M2M5NDBlZTc5OTYyMTJiNDQ0YzU0MDcwZTFhODBiZThhYTVhN2Q0NTM0OWEifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L4-L54",
+          "version": "repo-lines-v1:sha256:08526d01464e21e5fa45e8328b654e6656297642021c2057e2c09f41423b0961:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMzNkMzE5MGJkNDg0MzdjNjRhMTk5ZDU4MTVhN2EyZWMzYmI4ODYxMWYwNTdjMjlhMDg0NDlmNjY0ODBlNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlMGRhZWMxMjNmZDQ5NmE2OWE4ZDdkMTQ1NmEwNWRiYjc5MGEyYjViYWUxMjJlNzEwMjk3NDAyYjI3NmZjMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9342d65820704655a9e8fc7b2494294b",
+      "statement": "TraceLinkView offers type-dependent sort options (Code, Model, Sentence comparators; the irrelevant one is removed per pipeline - SAD_SAM has no Code, SAD_CODE no Model, SAM_CODE no Sentence - with id fallbacks and missing sentence numbers sorting largest), a Highlights toggle that moves currently highlighted links to the top when re-sorting (which re-runs whenever traceLinks or the sort method changes), a dropdown that resets to \"Sort By\" when a new traceLinks array arrives, and a tracelinks.json download with payload { traceLinkType: <pipeline name>, traceLinks: <sorted links> }. Rows show Code/Model/Sentence fields per type flags with element ids as title tooltips; clicking resets the inconsistency highlight then calls highlightSingleTraceLink. Loading and empty states render dedicated messages.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer.tsx#L110-L169",
+          "version": "repo-lines-v1:sha256:7c058dfa87eb5b9d151b9af90bffdbde10e9bb85f487c4a3aedd55cd4cd03e8d:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhNzIyMGE2Zjg0NzFlN2IzOTRjNmNjNDFlMmI4NjNjNmU1ZjViYjE2MmRjOTRiY2MyODBkMzE2OWZhYjMzZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer.tsx#L27-L108",
+          "version": "repo-lines-v1:sha256:f1158b386b296e3f9473c0f2684b1dfdbe15979439c10e1fe3a4b9fb3152a05f:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiMTBkNDMzYjQ3NGE1MmE2Y2VmYWRmMzdmZmY0Yjc0MjBlMWJlZjMwNzI0ZGU2ZTY4NTFlMTc1NzU1ODE5ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1MmFhMjQ3MTE4N2FlYzAxNzg2YWE1NjFlZjE4MWVmNDA5YWNjY2E3NzYwNzgxZmQyZGVhYTMzMzhhNzIwZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMDJiZmE4MzA0ZjA2ZDM0ODMzNjE3YTBkOGViNjYyOGY5MTQ2NDc4ZjY5OWU0ODgyMDJlMjJmNGYyZDNhMGUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem.tsx#L18-L53",
+          "version": "repo-lines-v1:sha256:abf06cf4e5d93f66fe9d6d7625c03d180fa49e47f3be7d265b5f7ad7d326b48e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNTE2MDgxMWFiYzZiMTA4ZDRlNWUwODNlZWM5NGI0MjdkNzM1NTM5NjM4MDUxYTgyYmM5MTIwYTNlM2Q3MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNhMjg0NmM4YmM2Y2RlN2NjZWEzNDFjOGQxODYxZDZmYzc2YzlhZGYyZjA4Yzk4ODZhMTMwMTc0YTZmMjZkODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1e6f50baf9c54a99b6e932dbd72b48aa",
+      "statement": "parseInconsistenciesFromJSON maps each raw entry into TextEntityAbsentFromModelInconsistency (reason, sentenceNumber) or ModelEntityAbsentFromTextInconsistency (reason, modelElementId) based on its type, dropping unknown types with a console warning. Inconsistency subclasses carry an id of \"type-reason\" extended by sentence number or model element id, plus an equals implementation.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency.tsx#L1-L54",
+          "version": "repo-lines-v1:sha256:e0bfea9ecf360ec99ce1e6fbec23ed96ed67f75c63205e43a404c47963fbe477:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMWNjNzlmN2VjMzVlOGJkODg3MTMwMGUwOTU5N2FiOTg3MDZmNTA2ZTU1ZGRjZjJlZGNkOTkxNWRiYzMzNmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser.tsx#L9-L23",
+          "version": "repo-lines-v1:sha256:b98faf7d093e038791fbc6a355ac03627214fdbd0282e3008d2eb832edc4211d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4Y2M2ZGVkMTQ3YTk4NjI2NjA1ZmIxOGMwZTM3MjEwYTFkNDk4ZjhhNThiZjA2NjUwMzAyMTgwYzc5N2Y5ZWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiZTljNDc1MDVmMWFiZDBmMDk5YTQ1MWJhM2RhYTRlOGM1Njg2OGQ0NGJhYTllNDY4ZWIzYTA0ZWUxODdiNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b228f6cd832143608da334af0875b240",
+      "statement": "InconsistencyViewer offers a type filter (All Types plus the two InconsistencyType values) and an inconsistencies.json download exporting { inconsistencies } over the full unfiltered list; the displayed list is a memoized filter plus sort (primary by type, then sentence number for TextEntityAbsentFromModel or model element id for ModelEntityAbsentFromText, falling back to reason). Loading and empty states render dedicated messages, rows show type, sentence number or model id, and reason; clicking a row resets the trace-link highlight then calls highlightSingleInconsistency, and a TooltipInstruction explains the two inconsistency meanings.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer.tsx#L19-L77",
+          "version": "repo-lines-v1:sha256:a016f812374e962b988e99c734c471add29ab3ca03b0660daefb52f87489be9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4OWMxYzNhZjVkZDVkOGRiNDJlNDVmMjM0MmJkZTk2MTBhMmUwZjQxMmI1YmVmOTQ0YjAyY2MwNDAxN2FlM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyNmRlMjFlNWIyZDZhZDc0NjcyY2JiODYzMzkwZTM2ZjNlMjJhZTg3ZjY3ZDA0ZjA2MzU3NTM4OGM4NDIzNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMDJiZmE4MzA0ZjA2ZDM0ODMzNjE3YTBkOGViNjYyOGY5MTQ2NDc4ZjY5OWU0ODgyMDJlMjJmNGYyZDNhMGUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer.tsx#L79-L141",
+          "version": "repo-lines-v1:sha256:ee32a2ca1ea6ce64dbce9f24ec824ca62936602bbebc70121bd43410e84b10a4:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhOTFjM2EyMjkyOWJhMTQxNTMyODE2MmUyNGViOTIzMzQ5NmMyN2VmMTE2ZTU3OWExZTdlN2VmZDQyNTcyZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/viewer/InconsistencyItemDisplay.tsx#L14-L58",
+          "version": "repo-lines-v1:sha256:68dcfa1a3f89cde1ee8a9bd04d3825e15ac5b42f6551f909fd83c10060f88126:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyOGE3YjNmMjU2MGNhZTBjNzA3ZDQ1MmU5YTdmOTkwMWI5ZTI1ZDlhNWI2YjJjNzgzMTJmZGM1MWQ1OThkMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4M2JlMTQ1MmVjMGI3MzYwOTBlZjYyMTdkOThiODY0MWEwODAwMjViYjAxMzQyNWRiMmMwYzA3Njc2MDBjNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4e754d120f1b408cae646b14288f8054",
+      "statement": "Viewer chrome: ResultDisplay always renders one SearchResultMessage toast outside the panels, FullScreenResultDialog is a fixed-position Headless UI Dialog with a manual TabGroup whose tab changes flow back into shared selectedDialogView state (reopening keeps the last selected view), Loading.tsx provides LoadingMessage and ErrorMessage, and TooltipInstruction renders a hoverable \"?\" badge listing key-combo instructions (bottom-right by default, per-viewer instruction lists).",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/FullScreenResult.tsx#L40-L77",
+          "version": "repo-lines-v1:sha256:17be3c8df0adf1ac6bd9bce2a8440b74276ed6f12ced9cf39b6aafe4c3ea1124:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0MDk4NDQ5YzIyN2Y5ZGI5YTIxYTY5MmYwZDBjOWNiYWM3MzFiMDhkNmY5NzJlZDE1YWZmNjg4NDE2YmViNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2M2Y1ZTMxZmYzN2M5MzQzMTdjZWI4NTVmNTIwMjJiZTk2Y2NiMTFkMzJiNWZhMDYwODQ0OWFkZDJkYThjMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMmY0MDMzNDc2ZjAwYjc0NGU0MGE1ODViM2RmMGI3NTAyNzZkZTIxNWRmZTg4ZmMwNzMxNWFhM2ZhMzkxMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/Loading.tsx#L1-L23",
+          "version": "repo-lines-v1:sha256:ec6656b594e9bedb576fc1c59f23a0e62498d013f25779168c3e46f73e88cf02:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4M2ZlYmU0NGM2YzIwMGY3YWU1ZTk2YzlmMjBhYjY3YTZmZjcxYjEwMjVlNmU5NWE4ZTkyN2JlMmU5NDM1NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultDisplay.tsx#L41-L52",
+          "version": "repo-lines-v1:sha256:d63ccc8113e3f81adc9a42fc74cfdd3140f2cd032eae45bca6c497cbe3f0910a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ODY5ZjM5NmVhYTJhZTU1ZTZlYTFmNDhkNjdmZTcwYzkxMDAyYmY1NmZmOTZkNGE4MzY3NmNkZTZhNmU5ODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNDE0MzY3NjZiMmY4YzRmZDcwNzZlOWE3YmUyZmIzYzI0NTcyODIyOGJjYjlkYzNhNzZmNTFhNWE0MGMxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzYTc3YzhkOWIxYzJjNjNhMjY5YWI0MjMwNDhlZTk1OTYxYjU1MzVhZWMwMzk2ZjRjMzJmOGE0OWRjNWJmNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmMjkwYmJkOGFmZTA0MTY5MDk5MmU4N2M0ZGNjZTJkYjBlM2I4MzZkMGQ4YTQ5MDA3NzRlZTBjNmFjNWNlZDYifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/TooltipInstruction.tsx#L14-L44",
+          "version": "repo-lines-v1:sha256:24d9c491c523964d3a73d5b1097cbff3512a4368be262c7156003e4d0a2a4f2f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwZjZiYmVmNjc5Zjg1ODViODVhYjJjMDE3MGZkNjQ2MWZmYmUyMTg4Y2E4MmVjOTU3ZjBhODNjYmI0MzFmZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5ZDE4ZGRkYmI4MzFkMjNjZWZhZjA4MDlhMDcyZWMxNTA1OGVmNWY5NGY2NDM3YTE1YTc1ZWJiODE3ODJhZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU4MWUzMmFjMzliMjFiOWRhYmUxNjA2ZWFjYzE0NWI5MjNjZWVkN2FjYjEyZGMzYzgzNjc5ODNlM2FiMzI1MDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e5926c3d8d424ec4a01d3895c0bd08b3",
+      "statement": "Empty results are statuses, not errors in the result viewer: missing artifact files render fallbacks, empty trace-link/inconsistency arrays render dedicated \"No traceLinks/inconsistencies found.\" messages, and highlight mutators no-op on empty collections - only storage exceptions and parse failures become ErrorMessage output.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/InconsistencyViewer.tsx#L70-L77",
+          "version": "repo-lines-v1:sha256:1fd1139dee6a1047532849ba2018e17c0de62cffd4bae7a6e0a98590ead20a9c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQ2N2VmMmExNjVjNWIzZjU4OWE1MmIyYjdiNjg4MjNiMmNjNDc5MjFkYjU2NjkwMmNiYjcxZjc0ODNlYjUxMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk5YmRlZmVlYWNhNjM0MGUwMjkwZGM4NmU4ODljODlkNWUxODlhYTViYTQ0YjU4NWIzYjcwNzM0ZjRhNjJkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzIwMmJmYTgzMDRmMDZkMzQ4MzM2MTdhMGQ4ZWI2NjI4ZjkxNDY0NzhmNjk5ZTQ4ODIwMmUyMmY0ZjJkM2EwZSJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer.tsx#L100-L108",
+          "version": "repo-lines-v1:sha256:ec94ee0e8945943d1f38af5a10105880492e3d7a8993c713d2322c58d6232412:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjFlMmY2ZTkyZGUzNWIyMGJhMjhhY2YzMjc4ZDFmYzA3MmI5YjZiNjRiZDI1OGUyNzQzOGQ0MjJjNjc3OTYyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTc4NjUyNDIyZGJjMGZlNzI2ODg3YjYxZTUzMzAxMDVjMTNmNDYwZmY3YTRiN2UxY2JiNWNlNjMyODE4ZmFjZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzIwMmJmYTgzMDRmMDZkMzQ4MzM2MTdhMGQ4ZWI2NjI4ZjkxNDY0NzhmNjk5ZTQ4ODIwMmUyMmY0ZjJkM2EwZSJ9"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L54-L59",
+          "version": "repo-lines-v1:sha256:451fd69948aafbf34c43f9a29df2ee6d3d9d45ddd44dce87ab13f3f5723b0c8a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFlYmNmZjE5MmFlMTQxNmRiNzZjMzQwNTllZGRkOWI0NTAwNTA2ZDk3YmUzOGM3NDUzMjQyYjdmOTk2YmE3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTRlMGE2MDZlZjk2MzFjMjE5YzQyZDA4MjdlOWI4NTg5MGFjZDBkYjQ2YjAzYzE1N2E0ZTM5ZTgwYzkwNTQ0NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmViMGYyMGQ0NWQ4YzliYzA5MjlkYTNmNzUxNDdlMjllNGExOTk5ODFiYzFiZWJlMjc4NzEwNzA1MDBhZDgxNiJ9"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L73-L80",
+          "version": "repo-lines-v1:sha256:58c55ff403b8dea039056ae065c4f2228b89d4dd7185dc61e808af858e324850:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjFiNTFhMTY0OGMzNjQ3MjczZTM3MWRkZGJjNjYwNjQxNzRjMjFjM2E0MzM1OGNhYTA2MjQ1ZjYwNzU2OWI5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTYwN2E2ZjA1ZmM2OTEwZjY2MzQ1MTQ1MzU4MWZlNGZkMmQ3M2RiZTFjNzY2NmYzZWE0OGViYmJmOGY0MjhiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWNiOTAzNTZjNWZmMTk3N2JlNjkzMzI5ZDg1NjIzNGM0NjQzYjI3YWExMjIxNDBiOWRmYzkwY2NhZGYyMGE5ZSJ9"
+        },
+        {
+          "resource": "repo://src/util/useDataLoader.ts#L33-L57",
+          "version": "repo-lines-v1:sha256:22149806c4af77353e93e83ad83802c0a7ba2a593f4e63cf1d0adba943c4abb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNjUyYmM1YmQwMjY3Zjg4ZjE1Y2U0ZTIwNDE1NDI3MTk0NWVmN2Q0ZTdmY2NmNmYyOWI5Zjc2NDU1NWE1YzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmNzk4ZTBkZWRkZDBlOGY3NzE4ZWZhNDVlOThlOGM2MzRhZjRkMzU1ZjU4ZWQ4NWY2NDMzOTc3ZTliMWU1YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllN2E5M2UzZDA2OTY3YTExY2IyZGQyZmMzMzA4YTYxNmMyOTA5YmI1YzgwMmMzMzcyZWE3ODNmOGVmNzliZmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_765aaca1718a4bbfb532e01323cc020f",
+      "statement": "DownloadFileComponent takes fileName, prepareDataToExport, and title, wraps the prepared payload in an application/json Blob, and triggers an anchor download; the app uses it for three exports: tracelinks.json (TraceLinkView), inconsistencies.json (InconsistencyViewer), and ardoco_configuration.json (the wizard configuration step serializing the current traceLinkConfiguration).",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ManualInputSection.tsx#L37-L48",
+          "version": "repo-lines-v1:sha256:876b697dbda3d733f500531e9b7d704cc8c5997a31e71ece5654a21f91ab804f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjODY5ZjY1NWI3ZTIzNWNmODcxMmUxN2U4ZjZiZWMyZjYzYWJiODljMGViMmJmYTk5MTZjNGQ0MDVjMmM1NGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwM2RmZDYxODY0MTlmNjVjNTdhMGNiNWU5MGJjODNmMGJjODkyOWNjYWQ3YWEwYjdiOTcyMzQwNTI1NTQ5ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3YzU0M2UwMGU2MWMyODAzNzY1MTU3ZjNjNTVlOGY1OWMyZTA3NGE0ZTRiMzNkNmRlNDAxYzdkNjU0YjlmYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5M2JmYTJkNDczOTRjZTNhZDM0YTZmNDhiZTQ4M2FhZTc0MjYyYTU0NzI4Njg0YzFmMjRhZjhjYjMyZmE0N2MifQ"
+        },
+        {
+          "resource": "repo://src/util/DownloadFileComponent.tsx#L11-L31",
+          "version": "repo-lines-v1:sha256:f0be7f8232a4ce9e4fa75a524f8208429188aab5861ab338e807e81404fa50fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwN2M4MDU4NWY3MmI5YTAwZWE5ZjA2OWQ4ZTg1NzFhODk5ZTM3YTY5Mjc3Y2Q3YmIxYTI4NmNhZWI4NjI0YWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEwYzdhMjgwZTE1MzllNDc3MTEzMWM2ZWQzZGI3Y2JhNDcxY2JmZDlmY2UyZWJmZThmMDA2Zjg5MWRkY2U5NDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7130ec6f573043e2b81e8dc24743ad7e",
+      "statement": "The panel list is derived per route: /view/[id] builds displayOptions as the selected pipeline's resultViewOptions from TraceLinkTypes with DisplayOption.TRACELINKS unshifted first and INCONSISTENCIES appended when inconsistency detection was requested, while /view-provided/[id] maps the file types returned by loadProjectMetaData through getResultViewOption(fileType), so a stored project shows exactly the panels whose artifacts exist.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L74-L128",
+          "version": "repo-lines-v1:sha256:6179bc4fc377bb7d7b7928a9b61e8a88352a2edc7f14b217563aee3c400d55b2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4ZmFkMGNkMTI5MjIzZGE5MDEyYTIzMDIxOTAyYmVlMmQ1ZWViZTQ2MGI4NzA1ZjBmNDQ2YTNhZDdhYjJlZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyNjA3NTFjNDY0MzViNDFkY2VhOTYyYzMxMGQxM2QyZDFlYjZiMGNkMGFkNzIxOGMzZTAxNDA3YTVkY2E1MjcifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L66-L76",
+          "version": "repo-lines-v1:sha256:a83ed13b42c5c543bbe2be38ec7b1102644aad6bde818443f2daa3e340b3c1d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBkMWNjMDQ2OGQ1YmE0MGM1YTZhNmMzYWRiODVjNmYzZjFkMDM2NjIxMTExYWFkZmU2ZWZkNDFhZTljY2UwMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3OThkNjY2MzI2Y2Q4ZGMzYTVlY2ZiMjIzYzZmZWY3NTQ4OGU3ZmU1NDIxNTQ3NTRhM2Q1ODcyZGE1MGQ5NGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZTQ4MzBlNjA4ZTM3NTVjMDRkZTI4OTM3OWQ4NTQxMjBjYTIxMzI1N2I1NmQ1ZDZjZWRjM2IzZGViZjE0NjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyZWY1MjBjZTUyMGZiNzkxODQ1MWNmMjQ4NTJmMmU5M2I0MTBiZTdkOGVlYTdmZTViZTJiOWU3MWE5Yjk5ODMifQ"
+        },
+        {
+          "resource": "repo://src/components/dataTypes/DisplayOption.tsx#L29-L46",
+          "version": "repo-lines-v1:sha256:f996f67012e85e5420bc94ed8b4e0a3188cf994e2634ac45a823c29e3f9205fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjZWI1YWUyNWY1ODAzMDExODI3NmUwNDkxNjBhYTRkZGE2MGE5ZmU4YTU0ZDNlYTU2MTczOGU4NmU4NzFhYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L16-L58",
+          "version": "repo-lines-v1:sha256:b21ca75e6fc28999861140a512cd044aecb66bc8a1e41cd9ccf5c7321c8fd4b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxOTgxYThmMzY2NTEyZDgzODIzYTNjMzBhYmQ1OGRhZGJlMzA2Y2ZkNDg0ZWFiZjUwY2Q1OGQ0ZDNiZjUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3MDk5NDQ2OWRmMWExNzVkZjk4YTI5NzZlYWMyOTgwMDc3Y2U0MjkzZjllYjY3YTA3M2IyYWE0MTFhZTIwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwOGZmNjczN2I5ODYyODg4ZGM4ZTU1OGNjNDMzNDMwZTViZDI3ZDczOGY0YTYzYWJlMzNmYzRjYzk5ODRiZGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c81b118ec28140dca2ae5b62c1fa5d27",
+      "statement": "On /view-provided/[id] the trace-link and inconsistency JSON is also parsed from stored files (FileType.TRACELINKS / FileType.INCONSISTENCIES) rather than from a backend response; both result routes wrap ResultDisplay in HighlightProvider and InconsistencyProvider before rendering, and ViewProps ({ id: string }) is the shared artifact-viewer prop shape.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L113-L127",
+          "version": "repo-lines-v1:sha256:b4df6b5ef76ef3b4f35e03c4cd2b9224a703426b2466374d49da6d866f5b1820:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNjdhMGIzM2E5OTAwZDVjMDRhMjBhNDk2YjNiMjI1MGQ5ZDAwMzhiNjg2NWJmYmU3NzI1YjViODI4YWY4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1NmU3ZmE4YWUzOTUyMTJjNGQ1NGE5MDUwZjc1YTc0NDBhNzFlOTk0ZTBlNzcyZjEwNzU2M2ZiODc3YmQ3ZWIifQ"
+        },
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L39-L101",
+          "version": "repo-lines-v1:sha256:ff83f6649d32ce924436a161f229b71f892377b4cd12092a5bb6c18464ab3bcd:eyJzZWxlY3RlZExpbmVDb3VudCI6NjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzgzMDlmZjQzNTA0NTllN2U1MzIyODA4NWRhOWI4MWQwNjIwNGY2NmZiZmFjNzIyNmMxZTdjOTJlNzFhNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3MDRiZTQyNDMxMDVmYWEyNmVhYjAzNGZkNDIyYjVmYTMzOWI0YjcwZGMwNTVhZGI5NTc0MDBmMGFiNTNkYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjZmM3MzE0ZjA1OWU2Y2U0NDlkYzQ4MWIyODVlNjM4YzkyNjc4MGNlYWE3MGYxZDA1ZjZhNDEyYmVmOGViMGIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/ViewProps.tsx#L1-L3",
+          "version": "repo-lines-v1:sha256:c8b1a282fbdb8a8199dfbbe4708a8f927115f8fd2b07ff242bfe52377142e0f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTk2OGU0MzZlNDkyMTg1MWM4MGY2YWFlZGZhNTBhMWY4OTdiNGQyNzRlMjMwNTM4OWI2NjZiODU1NzBiZDdiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwYjM2YWE3NGE1OWJjZjRhODgxODU4MzdmNjU4YWZhZjM2NDZlZmYyYmIxNmMzOTI4ZDBlOTMzNWU5NDVkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a19777b515264296978871b72643ef00",
+      "statement": "Cross-panel highlight state flows through two nested React contexts (HighlightProvider owning highlightedTraceLinks and lastClickedSource; InconsistencyProvider nested inside it because it borrows setLastClickedSource), and ResultDisplay renders SearchResultMessage once outside the panels to arbitrate match counts by lastSearchTimestamp and messageSource.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/SearchResultMessage.tsx#L16-L96",
+          "version": "repo-lines-v1:sha256:e72b58d72c29de3e14c82085304c33b58d0c592c7564ee6748834b69bc9e01b0:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkZmRlNDNlNzhhMWM1YzZjYWE2MjViNDhlNGE3NzcyNDkxYzkxMmY1YWYwNmRhNmM5MGViOWQ3Mjc3NDI2M2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNmMxN2RhYjQ0ZWM4ZTQzOTAzNzNkODY5MjEyZDlmOTliZTBmNGEwMWE3OTBkMjYxMmMyMjk0ZmFmNTUwZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4NGI4NzZlMjkxMTNlMzVjMjlhMWYwNTMyMGNiOWY4Y2ZlNTE1ZTE0OWJlMDI4MmY0YjU1NTFlZTEwZDk0NzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzY2QxNTc0ZmI5MDUzYjE5ZDg3OWE2MjMwZDgyYTYyNjY5YjY0MWEyODRjNjY0ZDNjMzFmNjJjZjkzMjk0YWMifQ"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightInconsistencyContext.tsx#L45-L99",
+          "version": "repo-lines-v1:sha256:60fd374dcfe70bb6fc25dfa6c9a6fe4b91f43a09189bb164f98e84ae6e9a38ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzNTc5YzQ5YzM1NDE4YWZkNzg1MGVmMTBkMDk3YWI4MmZkNTNmYmIxZTEzMTA3MjhmZGNmOTI1NDg1ZDE1ZjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5ZjkzMDgzYzE5NzEyMWI5ODI3MDBiYThhZmFiZDE3MjJjZjFkM2U3NDA0NTA5ZTgwZWZhMjcyNDdmNjJmMDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzNTU2ZWYzYTY3OTlmYzI5NjcwZjc3ODY2MDhjYzM5NWI0NGM4OTQxYWEwOWJmOGIxNzRlZmQ1MzIyNTRiNjIifQ"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L1-L100",
+          "version": "repo-lines-v1:sha256:c321c503a5d74767b02622f32bafd08f80e60aa17a086f5fc0306f54c43ff1ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkNjY0ZTAwZWE1N2VjMzlkODhmYzNmNjkzNGM0YjcwOTFkYjA1NmE2YzJkNWIxMWE5NzEyMzAwZDA2ZjhkMjNjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJhZDllMTI1NDY0MjU1NzZkM2RlYWU4YzliOWRiZjEyOGQ1ZDZkZGFmNWQ3ZmU4NTc5MzQ5MjdkZWZmYTNiOWRkIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzMWMyYzcwY2FlZmU0MGRmZGM5NmY0OTFhNjE4YzQ2MDJlYmYwMzNhNzExMzA4MzI2Y2UxZmQ0OGYyNjVmMGE3In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}

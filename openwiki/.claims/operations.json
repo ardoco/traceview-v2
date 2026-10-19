@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:754ca037f46de3926b52bcb677ae8ec0680e17dc795ec998536c4b046c91c681",
+  "claims": [
+    {
+      "id": "claim_1f092772521642ddbf02857ee1383b89",
+      "statement": "package.json defines four npm scripts — dev (next dev), build (next build), start (next start), and lint (next lint --fix) — and contains no test script; the lint script's --fix flag makes linting mutate files in place rather than only report issues.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L5-L10",
+          "version": "repo-lines-v1:sha256:e7d267949022f2fe32e02fce7096c22a1ddfd6a9178c43a25baaba94dfb308b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWMxYjc4ODkyYjY5N2Q4MjE5NWUyNTYyOTA5NTQzNzRlZjQ2NWI1MjU1ZDI0MmUwNWZlOTE2NjZlMmEyZjg5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ0M2NhYWE2ZDQyYzQ2MzU4NjllODQ1MDMwNTEzODY1NTFhOGEzMzdhZjNmYTYxNzYzYTgxNmMxNWQxNTIxMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_623e3161fb0d4308a51a26f91c611e79",
+      "statement": "The repository has no unit or integration test harness: package.json has no test script, no test-runner configuration or test files exist anywhere, CI runs no test step, and test/test-sadsam-json.json is a manual fixture rather than automated test input (and is excluded from Docker images by .dockerignore). The validation practice is npm run build — which mirrors the verify.yml CI gate — plus npm run lint when UI code changes.",
+      "evidence": [
+        {
+          "resource": "repo://.dockerignore#L24-L27",
+          "version": "repo-lines-v1:sha256:dc8bcac55fc973abb31f66fb42c0bcfd41b6af5e1c4e1b2ca1677fb6acee6e1c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY3MmNmYWM0NDg4OWVkZDA0ZThkOWEwMjEzZjJkNTQ0MDk3NDY2M2FmZjBhZGRmZmEyNTAyYjc4ZjI5ZWI0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJjYTFiYjZjN2U5MDdkMDZkYWZlNDY4N2U1NzlmY2U3NmIzN2U0ZTkzYjc2MDUwMjJkYTUyZTZjY2MyNmZkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGZlYjNjYTMxYzE0YjFlMWE2YjlmYmM4Njg1ODA5Njc4MGU5NDkwMjM2YjllZjMxOTEyOGFlODVjMjA3MjA3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDMwNDViYzgyNzk3ZmVmNGI1YzA5NWZkYTE3YzU0NTI3MmIyZDM0NGRhOGNlOTkxOTQ1MGVlOTI5NTNmZjAzZiJ9"
+        },
+        {
+          "resource": "repo://.github/workflows/verify.yml#L32-L35",
+          "version": "repo-lines-v1:sha256:05e3e93e272ae82d3b2ed1d07efd03d24fa57e0a4c70a5907aebbed60aa957a6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE0ZTcyZDljZmJhZmRlZTZiMTA4NzA1MzlhNjk4NTgwMzY1MzAzODJjZTViNzJjZTY0MGQ2MjM1NWI4NGFhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRkMWFmMWY1NGRkZjI3MTFkMDkxZDkwZjVmY2ViMTAzZDQwNjA4ZDFmZDMxZGZiNTk2Y2FjNmFjNTBmYTNlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y5ZWExYWI5YjQwMjFlYWFhYzg5M2MzMDVjNjBkZTNjZGE2NjQwZDEzYzhhNzAzODNlNDEzOWViYjZlNGU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://package.json",
+          "version": "repo-file-v1:sha256:27d43a5845ad2c9f65faa50a36b3280e5b7c77ee9d3d209be7886429d068808e"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb87b9e0340941ca91698ae7d7b9be5b",
+      "statement": "The ESLint configuration extends eslint-config-next (next/core-web-vitals and next/typescript) and overrides exactly two rules: no-console at error level (allowing console.warn and console.error) and @typescript-eslint/no-explicit-any at warn.",
+      "evidence": [
+        {
+          "resource": "repo://.eslintrc.json",
+          "version": "repo-file-v1:sha256:cbd66c4f4c195845dff1077a725d0320337b214760002d49705975b78969f6db"
+        }
+      ]
+    },
+    {
+      "id": "claim_060a1a1ec8624301885b88af1e4987e3",
+      "statement": "TypeScript is configured with strict mode enabled and maps the @/* import alias to ./src/*.",
+      "evidence": [
+        {
+          "resource": "repo://tsconfig.json#L2-L29",
+          "version": "repo-lines-v1:sha256:3cfb54245777fed6ae4a61310d8519be68e18e1ead16f2955e606f8dba62d790:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMGNkOTc0ZWU2ZjM2NjYwMjI0MzRhNmRlODBkZDlmMTA3Zjk5MGYwZDk4MzM1ZjRkYWM2OWYwZGEyYWNkOWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoxLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4YTg3ZGIyOTdlMDRlODgzMGRjMmYyMGFkMTEwOTA4N2E2YzcyMDUzOTE0YzM0MTg5MGFhMDZiNDBiNDNhOGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_70e5ac4ae63549eeaddf203430f56cbd",
+      "statement": "next.config.ts sets output: 'standalone' and pageExtensions [\"mdx\", \"tsx\", \"ts\"]; the standalone build emits the self-contained .next/standalone bundle whose server.js entry point is what the production Docker image executes.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile#L37-L50",
+          "version": "repo-lines-v1:sha256:8c976db2948a951b3c43143c74b8f119aee9aa2225928bb355c5987a0342f0bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzNzFiYTI1ZGUyN2ZmYmM1N2I5MWY5MDMyZjE0YTI1NGFjMzQ0MGNmNjRmNzgxODI2ZTk1ZWFiNjZkODFhZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxOWM4MTQxMzI3MjE4YmFmNjUwYmM0NDU0YzUxZDQzNjg1MzNhMGQ2Mjg4ZGQ2ZjBiZTk2MjJkZjRkZDkyMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlZjQwYzA4MzI2MmEwOGFlNjY2OTc1MTAxODc4OTNjNjc0NDcwNWIwZGIyYzZmMjY3ZDI3ZTc3MGIzYjU1MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://next.config.ts",
+          "version": "repo-file-v1:sha256:444e0ef140729460e051588af9097abad76b809a80b6d77dd53b9c9c84e1ff79"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a446aec290446a4b4f0d3cff1c0dea1",
+      "statement": "The Dockerfile is a three-stage build on node:lts-alpine: the deps stage installs libc6-compat and runs npm ci against the committed lockfile, the builder stage runs npm run build with NEXT_TELEMETRY_DISABLED=1, and the runner stage copies public, .next/standalone, and .next/static, then runs node server.js as the non-root nextjs user (uid/gid 1001) with PORT=3000 and HOSTNAME=0.0.0.0.",
+      "evidence": [
+        {
+          "resource": "repo://Dockerfile",
+          "version": "repo-file-v1:sha256:11b2aec8cab9b0f12fd46c8015a5d71fbd979846ea13e0c3cfdfde61cb6c4f85"
+        }
+      ]
+    },
+    {
+      "id": "claim_03c88c439a58464cb1c938fda2f95ddf",
+      "statement": "docker-compose-template.yml defines a single traceview service that builds the repository Dockerfile, tags the image ghcr.io/ardoco/traceview:latest, publishes it only on loopback (127.0.0.1:3000:3000), and restarts unless-stopped; the README's flow is to copy the template to docker-compose.yml and run docker compose up -d, and the generated docker-compose.yml is gitignored as a local override.",
+      "evidence": [
+        {
+          "resource": "repo://.gitignore#L42-L43",
+          "version": "repo-lines-v1:sha256:f8ad2f74d32e697f664090871827c0945dccac13d663af0bd77c21412fe3f96a:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjYzODk0OWQ3OWJlYTc0OWJlOTY1YWE4Y2ZhNWRjMTE1NWI5MWNhZTVmMWM0ZmZmOTc5MWY3OWQwYTU0YWZlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDc0MDE3MGQyNDZhMTIzZDI4MzExNjk3MDI3ZjRlMWU5MzczYjA3ZjAzNjlkNDE5ZjM3MjI1YmQ1Mjc1MDQ0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTcxMGMwNjAwYmUzM2ZmMmQ3Y2YyMjZmMmQ3ZGRjYjgzOWNkNjI1OTUxZGI4Yzc2NDRkNWM4NTllNjM0OGE5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://README.md#L51-L63",
+          "version": "repo-lines-v1:sha256:0b389497480a80cdc1e340c34ffde5d1ffd93c88373c881d306031194ee40511:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MzViNGNjN2FjZTk1NDIwMDJhM2IwYTI3MmJjMmFjNWEzZGE3ZjgyYzgyNjg3MjAxNGM5NzYxNzI3YTY4Y2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlMzkyYmVlMzBmYjFiMDMyMDcwNDhhYzliYTg5NDY2ZDQ2YjBhNjBmZTU0ZGY2ZTJkN2QwYWFkNWQxNmExNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIifQ"
+        },
+        {
+          "resource": "repo://docker-compose-template.yml",
+          "version": "repo-file-v1:sha256:0576b30346b3b3b9060693474ed6ffba9d7263011322322ab642043ade4a2948"
+        }
+      ]
+    },
+    {
+      "id": "claim_df8f640879ef4041ade8d40aecefa60b",
+      "statement": ".dockerignore excludes test/, local Compose files (docker-compose.yml and variants), .env* files, node_modules, and .next build output from the Docker build context.",
+      "evidence": [
+        {
+          "resource": "repo://.dockerignore",
+          "version": "repo-file-v1:sha256:d26f60ce5a2d1681f1cb56a8093a992f4e8803dfeb378d369d8a29900ddbba61"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3c40ab56f7840f1a5a873477344dbd6",
+      "statement": ".github/workflows/verify.yml is the build gate for code changes: it triggers on pull requests (opened, synchronize, reopened) and manual dispatch, uses fkirc/skip-duplicate-actions@v5 (concurrent_skipping same_content_newer, skip_after_successful_duplicate true) to skip duplicate builds, and otherwise checks out the repository on ubuntu-latest, installs Node lts/*, and runs npm install followed by npm run build — with no lint or test step in CI.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/verify.yml#L3-L35",
+          "version": "repo-lines-v1:sha256:08e925654589c293f595c5530e7353dc737d453c131e6f98ba40e3388ea7b713:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZDFhZjFmNTRkZGYyNzExZDA5MWQ5MGY1ZmNlYjEwM2Q0MDYwOGQxZmQzMWRmYjU5NmNhYzZhYzUwZmEzZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmMzM1YjIxNjYxNTEzOTMxZWEzY2JjY2I5MTZmYzUyNTE5ZTIyNWVmMDY1ZDA2MDJkMjFhZjAzMjJjMTI4NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_444e31a302174755b27ae770fbcfe1a0",
+      "statement": ".github/workflows/docker.yml publishes the traceview image on pushes to main and v* tags (plus manual dispatch) by delegating to the shared ardoco/actions/.github/workflows/docker.yml@main workflow with image-name traceview and push true, and skips runs whose changed paths are only **.md or .github/** files.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/docker.yml",
+          "version": "repo-file-v1:sha256:5f710c94d14030c8c872107d24a6086835fe253c093d415dd998f6f40d1593c5"
+        }
+      ]
+    },
+    {
+      "id": "claim_5070720cadff4b8abce47987156a9d7a",
+      "statement": ".github/workflows/openwiki.yml refreshes the repository wiki weekly (cron 0 6 * * 1, Mondays 06:00 UTC, plus manual dispatch) via the shared ardoco/actions/.github/workflows/openwiki.yml@main workflow, granting contents: write and pull-requests: write permissions and passing the OPENROUTER_API_KEY secret.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/openwiki.yml",
+          "version": "repo-file-v1:sha256:bf077ccef0e2cd34134360b05d6efa4f00b44ee578eb40b00f56b6ed10ae9927"
+        }
+      ]
+    },
+    {
+      "id": "claim_8fc6d8758c794be4b6c3243056a261b0",
+      "statement": "Dependabot is configured for monthly dependency-update PRs across the github-actions, npm, and docker ecosystems, all using the 'Dependency' commit-message prefix with scope included.",
+      "evidence": [
+        {
+          "resource": "repo://.github/dependabot.yml",
+          "version": "repo-file-v1:sha256:0f7b5e330b8d064a1c86e2eb0b7c1a7368cdde17fd6c3928620073f8cf1e0a40"
+        }
+      ]
+    },
+    {
+      "id": "claim_d31af3bdfd8149d59b8891e3a34809cb",
+      "statement": "test/test-sadsam-json.json is a complete sample SAD_SAM get-result payload — top-level requestId, status \"OK\", message, traceLinkType \"SAD_SAM\", and a traceLinks array whose entries carry sentenceNumber (0-based on the wire; the parser adds 1 for display), modelElementUid, and confidence. No source code references it, so it serves as a manual fixture for the trace-link parsing path (for example via the /load-project stored-project flow), not as automated test input.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L37-L43",
+          "version": "repo-lines-v1:sha256:4731f2a45cf1bc923971643c91619e37e313fcab23beb46d9f0b9395727b7574:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjJlZDY0MzVjNDQyZjI1NDgwOGNkM2I4NTI1ZjJmZTBmNTkwYjRjN2VmNTc0NzFhM2YxNGUyNTM5ZTExOWE4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU0NjJiZDg1ZWEzNTIyODIyYTlhZDNlYjI0MDk5YjAzMmExYjYyN2JlY2ZkN2M1ODMxZTk5MjdkNGJhYzQwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQzYWVhYTU4ZmQ0ZDEyNjEzNjdlZjEwZDI0ZDU0YTk0NDM4ZDI0YTAwOGIxOWY1ZGUyMjNmNGVjNTVmNmVmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA4NmUwYzYyZmZhZjNjODJhODNjOGRjYTdhNDlhODJiYTBjOGY4ZTNjMzc1MjE1OGRmYmY2MTQ4MzZhZWYwMCJ9"
+        },
+        {
+          "resource": "repo://test/test-sadsam-json.json#L1-L5",
+          "version": "repo-lines-v1:sha256:6f24963a9bab3442e49bebda9fca79aa30678a6b2c10335c71ef1ed2bbbb05ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTZmYjA4ZmRhMWFjYjk1N2I2MTE2YmQzNzgxMWExZmU0MWEwMTYxMWMwNjMxZWRiZjc4NmQ2ODg5YTI3YTU1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJmZjI4NGMyODliNDU2MDc0MGI3ODg5YmZmMzYwNGU3MDcxYWMwMDZkNjg0M2Y3YTBkYWZjMmNkNWIxMWE1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzkzYTlmNWExZDMxZjFkNDZhMDI4ZDkwNTk4MGNhNGI1MjFkNGM3YjhiOWYzOTBjZGQ5ZjY0MGRiZTVkMzYyNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c9d961880a6f4c1085cc6c23bfbafa1c",
+      "statement": "TraceView requires a reachable ARDoCo REST backend at runtime: the backend address is browser state owned by ApiAddressContext, defaulting to https://rest.ardoco.de and hydrated from the localStorage key apiAddress, editable through the navbar's EditApiAddressModal; a candidate address is probed with GET /api/health through the proxy middleware and is persisted (and activated) only when the probe succeeds, so a failed probe leaves the previously active address unchanged.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/NavBar.tsx#L160-L160",
+          "version": "repo-lines-v1:sha256:c67560fe71c917a13d646ed5d2462747d33951623343743cc1e1ff2d573ccc0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzY3NTYwZmU3MWM5MTdhMTNkNjQ2ZWQ1ZDI0NjI3NDdkMzM5NTE2MjMzNDM3NDNjYzFlMWZmMmQ1NzNjY2MwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzY3NTYwZmU3MWM5MTdhMTNkNjQ2ZWQ1ZDI0NjI3NDdkMzM5NTE2MjMzNDM3NDNjYzFlMWZmMmQ1NzNjY2MwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NkZWUxZjFhOTgwOWU2MmQxY2U5ZjhmYWFiZTMyZTAwMjJmZGY3NDc5NTk5YWJkZmNkZThmZGU4M2E5ODY3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYWJiMGM2Mzk0NTFhMjhhNWQ4YmVlZmM0Y2YzYjdmZjRmYWQzNTY2ZmY0OGExMWRjN2VmMGMzM2RjMmYyZCJ9"
+        },
+        {
+          "resource": "repo://src/contexts/ApiAddressContext.tsx#L6-L53",
+          "version": "repo-lines-v1:sha256:029b5b17894bdfd65707e01164f73662357999840bebc44a70850732fb03894e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MzYwMzI4NTU1YzU0MWYwZGU1OWIxMjFhNjg4MTBkMmMwY2NjNDU4NGJjNGViOTliYjk1NjNkMTU4NjMyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3OGI2YzZhMTgxZGExYmFmYzlhMDQ1MjMxZDQwNjk0ZmQyNzk0NjlkYTg5MTQ2MGM5MTVjYzEwNWIwMTI3NmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyOWE4YTZiYzI1NTk3NjlmYTRlYjI4YjcyZTUzNTY4NGIwNmYzOGE3NGI2OGNhMzE2NGYwOTBlYzJmMGI2ZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8ae550a9e3ee4cba8ea693c4f513fc60",
+      "statement": "The /view/[id] page polls GET /api/get-result/{id} every 5 seconds for up to 240 seconds (4 minutes): status \"OK\" resolves the payload, \"ACCEPTED\" keeps polling, any other status throws an error carrying the backend's message verbatim, and exhausting the budget throws \"The result is still processing. Please try again later.\" — so a backend run lasting longer than 4 minutes fails in the UI even if it eventually completes.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L21-L50",
+          "version": "repo-lines-v1:sha256:78fe7273ecd31616b768d8880ad20378ee329b0c1cca6e35375b3f7399558fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYWNmODk1OGU4YmMwMTE2NGU0NzlkMjZkMjI4Nzc0MTliZGM2MmVhZTJkZjBhZDBlNDk3ZGM3YmE0MzJiOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjM2MDIxZmRlNDQ0ZjlkNWI2MDY1Mjg4NzU0Njg4ZmFiNDYyNTRjMDZlNGUzZTdkMGY3ZDI1ZmVjMjgxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L90-L96",
+          "version": "repo-lines-v1:sha256:99f8edac7f12380954870522bc24ea2a11a7a4cb28da35e36d085288a732d2b5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RkODQ2OTEwYjFhMDlmNjgwYmM1NzY4MWM3MGQxZjAyZTEwMTFiYWVjZWNkYTVlM2RkNWI3Nzk2NjI2YThiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTIwNzJjNjdlMDcyMjQxYmY5YzIzNWJmYjUxMTcxYzBmODQ1NTk5NzcwYTIxYTA4OGJiOGExNjVjYjhhYmRjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmMyZTIwYWUxNDBlZDNlODdjNTkzNDViODllY2Y2YmQ5MTQzMjdkNTcyZjczZWFmNGVjODlmMDJjYzY3MzdmYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTgzYjE3ZmNhNDJjMmE2MzIyMmNjMmJjMjE5M2JiNTUxMDFjYTdjZWU5MWIxZTJhYTRiYjc5MTM4YjdkZmZjMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc99402930e241cab7389d8e5b6ebde5",
+      "statement": "Uploaded project artifacts and metadata are persisted only in the browser's Origin Private File System via navigator.storage.getDirectory(), in per-project directories keyed by the request id; no TraceView-owned server storage exists. Clearing browser site data removes every stored project, and confirming the navigation guard (ConfirmNavigationModal through NavigationContext) immediately deletes the current project's OPFS directory via deleteProjectDirectory.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L34-L45",
+          "version": "repo-lines-v1:sha256:632d41ee162edf75e9a95a24b1edacedaff2814dac1c5aba71f36bfbbee09cd6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOWQ3ZGM5MzE2NDJiNjQ3ZDU5ZGM3YTk1NjViZDg3NDVhZTU0YjdjYThjMTdkNDA1ZGYwMDZiNWVkOTQwZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlMWUxMjIxOTYyNjBlNDQ1OTM2M2I3NWI5NzhlN2I0MmQ1YWY2N2Y3OWU1ODdkNGY5MjgyNGEzZjFjMjYxYTQifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L6-L19",
+          "version": "repo-lines-v1:sha256:fcb9194401b3d13a547f0b25823d26ba6e3d7e05deefbdce03a36620ccefd7ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExOWRiNDBkY2ZmMWQ4YjE0ZjFiMzZiOWI5NzA1ZGM1MDA1ZTk3M2QyMGZhMTRmZDJmMWJiOGI1ZjhlZTUyMGIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}
