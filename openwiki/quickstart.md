@@ -5,7 +5,7 @@ description: "Entry point to the TraceView wiki: product overview, the full nine
 tags: [quickstart, navigation, traceview]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-10-19T12:26:44.589Z
+    at: 2026-10-26T12:26:23.003Z
 sources:
   - id: openwiki-source-1bc83e59b3e3c64091f68169
     resource: repo://.github/workflows/docker.yml
@@ -57,7 +57,7 @@ sources:
     resource: repo://src/util/ClientFileStorage.tsx
   - id: openwiki-source-b60decb03ea1c257f6cfbbf7
     resource: repo://test/test-sadsam-json.json
-generated: { by: "openwiki/0.7.2", at: "2026-10-19T12:26:44.589Z" }
+generated: { by: "openwiki/0.7.2", at: "2026-10-26T12:26:23.003Z" }
 ---
 
 # OpenWiki quickstart
@@ -72,7 +72,7 @@ TraceView is a browser-based, installation-free frontend for [ARDoCo](https://gi
 - Polls the backend for asynchronous results and renders trace links, documentation, architecture models, code models, and inconsistency findings side by side.
 - Stores project files and metadata locally in the browser so results can be re-opened without the backend.
 
-`README.md` and the landing page (`src/app/page.tsx`) carry the same product framing; this page is also the fallback entry point `AGENTS.md` names for when OpenWiki retrieval tooling is unavailable.
+`README.md` and the landing page (`src/app/page.tsx`) carry the same product framing. `AGENTS.md` frames the generated `openwiki/` wiki as optional just-in-time context — not required startup reading — and names this page as the fallback entry point for when OpenWiki retrieval tooling is unavailable.
 
 ## Wiki page map
 
