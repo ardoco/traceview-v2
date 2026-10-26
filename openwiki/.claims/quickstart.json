@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4afc1e10255b5a54d2f2b24a5cea62a5b03b7e42a76ca734edd4e5c17706f5c1",
+  "pageVersion": "sha256:df1398ca27481c58f0519eb899b981b776313d917f6eeac3e4103a3cfef12a18",
   "claims": [
     {
       "id": "claim_8e09ffa7347d45e1a3a6b5bcf8b3fef1",
@@ -256,17 +256,21 @@
     },
     {
       "id": "claim_ac16f5e8a1b9447da182ebbdfdd6c139",
-      "statement": "Per AGENTS.md, openwiki/quickstart.md is the documented fallback entry point: when OpenWiki retrieval tools are unavailable, readers are directed to read this page and follow its links to the relevant wiki pages.",
+      "statement": "Per AGENTS.md, the generated openwiki/ wiki is optional just-in-time context (not required startup reading), and openwiki/quickstart.md is the documented fallback entry point: when OpenWiki retrieval tools are unavailable, readers are directed to read this page and follow its links to the relevant wiki pages.",
       "evidence": [
         {
           "resource": "repo://AGENTS.md#L10-L10",
           "version": "repo-lines-v1:sha256:07553b0d52eb824ef41e76bf45b562f1ce483a1263f4ffb43b11b09a072858ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc1NTNiMGQ1MmViODI0ZWY0MWU3NmJmNDViNTYyZjFjZTQ4M2ExMjYzZjRmZmI0M2IxMWIwOWEwNzI4NThiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc1NTNiMGQ1MmViODI0ZWY0MWU3NmJmNDViNTYyZjFjZTQ4M2ExMjYzZjRmZmI0M2IxMWIwOWEwNzI4NThiYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTAyZDFlNjcyNTU4MTg3NTZjYjYyYmUxNGViZDVjMWI1M2FlYmQxOGZhZTVkNWMyMGVkYWNiYWZiYjdjZTMzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjZjYjMwYThmOTQ4MTMxNDkwODJmM2RjYjkxOWRiMTJmMjIwYjMxYTI5NWZiZWU5NTM1MWNmOGYxNGJhZGEyZSJ9"
+        },
+        {
+          "resource": "repo://AGENTS.md#L3-L14",
+          "version": "repo-lines-v1:sha256:074524ea157a9d9c948e8d2d6f957709a896968012729b0841b5f5e1a47a0e2c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0ODM2ZWQ3ZTAwNTM3NzVhMGE5NjZjZTg2MTM0YjIzNDdkODUxYTdiMDJmNDgxMmJlYjJjNTlkMWM2OGQ1MjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiNTM5NTNiZmI3MmMxMjYyYmJhZTJlYWNhNzJjYWJmMWFmNDk5MjdhMGJiYTExNTdiMmQ1YmRiMjg1YzRiZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiODU5ZTU1ZTRiMmQyNjJiNTQ2NGJlOTdkZWMyMTNhYWViMWU1Y2NkMDBkNDEwMjBkZGFkNDEzZWRiNzc2ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwODlkZjkzZjhiYTU3YTRkZGJmZDhmMDEzOTYyYzM5NzhjZTRkYjY4MTk5YzRkYTY2NjY0OWIwOTk2Y2VkYTkifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-10-19T12:26:44.589Z"
+    "at": "2026-10-26T12:26:23.003Z"
   }
 }
