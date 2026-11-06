@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b7241ad4a7e35475e6353b6e679d7d7931995173fd617db254cea5fa3f6e783f",
+  "claims": [
+    {
+      "id": "claim_db248350227d48b8bfb1acf49d9028e5",
+      "statement": "The /new-project route wraps MultiStepFormNewProject in FormProvider with allowedFileTypes set to every FileType except TRACELINKS and INCONSISTENCIES, and the four-step wizard (Upload Files, Project Details, Configuration, Summary) validates each step via FormValidation functions rendered as DisplayErrors; the summary step re-validates earlier steps and the Calculate TraceLinks button is disabled while summary errors exist.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/new-project/page.tsx#L10-L14",
+          "version": "repo-lines-v1:sha256:184ed0fe482b415a0a90f609c9f291f6901655d1a59ff2199b651dac09dc4f2b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU2MTM3MTZlZWY0ZDZkMWFjMDAyMmFmNzc2MTYwZmI3Yzk2NzFjYWM3NjMzMGFmYjUxZTIzYTE3Mzk0ZDNkMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWIzYmIwNGRlZjUxNDIzNDhjZDU5Y2FhNDRkY2I3YjM5YWRjZjVlMmJjOGM3YWQ3ODA4ZWRhZGJmNTIxZWEyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDU2ODMxMjhjOWJlYjFhZTI0M2M3ZDI3MzljNWY2OGEwZjZmOTVmZDhkMjA4MTkzNTE5YTc1MTcwOGFhZWNlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmJlMGQ2YzY2MDNlOGRhMDAzY2UxYzdhMzVkMzAxMmY3YjdhMjhiYWMyZjYwODBhMTgwMjI4MzMwOGIwZThjNiJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L7-L37",
+          "version": "repo-lines-v1:sha256:97d810cb8fdebe2a185d68e8bdd722c1c3d879317141884382d7c856a5ab496f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0N2QwNjFjZjYzYmFiYmY1N2YwMDI5MmUzMmVmMGQ2NGVlZjExMGRmODY0NTA2MDExNDhmOWNlMjBlMTFkN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0YWRjYjc1Yjk1NDY0OGQyYzgyMTI2YjYwMGViZTE2NWMzMDkxMzMwNDhmNzdiMmQxMjg4ODg0NjlkNmMyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2Njc2YWM2MjIzNGFhYmVmYTc0OTAzODFjNWI3NDRiN2QwNzE1MzNlZDVmMzUxYmJlYzVmY2IxNDZmNDkyMmMifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L37-L57",
+          "version": "repo-lines-v1:sha256:41c4677fffc677d58897bfd8ede0c9246606d1fc8994939fda0ce275727496a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWFmZWQzNDBjN2Q3MDFjYzRhNmRlN2Y3ZTI4ZGQ5M2U3OWE1MGY3NjRjMmFjZWQ1MTgwYzc1NmE2YzVjYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxNzlmOWRlYjZiNzBmOWIyNzViZWRlZDViOTYwNjExNDgyN2I0ZTYzODE1YzZhZTBmNzliZjExZDU1ZmRiNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2YjYyN2I5YTBkNDNjOTFkZWJhMjgyZDhlNjEyOTIyNzBiN2VmOTI4MDYzMmZmMTU2ZmM0MmFjNWI1NDY5YjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNzhiMTI3YzhhOWFmM2QwZjJhZWMzMTIxYTc3ZTBhZDk2ZGE2YTc5MzdkY2RmMTU5NzNkODMwYjZkNmE5MmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6515af6ee75948a1bab6ed3ed2bb6117",
+      "statement": "On the final wizard step, handleSubmit calls fetchArdocoApi — which builds the multipart payload (projectName, additionalConfigs JSON with empty values filtered, type-specific inputCode/inputText/inputArchitectureModel plus inputArchitectureModelFormat) and POSTs to /api/{api_name lowercased}/start or /api/find-inconsistencies/start for SAD_SAM only, rejecting responses without requestId — then stores usedFiles and metadata via storeProjectFiles/storeProjectMetadata under the requestId and redirects to /view/{encodedId}?type={name}&inconsistencies={bool}.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L93-L120",
+          "version": "repo-lines-v1:sha256:21258f5cde2efe679957c8e907c25c0cbb8910eff1c2ed745781a0de0695ad3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L102-L119",
+          "version": "repo-lines-v1:sha256:182e3a79e6dc597e0f692d56f6c648a78d1d2f7acbaba9961a70a83b38ead054:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExZGY4N2E0NzMxNmM3MDhjNTUwMjA5OGU5YWY2YzQ0NTM0ZWI4MGJlYWRjZjYwNjMwMjhlZmNhODU5MzdhYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwNWI4MDU2ZGI5YTEzOTY0MTQ4Njc2Y2YwOTY5OGUzNWQxNWU5ZWY4Y2I1NDJjZWI4Y2QzZDM2OGEzYzQxOGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZjZlOWQwZjQwMDE0MjEyZjVhY2VhZDE2ZWM2NDY5OGY0MDEwNWJjMTRjMWM3MTBmY2YxYWVkMzNhMmRmNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczZGMxZjY4ZTFlNGVmMDMyNzI1MzdkZWMwMzFlNjlmMzExNGUwMTcyNGNjMDY3ZWYzNWU1ZGM0NmNmYjk4NDkifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L25-L38",
+          "version": "repo-lines-v1:sha256:f12ed68fc92d26e1703ed2239d3f2f22faa83a1f41089b347218a92c3be0f94c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyM2NkYTQ5NDYzZGZmYTY1ZTQ1YTBiZGZmMjQ4ZjY0ZmJiNjIxZTEyZjBjZGQ5ZGQ2NGQ3MTg5YmRlOWQ0MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyODY3MTczMzE5ZWQ4ZjVkZDRhMTBiYzE4NzNjZTg5ZmU3ZGU3Y2UxZDM2N2QwMTFkZGM3MGJiN2Q0NjhjMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5NmUxMmJhZTJiMjJkZDJmNTYzYTFkNGQwYjYwNjRiYjc5YmM2M2I3OGIyNDU4YTMwYjczNGNlYWIzNGQ0NDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51c38d32aced41bca7919edbbde051a6",
+      "statement": "Wizard failures are split: an API error from fetchArdocoApi opens a LoadingErrorModal whose Retry just closes the modal and whose View Files Only re-runs handleSubmit and redirects to /view-provided/{requestId}; a failure while writing to browser storage opens a separate single-Okay modal and returns the user to the wizard.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/LoadingErrorModal.tsx#L12-L42",
+          "version": "repo-lines-v1:sha256:252220c769b79d2aaa8a310a05f87d20cc62e33f19fb3a35a304c3f34b9bc03f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NGEyODFhZDllY2NhMjU5OGQ3YjJmMDZhOWU4MDBkYjhlNTM4NWU2OWNkZGI1ODVlMThjNzBiMGNiYjUzYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlM2UxNzQwMDAzNTc2Zjg1ZThmOTI2MjY0ZWRlZjllNjU2ZWI5ZmZiYjBhYTUzNDBkNDk2NTA5NTMwYTMxOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMTE1ZWViNDI3ZDRmMDYyMDBiMzdlMDM0OWY3ODA0ZjE2YWY1N2VjNTEwZDc2NDM0NzUxMDliYTkxZjQxODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZTk0YjU1NDgwNDRhNDdmYjc0Nzg4MThiMTUzZDA2ZmMyZjkxNWRlNTk0OGUyNzE4Y2IyYTQyNTkyNjg0MzMifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L163-L182",
+          "version": "repo-lines-v1:sha256:53866f5351e53d1701b16d42b03b74067281cdcd655d3ee33859bdab68ba1d3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhYTEwMTQ3YjQ5YjhkZDQ2NTdlMjhiNDVjMmRlN2MxNDE0ZmY1MWFlZGMzYjNhMDBjZmZhN2RlOGIzZDI1ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NzI0ZjMxYjZiMDc4YWZiMzdlODI2YWFlNTM1Y2E5ZGFkOTZkMDEwMjAxYWFkNzNmMzAzZGRiZTA0OTk4ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyMjhlMTYxZWY5MzliMGQyNmU1ZmRhMzk2MDBkNTI1Mjk0N2YxNDg1ZDY2YTY5NjM1NWIzYjE5Y2QwNTZiOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1YTE3NjY1YmEyOThiMTM3MmE1Yjg0NTdkZTAyYTE5N2U5NGEyZDYyMTQ5MjY0MTQ2YTFhYmVhNjNjMGNhNmUifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L188-L222",
+          "version": "repo-lines-v1:sha256:7a0ac428e86bb8854cdaef6fe410c04308750e4c7f6329cfe8d8036f98f7303e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMzIxZWM4MmQyZWMwNWJiNWI1ZTJmYzYxNmFmNTg5ODllNjRiOTBjMmYyZjMzZjZhYjk3N2E2ODM4ZWY4Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkNWNhYjhkN2ZmOWRkNzhmODdkMjEyMjM5NDBiZWZlZjJmYmYyYTBmZGZiMjIwYTc3ZDAwMjRhZDA2NmY2M2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3db53d2ba38840bdb33da710300aed7a",
+      "statement": "The /load-project route allows all FileType values (including result JSON), and its single-step MultiStepFormLoadProject validates via FormValidation.validateExistingProject (at least one file, at most one file per type, at most one architecture model); on Visualize TraceLinks it generates a uuidv4 storage id, calls storeProjectFiles/storeProjectMetadata (storage errors are only logged), and redirects to /view-provided/{encodedId}, with the Exit button returning to /.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/load-project/page.tsx#L10-L14",
+          "version": "repo-lines-v1:sha256:8a43fc5ea87324f9ad954accd72987526780f92daac2bb982d1ea405b0b3abc7:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDMyZWRlNjNjYzhjZTQzNzQ0Mjg1ZjZkNDY3OThkZDBkOGVlZDliN2I2ODMyOWY5OGZmN2RiMmU3MDdkMjAwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYyMTVmZDAzY2ZjMmJlZWJmODA0YTE3YWM1ZTk0Nzk1MWY3Y2QyZGMwNTYwNTIyNDk5YzYwNmZkYmNkNzE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjVhOGY4MjA2Y2NjNGQ2MjcwN2ZlYjhlNmNlZGIyMzgwY2UxMGU5YjE5NWE3NTIzYjE2OWVjZjcyZWZlMWIxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAxNjFmZGVjNGQ2MmNlY2E1NWU3NGExYjc0NDEwNTNkZThlNDljNmVmOGI2ZGVlYjg0Mjk0N2I2YzkwOTkzNiJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L39-L66",
+          "version": "repo-lines-v1:sha256:f996f1560d0a723d7caa7580ba7f6a22596c2c3f44378a1696599e2751b71f36:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YmY2YjRiODk0MGI2MDcwNGE3ZGUzYjRhNzQ2ZWE0ZjQxOWMyY2RhZmE5MTZiN2YyMWVjZjQ2MGVhZGRmMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiOTA4MWI1ZmYwMTdmZDFhMWE4OTNjY2Q4MmJhODRjYTM0ODM3MTdlNzhjYjU1OWM1OWUwMWM1MGM1MGM0YWQifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L20-L25",
+          "version": "repo-lines-v1:sha256:d15ffd75f2bb835aab92d8207183d7fa3bb516b521601c89eb4f6b7bb9c9b65c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5YWZlZDM0MGM3ZDcwMWNjNGE2ZGU3ZjdlMjhkZDkzZTc5YTUwZjc2NGMyYWNlZDUxODBjNzU2YTZjNWNhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE3OWY5ZGViNmI3MGY5YjI3NWJlZGVkNWI5NjA2MTE0ODI3YjRlNjM4MTVjNmFlMGY3OWJmMTFkNTVmZGI0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJhYTZkZGVhNDE4YWNhY2ZhOTM1ZDdkMzM5Y2NiZmQ3OTU5YTJmZGVhZWU2OWEzMjNjZjA1OWIyNGI2Zjc2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ3OGIxMjdjOGE5YWYzZDBmMmFlYzMxMjFhNzdlMGFkOTZkYTZhNzkzN2RjZGYxNTk3M2Q4MzBiNmQ2YTkyYiJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L29-L64",
+          "version": "repo-lines-v1:sha256:a29299fa2bc52edb2034056fd7045c2ff8ae558272ff706b8295bbedd79533fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMjUyZjZhN2RjYmI1NjI4YzYwODI2MzEyMjU1ZDAyNDZlN2NhNWJkOGMzODA4MTIwNzc3NWI0NmNkZTE1MDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNzhiMTI3YzhhOWFmM2QwZjJhZWMzMTIxYTc3ZTBhZDk2ZGE2YTc5MzdkY2RmMTU5NzNkODMwYjZkNmE5MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a054fbadd6347d7b0858f2a5746d54c",
+      "statement": "The /view/[id] page polls GET /api/get-result/{id} (with X-Target-API) every 5 seconds for up to 240 seconds: status OK returns the payload, ACCEPTED keeps polling, any other status throws an error carrying the backend message, and timeout throws a still-processing error; the initial poll uses the shared NavigationContext AbortController with AbortError swallowed, while the Retry path creates its own local AbortController that a later confirmed leave cannot cancel.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L21-L50",
+          "version": "repo-lines-v1:sha256:78fe7273ecd31616b768d8880ad20378ee329b0c1cca6e35375b3f7399558fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYWNmODk1OGU4YmMwMTE2NGU0NzlkMjZkMjI4Nzc0MTliZGM2MmVhZTJkZjBhZDBlNDk3ZGM3YmE0MzJiOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjM2MDIxZmRlNDQ0ZjlkNWI2MDY1Mjg4NzU0Njg4ZmFiNDYyNTRjMDZlNGUzZTdkMGY3ZDI1ZmVjMjgxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L90-L118",
+          "version": "repo-lines-v1:sha256:8932a3fe0e91cd076aa682b51d8694509e5bb970947123c2c98532c96ff609b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZDg0NjkxMGIxYTA5ZjY4MGJjNTc2ODFjNzBkMWYwMmUxMDExYmFlY2VjZGE1ZTNkZDViNzc5NjYyNmE4YmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MDk0Nzk5Njg5ZDA2MjcxZDYxMTY4ZjFlNGUwMTlhZTljODFmNjRjNjg1M2Y2YmUxOTEzMDAzNzZiYjFkM2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjMmUyMGFlMTQwZWQzZTg3YzU5MzQ1Yjg5ZWNmNmJkOTE0MzI3ZDU3MmY3M2VhZjRlYzg5ZjAyY2M2NzM3ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzYzE1YjdlODI1OTUzNjM3ZDk5OTlhNDNiOTZmOTViNWYzZTVhZWU2NDI2ZWY4NDY5OWQ3OWMzYzk3YTE5ZDkifQ"
+        },
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L23-L57",
+          "version": "repo-lines-v1:sha256:c1c35a1d281a52620a4653e9ee5b7b122d94ee54fc1c619c03ab80409a49d3e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxYWJlNzQ0ZTc4NjMzNzk3YzcyY2RiMGE2MmNlZmRhNmM5MmZiNmNiZWViMGY0YzI1ZGU2ODBkOWU5ZTZjMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjMjkyZjg1ZjlmZjcxMjNkOTNhM2U0YjViMmZiZDNkYTU3NGU0YzliZTIwYmEyNTVkODk0ODE4MDhmZTUwMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NWU1MjY4NWI0MzIwYmZjMTkwY2I4ODcxMWYwZjU2NjJhOWM4YTJhZGI0YmU4ZTJhYTk4YzZmZjRmN2RjODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3ccf32fbc9024d1c82401281a140a219",
+      "statement": "On /view/[id] the trace-link type comes from the type query parameter (getTraceLinkTypeByName, falling back to SAD_SAM_CODE) and inconsistencies=true from the query string; displayOptions are the type's resultViewOptions with TRACELINKS always unshifted first and INCONSISTENCIES appended only when requested; on success the page parses response.result.traceLinks (and result.inconsistencies only when requested and present), registers the decoded project id in NavigationContext on mount and clears it on unmount, and renders ResultDisplay inside HighlightProvider/InconsistencyProvider, with polling errors surfaced in LoadingErrorModal whose View Files Only renders the panels without parsed trace links.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L120-L145",
+          "version": "repo-lines-v1:sha256:d43e23383bd46e5a65e11cdc0e7e66da353680a2d92c30692fb11fd61e97dfcc:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMTFlMjhiMTM0N2EwYzcxMDQ0YWY0OGY4OGExYmE5NWNhNjJlYmQ4MDE5ZWRkMjRhMzdkZjI4ZjA3M2U4NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3MWE2MWI1Mzc2NWI0ZGQ2ZjBhMzdhMzYyN2RhYTU1NWU2NjQ4YmIxNzJhOWM5ZjdjMmY3YTBiNWYwM2ZjNWMifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L56-L76",
+          "version": "repo-lines-v1:sha256:7eebecd60626a6ce1a442b3af6ec6d429113492412c9edf6146b533c238b6011:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5ODIwMzBmM2ZlOTZiYzMzMDcxNDNmMWNjYjBlMTk3N2Q1MDkwZDFmZGYzZjg5MTFhZWIxYTI2MDBiMDM2MmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3OThkNjY2MzI2Y2Q4ZGMzYTVlY2ZiMjIzYzZmZWY3NTQ4OGU3ZmU1NDIxNTQ3NTRhM2Q1ODcyZGE1MGQ5NGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1MTE0MjdlYjZhMGNkZjJmYjdmMTg5ZjlhNWEwNWU4YjNiM2E0NTA2NDNiMzg2OTk2MWJhNmE2NDkxY2FjYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyZWY1MjBjZTUyMGZiNzkxODQ1MWNmMjQ4NTJmMmU5M2I0MTBiZTdkOGVlYTdmZTViZTJiOWU3MWE5Yjk5ODMifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L95-L113",
+          "version": "repo-lines-v1:sha256:013f074ee5bcee4ae0c15afef073031cc9ecdcac8378c1980e8b233f81290a01:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4NzhhMDdmNWU3MGFhMjU1NTZlYTAwYWVkZmVhNGRmOWVmOTllZTg2ZDI3NDI3NWUwM2I3ZTk3YjRmY2FkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlMThmNjNkODhmN2VjZGU0MzJmMGZlMDk1ZDVmN2YwZDFmNTk5YzZiNjk4MTkzYjUxMjVlOWFjYzBlOWI5MjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNzc1MzMzOGVmMTAxMmNmMTgyYTM1ZWE5Yzc0NWJlYTA3MjA4MDU1ZTdkZjkyNzQ0MjVkZjEwNDYzZGE3N2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d168b42c7d449bdb58ce1a71069b908",
+      "statement": "The /view-provided/[id] page reconstructs the result with no backend call: loadProjectMetaData returns the stored file types, displayOptions are derived via getResultViewOption in metadata order, a stored TRACELINKS JSON (traceLinkType + traceLinks) and/or INCONSISTENCIES JSON is parsed with the trace-link type falling back to SAD_SAM_CODE, parse failures show a non-retryable error banner, and the decoded id is registered in NavigationContext on mount with no unmount cleanup.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L113-L148",
+          "version": "repo-lines-v1:sha256:bb6359b02a17b2e008b60c6a302d2911518150135ecf043318dd9d67df036468:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNjdhMGIzM2E5OTAwZDVjMDRhMjBhNDk2YjNiMjI1MGQ5ZDAwMzhiNjg2NWJmYmU3NzI1YjViODI4YWY4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        },
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L39-L72",
+          "version": "repo-lines-v1:sha256:cf12ccfb58688b878b035d3e247d4b3b8833ce52ced57b79a3d6b9115480aee1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzgzMDlmZjQzNTA0NTllN2U1MzIyODA4NWRhOWI4MWQwNjIwNGY2NmZiZmFjNzIyNmMxZTdjOTJlNzFhNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3MDRiZTQyNDMxMDVmYWEyNmVhYjAzNGZkNDIyYjVmYTMzOWI0YjcwZGMwNTVhZGI5NTc0MDBmMGFiNTNkYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzZWM5ZjhlY2QxYjc1ZmIxMDQ1N2RmODk4NDAwOTdkMzg5ZWU4NjY4OTRlZDJmOGRhMzQ0MjlkNjM1MTBjNjMifQ"
+        },
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L74-L110",
+          "version": "repo-lines-v1:sha256:11579dd8d141603ea1f0b7ab8013261a0ad6c590d6f0e9cb3b3f6fd8f070462d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlZjJkOGViYWM1ZDZjM2ZjMGNiZGMyMGMyZGZiNDQ3YmQzYzY4OGJmOWM2NjkzNjc4NzJmYmRmMjEwNmUzNzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4ZmFkMGNkMTI5MjIzZGE5MDEyYTIzMDIxOTAyYmVlMmQ1ZWViZTQ2MGI4NzA1ZjBmNDQ2YTNhZDdhYjJlZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4N2E1Y2IwYWFiNzU1NzU4ZTVlNDc3NDY4YmNjYjNiOTc4MmJlMmIxNmZjZWQxZTI2YTJlNjY3OGQ1ZTkwYjYifQ"
+        },
+        {
+          "resource": "repo://src/components/dataTypes/DisplayOption.tsx#L29-L46",
+          "version": "repo-lines-v1:sha256:f996f67012e85e5420bc94ed8b4e0a3188cf994e2634ac45a823c29e3f9205fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjZWI1YWUyNWY1ODAzMDExODI3NmUwNDkxNjBhYTRkZGE2MGE5ZmU4YTU0ZDNlYTU2MTczOGU4NmU4NzFhYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L83-L93",
+          "version": "repo-lines-v1:sha256:5341971b012f0695e75116ea3936c16520612d7fc9ad829f929cac46a879817c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MmFkMWI1MTAyMjYxMmQwMjAwZTI5MGU0ODk0ZDc4Nzk4MGU3YWRhZDEyYTE2MTdhOTQwMzdmMjQzNDM0MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YzI0MmIwZTgwYjcxNmI2YzQ3MDY5YjA4MWI2Mjc4ZjZjYmM0ZTcxMzRlNTQ5ZTk3OGRhMmY0NzE0YjZlNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e2ba710c783c4bdeacdad049431796fc",
+      "statement": "NavigationContext owns the leave-project lifecycle: when a currentProjectId is set, handleNavigation (used by the nav bar and logo; the mobile menu uses plain anchors) opens ConfirmNavigationModal warning that navigating away deletes the project's browser data; confirming sequentially deletes the OPFS project directory via deleteProjectDirectory, clears the id, aborts and resets the shared AbortController, and only then routes to the stored path.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/ConfirmNavigationModal.tsx#L19-L39",
+          "version": "repo-lines-v1:sha256:756d3986b791a4bbdf606a8364894ba59500592e9c73e0f6811254495179d738:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZDUxZTk1YjZhMTFmYzhmYmQ2OTdkOTViNWVjZmYwM2EzNzYyNWNmZWE2NjY4ODc0Zjg3MjVmZTc4OWE2YTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5OGEyNzI2NWU1MzE0YWU3YWM3YTljM2Q1NjVmZmI1MmEyOWZmYjllOGE0MTllODI0ODIyNjljZmZkM2MxMWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiMGMwN2RhM2E0YWJiNmUwZjdkZDlmN2QyYjA4YTc1YzFjZDJlZWY1YmE0OTE0YWIzYjhiMmNkMmRiMDVjZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVhMzhlNTJkOTE3MmZiMzJmMjQxMGZjZDM4MzcyODIwODZkNmNhYzcxNDI0YjM3MjFjM2EzODVlODBhYTI0NGIifQ"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L53-L56",
+          "version": "repo-lines-v1:sha256:d15992f308d9b446b08fc4ad95279d2b58af546b5cdb870df34913a464b6fd76:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzYWU1NGJlNWM4ZDQ2NWJmMGUyNDViZTQ0N2I0NTg2ZjZmYWQ1Y2Q0NTlhNGM4NDcyODM1M2EyNmYxYTZjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmRlYTEyOGM5MmExMDEyOGVkYzI2OWIwMDVkODJlYmUzYjVlZTI3NWVkNWJmZjU4NzBhODgxMjg4MmQwOWU3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg4MjlmMTFlODNhZGE1MWU5NzhlZWNjMTk5OTRlOTEzMzc5NmQxYzcxNjhjYjA3NzBlMTdiYmM5NGU0YmQ2ZCJ9"
+        },
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L25-L57",
+          "version": "repo-lines-v1:sha256:0646afb273fe2a5b41ddbf5239243cb46b3dffd43a80091e273534440c30b710:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OTcyNjEzMTljNTA3NmI1NzhmZDhhMjViZDk1ZDcxN2ViYWYwNjc2Y2VhMDYyMzcyMWY3M2M4ZjNlZDdkYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdjM2EwY2ZlNGNjNDE5YzIzN2IxMDQ1OWNlNzU0ZDQ5YzYwMjZhYTE2NTJiNDhjZmIxMzQxOTRlNzI5MjViOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NWU1MjY4NWI0MzIwYmZjMTkwY2I4ODcxMWYwZjU2NjJhOWM4YTJhZGI0YmU4ZTJhYTk4YzZmZjRmN2RjODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7e27254ff68640d985e5a34969b77bcd",
+      "statement": "Inconsistency detection is restricted to the SAD_SAM pipeline: fetchArdocoApi throws unless the selected type is SAD_SAM, and ProjectUploadContext.updateFormData automatically resets findInconsistencies to false whenever the resulting selected trace-link type is not SAD_SAM.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L88-L99",
+          "version": "repo-lines-v1:sha256:167f8d7c989b7bf2900727ef0d081a2e15d3bebc418433a25d8b73e1e74428cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNTNiYjE1ZWMzMmEwYmNiYTllNTVhYmJmMDE5NWI5YTZiNDRiMjI1N2RmZmQyMjJiOGZmYzQyMjk3NjA1MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzOTNjMTFiOGI0NTI2M2IyZWU1ODkyNDk2YTk1YzFjYWQxYTczYzg1ZmUzOGY3MDliYjlmNTMyYmQ5OGE2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ZTVjZGMxZjFkOTdlZDY2YjRmYTlkNGU0MGU2YzI2YzY1MGIwNWVhNzk2OGRiYWJiNmQyOTU5ZmFjNzY1NTUifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L17-L23",
+          "version": "repo-lines-v1:sha256:9fa683ce4d89348ebc28bd77c2f9609a445e58cf1f6552a8bb839a20f4ef4fb6:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDE1M2ZhMTllZjljNGM1ZTdkOGI3MDNiMzYxM2Q0NjI3NTYwZTA1MmRhM2RmM2RiNGYxZjdlYWYzN2MzYTg3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmYyMDY3YTIzYjU4NjNiNDdhYTY5Y2IwNjk4NjFmYjE2NmI0YzRjZDcxZWM5NDYxYWVkMGFlZDI5ZDMxOGRhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTRkZGEwMjQ2M2NjNmM4NDFiN2Q1ZTQ4ODJkM2MxZmZhYWU2YTI0NDBmZTE1MmVjYzgxMjBkZGRiNjI3ZTM2YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b5a04cf1072145d5baf8746681c9e1c2",
+      "statement": "The landing page (/) routes users into the wizard via a Start link to /new-project, and the nav bar additionally links New Project and Load Project; desktop navigation and the logo are intercepted through NavigationContext.handleNavigation so the leave-project guard applies, while the mobile menu dialog uses plain anchors and is not intercepted.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/page.tsx#L29-L45",
+          "version": "repo-lines-v1:sha256:879c8fc65e09da8626557ff307f13c59ec165667f7f680cb68b9f0aff56aa75c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhM2Q2NGEyYjA1NzllNjk0Y2NjNDdmZGY5MjZhNjUzNzBjODg1ZmM5ZGRlNWIyYjFhOGFhODgwZDYxYzU1YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyYmIyZTk5Njk0YTgzNmZhNGU2MDcyOWQ2NjFjYjY2MzZlMjIzNjMwYTY4NTQ2M2I4MWJlZDQyZTcwMGFlZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM1MzFlNzk2NjViNzA5YzI3MzNjNTgxOWE3ZjA2OTRhMzM4ZjNmZWY3ZmQzNTM1YmI1MWQ0YTIwYjBkZmZiMzYifQ"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L117-L155",
+          "version": "repo-lines-v1:sha256:9dd2274e7c39fed3025e46f9fddcdf2d68b12ad23491de091872733f3f66e87d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhMGZmMDBjMmQ3MTNmMmZjZjc1Yzg4NjI4OThiZDBhMzU2ODFkODIyMzhkOWQyOTFjYjcwODE4Y2VkM2I3ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YWNiNDFlNjViYzUxY2MzODAxMTgwMWUwYzYyZjExYTIwNGMwZjY2ZjBkZjc0Y2RkOTYyZTMxYmU2ZjQ2YTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjllMDk3ZDRmOWYyZmIzODQ1YTI0ZjEyNmY0OWUyMTczODVmMDNiNjhhNGI5NzVhY2YzODdkMDI4YjA1YWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhNTFkMDdhZWJmYmMwYjU1OTY5OGQ1NmNkOTdkOGZiM2EyMWNkYTNmNzgyZDkxNTdlMTYwMjlhNDNiOTQyZWYifQ"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L14-L19",
+          "version": "repo-lines-v1:sha256:7bcb11c8f1b1adf21a30476db5a61885ef3f0d7919b15509742b16e68ff4006a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWY3YjZiYjAyMTdkOGFjMDJkZGJmYzRmYjljMDEwYjYyZDgyNzIzZmZlOWI1OTE1M2Y1YzM0NjBjMzZlODA0NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAyZDJjMGQ2ZGM1ZTc0ZDkyZmExNGI5MWRiZWEyNjQwOTBiZWIzNWZkYjkxODhkOWIzNDExODFkY2U5ZjRjZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjA4MjdmMTI0ZDBiNWNjMWYyYjFmMGVhNTg2NmNjMTg2NDg2MTNjMzQ0MjYxYWJmNzJkODhlZWJiMGQ1YjkxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWNlN2IzOGEzZTJkZjJhNWNhYzQyNWQwNzY0ZDE3ZDcxMWRjZWRlYjk0ZTg4OGJhNjU1MzczYjU3Zjk1NjNmYyJ9"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L53-L56",
+          "version": "repo-lines-v1:sha256:d15992f308d9b446b08fc4ad95279d2b58af546b5cdb870df34913a464b6fd76:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzYWU1NGJlNWM4ZDQ2NWJmMGUyNDViZTQ0N2I0NTg2ZjZmYWQ1Y2Q0NTlhNGM4NDcyODM1M2EyNmYxYTZjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmRlYTEyOGM5MmExMDEyOGVkYzI2OWIwMDVkODJlYmUzYjVlZTI3NWVkNWJmZjU4NzBhODgxMjg4MmQwOWU3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg4MjlmMTFlODNhZGE1MWU5NzhlZWNjMTk5OTRlOTEzMzc5NmQxYzcxNjhjYjA3NzBlMTdiYmM5NGU0YmQ2ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e788912646d42beaf6eb5a460bcb794",
+      "statement": "The wizard's Configuration step works on defaults fetched by FormProvider from /api/configuration (with X-Target-API) on mount and whenever apiAddress changes, exposed via configurationLoading/configurationError and kept as both originalTraceLinkConfiguration and formData.traceLinkConfiguration.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ConfigurationStep.tsx#L17-L27",
+          "version": "repo-lines-v1:sha256:415a21c695e5db42fb42b7734e9992955f9237e8f3cbfe604edd3a50801ae60e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwMjI2NWE1MGNiYWZlODYxZjRlYjJiZTk3OGE4MjNjNTgyYWI5ZjUwMTIyNjZlMzQ4NTZiOWJhMGVhOThmZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiNGRhNDk3YmVkNzNmYjM1NTUwOTFhMGQ3ZGE4MjNhNzEzNThhOGUzYmMyMGU1YjQ1ZGI1MzIwODQyZTNmODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4YTgxOTk4ZGUxNTBhNjZhZTFlNGQ1N2UwNjZhMzYxM2FmOGEyYjY3M2U0NTg1ZmQ3ZDhmNGZmZDM1Yzc3NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI4ZDkyYWY0NWVmYmFhNTYyNDBkNzVhMmU0Y2E4OTk1OTFmMGE2ZmQyNmE5OTA4ZTY4YTgzOGRhN2YwZDA3YWIifQ"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L61-L86",
+          "version": "repo-lines-v1:sha256:69a7f69426cbf6d3ebf033a303e3eded5d4a5edefcc8b3ad82685322d2a041da:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0MzFjNTVlMGYwNmY3MDJhMDU0MGFkNzE4MmIzYjc1Nzg4NDNlMWIyOTYwYTA2ZDg1ODhkZGEzYTVhNTEyNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhY2U0MmNjMWY0NGE2OTNjOGM2Njg4ZmI1OTdkOGJmMDQ3YTZlMDc3ODIwYzdkNWYxMmYzOTFhZjExMjY3OTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzNmY2NThjMjM1OGZiMDkyMzQzNjFiMzkxYWVjOGViYTNiMGQyODdkMDljMTFhY2YwMGYzOGVkNjgzMTQ5MmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjM2RhNDZiZDVkMzNlYmFkZDk1M2U2ODg3ZGMyMzE0NjhiZjVmNGViYWE0MjEzZWIxNWU2YzhkZDEyNjNmNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_725df8997c81408d80f29e576d4c1482",
+      "statement": "The upload step preselects file types by extension (.uml → UML model, .repository → PCM, .txt → documentation, .acm → code model), and a .json file only preselects TRACELINKS or INCONSISTENCIES when the route's allowedFileTypes includes that type — which on /new-project it never does, so result JSON cannot enter a backend submission.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/load-project/page.tsx#L10-L14",
+          "version": "repo-lines-v1:sha256:8a43fc5ea87324f9ad954accd72987526780f92daac2bb982d1ea405b0b3abc7:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDMyZWRlNjNjYzhjZTQzNzQ0Mjg1ZjZkNDY3OThkZDBkOGVlZDliN2I2ODMyOWY5OGZmN2RiMmU3MDdkMjAwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYyMTVmZDAzY2ZjMmJlZWJmODA0YTE3YWM1ZTk0Nzk1MWY3Y2QyZGMwNTYwNTIyNDk5YzYwNmZkYmNkNzE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjVhOGY4MjA2Y2NjNGQ2MjcwN2ZlYjhlNmNlZGIyMzgwY2UxMGU5YjE5NWE3NTIzYjE2OWVjZjcyZWZlMWIxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAxNjFmZGVjNGQ2MmNlY2E1NWU3NGExYjc0NDEwNTNkZThlNDljNmVmOGI2ZGVlYjg0Mjk0N2I2YzkwOTkzNiJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/fileUploadStep/FileUploadStep.tsx#L23-L43",
+          "version": "repo-lines-v1:sha256:6a7bd4bee2d84c1bc788610016ba94bb940d3f1f8c6f5c8a510ed8a65328fb79:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwODU0ZGJiMzY5ZGQyZDAwYmU3YWQ4OTE0YzUwODUxMTg5MGMzN2E4OTZkODhhZTI2YWFjNzQ4ZDQ0ZGYyZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxYWU3YjFmOGM0ZjFmMWMxN2QwOTA2MTgwYTI5M2NhMTdjNmI3NjBhMWIwMWY3MTg5N2MzOGZiZGIyYTk1ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwZTRkOTFkMzhjYTJkYWRhMzIxNjQzNGUyNDVlZDJjNjljYzgxNThiYWZkYWNlODdkMTcyZWM1OTE3MWNkNDUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}

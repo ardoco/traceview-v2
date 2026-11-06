@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e897fdeb217b5939a706998b08e6e642e686acd8fe9295cedd59c9c018a8a698",
+  "claims": [
+    {
+      "id": "claim_2e61c383fa4f41918f1232fdda2ffc94",
+      "statement": "HighlightProvider's highlightElement(id, type) matches trace links per DisplayOption: traceLink.sentenceNumber for DOCUMENTATION, traceLink.modelElementId for ARCHITECTURE_MODEL, and traceLink.codeElementId for CODE_MODEL, using loose equality so the id argument may be a number (sentence identifiers) or a string (element ids) interchangeably.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L56-L80",
+          "version": "repo-lines-v1:sha256:0c24eec88f3d1619a24ba9024b9028dae729841a22ae7c960c013d51e4378355:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZThlNjJjMzY1NGNmM2E4ZDBjY2E2Y2RmNjYzODJjODFkZDAyODYyNjZhOWFlZTYwZDE1OWE5MTc3YWNlYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZWIwMjA4ZDE3NzZiMWNkMjI5NzkzZDc2MWE3YTdmNmViYmZkYjI3YTI2MTRmYjRiYWIwNTE2ZjE4ZDkxOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVmZjNmYTgyZGIxNGRjZDgyNWM1OTU2OGJlYmFmZWM3NGRmNGZkOTdmOTA5MjNkODM0ZDA5MTY3YTg4MWNhMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0e1931ebb9964ea9b306643d21f2e90e",
+      "statement": "Every non-null highlightElement and highlightSingleTraceLink call publishes lastSearchTimestamp (Date.now()), a MessageSource value, and lastClickedSource even when zero trace links match, so a miss still produces visible toast feedback (e.g. 'no traceLinks found.'); a null id instead clears the highlight set early without touching timestamp, messageSource, or the origin marker.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/SearchResultMessage.tsx#L52-L60",
+          "version": "repo-lines-v1:sha256:63b1121e338bb3d2dedd15e3f5ca0bb4e10bcd160f66c7ded3cfe4eb2fefc0c7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2JmMzM3MTUzZGM0NjAzNTJlYzk5MWRjODI2NGJkZTYyZGQxZjU3MjM4YjQ5MTc2MTQ0ODhhYTJiODE1N2U2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNiMDU5Nzg5NjIxYzRiMmFhOTY1OTdkYmQ1NDQxZjUyMTA2ZTQ5ZjViZmI3YWJmNWU3N2M4OWE0NDQzZWMwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmEzN2E2YmZjZWE4NzBkZjZiMDc2MGI5OTIwMzQ0OTg0NmQ0Y2Y1ZDg0MWJkY2FjN2U5NDIyOTliMWRhMDdhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmQ3NTBiZDQ2ODZiNGJjZTMyYzdiYzg2Y2UwYjVmYzdmYTNjMmY0NWJlYmVkZDE3YTcxOGMyMmQwNmQzMzMyYiJ9"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L56-L90",
+          "version": "repo-lines-v1:sha256:1b66243194b50646b550a7a02b28320787fc9c4aaa99631f5d07767bcc4f60ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZThlNjJjMzY1NGNmM2E4ZDBjY2E2Y2RmNjYzODJjODFkZDAyODYyNjZhOWFlZTYwZDE1OWE5MTc3YWNlYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlZWIwMjA4ZDE3NzZiMWNkMjI5NzkzZDc2MWE3YTdmNmViYmZkYjI3YTI2MTRmYjRiYWIwNTE2ZjE4ZDkxOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3OTk4OGJlYWYzZjg5MWYwODFmY2E3Y2U2M2RiYjFmZDQ4MDBiYTdmZTVjNGNmOGY5ZWNkODlkMjQ3MDI4MzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a660a5686f144121a9b5d57271200717",
+      "statement": "All HighlightProvider mutators (highlightElement, highlightSingleTraceLink, resetHighlightedTraceLinks) are no-ops when the traceLinks array is empty, so viewers rendered without parsed results cannot create any trace-link highlight state.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L54-L96",
+          "version": "repo-lines-v1:sha256:b5fd33a65b8bba3c60798ae7c6b162ed88562d3f52357f5b5bb88286c101f214:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZWJjZmYxOTJhZTE0MTZkYjc2YzM0MDU5ZWRkZDliNDUwMDUwNmQ5N2JlMzhjNzQ1MzI0MmI3Zjk5NmJhNzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0ZTBhNjA2ZWY5NjMxYzIxOWM0MmQwODI3ZTliODU4OTBhY2QwZGI0NmIwM2MxNTdhNGUzOWU4MGM5MDU0NDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4MWNiODRjNjU5OGFmZmU0MjNjOTVhMjcxOGU0NjQ4ZTQ2MzNhMWE0OTVjMDZjNmE1NDkyMGU1M2U4ZTNiMzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c67384fed06e44499d6cd42eb08caed1",
+      "statement": "highlightSingleTraceLink highlights exactly one link with messageSource TRACELINK and origin {id: traceLink.id, type: TRACELINKS}, while resetHighlightedTraceLinks clears the highlights, resets messageSource to NONE, and additionally clears lastClickedSource — the only reset that erases the selection-origin marker.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L82-L96",
+          "version": "repo-lines-v1:sha256:188059073dd32d8a9e15f2f37772d4836eeef9a5dc460f3a78a3428870321f6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyMjFkMWI1NWM0MDRhOWZiYWE2OWMzZjk3OGIyOGU1ODA4NTZkMzg5ZmE2Yjg0MjhkZjg4ZGM4ZTFkOTY0NDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxMzRiZGIwMGQyYWI2Y2ZjMzNkNjA5OWYwMDg4YjU3YzI4NDZlM2YwMzBmODBlYzE5OWYyZDBiMDU3ZDIwMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4MWNiODRjNjU5OGFmZmU0MjNjOTVhMjcxOGU0NjQ4ZTQ2MzNhMWE0OTVjMDZjNmE1NDkyMGU1M2U4ZTNiMzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f511f3d36e1e43298dd8905531ffcaef",
+      "statement": "InconsistencyProvider partitions its inconsistencies prop on every render (unmemoized) into sentenceInconsistencies (TextEntityAbsentFromModel, keyed by sentenceNumber) and modelInconsistencies (ModelEntityAbsentFromText, keyed by modelElementId), and exposes the same two partitions computed over highlightedInconsistencies so panels can check each kind independently.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/HighlightInconsistencyContext.tsx#L56-L70",
+          "version": "repo-lines-v1:sha256:802cb14b15219fcd3ecece2c274561717d1fa0f130c2e6f3a6da936bafb3dea4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZjYxMzdhYjczOWY4ZjcxZWJhOGYwNjllNDAxOWU5NDk0MWE1NzI0ZDk0NjRjNzM0ZDJlNmI5Mzk3YjE5NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmMTc5ODNhYWU1MTlkMzljODA3ZDFiZTJiYzNhOWIwMjVhMGI4YjQzYTk4NTUxY2RhMzg3YjM1YzA5OGMzNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxZDUyOTg1NmUzZmM0NDI1NzE1NDUzNDA4OWFjMjNiNWI1YWQxYWYzNjFiODNjODk0YWU5ZTkxNDFlODVjN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3YTc0MzgwM2FjMTE2Zjk1NDc3NWI1ZmMzMTdmNWM4MzBmNTc2YmUwMTI1NTliNzFiZDBmNTBmM2ViYjliNmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2332ae88416a45a9bd1a47d553217af1",
+      "statement": "InconsistencyProvider's mutators: highlightInconsistencyWithSentence and highlightInconsistencyWithModelId filter by sentenceNumber/modelElementId and always assign the (possibly empty) filtered result while setting messageSource PROVIDED_PROJECT_ELEMENT, stamping lastSearchTimestamp, and delegating setLastClickedSource with DOCUMENTATION/ARCHITECTURE_MODEL respectively; highlightSingleInconsistency highlights one item with messageSource INCONSISTENCY; resetHighlightedInconsistencies clears highlights and messageSource but leaves lastClickedSource untouched.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/HighlightInconsistencyContext.tsx#L73-L121",
+          "version": "repo-lines-v1:sha256:a94a384917b1876ff23a4e70a5daa29c3c7582fd6f5c9f8bf1453d9a626d4996:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiOGI5OGZmZTA5NGY3ZGNhNDg0OTNlM2FkM2YwYzBmZTc2YjZjZDkzYTk2YmIxMGFlNGFmOTQ2Y2U3NWIxMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViODgxZDhkODhhODkxMTc2MTMxYzhiNjZhMTNhZTc1NzViMGU2NzVhOTMzODVjYTllY2MyMjZhNzA3MzY2NGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MDljOThkNjVjMjUzZTQ3NTUwYTg5ODEzMjZkMDc1ZDY2MWIxM2YxNjgyN2NmN2NhMmVmMzVhZWU5NDIwNDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_497435b161d942388f335ec729d17e53",
+      "statement": "InconsistencyProvider consumes useHighlightContext inside its provider body to borrow setLastClickedSource, making it a dependent consumer of the trace-link context and requiring the nesting order HighlightProvider → InconsistencyProvider used by both result routes.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L117-L125",
+          "version": "repo-lines-v1:sha256:d1f1b838ce9f562dcb9442eb811c8dd5962d609ff9fb0bf7d151717b0ac1fa3c:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE4ZjdiZTg2ODg0OTI2YjgxN2Y5MzZjYmQ0ZDAyNjI1OTEzMGY1MzI1Mjg1M2Q3MDM5Yjk0MmM1ZmI0MDk1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmI5NjhjYjg2MmVkMjIzZmVmNjYzMWQ5YjYwMmE2MDNhZGQ1YjY4MDZlODc2NmNhMTYwMzAzNzJmM2E1ODg5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNhYThlZGRmYjg0NzFjYjgwMDZiY2E3YTY1MTk4YWE1YWRiZjk1ODVhN2FjNzQ0MzA4NWQ4MGQyMjcwZWJlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYWJiMGM2Mzk0NTFhMjhhNWQ4YmVlZmM0Y2YzYjdmZjRmYWQzNTY2ZmY0OGExMWRjN2VmMGMzM2RjMmYyZCJ9"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L138-L142",
+          "version": "repo-lines-v1:sha256:51d78b14fcf7c5b16777ac8f8ea016489e9612f178eb2bcc6d427b2397fc2037:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE4ZjdiZTg2ODg0OTI2YjgxN2Y5MzZjYmQ0ZDAyNjI1OTEzMGY1MzI1Mjg1M2Q3MDM5Yjk0MmM1ZmI0MDk1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmI5NjhjYjg2MmVkMjIzZmVmNjYzMWQ5YjYwMmE2MDNhZGQ1YjY4MDZlODc2NmNhMTYwMzAzNzJmM2E1ODg5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTEwNWI5ZTc4NTE1MTJjZTAzODRjNjE0YzUyZTQwNmI3NDdlZWVmMzliODUwYzAxYmU3NjM2ODVjMDliNTU5ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYWJiMGM2Mzk0NTFhMjhhNWQ4YmVlZmM0Y2YzYjdmZjRmYWQzNTY2ZmY0OGExMWRjN2VmMGMzM2RjMmYyZCJ9"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightInconsistencyContext.tsx#L53-L53",
+          "version": "repo-lines-v1:sha256:78811b1086a7e5e2c323ee133070a92d0f0c450e7794f5d497101523666cc44b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzg4MTFiMTA4NmE3ZTVlMmMzMjNlZTEzMzA3MGE5MmQwZjBjNDUwZTc3OTRmNWQ0OTcxMDE1MjM2NjZjYzQ0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzg4MTFiMTA4NmE3ZTVlMmMzMjNlZTEzMzA3MGE5MmQwZjBjNDUwZTc3OTRmNWQ0OTcxMDE1MjM2NjZjYzQ0YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQ5YzZmZTAxMTI5MDcyMTk2OThkNjE5YTlhZWU5ZWM4ODgwMzMxZjk5ZGU2ZDJhMzBlOWQyNzgxNjRjNDU5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjQyNWQ2ZjllYjgzNTYzYTkyYzhhOTdiYmE2ODIzMjk3NDA1YzI5NTk2MzQ4NTViMjIxYzUxZTVjMTkwNTYxOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_58409c94f5d24ede8cfc88e0ed895c57",
+      "statement": "The MessageSource enum (TRACELINK, PROVIDED_PROJECT_ELEMENT, INCONSISTENCY, NONE) classifies what triggered the latest highlight: trace-link row clicks set TRACELINK, inconsistency row clicks set INCONSISTENCY, element clicks in any panel set PROVIDED_PROJECT_ELEMENT, and resets/initial state use NONE.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/dataTypes/MessageSource.tsx#L1-L7",
+          "version": "repo-lines-v1:sha256:c5fa3208b14ddfcd0d50d82ee798e83b69cb9706a442f7d025f7489d9820c8a9:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDBlNzYzNjVlM2ZlZTIzOGM5NTM0YzEzODgyMDQxMjRiMDkxNmI2YTFkNTI4N2I2ODg2OGJkMGM2MmFlODFhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwYjM2YWE3NGE1OWJjZjRhODgxODU4MzdmNjU4YWZhZjM2NDZlZmYyYmIxNmMzOTI4ZDBlOTMzNWU5NDVkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightInconsistencyContext.tsx#L78-L121",
+          "version": "repo-lines-v1:sha256:4afaf3250a5b804ebfaa45e723a454cb3b6e0a9f6433a25c18a3989a742c3787:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyODQzODc2MWUxYTI3Yzg1ZWY3ZDk2Yzk0NzM3ODYzZGI3MTk5MjVjYTBlMzkyYzZiZDc4NDljZjczY2I3OGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZTJjNmY4ZjE0MDJhNjcxMjFlOTVkNzA0YWZmM2M0M2NiMDA0MDk3OTVkMjExYmU0M2I2ZjI3ZmQzN2U5NzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0MDljOThkNjVjMjUzZTQ3NTUwYTg5ODEzMjZkMDc1ZDY2MWIxM2YxNjgyN2NmN2NhMmVmMzVhZWU5NDIwNDIifQ"
+        },
+        {
+          "resource": "repo://src/contexts/HighlightTracelinksContextType.tsx#L77-L95",
+          "version": "repo-lines-v1:sha256:b2ab3a4d7c3d09dab6c36edc91a26e88655dd010d7be715e63849a9a2a5e7c2b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkMmUxN2JhMTk2NzBlZDE2ZTQwZTdjOTMzMDVmODNmNDAwZGM2ZjFlODU2ZjBlNTliMDAxN2Q3ZjM5MTA5ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhYWNjNDgxYzc2ZDI4NGRlZTQyYzU3NmE0YmEzZGFkNTg3OThmMzkyYmUzMzMwODFjNTdkMTk1YWJiMzQ3MzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyNmIyODNlYmE3NzQyMGE2NTBlMzc2YWE2OWM5YzgxNDhjNDA5ODAzY2JkMjY3ZTcxMGZmMDUyNDE1YTQ4YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU3YzFjMTVlZWVkODM3M2ZhNTM5NGUyNDczNzgxMDM1YzJkNWZjZDY5YzY0MjNiNmRkZTI2M2IwNzIxNmM3ZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_66a298643fc74355a54d81db9f0b2178",
+      "statement": "SearchResultMessage arbitrates between the two contexts purely by recency of lastSearchTimestamp: the newer timestamp's messageSource wins, a tie with a nonzero timestamp yields the combined PROVIDED_PROJECT_ELEMENT view, and a tie at zero yields NONE — and because element clicks invoke highlightElement and the matching inconsistency highlight synchronously, the tie branch is the common path for element clicks.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/SearchResultMessage.tsx#L38-L47",
+          "version": "repo-lines-v1:sha256:fe9c77d55eb28d736a28c69e886ee9f360c2e57e382b11e9265573f1ec98df74:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzMzM0MjA3ZDBlNDg1YWNkODY3OGNkYjk3NmI0YzBjYzljMWZjNDRmMTZlZmI2NWNmYzYyOGQxNzljMzUxNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwYzhjNmRjNDYyMzczMTE0M2RkZTYxNjMwMDEyODEwNzRkOWNhNTg1N2VlZTk3ZGVmMzQ3M2MxN2EzYWYzMzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1Mjk5NTk1ODlmZDE1Y2ZmNmNlNjNjNTkxMDNiNTAxMGEzNThmYTNmMmMwOGE3MDg0OTJjZGNmYTk0YWI5NjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2YmQ3NGEzNzdlNTRiZmFmYTBmM2FhNjgzNWE1NmZiZjdiYzY0NjkwNzI5MmY1MTdhYjY0NmRiODM0ZThkYzIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/viewer/SentenceView.tsx#L48-L51",
+          "version": "repo-lines-v1:sha256:c4a27d0bd24b444bbe90b0542646d68b5c31ce07a3c0a652458855bf775795a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzMTc5YWE4YjQ4NDZlMzJlNjI0NWM4Y2YzNzUxMTI1NGRhYjQ2ZTI3MmNmYWExZjMyM2VjOTAxNzdlZjczMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUwMTAwYzljYTVjZmQ5Yjg4MWVjMzE0MDg5NjQ2MGRhZTI3NmRmOGE4ODAxZmRiYTQ2ZjQ4NGFlZDhhYjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGZkMGJlYTk3NmM0ODFjNTNmZGI2ZTIyMDRjNTUwMTdmNDZhYTBiMWFlODI2ZjljNTJkZDQyY2E2M2IwNmE4MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzM4M2IxZTA1NzAyNWRiMzQxYTcyMmRjNGViMGU1NzYxMDczZDAzZDQzMTBlMzE1ZTM3MGMwM2IyMmYwMWFmMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_30181e9fbc8e41e09808abca26c15009",
+      "statement": "For PROVIDED_PROJECT_ELEMENT sources the toast composes one message from both counts ('N traceLinks and M inconsistencies found.'), including only counts whose panels are in displayOptions; TRACELINK/INCONSISTENCY sources show only their own count and only when that panel is displayed; zero counts render as 'no traceLinks'/'no inconsistencies'.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/SearchResultMessage.tsx#L49-L96",
+          "version": "repo-lines-v1:sha256:36aa5806f57649b238470ac1e83d9a692509c6b447f66936fdba4c7a2378e7f3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3MjI5MzdlYzE2NjM4NTUxNTczMGZkOTk0NzhjOTkzY2RkZTg1MjY3Njk0NWJiNDQzYjdiMWMxMDlhZGM3NTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljNmMxN2RhYjQ0ZWM4ZTQzOTAzNzNkODY5MjEyZDlmOTliZTBmNGEwMWE3OTBkMjYxMmMyMjk0ZmFmNTUwZDYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlOWNmZjA5ZjIxOTJkNjQxM2NiMzQ0YWE4YjI3YmE0OGY5OWMzNmM1MTMzNzA1ODY4NWQxMWM5ZmMxMDJjYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzY2QxNTc0ZmI5MDUzYjE5ZDg3OWE2MjMwZDgyYTYyNjY5YjY0MWEyODRjNjY0ZDNjMzFmNjJjZjkzMjk0YWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c52e7123b44140e996eb2f44a377ca95",
+      "statement": "The toast auto-hides 2 seconds after the latest trigger via setTimeout, and each new message restarts the animate-blink animation by removing the class, forcing a reflow with void el.offsetWidth, and re-adding it inside requestAnimationFrame; the keyframes in globals.css are a 0.01 s opacity flash.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/globals.css#L93-L101",
+          "version": "repo-lines-v1:sha256:66b7598cbe0003efa6936de11aeeb40488e246b3dea76f17e145b093c3984b58:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTMwYjE1MGFjY2MwMDIyNDQ0YTRmODNjZTQyYzVhYjM0N2FhODY4NzgyZGQzZDVlNDEyOTcxNTM0M2Y4OWVjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDlmOTMwODNjMTk3MTIxYjk4MjcwMGJhOGFmYWJkMTcyMmNmMWQzZTc0MDQ1MDllODBlZmEyNzI0N2Y2MmYwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTRhMmJhZWM3MDFiODdhNmM1NGQxMzlmZWQ1YjViZjAwNjI5YWQwYzRmY2U0Zjk4ODg5NzEwN2FmNWYxYzMwYyJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/SearchResultMessage.tsx#L98-L124",
+          "version": "repo-lines-v1:sha256:7c5bbe539c23b28b61f328ac18bb6e84f030fca31658e97465b9c3ced1b2c025:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMDIxODJlNmFiMmZhMjcxYjY5YmRhYTI0MWM3NWUzOTczYmJhZTQ3M2QyYzEyZDJlOTJiYzkwNjYyZWJmYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1OWQzZDBkMDUzYTczNDFlNjAzYWY5MzJjNWQ1MGQyZjJmNDE0NzlkNGJmZjk4ZDAwMmUzNzNmOTMzZTBhYWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4OTViMzJkMGJiOWE2YzcxNjYxZWM4NTIzMzRjOGIyMTM4MzAxMDYxZmUwMjcyOTA3Y2U0MWIzYmM4NTdkZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d2940c16a3d4db39137a937ebfa4a4a",
+      "statement": "Click propagation follows two rules: list-item clicks are mutually exclusive (TraceLinkItem calls resetHighlightedInconsistencies before highlightSingleTraceLink; InconsistencyItemDisplay calls resetHighlightedTraceLinks before highlightSingleInconsistency), while element clicks drive both engines in parallel with the same identifier (SentenceView with DOCUMENTATION + sentence, UML nodes/interfaces/edges with ARCHITECTURE_MODEL + model id); ACMNode plain clicks drive only the trace-link engine, and Ctrl+Click toggles node collapse/expand instead of highlighting.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLComponentNode.tsx#L111-L115",
+          "version": "repo-lines-v1:sha256:df599f510abff995711d9b4db5cb82ab85fc6fbd1830ec0db8ef482b4a7c378a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZmZWE1ZGNmZDMzMDFiZWMyMzZkMjcwOTIzNTZiNTllNWMzMWVkZWFiNDY1ZjhhODlkMDA1OThjMDFiMTcwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUwMTAwYzljYTVjZmQ5Yjg4MWVjMzE0MDg5NjQ2MGRhZTI3NmRmOGE4ODAxZmRiYTQ2ZjQ4NGFlZDhhYjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTU1MGU4MjIxYjBkNzdjMGQ5M2RlZmZjOTMyNTEzYmY1OTUxMzMzYjE4OTU0Mzk1M2ViNzk2ZjM0NjE3ZjQ1NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzZiMTQ5NjRjMWQyZTA5OTIyZTA2ODZhZGE0OTgxZDM4YzM3MGU3YTI4OTA2YWRjY2ZlNmNlMzc4MGM1ODMzYyJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMNode.tsx#L33-L54",
+          "version": "repo-lines-v1:sha256:9355fbc2b9bc6d13e45711614102052a54f6efe5dc2e1f006e925eeafcb31df4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmNWM5YzYyY2QxMzE5YjBhYWU2ODM5ODg1ZmVjOTE0NTBjM2JiY2VjNTk3MzI2NjI1YjBjMTc0MTA2NWI1ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5NjY3MDlmMjgwYjJkZGEzMzk3NDQwOGMzODNiZjMwOGIyZTcxOGM3YTc2YmVjY2Y4MjhjNjUxYjZlNWYxZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0ODllOTdhNmMwNjk4YTE4ZjAzMjY4OTc4ZGUwNTY2NDIyMWFkYWE1MGQxZDkyZWQ2MzRlM2ZiNjcxNWIwZTYifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/viewer/SentenceView.tsx#L48-L51",
+          "version": "repo-lines-v1:sha256:c4a27d0bd24b444bbe90b0542646d68b5c31ce07a3c0a652458855bf775795a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzMTc5YWE4YjQ4NDZlMzJlNjI0NWM4Y2YzNzUxMTI1NGRhYjQ2ZTI3MmNmYWExZjMyM2VjOTAxNzdlZjczMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUwMTAwYzljYTVjZmQ5Yjg4MWVjMzE0MDg5NjQ2MGRhZTI3NmRmOGE4ODAxZmRiYTQ2ZjQ4NGFlZDhhYjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGZkMGJlYTk3NmM0ODFjNTNmZGI2ZTIyMDRjNTUwMTdmNDZhYTBiMWFlODI2ZjljNTJkZDQyY2E2M2IwNmE4MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzM4M2IxZTA1NzAyNWRiMzQxYTcyMmRjNGViMGU1NzYxMDczZDAzZDQzMTBlMzE1ZTM3MGMwM2IyMmYwMWFmMyJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/viewer/InconsistencyItemDisplay.tsx#L31-L34",
+          "version": "repo-lines-v1:sha256:e18d73e75842c479df12730ed4ff511ddd537eee6fca350cd95eb04f67ede77f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzMTc5YWE4YjQ4NDZlMzJlNjI0NWM4Y2YzNzUxMTI1NGRhYjQ2ZTI3MmNmYWExZjMyM2VjOTAxNzdlZjczMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUwMTAwYzljYTVjZmQ5Yjg4MWVjMzE0MDg5NjQ2MGRhZTI3NmRmOGE4ODAxZmRiYTQ2ZjQ4NGFlZDhhYjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGIwNWU3NzVmOTQzOWIxYjExNjIwMTI4ZTY0ZmRmYjExODM2ZjU5OTI2ODM4OWNhMTAyMzc5MTIwZTI5MjI0OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTQzNDMyMDFiOTc0NDA1NTUyMjgxMjg3OTc0M2M2YmMxNjU4MGUzMjBlYTg0ZDA0NmQ4YmEyOGNkMjhjOTY3NiJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem.tsx#L31-L34",
+          "version": "repo-lines-v1:sha256:474d45d05ce10a92e03672a8ca6e02657304b447c77a25246e3b4b116bb0ac73:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDgzMTc5YWE4YjQ4NDZlMzJlNjI0NWM4Y2YzNzUxMTI1NGRhYjQ2ZTI3MmNmYWExZjMyM2VjOTAxNzdlZjczMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUwMTAwYzljYTVjZmQ5Yjg4MWVjMzE0MDg5NjQ2MGRhZTI3NmRmOGE4ODAxZmRiYTQ2ZjQ4NGFlZDhhYjNmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjhlODdmZTQzMzZkZGMxYWQ5YTZhMWFkYjg0MzU0ZWU5YTJkYzdjZGNjZjNlOTBmNWNjMTkzYzQwYjUzZGE0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTg5ZGE0Y2Y5OTZmN2I5MGU3YzM2OTliNDc4OTFiZDA0ZWU1NjcxNDMxOTA0MjE5OTdhMDAwZDVhNjg2NDk3NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_14742e0f33724519b2387ad5c2597c4c",
+      "statement": "lastClickedSource is the cross-panel selection-origin marker: each clickable item compares lastClickedSource.type against its own DisplayOption and lastClickedSource.id against its own identifier to render a distinctive origin style (2 px border on TraceLinkItem and InconsistencyItemDisplay, sentence border variants in SentenceView, 3 px stroke on UML components, dashed stroke on ACM nodes); the compared ids are the composite identifiers TraceLink.id ('modelElementId-codeElementId-sentenceNumber') and Inconsistency.id ('type-reason-...').",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMNode.tsx#L22-L22",
+          "version": "repo-lines-v1:sha256:1ebc4086e7b9432592325293c127bdbabe233db3f6b5731a66e0957bcaeacf5c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWViYzQwODZlN2I5NDMyNTkyMzI1MjkzYzEyN2JkYmFiZTIzM2RiM2Y2YjU3MzFhNjZlMDk1N2JjYWVhY2Y1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWViYzQwODZlN2I5NDMyNTkyMzI1MjkzYzEyN2JkYmFiZTIzM2RiM2Y2YjU3MzFhNjZlMDk1N2JjYWVhY2Y1YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmVmOWJmODU2YTUxOTE0YTkyYTYwYTkxZDRhZTFhMmI5ZmViZjE5NzFmOTMxYTcwMTg4ODk0ODc4ZmMzZjdlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzhjNzczMWFkZGVhMmQ0MzQ0MTcxYWI4ZGVlMjk4YjEzZWVmOTAwZjhiMzZlMDk3N2ZiNTFiZWY2N2VlYjcyZSJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMNode.tsx#L64-L70",
+          "version": "repo-lines-v1:sha256:cf38a25a537529462a8d55878793a1366445fb6a73b86b2d05fe0fcfb69f52f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU4ZDYzNjIwM2E3N2EyMzkwMmEyNGM3MjA0YjVlN2IwMTNkODg5YTQxNzMxMTQwNGYyYmRhMTk3MjlhZTM0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE0MTQzNjc2NmIyZjhjNGZkNzA3NmU5YTdiZTJmYjNjMjQ1NzI4MjI4YmNiOWRjM2E3NmY1MWE1YTQwYzFkOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTU5NjQzZjc5ZWI1MDgwMDA2MDRjZGM1NzVlZjZhZTM1OGNlMGJiN2VmNmY2NmEyMzFmNzQxN2Q1MTUwYjExNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjhhZDFmYjRlMDE5MzliOGY1MzE0NGJlNDRhNTMzYThkOGQxNmMyZDI5MGM1YTcwYjRkZWM2NGFmMTA0MGI5ZiJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency.tsx#L11-L29",
+          "version": "repo-lines-v1:sha256:fef67300318fb64ceee329988c0404ca9d31337ac046f8de53d212dc766b812f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NjVhM2Q0MzgxZmE1NTg3YmY2MWUyZDkxNGM3YTM4ZGRlMzUyMGViMTA2ZDIwMjVhOTkzNjVlMjY4MzhiNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0Y2I0YmUzZTkzNjI1NDA2ZDExMzdhYjk2NTQ1NDZiMmNlY2IxMzk5Y2VlYzFlODVjZWMyNWRlNWRlNzMwZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkZmY4OGQ4ZDA3ZWZmMzczNzZkNzMzNjAyMDE3ZjVkOTE0MzE4MDY1N2MxZDI1YzRjY2Q2Mzg0MGI5MDIwYTAifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/dataModel/TraceLink.tsx#L21-L28",
+          "version": "repo-lines-v1:sha256:49d1e00402ee173540fb29497cd3c53fe2e7020d70b006f6755bd425ea7d3584:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY0ODIyNzFlZTBhOTRjMTYyMDdmYTBhZGY1NGFiZTYwNTk4ZDcxOGM1NWJjMDJmMTRmMmQ5ZDdiYWNjMjg2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjU2NjNkNDY0MmY3MzgwNTNiOTQ3Y2Q1MTgwYjdlMzE4NmNmZWE4M2I2ZTkzYjllMjkzMjg1YWM2YmJlOTljMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmVmYTBhZWJmZWY4ZGViYWRhNTUzYzk0MGVlNzk5NjIxMmI0NDRjNTQwNzBlMWE4MGJlOGFhNWE3ZDQ1MzQ5YSJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/viewer/TraceLinkItem.tsx#L22-L29",
+          "version": "repo-lines-v1:sha256:a2694eb472f76f093f568e27ac3953c44d32c361590ffa940e804a603e6e8192:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjA1ZGZmYTEwOWU2MjQyZjM4ODBkNTE4MDJhNTRjMDlhMDJjM2NmYzhmOTE1M2Q5ZDZmNjE3MmY4MzJhNTc0ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUwMzJlOTY0ZDA5MzIzNTFlNWQxODUyNjkyODFiMTcxYTNhMDliMDhiMjg2ZTY2MWVhNDcwMzIzYzgyZWI0ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTFiNmMyZmFlYWYyZmUwN2IyZjM5MDIzYWM4NjFmYjgzMjNjNmMxYmJlNzBmZjk1ZDcxNzVkNjU1NmUwYzE3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWM4MjY5MzBiMDg4MTYxZWE0MDM1OGZiZDI4NGU4YmE0M2Q3MTNjOWMxNDUyNjMzZDU3MWI1ZThhZmIxOGI3ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_877be6e342ae48cf8b7241ab79272344",
+      "statement": "When both engines highlight the same item, SentenceView renders a horizontal gradient from the trace-link color to the inconsistency color, and UMLComponentNode fills its rect with a matching left-to-right gradient plus a 3 px origin stroke; a sentence that is the origin but matched neither engine still gets a neutral highlight-source border.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLComponentNode.tsx#L97-L137",
+          "version": "repo-lines-v1:sha256:ab80ab0999b5e16c494336fa68f1b178a51bc6e2def0b90bfd07a8a5506344a6:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MjE0MGRhNGYxNjIxZjdkMTJlYzJhZDA4OTJkMjg2YmRlYmRlMGUzNjBlNjk2MDYxMjk3N2ZkZmM5OTA5ZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNDE0MzY3NjZiMmY4YzRmZDcwNzZlOWE3YmUyZmIzYzI0NTcyODIyOGJjYjlkYzNhNzZmNTFhNWE0MGMxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0Y2I2NTJiMDMwYjdhOTNmOTgzMTVmMWNlMzJlMTAxNjQ3OTM1NjhmMTkwZjZiMDRiZmQyNTgzYjY5YmE3ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwZTgyODllYmVmMDBmY2NlMDkyMDIwYTBhYmZkZDk5Nzc1NDRiNWY1ZWU1NDI5ZjI4ZDI0ZmY4MGUzNWRhNDcifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/viewer/SentenceView.tsx#L15-L39",
+          "version": "repo-lines-v1:sha256:6d9665de872d4cf0e3241d2d5a19873a72d7498d0999aa92e9ed8002819085e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllODAzNDAyYzQzYzg4ZjdlMzQyZjBkNDgyYWZlNGVjYmMwZWM5YjJlYzRjOGZmMDZhMGFlZGNlYzkwODRlMmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhN2U3MDU5MjkzYWU5MTViZDhmMmRjNWY3ZGZkY2E5ODgzMGQ2MWQyMTVjMjY5ZWU3MjE2YzIxYzk1NjI4OWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4OTViMzJkMGJiOWE2YzcxNjYxZWM4NTIzMzRjOGIyMTM4MzAxMDYxZmUwMjcyOTA3Y2U0MWIzYmM4NTdkZjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bbc01a39f4b040e8bac5da13ba2323e0",
+      "statement": "UMLInterface and UMLEdge test inconsistency highlighting by comparing inconsistency.id (the composite 'type-reason-...' identifier) to the interface id, unlike UMLComponentNode which compares modelElementId — so interfaces and edge lollipops generally do not show the inconsistency color even when a matching model inconsistency exists.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLEdge.tsx#L72-L73",
+          "version": "repo-lines-v1:sha256:b11c01c26fc420d0b3dbf5512207b18858db007b31893b32967b1151a9f99ddc:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFkZjJhZjZjZDJhMWE4ZTA5MGExNGExM2E4NTk0NGMxYjM2MmIxYjIzZmMyNjgyMThhYzliNGU4NWFiZjA1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTU3OTUxMTMwNWVjYmYwM2IwMWNhYjQ3YWJhZTk4ZjQ0NDVkNzQzNDg2MWViNzgwZGFkNzljZDBlYzFlZjdjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ4ZDdkYTE3N2UxMzczN2VlYzI1MDc2OTVhMzAyMzcyOWMyYjIzYTg4ZjQ4MTA0MTE5MGNlMjc3MjI5OWJlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTgxYzU1ODY3NjBkMDg4MzU2MmFjYTdmMjNjZDkwN2Y0YWM0NGE5NDJhYTgxMGFlN2YwYzgyZWQ0OTkzM2I5NCJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLInterface.tsx#L29-L30",
+          "version": "repo-lines-v1:sha256:598a19bd8c0ebb062b315962be95312cc0c50c0bcf4c04b298c53937fde4ddcf:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2MyMmQ4ZmFlMDM5OTUwOTRlMmVkMmQzOWE3NDg4YWU3NWZjNjFkYjliN2YwYjllOWE3ZjI3OWRkYzYxMzI0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDMwZjEwYTUzYWYwODYyMDg2NTA4OGYyN2VlYzljNzM2YTVhOWEwOWI3MzQ5OThiYzk0NWM5ZDFiM2I2ZTA1ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzQ5YjEwNjUwMjM1OWU0MjE0OTMzYzBkZTZlZGY3YTRiOTk5NDYzM2UwZjNhMDYwOWZhNWNkODY5MGI2YTk4NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGQ4ZDdkYTE3N2UxMzczN2VlYzI1MDc2OTVhMzAyMzcyOWMyYjIzYTg4ZjQ4MTA0MTE5MGNlMjc3MjI5OWJlMyJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/dataModel/Inconsistency.tsx#L39-L46",
+          "version": "repo-lines-v1:sha256:93fb1b3d7d5b4cbc6352f26bdfc12f566bf8735d19c4550a4d472e04db44d0d5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGUyYWEyODRmYzMwNTdlOTJiMDA5NjRlMDNjNTYyNmFhNTQxNDc1NDA0NWVlMThhNTExYjYwN2NiZDA0MTM4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTllNzYzNTVjZjExOTk0ODBjM2Y5OTgzNmIxNDg2Yzg0MWQ4OTFmYWFkOTA0YzYwOGUwOTMwMjJkMzc1N2FlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTBkOWI0NTEyNjliOWRhNGNmYWE1ZGE2ZTE1MjFhYTBhMWZhNjkzMzBlMmQwMjA2MGM1YTQyNjZkZDI2YmU3OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_65c0f4e48f174f6281c3da5bf794f5e7",
+      "statement": "ACMViewer highlights the ancestor edge paths of every code element matched by highlightedTraceLinks, computing them against a separately retained fully expanded copy of the code tree (copyExpandedTree/layoutedTreeRootStatic), and an effect on highlightedTraceLinks auto-expands the collapsed ancestors of matched nodes in the visible tree so matches inside collapsed subtrees become visible.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer.tsx#L106-L123",
+          "version": "repo-lines-v1:sha256:3a95d3a5f5eda057f9c147050a7cba3d2e7a6e86cca2b3b314d7258637fb4491:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ZjdjNjE3MGRiZWRlNTdmMzExM2IxZDA4OWU1YTU5OWFlN2VjZTRmOWUwMDBlYTg5Y2RhNjU0M2Y2NWU5YzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNDQyZDAzM2FmMDI1ZmZmM2M5ZGY3NTAxOTliMmQ3Y2I5MjkxMTJiMjQyNWIzMTEwOWM1NmRlMGYxY2E0MDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwOTMxMzVjMWRhZWNmY2VkNWU1NGNkMjllYjk2YTkzOWY1N2JiNTRiNmVmMTc1YzRlNTZkOGJlMWY3MTYyNWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmOGJhZjhkNDY3ZDhlOTJlMDY2OWU3ZmI2OWMyNTM4ZDhlNThiZjVlNmM3NTE4NDFhY2RmZWM5N2M1MWMyMGUifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer.tsx#L196-L220",
+          "version": "repo-lines-v1:sha256:a519943c58b6199977a6856b1d28dcbb9791ab954528f52c09420cb73d68356e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhODcxMGUwOGJiNmRlZjlmYTdhZDg4M2Y5ZGZhYWViOGE4ODhmNmM3ZDU3NDI0NTEwNzk0YmQ4NTY2Njg4ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjYmMyNGQxYWQ2ODA4MGEwNzhiZDY0ZDk4MmU1OTNiZTUxZjVmOGE5MDk4MjA5NmVkNzQ1Nzc2N2FmMjcxZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllOWZjM2YwOThiYTU5YmY0ZDM3YzJmZDk3NTg3OTc4NmM0OWQxYWYyNmEzOTc5MzE0NjRkYTE0MTEzZjQ2YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4OTRlZWRkMTYxZTc0NGJmYzQ2YzVmMTliMmM2YzNhZDcwYTRiNmY0MGIzNTA5YzI2ZTVkZmVmNTQ5YTc1MTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5473c7d8d3242819ab73f6f23ce1077",
+      "statement": "TracelinkViewer's prioritize-highlights toggle makes handleSortChange partition the sorted list so links contained in highlightedTraceLinks lead; because handleSortChange depends on highlightedTraceLinks and a re-sort effect re-runs whenever the callback identity changes, every highlight change re-orders the list while prioritization is enabled.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/TracelinkViewer.tsx#L71-L100",
+          "version": "repo-lines-v1:sha256:8c46f63dc6b06b651eae7d0ff98f7a3b7076f848f868128675789556de18aa5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZGVkOTc4YzY4YmFkODgwMDcxZGY0MGU2NDQzZTAxZjYyY2NmNTNjNWYyZmU3OTYxNGE5YWQxOTI0MWQ3ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZTJmNmU5MmRlMzViMjBiYTI4YWNmMzI3OGQxZmMwNzJiOWI2YjY0YmQyNThlMjc0MzhkNDIyYzY3Nzk2MmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVkYjNjOTMwNDM0ZjNmN2FjNjQ1Y2YwM2QwNjExMjQxZTJlMjIxMjc2N2Y5ZmJiNjEzNDE4ZDhmODI5YTU1MDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjOGVmZjVkZmU1ZGJjYjJkZGY2ZWIyZjRhNmEzNmQ3ZGMyZjEzYzUwMThkMTAxZjg1ODVmNzEyNzNkY2I1ZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f2277322fa14914afb24bb3186849dd",
+      "statement": "Both result routes mount the same provider tree around ResultDisplay: /view/[id] builds displayOptions as the trace-link type's resultViewOptions with TRACELINKS unshifted first and INCONSISTENCIES appended when requested, while /view-provided/[id] derives displayOptions from stored file types via getResultViewOption; SearchResultMessage is rendered once inside the provider tree so docked and fullscreen panels share one highlight state.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L117-L125",
+          "version": "repo-lines-v1:sha256:d1f1b838ce9f562dcb9442eb811c8dd5962d609ff9fb0bf7d151717b0ac1fa3c:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE4ZjdiZTg2ODg0OTI2YjgxN2Y5MzZjYmQ0ZDAyNjI1OTEzMGY1MzI1Mjg1M2Q3MDM5Yjk0MmM1ZmI0MDk1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmI5NjhjYjg2MmVkMjIzZmVmNjYzMWQ5YjYwMmE2MDNhZGQ1YjY4MDZlODc2NmNhMTYwMzAzNzJmM2E1ODg5NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNhYThlZGRmYjg0NzFjYjgwMDZiY2E3YTY1MTk4YWE1YWRiZjk1ODVhN2FjNzQ0MzA4NWQ4MGQyMjcwZWJlOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYWJiMGM2Mzk0NTFhMjhhNWQ4YmVlZmM0Y2YzYjdmZjRmYWQzNTY2ZmY0OGExMWRjN2VmMGMzM2RjMmYyZCJ9"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L69-L76",
+          "version": "repo-lines-v1:sha256:2aa8a34a2a853656f49523e377c69073b176a3a2b3464adc1c0b45a983d238ba:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGE5NjUwOGQ5NDJkNjU0YzE2MTBjNWU0MmZhOWE5YWZhYmUzZWM2ODg3ZjhkODBkYmZmODEzN2FkOTQ4NzhlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc5OGQ2NjYzMjZjZDhkYzNhNWVjZmIyMjNjNmZlZjc1NDg4ZTdmZTU0MjE1NDc1NGEzZDU4NzJkYTUwZDk0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGFkY2E2YTBiODg5MWUyNDY1Mjk4MmQwMWJjMjZiOGRkOTI4NDQ0NDUxMTBjM2E4MDFlZjEzZGI3MGZjNzJkMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzJlZjUyMGNlNTIwZmI3OTE4NDUxY2YyNDg1MmYyZTkzYjQxMGJlN2Q4ZWVhN2ZlNWJlMmI5ZTcxYTliOTk4MyJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultDisplay.tsx",
+          "version": "repo-file-v1:sha256:36fb7fcf70b052856c5986bd997fd44dcef387b3d8df87519e08fdfde7a2a50b"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}

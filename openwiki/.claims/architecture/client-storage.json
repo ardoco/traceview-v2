@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b15a65ff955f59f1c410f867bf0bdc9bd5ee634400d231a2b2f51c8d47e5a57c",
+  "claims": [
+    {
+      "id": "claim_7ea5e45ef5c44d919d30dd33f0d42d77",
+      "statement": "ClientFileStorage persists all project artifacts in the browser's Origin Private File System: each function resolves navigator.storage.getDirectory() and one sub-directory per project via getDirectoryHandle(projectId, {create: true}); the new-project wizard keys that directory by the backend requestId while the load-project flow keys it by a locally generated uuidv4.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L52-L64",
+          "version": "repo-lines-v1:sha256:e82db8bf805ac634ebc4fc57756932ede8e3d70e83270d95b4f793ce7ff89b52:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L93-L120",
+          "version": "repo-lines-v1:sha256:21258f5cde2efe679957c8e907c25c0cbb8910eff1c2ed745781a0de0695ad3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L6-L18",
+          "version": "repo-lines-v1:sha256:125e7d0bfcb49b16ef55d194750d3500be2f217effa4a9117d1b3c4059de97a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4Mzk0ODk2NjBjZWE3MTY4YmMzMGI0YzY3NTA4NzA1MjhhMDM3ZjQzM2I2NTZhOTA0ZjAyYTA1ZWFkZjYyOTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_95726c8436264187b317e682a36cf4ab",
+      "statement": "getStoredFileName stores both PCM and UML architecture models under the shared name 'Architecture Model' while every other artifact uses its FileType value; project.meta.json therefore records fileType, storedFileName, and originalName per file and is the only record of the actual architecture-model format and original names, and the form validators' limit of one architecture model (PCM or UML combined) is what prevents two models from colliding on the shared name.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L24-L28",
+          "version": "repo-lines-v1:sha256:7c89336f49533e1c6340c539106324a18b4a8f9566307027bfcfc84bc2693495:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTE4NTMwOTNkYWIxZThiNmY1ZmY1ODczM2M1MjgxM2ZhZjI1OTgxMjJmYTJlYjE0ZjZiYjNmMjQxN2ZmMThkYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGZkODhkOGExYzk0OGJiZWY3YTc1NzM2YTcwMDA3ODkzYTQ3ZWNlZTBiNzExODkzMjI1ZmIwZjQ3NjRmNGZkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmNiOTRjODE3ZTMyYTc0MGY0NGQ3ZTFjZDdhMjE5ZjI4ZDY3NGMzYzQyZDcyZGQ0MTU5NDJiYjkwMmE1ODVlOCJ9"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L111-L115",
+          "version": "repo-lines-v1:sha256:0af5076f12ab166a41b1cabdb942ddf9830ea1b10373c3b3bf8cfc8db537f12a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDVjNTdjNDUxNjQyYmJiNTQzMjYwYzdkZDEwNWQyNDJiNTY3NmVmNDg5NDYzNmUwMTQ3MTk4NDA5ODQwZDU5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWY0YTZjYThjMDRkYTE0MzcyZjUzZDRjNjZjZTVlZWFjN2E0ODVjNDg4MzUxOGYyNDVlMDk2Y2ViYjY1Yzk1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzI1ZDRiZTE1NTA2YmQ4ODlhYjk0ZTJmNmMzYmViZTUzY2RiNjU0N2RiNjVhMDIyOGM4MTY5ODM3YzU5MWM3OSJ9"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L32-L38",
+          "version": "repo-lines-v1:sha256:b699aaa757c74899d129302e3dfafec2f1fde9debf548c8da894c819c08545ce:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2EwNmFkZjM3ZTM4ZmE2ODA3NTliNjhkZDE0MDQ0ZjRlNWI2OTk3YjlmNzVkNmVkNTczNGM3YzQ0ZmY0OGI1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRlNDYyZjBkYzViOGM4NjYyZWY1ZGVhZWRiYmQ4M2M1YzVjZjUwNzM3YzUxZTJiZDhkOWY0YzU4MGM1ZmE0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2NmN2QzMjBiMWY3NTk0Y2NlMWEzOWMwYWRiM2M5YTNmNDFkYWNkYjJiZjNhMzM2YWU1NzdkYTkxMmE5NTk4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTYzNzgxNzc3ZTU1MDdjNDlkYzlkMTg4MDRlN2I4ZjNkOWMxMmI2MDMwOTA0NjNiZDc1ZTQ1ZGY3YmQ2MDkzMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_117a314938bf489abb4484acf7051308",
+      "statement": "loadProjectFile resolves the actual stored file from metadata rather than trusting the caller's type: it computes the candidate name from the fallbackType, reads project.meta.json and matches by storedFileName to re-derive the actual type and name, falls back to the fallbackType when metadata is missing or unreadable (warned, not fatal), and finally reads the file text returning {content, fileType} or null on NotFoundError while rethrowing all other errors; convertStringToFileType defaults the shared name 'Architecture Model' to UML when metadata is absent, which the ArchitectureModelViewer relies on to choose between parsePCM and parseUMLModel.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/dataTypes/FileType.tsx#L11-L19",
+          "version": "repo-lines-v1:sha256:23690cc474ddcf0185fe97af3a7d7892d600ff9b5b69ccfdf0bdd84c9fe9e8e7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBmMjg1MTQ0NzRmNzI3NWNjYjZmOWMyN2Q2YjNmN2RmMjlhNjgwMzRlOTk3NjEzYmNkYzVlZDFhODg1NjlmOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwYjM2YWE3NGE1OWJjZjRhODgxODU4MzdmNjU4YWZhZjM2NDZlZmYyYmIxNmMzOTI4ZDBlOTMzNWU5NDVkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzQzOGNjNWU5NWRjMmExNzU2ZTdmYWY5MmZiMjIwNWZjYjM1N2U3MDExN2Y5MmMyNjQ3ZDIyZjcxYmExYTMwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/ArchitectureModelViewer.tsx#L20-L43",
+          "version": "repo-lines-v1:sha256:50e639e668b5683295d27eb69e7636289b52feab86b2b9abcd764c41dd81f212:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkMGNiODIxOTBiNThiOGIwNGY5OTMxMmFmZDg0MTZiYWYzYWY1YTBjNTlhZTY4M2U3NWM0ZDQyMjhiMGU1YjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlNmUyMzRjMWY1NjhkNzBkYmZlMmUwZTJkMDkwNTI1MmU4MjYzNTZmMjZmZTI3NTRiNDQ4ZTRmMjkyYjBhMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiMjY5ZDY1YTAxMWVjNzNhMDg4OGExODVmMmJmYmUzYmVjNGIzMTRmMDkzYjA5NTk5MjAyZTRjMzI2NGEwNDgifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L41-L81",
+          "version": "repo-lines-v1:sha256:19c2b286aa88666b8957d01af091e58aa615edd72a691f1e08e052300616cf9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NTNhZDMyMGI1MTUyMmI4NTBhZmIyNzFlZTA2MzU2NzRiOWJkZjg0ZjQxNDRkNjI0ZjAxNjYwZjI3NDQ4YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ZjZlNzMzMDM2ODczZDU5OTc0Y2JlMjMzOGNmYjkzMDI2YWY2YTMzYmU5ZThhOWZhNmY2YzhjM2M3ZWIxNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwODA5ZjJjZDZhYjU4NTNiOGU0ZmVkMjJkZTAwOWZmZDlkNDBlNzU3YTkwZjc2ODA5YjI0NDk2YmJmOGE0YjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_083bad24685a4c5fb6050eb09f727286",
+      "statement": "The two readers have asymmetric error handling: loadProjectFile converts NotFoundError into null so viewers render fallbacks, but loadProjectMetaData performs no error handling and rejects on a missing directory or unreadable meta file; because /view-provided/[id] calls loadProjectMetaData outside its try/catch (which only wraps trace-link and inconsistency parsing), a stale or nonexistent stored-project id stalls the page in its loading state instead of showing the error banner.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L80-L105",
+          "version": "repo-lines-v1:sha256:6a2b29098c588e052b8b5fae5fbe09378fed6124bbace1aad5767ce9488b5e3c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMmMxZDVhOGUwN2NiMzJhMTljZTQ2NmVjMjQwMmNkYmJiZGRlN2IyMjRkODdiZmFiMjkwYzk2MGFmZDEyNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NTdjY2YzNzc0Y2Y1OGM1OTQyZWNmZGI1YTBhZGUyOTEzYWMyNWFhYzQ2MjY0ZTkyY2QwN2FkZTZmMWYzMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMzhmZDI4MWYxMDY0NzIxODQzZDM0ZjA3OGNjYzJjNGNjNjk4M2U1YzgyYmQ4MmJlZjk5MjYxZWQwNmNmMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzYzE1YjdlODI1OTUzNjM3ZDk5OTlhNDNiOTZmOTViNWYzZTVhZWU2NDI2ZWY4NDY5OWQ3OWMzYzk3YTE5ZDkifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L73-L93",
+          "version": "repo-lines-v1:sha256:347d1fd8f1229666035c808876b677116fa0b1f50f493f6ed0bce4e2367fa1ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxYjUxYTE2NDhjMzY0NzI3M2UzNzFkZGRiYzY2MDY0MTc0YzIxYzNhNDMzNThjYWEwNjI0NWY2MDc1NjliOTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MDdhNmYwNWZjNjkxMGY2NjM0NTE0NTM1ODFmZTRmZDJkNzNkYmUxYzc2NjZmM2VhNDhlYmJiZjhmNDI4YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE3YzI0MmIwZTgwYjcxNmI2YzQ3MDY5YjA4MWI2Mjc4ZjZjYmM0ZTcxMzRlNTQ5ZTk3OGRhMmY0NzE0YjZlNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69ba1bfb9b5d41d1a75482ab50b033cc",
+      "statement": "Every ClientFileStorage function guards against server execution: the store and load functions throw a dedicated error when typeof window is undefined, while deleteProjectDirectory warns and returns a no-op on the server and additionally swallows and only logs all removal failures, making confirmed-navigation deletion best-effort rather than a precondition of navigation.",
+      "evidence": [
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L6-L9",
+          "version": "repo-lines-v1:sha256:8f7b1abca2cab5f3a53ff0b8e60d5d17a75aa49381f27d9e6189873e3e3f5c78:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjM4ZmVmZWZhODNjYTBiYjQyMjJjZjE4MGI1MWRjYzgxMzhkZTFiYzU3ZDkxMTAzZjlmODM3NjdmMTM5MWIzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGMzNjllYTA5ZDg5N2E0ZDdlZWY3NGQ3ZWJmYjA2YTY2MzdlNjlkYTdlZDY0MWM3NGNjNzJkYzJlNmMwNTBmMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2NmN2QzMjBiMWY3NTk0Y2NlMWEzOWMwYWRiM2M5YTNmNDFkYWNkYjJiZjNhMzM2YWU1NzdkYTkxMmE5NTk4MSJ9"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L95-L106",
+          "version": "repo-lines-v1:sha256:e641b23043f8f76423c28258f51f5152af263c81cc4b0f08bd852aa6f666bf08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YjJiNTJlODM5MDQ5MjA5MGE3NDA4NGY5NmRlMDI1NmMzYWIzZThlOTM1NWY5M2UxZTc2YWRjZWQ0MzNmZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkNDI4ZTM5ZmM1NGMzNWI1ZDRiMTFiNjUyOWI2ZjVhMjFiMzQ0OWQ3Mzk4YzU3MTEzNTY1OTk0NGU3MzU3YTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYmQwYTUxMzdlOGE0YmNlYWFjZWNlZWY3YzgxN2ZhZTdlNjNhMGYwZGU0ZDljYjdlOGU0YjljOTdiMzhhNDkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b8a799fc8724d54a32a9b81e1113ec6",
+      "statement": "MultiStepFormNewProject.handleSubmit stores file bodies only for result.usedFiles (the files actually submitted to the backend) under the returned requestId but writes project.meta.json for all formData.files, and the two calls are independent, so storage is non-transactional: metadata can list artifacts whose bodies were never stored, and a mid-write failure can leave a partial directory.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L93-L120",
+          "version": "repo-lines-v1:sha256:21258f5cde2efe679957c8e907c25c0cbb8910eff1c2ed745781a0de0695ad3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L12-L119",
+          "version": "repo-lines-v1:sha256:d53b0c001aefe7901d4d7518f848256b21570d5004d33e4bf0e45aaf3c726af7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1NzNmNTAwMzc4ZmVlN2MwYWNlM2FiNDM3NjFkNDJkMTU2MmU1YzdmODc2YmQ4NjQ3Y2NlM2U0Y2RjN2MxN2NhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4MDViODA1NmRiOWExMzk2NDE0ODY3NmNmMDk2OThlMzVkMTVlOWVmOGNiNTQyY2ViOGNkM2QzNjhhM2M0MThjIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2ZjI2ZmM3M2EwODg1MzdmOWRjMDI4NTRjOWNmY2NlYjVkMzRmMmUyMDQzM2ViNjZkZTJiMTM5NDdkNjZjMjBkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3M2RjMWY2OGUxZTRlZjAzMjcyNTM3ZGVjMDMxZTY5ZjMxMTRlMDE3MjRjYzA2N2VmMzVlNWRjNDZjZmI5ODQ5In0"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L6-L39",
+          "version": "repo-lines-v1:sha256:25f82842de6fd09ebc083671e3de697ec0063afc859e0f9af6b82635ad67d35e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxMWFhMmNkNzM2MTdjZDEzZTVlMWFiNDlkZTRjN2M5YzkyNTY2MTM4NmRkY2Y5YmViYzQ4ZWFjZDA4NTBiYTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3fb17acfedf34fe4b623219c4f23945b",
+      "statement": "In the new-project wizard a backend error opens the LoadingErrorModal while a storage error opens the single-button ErrorModalFileUpload and aborts the redirect; the API-error modal's View Files Only fallback re-runs the whole handleSubmit (retrying the backend call and the storage writes) and on success routes to /view-provided/{requestId} instead of /view, leaving artifacts inspectable without a backend result.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/LoadingErrorModal.tsx#L12-L48",
+          "version": "repo-lines-v1:sha256:77035b93c2267c9d2174605905465530ec7a9f0da80223b20bb03adb96cfda42:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NGEyODFhZDllY2NhMjU5OGQ3YjJmMDZhOWU4MDBkYjhlNTM4NWU2OWNkZGI1ODVlMThjNzBiMGNiYjUzYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMTE1ZWViNDI3ZDRmMDYyMDBiMzdlMDM0OWY3ODA0ZjE2YWY1N2VjNTEwZDc2NDM0NzUxMDliYTkxZjQxODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L163-L176",
+          "version": "repo-lines-v1:sha256:e93ca613d4098f123082bf10059402ab2f3464651a324fbdbff4a691fd360a3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhYTEwMTQ3YjQ5YjhkZDQ2NTdlMjhiNDVjMmRlN2MxNDE0ZmY1MWFlZGMzYjNhMDBjZmZhN2RlOGIzZDI1ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NzI0ZjMxYjZiMDc4YWZiMzdlODI2YWFlNTM1Y2E5ZGFkOTZkMDEwMjAxYWFkNzNmMzAzZGRiZTA0OTk4ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyMjhlMTYxZWY5MzliMGQyNmU1ZmRhMzk2MDBkNTI1Mjk0N2YxNDg1ZDY2YTY5NjM1NWIzYjE5Y2QwNTZiOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzYzM4ZGNiNGQ0NTEwZWI5MzhkMTk3MjNmMTEwMDY1ODIwNzU3NjAxMDMzOTBiMGIyYzFiNGFkNThmOGQ4YWUifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L93-L120",
+          "version": "repo-lines-v1:sha256:21258f5cde2efe679957c8e907c25c0cbb8910eff1c2ed745781a0de0695ad3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee63c52531224db5909759df378a9ee9",
+      "statement": "MultiStepFormLoadProject.handleSubmit generates a uuidv4 storage id, stores all uploaded files plus metadata (the /load-project route allows every FileType including TraceLinks and Inconsistencies), and redirects to /view-provided/{storageId}; storage errors there are only logged, so the flow still returns the id and navigates with a possibly partially stored project, and unlike the new-project validator it does not reject FileType.NONE files, which get stored under the literal name 'Select file type' and have no getResultViewOption panel mapping.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/load-project/page.tsx#L7-L16",
+          "version": "repo-lines-v1:sha256:78d98266e7b277197c4ea0bec275b198d7833a3da111c3105a31b83ec3d20513:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkMjc2YjRjYTQ4ZGEzZTgzOTZkMDJiNWJkZmU2ZWZmNTY0ZDRhODQ2NTFhYzA5N2NhYzE3ODIxMzAxYzMxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZTQyNTQxNjViNzMzYzg2OWY3NzkzYjYyZjgwZjYyNjc5MzVjNWQ5ODJlMmQyODIxZmFiMDA0ZDkyZGMyMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/dataTypes/DisplayOption.tsx#L29-L46",
+          "version": "repo-lines-v1:sha256:f996f67012e85e5420bc94ed8b4e0a3188cf994e2634ac45a823c29e3f9205fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjZWI1YWUyNWY1ODAzMDExODI3NmUwNDkxNjBhYTRkZGE2MGE5ZmU4YTU0ZDNlYTU2MTczOGU4NmU4NzFhYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L14-L16",
+          "version": "repo-lines-v1:sha256:1236aa52e83f97c5393dfad13ae3162310b7e9dfab8321a617e8724b963adb07:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdlZTMwYmJkMDQ4YzJjZmMxN2ZmYzMzYjg5YmMwNzVjZDFjZDgwYjE5NjM5YTljYzM4ZGFkMDFlMjNkMGJkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGJhOWU1NTg2YzgxMTU3Mjc2MzIxZjJlMmY5NzhmMzEyYTE4MDBmNzhlY2Y2MzI3YTVhMjUyZTI3MzI2N2VkZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGFlM2I4MWMyYTg5ZGQxOWEzYTliNzdkOTYyMjJkMWM3N2ExMjRkZjViZmRkNjgwY2FlYjE0MjA4ZTU0Y2RhYyJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L39-L66",
+          "version": "repo-lines-v1:sha256:f996f1560d0a723d7caa7580ba7f6a22596c2c3f44378a1696599e2751b71f36:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YmY2YjRiODk0MGI2MDcwNGE3ZGUzYjRhNzQ2ZWE0ZjQxOWMyY2RhZmE5MTZiN2YyMWVjZjQ2MGVhZGRmMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiOTA4MWI1ZmYwMTdmZDFhMWE4OTNjY2Q4MmJhODRjYTM0ODM3MTdlNzhjYjU1OWM1OWUwMWM1MGM1MGM0YWQifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L29-L64",
+          "version": "repo-lines-v1:sha256:a29299fa2bc52edb2034056fd7045c2ff8ae558272ff706b8295bbedd79533fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMjUyZjZhN2RjYmI1NjI4YzYwODI2MzEyMjU1ZDAyNDZlN2NhNWJkOGMzODA4MTIwNzc3NWI0NmNkZTE1MDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNzhiMTI3YzhhOWFmM2QwZjJhZWMzMTIxYTc3ZTBhZDk2ZGE2YTc5MzdkY2RmMTU5NzNkODMwYjZkNmE5MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0058b0c4cd834c6faaf9c47d1af9b0f8",
+      "statement": "/view-provided/[id] reconstructs the result purely from browser storage with no backend call: loadProjectMetaData supplies the stored FileType list, getResultViewOption maps those types to viewer panels, and stored TraceLinks and/or Inconsistencies JSON is loaded with loadProjectFile and parsed into typed viewer models; an id-handling quirk is that the metadata call uses the raw route param id while file loads use the decoded uriDecodedId.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L113-L128",
+          "version": "repo-lines-v1:sha256:623302d3d8fe0627f8be58761eab74c2c7c94ec61c140dd3c775cad078635606:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzZiY2ZlN2M4ZDdlZWM4NTVlMDE5NzJjOTUwYzIyZWJmMDg4Yjc0MzE4ZDQ1MTQwYzEwZWRjOGY0MzBjZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNjdhMGIzM2E5OTAwZDVjMDRhMjBhNDk2YjNiMjI1MGQ5ZDAwMzhiNjg2NWJmYmU3NzI1YjViODI4YWY4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyNjA3NTFjNDY0MzViNDFkY2VhOTYyYzMxMGQxM2QyZDFlYjZiMGNkMGFkNzIxOGMzZTAxNDA3YTVkY2E1MjcifQ"
+        },
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L39-L105",
+          "version": "repo-lines-v1:sha256:6244295998946b04f6ecb00a5c3b59518cf041c5d18d0a9fc31322b0a896b5d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczNzgzMDlmZjQzNTA0NTllN2U1MzIyODA4NWRhOWI4MWQwNjIwNGY2NmZiZmFjNzIyNmMxZTdjOTJlNzFhNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NTdjY2YzNzc0Y2Y1OGM1OTQyZWNmZGI1YTBhZGUyOTEzYWMyNWFhYzQ2MjY0ZTkyY2QwN2FkZTZmMWYzMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY3MDRiZTQyNDMxMDVmYWEyNmVhYjAzNGZkNDIyYjVmYTMzOWI0YjcwZGMwNTVhZGI5NTc0MDBmMGFiNTNkYjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzYzE1YjdlODI1OTUzNjM3ZDk5OTlhNDNiOTZmOTViNWYzZTVhZWU2NDI2ZWY4NDY5OWQ3OWMzYzk3YTE5ZDkifQ"
+        },
+        {
+          "resource": "repo://src/components/dataTypes/DisplayOption.tsx#L29-L46",
+          "version": "repo-lines-v1:sha256:f996f67012e85e5420bc94ed8b4e0a3188cf994e2634ac45a823c29e3f9205fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjZWI1YWUyNWY1ODAzMDExODI3NmUwNDkxNjBhYTRkZGE2MGE5ZmU4YTU0ZDNlYTU2MTczOGU4NmU4NzFhYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7868777d38924b38972a1703d33c5dbb",
+      "statement": "The three artifact viewers (DocumentationViewer, ArchitectureModelViewer, CodeModelViewer) load their inputs through the useDataLoader hook plus loadProjectFile keyed by the route id and run identically on /view/[id] and /view-provided/[id], so the panels of a backend-polled result read the artifacts from the OPFS directory the wizard stored under the same requestId; a missing file resolves to null and renders the viewer's raw-content or not-found fallback instead of panel content.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/architectureModel/ArchitectureModelViewer.tsx#L18-L48",
+          "version": "repo-lines-v1:sha256:10e9fe57d75058560722d735f45da6941ab9671c4ca51859665bcf3461bf8e8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwY2ZjZjcxMTk4MzNiNGJkMzYzZjI5NmRkNjFmOGUxM2M4NjRkNGE1NDNmMmFjNzNkZjQwYTM0ODgwNGRkMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiOGM5MTc0NjgzMTllOWRiMzQ3NjE0ODRlZDdmZjhhOGJmZmY5OTI4NTc5Zjk3YzFhNjZkZmZlZjkxYzhiYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2YzlhNWMzMWRkNGNiNmVmODk4MTI5MjUxMmUwZGEwZDEyZWUwZTgyYTgxMTBlY2M0MzNlNWIyNGQ5ZjM3YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwNjMwODZjNTZiNTdjMjRmOTYyYjY3NTg2Yzk5ZmI5Yjg3NDVhMzM4NGRiZmJkNGYxNzQ3OTM1M2QwNmZmZTIifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/codeModel/CodeModelViewer.tsx#L14-L32",
+          "version": "repo-lines-v1:sha256:337fdda2ce4daba51bddf30a0c52cf0a4eddd729475615c6659e68e7218937ce:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyZjhhZTNiOWI3MTc0ZGZjMjM2ZjFhN2EwYWJkNmQ0YzU0ZjJmYTgwY2M1NDk5YzFlMDYzMmM1ZWM4NjJlYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0NmM5NGM4YThjZWVkYWU4NDk2NGM2MGVlNWM3MjU2MTk1ZDE0MDg2Mzg1Nzk0MjBmZGNmYTRlNDQyZDJjYzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2YzlhNWMzMWRkNGNiNmVmODk4MTI5MjUxMmUwZGEwZDEyZWUwZTgyYTgxMTBlY2M0MzNlNWIyNGQ5ZjM3YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY4OTMzMTVkMDQ4YzcyYzRlYjc4ODY2NjZjNWZhMDRiNzc2YzUzNWZhYjc1Yzk4ZTMyNDcyMjMxZDE3N2U0OGQifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/documentation/DocumentationViewer.tsx#L16-L33",
+          "version": "repo-lines-v1:sha256:2dafe62873c25303d9c04b0f6a05901e12ce824c31c9a49dc84b98a601ca1eb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiZDMwN2RkYTYyNGViNmQwODVjZGJmZWI3YzgzNDcyNzgyYTIxNjEzMjAzNmMxOTdjYzIwODE4NGJmNWVmY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZmNlOWQyYTUyMjI1MTViYjI2OTdlNWNhN2NjMzFlMWRmODgzMzBlOTZiMDI1ZWI3NjdlYjI3YTk5NGZmOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2YzlhNWMzMWRkNGNiNmVmODk4MTI5MjUxMmUwZGEwZDEyZWUwZTgyYTgxMTBlY2M0MzNlNWIyNGQ5ZjM3YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwZTUwNWFmYWJjNmExMjA4MTI2ODRjOTAzZjY2ZGUxYWM0MTAxMGU5YWQxODdlNWQ1ZjIzNDUxZTJjNTExYWUifQ"
+        },
+        {
+          "resource": "repo://src/util/useDataLoader.ts#L22-L59",
+          "version": "repo-lines-v1:sha256:c463356e258691ef96f0b9a11df4bfb400a230977dc8255eb4ac9295a50c102e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkMWQxNTE1M2JhNmViZDA2YzMzZTVmNTI1NDA3MzkzNjM1ZDE5YWZmYzRkMWQzYTVmZTUyNzc5YmM3YTgyYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4NmZlMDM1MzVmMTViOGQ4MWIxYWMxZmNkMjFiNDYxZWY1YmNmZDdhZjA0NTQzN2UxZTc2OTlkY2IwNmNjMWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkYjNlYjZjZTZlZjkyMWE2ZDhkZDE5ZGQ1ODVhY2RhNzIxMDI2ZmUzYTU2YWViM2VlYWEyZmRkNWFmYTUxODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ab8bfac533ab440f86def5600d0dab63",
+      "statement": "NavigationProvider wraps every page in src/app/layout.tsx and owns the leave-project lifecycle: when currentProjectId is set, handleNavigation opens the globally rendered ConfirmNavigationModal instead of navigating; confirming deletes the project's OPFS directory recursively via deleteProjectDirectory, clears the id, aborts in-flight requests, and only then calls router.push(nextPath), while cancelling merely closes the modal and keeps stored data.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/layout.tsx#L29-L41",
+          "version": "repo-lines-v1:sha256:e553664a7ea9efbf05fce884d6cf58c0b0cf8e6cdb07e5bcf252563f96d191ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlMDVkYTBlODViZWVjZDEwZDExNGE5ZDE2YzJmZDA5ZTNkYWE0NTk0MDNkMGI1NDVmMjBjZGY3OTFmNzcxZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMzBiZTVmYWJhZTI1NmMyYzFkNjU5ODcyNWEyYjIwYzU2MTdlYTg2ZjljNzBjZmVhZmZiY2RiM2Y1ZTU0YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YzQ0YzY5OGE5NGQ0NWQ3NGM1MTVkZDY4YzViM2E0ZGQ2NjI4YjUwNDIwYWYxZjk0OGIyODQxYmQ1YzVlOWIifQ"
+        },
+        {
+          "resource": "repo://src/components/ConfirmNavigationModal.tsx#L11-L46",
+          "version": "repo-lines-v1:sha256:0a4d4d71bd873e9cf0a039bad31f515bdcdbaa288f7ed1adc61286aa81be4a36:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxMzVlNDE0NjE0ZjM4MDM0MzdlYzRmNWQzYjIyNjU3ODNjZjQ2ZDAyMjM3NzAwNzViN2JlYTYzMmRlYTYxZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4YjAxMmVkZDc5NzFlY2Y2ODc2YTA4YjczNTZlNTE1OTljZmZiN2I1OWU5ZjlkNzFkNGRmYzRmZGUwYjFkY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L18-L68",
+          "version": "repo-lines-v1:sha256:5f96633c22089934bcca4d9f7f87ee361fcf93793ee6fb36c2c37561ee88dcc4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NTJkYzYwYmQwMmY2ODI2ZWI2YTViMWM0ODhjYTUwMmRlMTkxNGNjOTUzNGQ1ODhkZmNlNTYyZDEyZWIzMzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmN2Q0MTE3YWUzZmYxZjEzNzVmMzhiMDhjMjQ4ZjdhMmUxNjkzNWIzOGE5MTEyNzU5MzI3NjQwNjI4NWE4MGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1ZjZhZjk5NjhiY2NjZjQ3NDlhNDA5ZTYwMjdmNjhhMmFkZjQwM2M2YmQ5ZTE0YTU4ZDAzZjgzZTdjNjM1NWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a748c0317f704529b54167ab985b2d87",
+      "statement": "confirmAndNavigate aborts through a shared AbortController whose abortController() helper aborts with the reason 'User is leaving the page or navigating away.' and immediately installs a fresh controller so later requests get a usable signal; /view/[id] feeds that signal to its pollForResult loop (GET /api/get-result/{id} every 5 seconds for up to 240 seconds), whose fetchResult swallows AbortError so a confirmed leave ends polling silently, but the modal's Retry path creates its own local AbortController that a later confirmed leave cannot cancel.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L21-L50",
+          "version": "repo-lines-v1:sha256:78fe7273ecd31616b768d8880ad20378ee329b0c1cca6e35375b3f7399558fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYWNmODk1OGU4YmMwMTE2NGU0NzlkMjZkMjI4Nzc0MTliZGM2MmVhZTJkZjBhZDBlNDk3ZGM3YmE0MzJiOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjM2MDIxZmRlNDQ0ZjlkNWI2MDY1Mjg4NzU0Njg4ZmFiNDYyNTRjMDZlNGUzZTdkMGY3ZDI1ZmVjMjgxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L79-L118",
+          "version": "repo-lines-v1:sha256:2285f69ad595c6b11b48877619b8c5c99bada3ad4ac147ec0dbac810af12fc4a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0MDZmMDI1ZTk5MTI1Y2ExMTVlNzJiNWY5ZmM5NzNiZTVkYWU1NWI2ODAzZmUwMjQxMzBlMTE4ZjIxNzRkZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MDk0Nzk5Njg5ZDA2MjcxZDYxMTY4ZjFlNGUwMTlhZTljODFmNjRjNjg1M2Y2YmUxOTEzMDAzNzZiYjFkM2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwN2M0MGNiYTU0MmVjNjI1YjExYzQ3Mzc5Y2Q1M2I2ZTRmODk5OWNiYmM3N2Y0Nzg3YzJhZWIyNjZhZjFkYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzYzE1YjdlODI1OTUzNjM3ZDk5OTlhNDNiOTZmOTViNWYzZTVhZWU2NDI2ZWY4NDY5OWQ3OWMzYzk3YTE5ZDkifQ"
+        },
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L34-L57",
+          "version": "repo-lines-v1:sha256:fb660a29129bd0122eaae5936a0c05e15c696997de0928a4b3258d69bc771047:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwOWQ3ZGM5MzE2NDJiNjQ3ZDU5ZGM3YTk1NjViZDg3NDVhZTU0YjdjYThjMTdkNDA1ZGYwMDZiNWVkOTQwZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3NWU1MjY4NWI0MzIwYmZjMTkwY2I4ODcxMWYwZjU2NjJhOWM4YTJhZGI0YmU4ZTJhYTk4YzZmZjRmN2RjODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_12c1b534b34f41a39f4fbfdebcfb4062",
+      "statement": "Both result pages register their decoded id via setCurrentProjectId on mount but differ on cleanup: /view/[id] clears the id in its unmount cleanup, disarming the guard when the page is left, while /view-provided/[id] registers the id with the cleanup commented out, so the guard stays armed after the viewer is gone and a later guarded navigation still prompts for and deletes that stored project.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view-provided/%5Bid%5D/page.tsx#L107-L110",
+          "version": "repo-lines-v1:sha256:95e39a3ca31aa95fb832a1a9afbfbc04ef773abfea234e3d7a953e5c7ca402fb:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E4NzEwZTA4YmI2ZGVmOWZhN2FkODgzZjlkZmFhZWI4YTg4OGY2YzdkNTc0MjQ1MTA3OTRiZDg1NjY2ODg4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmVmMmQ4ZWJhYzVkNmMzZmMwY2JkYzIwYzJkZmI0NDdiZDNjNjg4YmY5YzY2OTM2Nzg3MmZiZGYyMTA2ZTM3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGJlNTBmNzRiNWNiZTQ1MTNhNmUzMGI1YTRkNmQ4MjBkNzNmNjNhMjIzYmVjNzlkMzc1ZDQ1NDlkNWU3ZWU4YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTg3YTVjYjBhYWI3NTU3NThlNWU0Nzc0NjhiY2NiM2I5NzgyYmUyYjE2ZmNlZDFlMjZhMmU2Njc4ZDVlOTBiNiJ9"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L120-L127",
+          "version": "repo-lines-v1:sha256:181f5afd3e4e0ad4eda9737c52d32b7afbbb5a6dae9bcb86571b28743bc361ed:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2E4NzEwZTA4YmI2ZGVmOWZhN2FkODgzZjlkZmFhZWI4YTg4OGY2YzdkNTc0MjQ1MTA3OTRiZDg1NjY2ODg4MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmVmMmQ4ZWJhYzVkNmMzZmMwY2JkYzIwYzJkZmI0NDdiZDNjNjg4YmY5YzY2OTM2Nzg3MmZiZGYyMTA2ZTM3MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDMxMWUyOGIxMzQ3YTBjNzEwNDRhZjQ4Zjg4YTFiYTk1Y2E2MmViZDgwMTllZGQyNGEzN2RmMjhmMDczZTg2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTg4MjlmMTFlODNhZGE1MWU5NzhlZWNjMTk5OTRlOTEzMzc5NmQxYzcxNjhjYjA3NzBlMTdiYmM5NGU0YmQ2ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a6076280ddf4c45af5808114676cfff",
+      "statement": "The navigation guard only covers callers of handleNavigation: NavBar intercepts the desktop navigation links and the ARDoCo logo by preventing the default anchor behavior and routing through handleNavigation, but the mobile menu dialog renders plain anchors and browser back/forward navigation bypasses handleNavigation entirely, so those paths leave a stored project in place without prompting or deletion.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/NavBar.tsx#L140-L155",
+          "version": "repo-lines-v1:sha256:847bbbd71b07d522ac7fe599b9c71679ece09a443e44e5b48e55a5236e3ca476:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhNTVkZmJiNzlhOGQyZmQxZjlhMGE0OTA1ZDhhMjA0ZTA3MWZiYTgzMzUzMWUxZTVjZmM0ZDQyY2E1ZTFiNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YWNiNDFlNjViYzUxY2MzODAxMTgwMWUwYzYyZjExYTIwNGMwZjY2ZjBkZjc0Y2RkOTYyZTMxYmU2ZjQ2YTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OGYwMDM2Y2JkY2YyYmJlNmU5YmJiNzI0NmUzMGI3YzQ5ZjQyZGMyODI4YjIwZDQ1NDM5ZWNjMTNjNGJiNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhNTFkMDdhZWJmYmMwYjU1OTY5OGQ1NmNkOTdkOGZiM2EyMWNkYTNmNzgyZDkxNTdlMTYwMjlhNDNiOTQyZWYifQ"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L51-L57",
+          "version": "repo-lines-v1:sha256:d8a084956f61cff7a34f24cc792c53df4acc5d867d43c654d464dd551071b941:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGY2YTI0ZDFkMTA1NmJjMDM4NDU5N2YwNGRlMDI4MGE4YWMwNjFiZjQwYWIwNDMxOWMyMjAyMzJkNmNkZThmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTg0MzMzZjAyMjM5OTNlNzJjMTUzOTdiMTBlMzkzNTBhMjZlOGM3ODEwMTE0ZjUzYmMzNGYzNzg5Mzg5MDYwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2ViNzE5ZTdmM2Q1YmExNzE1MjMxOWQyZThiYjM4NTEyMThlMjIwMDZjM2FhMDQ2NWYzYTFkOWJkMjc4ZjZlNCJ9"
+        },
+        {
+          "resource": "repo://src/components/NavBar.tsx#L94-L113",
+          "version": "repo-lines-v1:sha256:2860f0b0a0b3e2131ad91f876137c471e8501049f3eb539689984e1ba138f950:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhOTVlMTNiMjM5ZGY5NDAyYzM1ZTIzZmUxNDFkYjNkODA2ZDNiN2RkOTczMWViNzdmNTg3OWY1YzA1ZmFlZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1NGI4ZjZmMjQwMTVkNGZkNDRhYjg3NTBhMDkyN2E2OWViZmUyZWRmMjhiYmQ0NzA0ZjU5OTIzZDRlYmEwMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlZTljNzEwNDlmZDU0YjUwNTk0YThhYjk1NmNkY2NmNmYzYTMxMWEwNTBhZDJhYTBiOWQ5NTc4MmIxODlmY2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjZjllMDk3ZDRmOWYyZmIzODQ1YTI0ZjEyNmY0OWUyMTczODVmMDNiNjhhNGI5NzVhY2YzODdkMDI4YjA1YWQifQ"
+        },
+        {
+          "resource": "repo://src/contexts/NavigationContext.tsx#L25-L32",
+          "version": "repo-lines-v1:sha256:36e1c51303027903e8ca47ce438edb0c374b15139b4fe534e967c173d9743ae8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTY5NzI2MTMxOWM1MDc2YjU3OGZkOGEyNWJkOTVkNzE3ZWJhZjA2NzZjZWEwNjIzNzIxZjczYzhmM2VkN2RiOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2MzYTBjZmU0Y2M0MTljMjM3YjEwNDU5Y2U3NTRkNDljNjAyNmFhMTY1MmI0OGNmYjEzNDE5NGU3MjkyNWI5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOThhYjE4NmM4N2YzN2I1YzJkYjUwNDYwYzgxOGNjZDU1ODc0MzExNWU1M2U5ODIxYWExNzgwZDE4NDBkNDE4NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7d547f5c8c7943419b065b0f4f180cee",
+      "statement": "The backend never re-serves uploaded artifact files to the viewer: /api/get-result/{id} returns only trace-link and optional inconsistency JSON, while the artifact panels always re-read files from OPFS, so clearing browser storage or confirming the leave dialog permanently removes the locally stored artifacts with no way to re-fetch them for the viewer.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L90-L113",
+          "version": "repo-lines-v1:sha256:efcbd1b947a1aabb18883b37b97735bfd066531f8dcca25cbeb04fd2e3c56cf8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkZDg0NjkxMGIxYTA5ZjY4MGJjNTc2ODFjNzBkMWYwMmUxMDExYmFlY2VjZGE1ZTNkZDViNzc5NjYyNmE4YmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjMmUyMGFlMTQwZWQzZTg3YzU5MzQ1Yjg5ZWNmNmJkOTE0MzI3ZDU3MmY3M2VhZjRlYzg5ZjAyY2M2NzM3ZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNlNzc1MzMzOGVmMTAxMmNmMTgyYTM1ZWE5Yzc0NWJlYTA3MjA4MDU1ZTdkZjkyNzQ0MjVkZjEwNDYzZGE3N2IifQ"
+        },
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/ResultDisplay.tsx#L17-L48",
+          "version": "repo-lines-v1:sha256:c221f8a282de086b1f8b9bd75fb33a4e38c7724d1d850452e84d7bdd75437ba7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyZmJkMjIwMjNhMmM5MjAyNWU1Njk1ZWZjOWVlZmU2ZGVmNzkzNTYxYjgzZWY2ZTI3NzQ0ODQ3YjlmZTAwMGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNDE0MzY3NjZiMmY4YzRmZDcwNzZlOWE3YmUyZmIzYzI0NTcyODIyOGJjYjlkYzNhNzZmNTFhNWE0MGMxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMjEwOTliNTkwMjBjMDI4NDgzZWRiNjA1ZDY0NmIzZDA4NGRkNTZmNWI0ODkxMjUyNzBkYzVkZGE3NzU2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5OThjMTk5OGY2ZjUyNmJjMzFkOTZjYTY5ZTA0MDk3NzYzZjFhNGFjNzEzMWY5YzNhYWYyMTFmZTUzYmMyYTQifQ"
+        },
+        {
+          "resource": "repo://src/util/ClientFileStorage.tsx#L41-L81",
+          "version": "repo-lines-v1:sha256:19c2b286aa88666b8957d01af091e58aa615edd72a691f1e08e052300616cf9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5NTNhZDMyMGI1MTUyMmI4NTBhZmIyNzFlZTA2MzU2NzRiOWJkZjg0ZjQxNDRkNjI0ZjAxNjYwZjI3NDQ4YmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ZjZlNzMzMDM2ODczZDU5OTc0Y2JlMjMzOGNmYjkzMDI2YWY2YTMzYmU5ZThhOWZhNmY2YzhjM2M3ZWIxNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwODA5ZjJjZDZhYjU4NTNiOGU0ZmVkMjJkZTAwOWZmZDlkNDBlNzU3YTkwZjc2ODA5YjI0NDk2YmJmOGE0YjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ed7d4526321487b946bc112fc3716e8",
+      "statement": "The repository has no unit-test script or storage-specific test suite — package.json defines only dev, build, start, and lint scripts and the test directory contains only a sample data fixture — so the ClientFileStorage contract is verified by the build gate and requires manual browser verification.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L6-L10",
+          "version": "repo-lines-v1:sha256:25b6bba4a0e925c6584a6fde82905ab1cdf1c942e1c5f732ede66796dd7aadd2:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTMxY2Q4NjdiYzE0NDM1MTQ3NDhhOTJmNjQ4MmM2ZDg2NjFmZmE3ZjlkZWExYzFmNmUxODMxYmViMjAxNmY5NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjQ3MWNmM2Q4MWNkMDM1YWVjMmZjZWJlYjliMGI2YzVjNWYxZWM1NDlhZGE5NDU1Njk5MDFiZjhjZmMyMGMyNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ0M2NhYWE2ZDQyYzQ2MzU4NjllODQ1MDMwNTEzODY1NTFhOGEzMzdhZjNmYTYxNzYzYTgxNmMxNWQxNTIxMSJ9"
+        },
+        {
+          "resource": "repo://test/test-sadsam-json.json",
+          "version": "repo-file-v1:sha256:fa60ec8dfaf928bd205066892c76d0a25f72e6759d8a09f92e745305f856c9bf"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}

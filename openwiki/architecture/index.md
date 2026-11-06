@@ -1,0 +1,6 @@
+# Files
+
+- [Client-side project storage](client-storage.md) - How TraceView persists projects in the browser's Origin Private File System: one OPFS directory per project keyed by request id or uuid, project.meta.json metadata, the shared 'Architecture Model' stored name, load and delete semantics, and the navigation guard that deletes stored projects and aborts in-flight requests.
+- [Cross-panel highlighting](highlighting.md) - The cross-panel highlight engine: the two React highlight contexts, matching semantics per DisplayOption, MessageSource and timestamp arbitration behind the results toast, and the click paths that propagate a selection across all five viewer panels.
+- [Project forms and wizard](project-forms.md) - The multiStepForm subsystem: the four-step new-project wizard and the single-step load-project form, the Step contract, FormValidation rules, file-type preselection, the three-source Configuration step, and the error modal family.
+- [Result viewer](result-viewer.md) - The traceLinksResultViewer subsystem: resizable panel layout and chrome, the five view modules (documentation, architecture model, code model, trace links, inconsistencies) with their parsers and data models, OPFS-backed data loading through useDataLoader, and the JSON export buttons.

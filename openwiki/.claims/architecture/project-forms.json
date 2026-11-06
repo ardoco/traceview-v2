@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:04bb59f7f436dc33cd2db5c67e467d451af88342269e0536bdb88ad13e08371b",
+  "claims": [
+    {
+      "id": "claim_0c77c629e4024b348f32f3aed645b48b",
+      "statement": "The two form routes differ only in the allowedFileTypes passed to FormProvider: /new-project excludes the TRACELINKS and INCONSISTENCIES FileType values while /load-project allows every FileType, and this prop is exposed by the form context to gate type selection in the forms.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/load-project/page.tsx#L7-L14",
+          "version": "repo-lines-v1:sha256:10341e626512585f879500c4d730d64e404595d68e9d05bbd5cc49458195c8a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQyNzZiNGNhNDhkYTNlODM5NmQwMmI1YmRmZTZlZmY1NjRkNGE4NDY1MWFjMDk3Y2FjMTc4MjEzMDFjMzE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYyMTVmZDAzY2ZjMmJlZWJmODA0YTE3YWM1ZTk0Nzk1MWY3Y2QyZGMwNTYwNTIyNDk5YzYwNmZkYmNkNzE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTZlNDI1NDE2NWI3MzNjODY5Zjc3OTNiNjJmODBmNjI2NzkzNWM1ZDk4MmUyZDI4MjFmYWIwMDRkOTJkYzIxMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzAxNjFmZGVjNGQ2MmNlY2E1NWU3NGExYjc0NDEwNTNkZThlNDljNmVmOGI2ZGVlYjg0Mjk0N2I2YzkwOTkzNiJ9"
+        },
+        {
+          "resource": "repo://src/app/new-project/page.tsx#L10-L14",
+          "version": "repo-lines-v1:sha256:184ed0fe482b415a0a90f609c9f291f6901655d1a59ff2199b651dac09dc4f2b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU2MTM3MTZlZWY0ZDZkMWFjMDAyMmFmNzc2MTYwZmI3Yzk2NzFjYWM3NjMzMGFmYjUxZTIzYTE3Mzk0ZDNkMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWIzYmIwNGRlZjUxNDIzNDhjZDU5Y2FhNDRkY2I3YjM5YWRjZjVlMmJjOGM3YWQ3ODA4ZWRhZGJmNTIxZWEyYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDU2ODMxMjhjOWJlYjFhZTI0M2M3ZDI3MzljNWY2OGEwZjZmOTVmZDhkMjA4MTkzNTE5YTc1MTcwOGFhZWNlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmJlMGQ2YzY2MDNlOGRhMDAzY2UxYzdhMzVkMzAxMmY3YjdhMjhiYWMyZjYwODBhMTgwMjI4MzMwOGIwZThjNiJ9"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L22-L34",
+          "version": "repo-lines-v1:sha256:4f52e38e11e5f0a60ec2ea10dfac83327241be00310c357ac6117a4c4fd0086b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MmJlMTU3MzM5ZDdhN2YyMTFjNmFmNmM2NmFkNDE4NzIyYjAzNTQ0ZjVmOTkzYzBjYzM0Yzc1NmQwOGMxOTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmNjJlMWYzZjJlMTQxZWUzYjI2YzY3ODMwNzlhNDllNzJkN2EyMTAwMGYyNDkyOWYyMDJjNTJmOGJkY2U0NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0ZjdlZDI2M2YyN2JhYmI3NjM2OTQzNzFmMGM1NjhmNTVlZjlkZDAxYjk5NTNkNzdjOWEyOGMwOTkzMTQyMmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3cb31d41730844d2b2a6c8f891dfeb68",
+      "statement": "ProjectUploadContext (FormProvider) owns the shared form state — projectName, selectedTraceLinkType, files (UploadedFile pairs), errors, traceLinkConfiguration, findInconsistencies — and its updateFormData automatically resets findInconsistencies to false whenever the resulting selected trace-link type is not SAD_SAM.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L88-L99",
+          "version": "repo-lines-v1:sha256:167f8d7c989b7bf2900727ef0d081a2e15d3bebc418433a25d8b73e1e74428cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNTNiYjE1ZWMzMmEwYmNiYTllNTVhYmJmMDE5NWI5YTZiNDRiMjI1N2RmZmQyMjJiOGZmYzQyMjk3NjA1MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzOTNjMTFiOGI0NTI2M2IyZWU1ODkyNDk2YTk1YzFjYWQxYTczYzg1ZmUzOGY3MDliYjlmNTMyYmQ5OGE2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ZTVjZGMxZjFkOTdlZDY2YjRmYTlkNGU0MGU2YzI2YzY1MGIwNWVhNzk2OGRiYWJiNmQyOTU5ZmFjNzY1NTUifQ"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L9-L16",
+          "version": "repo-lines-v1:sha256:047e6f309ec941e9c076abc873f3d208427331075aa4c18fff7d69d3ef05af68:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzVlMmU2ZDY2YTdjOWRhYmFlNjBlOWM2ZDAzNjk3YjM2Y2QwNmRiZjM4ZWE1ZTM0YjA1M2ZjZGIyZmYzMDYzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmI3YmRlZjA1MzlmMGE4ZjkwZThkYWI1Y2JlOWFmOGRkZmI2N2Q2Y2JlODM1OTZkYWJhZjA1M2Q0NzBmNDgwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmY2ZGMwMmYxNzU0NTUwNzcyZjVhNzg4NWE1NGFkYWJlZGExYjg1ZThlNTA4YjE5MGM1MjJlMWRkNWViNjY3YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_169fc7e45ae142fcbd71d7b140ee2e19",
+      "statement": "On mount (and again whenever apiAddress changes), FormProvider fetches GET /api/configuration with the X-Target-API header; a non-OK response sets configurationError, success stores the payload as both the immutable originalTraceLinkConfiguration baseline and the editable formData.traceLinkConfiguration, and configurationLoading tracks completion.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L56-L86",
+          "version": "repo-lines-v1:sha256:6752bd7e05b31d7344650bd3578736a871ca0dffabb29beb6503e8ea2dea0ac6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwOTU4ODQyMzk0Mjc1Y2ZhNmI1YzU0MGEzODU5ZDFhN2M1OTVmZWZhYzZmY2FiMGI1NzA4MTNiZjViZjk0NTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhY2U0MmNjMWY0NGE2OTNjOGM2Njg4ZmI1OTdkOGJmMDQ3YTZlMDc3ODIwYzdkNWYxMmYzOTFhZjExMjY3OTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUxZGJiNTgxZmNjMDg0ODhkZGQ5ZWE3MmZmOTc4ZTZhYmI4Y2MzYzI4NTVhNTFmZDU2MWE3ZWRlY2RlYzY4MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjM2RhNDZiZDVkMzNlYmFkZDk1M2U2ODg3ZGMyMzE0NjhiZjVmNGViYWE0MjEzZWIxNWU2YzhkZDEyNjNmNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c313bcfce9f464ba78a8f2fa0a71ad1",
+      "statement": "MultiStepFormNewProject defines the shared Step contract {stepperLabel, title, description, validation} where validation is a zero-argument function returning error strings, and instantiates the four steps Upload Files, Project Details, Configuration, and Summary; the Configuration step's validation always returns an empty list, so it can never fail.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L22-L57",
+          "version": "repo-lines-v1:sha256:b3b84f4116ba55376f7b31c85f963572254365f6ad8ebbc0470786226db0a6d7:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmYTk2MzM1ZjU2MzdkNDhhNzVmOGM2OTZlZDViZTBmNmY3NzY4MDI4ZDgwMTlhZTRkMWNlODc1ZDJmNmMwODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxNzlmOWRlYjZiNzBmOWIyNzViZWRlZDViOTYwNjExNDgyN2I0ZTYzODE1YzZhZTBmNzliZjExZDU1ZmRiNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI3Mjc2YjllNzZmZWRiZWUxYThhODVmYmQ5NGM2ZDBmMzhiODdkYTI4ZmMwYTA4YjEzOGRlN2EyOGU2Y2FiN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkNzhiMTI3YzhhOWFmM2QwZjJhZWMzMTIxYTc3ZTBhZDk2ZGE2YTc5MzdkY2RmMTU5NzNkODMwYjZkNmE5MmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d462199f0c947619005adb321024f19",
+      "statement": "Wizard navigation is ungated between steps: Stepper dots and step titles are clickable to jump to any step, Back on the first step routes to /, and validation gates only the end — the final Calculate TraceLinks button is disabled while loading or when the Summary step's validation reports errors, and nextStep re-runs validateSummary before submitting as a second guard.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L152-L162",
+          "version": "repo-lines-v1:sha256:d9ba12f4316aea9eacb48e97cdcbf3ec671b45498a4983b667a1019719561ab6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNjk0ZjU1NWFkYTM0ZTMyZDI3YTgxNDY5YzdlYmZhOThmYTQzMDYyYzk4NGU2OTFlNWE2ZTJlYWZmOTY4ZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ2ZWRkMDg3OWI4YzIzOWM1ZWFiZjNmNDliZTkwODY1NjJiM2E0ZjQ2YTE2NzQ0ZTg2OWU2ZjIyZjg2YzQ3OGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5ZWUxMGI4ZDY5YjZkNjBhZDI3ZmI5ZjdhNjkyMTk1MWQ2ODQ4NzE4ZmQ3NjBiZTI0MTFlMjVmYzQwZDVlMjkifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L59-L91",
+          "version": "repo-lines-v1:sha256:625d7ec80cda118fadab1910824a832a063cedbb17224ee608632d38c1d423fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2ZTRlMWY2NTFjZGM1NzQzODFlY2NlNTg4ZDdiY2QzYTJkZDBmMzgyMmUyYTVmZjUzNzZmNmIxZDZlOGMyZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2MmZmMjMwYTczMWZjZTc3ODQ4M2YyYThlN2MzYjgwYWFkY2M3MjhlNzAxNjM5MjFmMGRlM2Q5M2Q3ZjZmOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzMTNhNjZiZjY0N2IyNWJmYTEzMjYwODE1NDcyMWIzNWRjNzM0ODUxODQ5YTBiZWJlZjM1NWYwODQyOWE0MWEifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/stepProgressBar/Stepper.tsx#L19-L41",
+          "version": "repo-lines-v1:sha256:04259f43590576f1932060b1a175a087012e6cf6659caac1bf946fb4bbcd5f74:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNGIwNDVhNzgwNjEwZGI3NGEyMmZjM2RkNzA4Zjc5OTZkZGRkODBlOTM5ZjQ4OTc5MWRlYmFlZjdlMmZmZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTAwNTlmNDhjYTU2ZjZiNTBmZGM2OWExNWM3YjdlNjMzY2MxZTEzNjA4ZGFhNTBlZDkyM2JlYjBmNjM2ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzYThkYTZhMWQ5ZjIwYTNkNWQxOGQyZGU4YzIzZjhmM2I2Nzk2ZGRmNGYwYTg5MGQ0OWFiYTQzNjY4NDQyOTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5YzMwNzQyMjNmMzVmNGExNWQ2ZDU1ZTVlZTVmMGY3ZTJhNWMyZmRmMGVjZTE2MzVmNDAzOTA4MjlkYWIwOTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ae8ba0f381794cc3bdd6220ba5d64064",
+      "statement": "FormValidation.validateFiles (wizard step 1) requires at least two uploaded files, a non-NONE type for every file, at most one architecture model counting UML and PCM together, and at most one file of every other type (NONE excluded from the cap); its projectName and selectedTraceLinkType parameters are accepted but unused.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L7-L37",
+          "version": "repo-lines-v1:sha256:97d810cb8fdebe2a185d68e8bdd722c1c3d879317141884382d7c856a5ab496f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0N2QwNjFjZjYzYmFiYmY1N2YwMDI5MmUzMmVmMGQ2NGVlZjExMGRmODY0NTA2MDExNDhmOWNlMjBlMTFkN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0YWRjYjc1Yjk1NDY0OGQyYzgyMTI2YjYwMGViZTE2NWMzMDkxMzMwNDhmNzdiMmQxMjg4ODg0NjlkNmMyZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2Njc2YWM2MjIzNGFhYmVmYTc0OTAzODFjNWI3NDRiN2QwNzE1MzNlZDVmMzUxYmJlYzVmY2IxNDZmNDkyMmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a83ca499cd78426cb62c08af19fa1aea",
+      "statement": "FormValidation.validateExistingProject (load-project) requires at least one uploaded file and applies the same uniqueness caps (max one architecture model counting UML+PCM, max one file of any other type), but unlike validateFiles it does not require every file to have a selected type.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L39-L66",
+          "version": "repo-lines-v1:sha256:f996f1560d0a723d7caa7580ba7f6a22596c2c3f44378a1696599e2751b71f36:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YmY2YjRiODk0MGI2MDcwNGE3ZGUzYjRhNzQ2ZWE0ZjQxOWMyY2RhZmE5MTZiN2YyMWVjZjQ2MGVhZGRmMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiOTA4MWI1ZmYwMTdmZDFhMWE4OTNjY2Q4MmJhODRjYTM0ODM3MTdlNzhjYjU1OWM1OWUwMWM1MGM1MGM0YWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_899804d7fff843ef8ec7129394f48874",
+      "statement": "FormValidation.validateProjectDetails (wizard step 2) requires a non-empty project name and a selected trace-link type; its uploaded-files parameter is unused.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L68-L78",
+          "version": "repo-lines-v1:sha256:61c6597ab0164b56fa2ddf4e25581d421d76f1645b064c69b73ecc2f68738dab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYWU1NTliYzJlZGNjODljYjI2MDQ3ZTJmZDcxNWFjNTMzMWFlOWQyNDVhOGVkNzZhNDAxOWQ5Y2M5NjM5MGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5ZjU4ODdjNGJlNGI1OTRiMTdmM2Y3YjNkZjQzMjM4NDQ5ODBlNTIxOGRkMmE0MjMwNzg1YzVkZGU3N2E5NDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9fdb3f4603ed459397d972ed8e05f14e",
+      "statement": "FormValidation.validateSummary (wizard step 4) runs validateFiles and validateProjectDetails, maps their failures to wizard step numbers (1 = Upload Files, 2 = Project Details), and emits a single aggregate message naming the offending step or steps.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L80-L104",
+          "version": "repo-lines-v1:sha256:ef5e9b3c20504979f08721958d956ba2dc56ff1e0d3ca3ac6b5d109de712db6d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1M2UxYTYwNTJlNWIxYzYxNzY3Mzk1MmRhNzNjMjU3MmI5NGM5NmZlZjVhOWQ4MmUyNjZhMDFjN2FlYzJhNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJlZmEwYWViZmVmOGRlYmFkYTU1M2M5NDBlZTc5OTYyMTJiNDQ0YzU0MDcwZTFhODBiZThhYTVhN2Q0NTM0OWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc7bc4ce785e44bb99b350e9bd100786",
+      "statement": "FileUploadStep.addFiles dedupes incoming files by file name — a dropped file whose name matches an already-uploaded file is ignored regardless of content — and wraps each accepted file as an UploadedFile whose initial type comes from preselectFileType.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/fileUploadStep/FileUploadStep.tsx#L9-L20",
+          "version": "repo-lines-v1:sha256:23c008327b971cd91769fb01aaa3ed8f9bb40922693ac090639624baa983e777:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MTg3ZTQ4YTg3NWJlYTAzNWE3MWEyNGM2ZWYyMDg2MmM5MmIwOTczNTQ4MTdmMjU3Yzg3ZDU3OWQ4MDJhOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVhZmU4ZGE4YWY4YjAzY2U2ODE4NTdiNjdmYzkyMzczMjQxOGViNjAwNDRhNGU3NmNjY2M3M2FlYWZhYzcwYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5OGJkYTUzYjcyNGU5N2MyMmM4ZWFjNWI0MGE3MzdiM2Y5OWM0NWFjNzU2NjAzMGUyYjk2YjViZGYzN2NkNzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b14ab09f1e4a484caaf5034d2d35a973",
+      "statement": "preselectFileType maps file extensions to types (.uml to UML, .repository to PCM, .txt to Documentation, .acm to Code Model) and maps .json files to TRACELINKS or INCONSISTENCIES only when the lowercased name contains 'trace' or 'inconsistenc' respectively AND that type is in allowedFileTypes, with the trace-links check ordered before the inconsistencies check; all other files fall back to NONE.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/fileUploadStep/FileUploadStep.tsx#L23-L43",
+          "version": "repo-lines-v1:sha256:6a7bd4bee2d84c1bc788610016ba94bb940d3f1f8c6f5c8a510ed8a65328fb79:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwODU0ZGJiMzY5ZGQyZDAwYmU3YWQ4OTE0YzUwODUxMTg5MGMzN2E4OTZkODhhZTI2YWFjNzQ4ZDQ0ZGYyZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxYWU3YjFmOGM0ZjFmMWMxN2QwOTA2MTgwYTI5M2NhMTdjNmI3NjBhMWIwMWY3MTg5N2MzOGZiZGIyYTk1ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwZTRkOTFkMzhjYTJkYWRhMzIxNjQzNGUyNDVlZDJjNjljYzgxNThiYWZkYWNlODdkMTcyZWM1OTE3MWNkNDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_af29fbfd7d1e435ca2ca1b0c089176ee",
+      "statement": "Each DroppedFile row offers a type Dropdown whose options are exactly the route's allowedFileTypes (so preselection can be overridden but not extended) and a delete control that removes the list entry matching both the file name and the currently selected type.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFile.tsx#L21-L53",
+          "version": "repo-lines-v1:sha256:c26067643781e13748f4537027813e28c216bce91e2b638974717527c41d784c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjNjYTk1ODVkMTdmYTg5YzRiOTg0MThlYzY4M2I0OTVmZjUzNjUxNGQxMzk1ZjA3NTM3NTE2NmE1NjY2YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTAwNTlmNDhjYTU2ZjZiNTBmZGM2OWExNWM3YjdlNjMzY2MxZTEzNjA4ZGFhNTBlZDkyM2JlYjBmNjM2ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliYmY0Mjk2ZTRkNzA4ODA3OWVmYTg1ZDVlODY0YmNmODEyYjk4MWMxNDhlNDFjYWVhMDFkN2FjNWMyMTY1ZDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlNjlhZjdiZWExNTIyMmE5MjUzNjA0Y2VkN2ZkYzNmMTg1MmEzNmMyZTI0YzM1MDUxMDQ0ZjEwYjMzNzA5YzAifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/fileUploadStep/dragAndDrop/DroppedFilesList.tsx#L13-L22",
+          "version": "repo-lines-v1:sha256:b0202010f9b7eafbb49df6cf4e00c97eb13875dda50eca53c4ca1579b4749d1e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZDk3Y2Y5ZmM2Nzk1NWZhODM0NTkxMjI0Y2Q2ZGVlMjc2MTI3YjQ3ZDBiNGI3OTNlNGZjMDQwZTcyMmNmODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4MWFlMThiNjg5NDAyZGJhNWI5ZGQxYmE3ZjUyNDkwOWQ3ZTU0Y2E2MDBkMjhmNDY3MjZkYTI1YWRhM2VjZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4MTVlMWVhMjNlOTNmNjEzYzlkOGI2ZjlkZWE0MDQ1MGRhZDk0ZDk0M2VhNTZmODNhOWY1MjU0MzBiMTY0NmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2649354086184da58271ab818cd5bc8b",
+      "statement": "ConfigurationStep holds local ConfigurationMethod state with three values (DEFAULT, FILE_UPLOAD, MANUAL_INPUT); an effect seeds formData.traceLinkConfiguration from originalTraceLinkConfiguration whenever the default source is active and the configuration is unset, and Reset to Default restores originalTraceLinkConfiguration and clears the uploaded-file state.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ConfigurationMethod.tsx#L1-L5",
+          "version": "repo-lines-v1:sha256:6cdf1bb9a9f32dc4c09bb31d1306d0253015aff6d5e3521842eeeeb86c6409d3:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDk3NjJmY2Q4NGU0NTQ5ZTU1ZTVhNWEwYWI4ZGU0MTEzNzRjMzZiNTM2N2Y4NGQwNmQzMGJlOGE2NmU5ODZkMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwYjM2YWE3NGE1OWJjZjRhODgxODU4MzdmNjU4YWZhZjM2NDZlZmYyYmIxNmMzOTI4ZDBlOTMzNWU5NDVkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ConfigurationStep.tsx#L13-L68",
+          "version": "repo-lines-v1:sha256:7290cc3fe2f829f3a4e325f6736fc005ad44ad9f331add34509d9c6f40878643:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5NzRjZmU2YmY4NTZjMzk0MGUyZDkzZjhkMjE2MThmNTRkOTY0OWZiMGNiNjFlOWM3OTg2MDNiNDY3OTJmZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzOGNhYzEyNWNkMTM1ZmJmOGE5M2ZjNGI0OTI5ZDU4Nzc3OWIyNjVlMTQ3MWJjZmZlMzA0YjgxNjUyYTlmZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1YTBmMTVhYzQ2MTU5ZTc2MmM3OTc1ZTEyN2EzODNhM2YxMGQxOWMxMmI0ODIxNmQ5OWJhMjFhN2JkOWRjZTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_48b82152e2544e3cb8cdb36d1f986b43",
+      "statement": "The configuration source selector groups FILE_UPLOAD and MANUAL_INPUT under a single Customize Configuration button that is active while either is selected, while the default button both switches to DEFAULT and immediately triggers the reset handler; CustomizationTabs then switches between the Upload File and Manual Input tabs.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ConfigurationSourceSelector.tsx#L12-L33",
+          "version": "repo-lines-v1:sha256:87e2d3410680d4ecc591a998a722f1d8c34e712893d742187b73cecf893ef2c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2ZGFlZTc5NjJkZmM2ZTM3NzlmOTJjZTRmMThkNWNjYmY4YmIwMGFhMzRkMTBhYTgzNjZjZTFmYWJlMWZhNmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFjMjgxMDY3NjJiZDVkMzQwYTc3ZjU1MjEyNzM1MDEyZjhjNGZjMDg3M2Q5ZmM2ZjljZDUyODE1MTEwOTI2ZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEwZjEyOWQ2ZWRjYTc1OGRjZmQ0YWEyNjIzZTlhNGE2ODJlZTk4ZDYxODBhMDA4NGMyN2NiZjJmOTgzNjgwZDIifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/CustomizationTabs.tsx#L10-L30",
+          "version": "repo-lines-v1:sha256:a8f7440a4ba9d89bf553dc14a8625978f6344c538e99b50b3925816c524682c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllN2U3NjQzZWFiMjg4ZGRjNmMxMWQ0ZDFjYmNjMTQ1NDQ0YTc4MGU1ZjhjNDg5NDdhNDBiZTBhMDY5NTY1MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUwNDcyODU4YjRkNTg0OGU3YTlmYTFlODYyZjljYjA5NjRlYzhjMDljNTY4NDRkODkwNTgxNDFmMWNkZmRlNjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1Mjc1NWNmZTZjZDY2ZGMwODZiYzNjY2I0NDUxZTNjYTNjNWRhMjg4Mjc2N2I0Y2FlOWIwYjkxYTVmMzJjYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d985c7a6ce4a4dcfb8689118cd8c8a8f",
+      "statement": "The configuration file-upload source accepts a single file via DragAndDrop, reads it as text with FileReader, and a successful JSON.parse replaces formData.traceLinkConfiguration wholesale, whereas a parse or read failure sets a fileParseError that is displayed while leaving the previously loaded configuration untouched.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ConfigurationStep.tsx#L35-L60",
+          "version": "repo-lines-v1:sha256:0602f34cace20a8d34f12133ba6fbb09df9af7701401a0e603e7cde5a1a74d83:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMTQ2ZDFiOGJhNThhYjA3ZjljZGRmYWFhOTZjYTBmZGNhNGI2M2ExOTY5NGFiZDZjZmM1NWRiOTNiNjY4NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYzNlMWEzMWU0ZWZiYjhjNGQ1MTdmMDhkODNlYjVhMTg2MGQ5OTgwNmYzM2VjMGJlNDMyNGQ0ZGFiODMwMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxNjEwZTQwMGZlNWQyOTc3MDFiODlmZDNiOWJhY2EzMjZlYTk1ODRlY2UzMGU1YWYxNGRmMGIzZDk4ZmJiNjQifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/FileUploadSection.tsx#L10-L29",
+          "version": "repo-lines-v1:sha256:fc64eb9953557e064760cf5f9870e3693ab19cf255a3f9c049fbcd565f420cf7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MjhmY2NhZWQ5MzcwNDc1N2I4MWNlMTIxMTg4MTg1NDkzYjI4NTgyZDIyY2RjYTdhMDM2ZWMzYWYxMWM4YTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3N2QzZmE4ZGQ3MjJiMzZhYTI2ODlhYjY3ZThlY2UxMWJlNDc2YjU2MmIwZjQ1NWRmYTM1MDhlMTdhY2JiZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed0e12f1789844a69ed618aac4fc69aa",
+      "statement": "ManualInputSection renders one text input per traceLinkConfiguration key (labels title-cased with :: separators spaced out), merging each single-key edit back into the configuration, and provides a download button exporting the current configuration as pretty-printed ardoco_configuration.json plus a Reset to Default action restoring the backend baseline.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ManualInputSection.tsx#L20-L77",
+          "version": "repo-lines-v1:sha256:1b75b5dd237df2f3ca2607a1078989e980dd8fa43bf978a0d5dd6acd9c394ba3:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwMmE5Y2YzOGZiMDcwMjE4NDcxMWFmYWY3ZWYzNDljNTU4YjZjZWIyMGM2ZDk3ZWJjYjc2OWFjMjI5NDVhMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg3YTdiZmUwODMxZmNlNzA4MzNiOWU5NzVlNGM1N2M5MTcyZDA5YWM3N2I5NTFjNmJiZGI0YTAyMjFmOTU3ZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyMWQyOTNjYTQ2NDI4OTZlNGEwZTUwYzY4ZmY5NzVkM2Y3YWZhODBiM2Q4Y2VjYjA0ZTkyZTBiMDE3NmU1OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZjYzc0ZmZhMTY4Nzc1MzYzNjBlOWNhNzIwMWIwMWM5Mjk5ZjUxZTlkZmQyZjU4NzZmODM1MzFhYWY4ODJiOGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9df87df2eaf44f0e9eb17ef2bfbfb1ed",
+      "statement": "While the context's configuration fetch is in flight the Configuration step renders only a LoadingState, and when configurationError is set it renders only an ErrorState with the error message — in both cases the source-selection UI is not shown at all.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ConfigurationStep.tsx#L70-L71",
+          "version": "repo-lines-v1:sha256:51f163dc7222057b4ef9dc4b8fc7a948b41fde8970c173d9224b93590352b909:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU3YjlkOWFjNjUwMjJhZDY2YWU3ZTBmMGZkMDFmMjAzMjJmYWQ1ZDI5NjdlMDlkOWEzODNkNzVhYzE3NDhlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBiMWVhNjZiZjY2ZTc3YWMwYWUyMzU4MWU0NDE0NWJkOGQzZDIwZjVkNDc3YTEzYjEyYjVhMzhlZDkwMjU0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWIxNGE5YzcyZDIyNWE1M2M4YjBjOTEyNWJjMTAzZDBjZmYwNWNmOTg2ZDBkYWFlNmNiZWY5Zjg0ZDViMDhhNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjc2Y2ZiYmJjNjc5ZmZlZDA0M2E3ZWZmOGE3MzBkYWIzYWMxNGM3MTMyY2JjMzFlYzhlMjBhNWVkMzY2NWFhZSJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/configurationStep/ErrorState.tsx#L5-L27",
+          "version": "repo-lines-v1:sha256:32fb4109f89a9d235ecfafa9d19c3f3aa090e6a7fba492cb433277f6f9c72e50:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwZjAxZWZlYjdlYTE2ODE4OWJhN2IyNjU4NjE0ODI0YTVmYWZmMGEwYjI5NmYzNGI0NDRlOTRmYzU0ZmIzMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyOThhZDhiYzM1ZDZkMWE2ZDMzMjZkZjI4ZTVhZWQ2MDNkZGE4NDZiMzcyYTVlMWY0YWM4Yjc1ZmQ1NTIxYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L57-L86",
+          "version": "repo-lines-v1:sha256:a6efe314260f2ce0bbbab18b46b391125300f30ff181420c6473a0464a70c93c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1OGExMmRlOGE3ZDFmZjE4Y2FlOWNhNjExYjdlY2U2NTg2MzNkYzAwN2YyYmM4NzZlODJmZjlmMjQwZjllOTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhY2U0MmNjMWY0NGE2OTNjOGM2Njg4ZmI1OTdkOGJmMDQ3YTZlMDc3ODIwYzdkNWYxMmYzOTFhZjExMjY3OTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlMzU2ODA3ODI4YTA2YjY5Mjc4YWIzZjhmNzJkY2E0YmRlYjU3MGI4NGZiMjIwOGMyZTJmZTc2M2I1YzczNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjM2RhNDZiZDVkMzNlYmFkZDk1M2U2ODg3ZGMyMzE0NjhiZjVmNGViYWE0MjEzZWIxNWU2YzhkZDEyNjNmNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_425a0f3772b74d8e9908ba61e34d5096",
+      "statement": "ProjectDetailsStep's radio group derives each pipeline option's selectability by delegating to that TraceLinkType's checkCondition over the current uploaded files (testing for documentation, an architecture model of either PCM or UML, and a code model), and its Find Inconsistencies checkbox is disabled unless the selected type is SAD_SAM (SWATTR).",
+      "evidence": [
+        {
+          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L16-L77",
+          "version": "repo-lines-v1:sha256:5bad882271f4c3b209cb2904aa813a334e5cde1f179ea844a0f705d555c18281:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxOTgxYThmMzY2NTEyZDgzODIzYTNjMzBhYmQ1OGRhZGJlMzA2Y2ZkNDg0ZWFiZjUwY2Q1OGQ0ZDNiZjUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOWIxYjYxZTU3ZmM2ZTk3YzYzZDYzNzgzZjc1ZDY0YjE0OTgxZjU0ZWE4N2Y4NmQ1NWI5ZmJiYmFlZDEzYjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3MDk5NDQ2OWRmMWExNzVkZjk4YTI5NzZlYWMyOTgwMDc3Y2U0MjkzZjllYjY3YTA3M2IyYWE0MTFhZTIwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep.tsx#L11-L51",
+          "version": "repo-lines-v1:sha256:e89fc9ced479d6f0937ac33460239c1db838c76f48b2e2ad70b3ea85452909c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzNmUwYzkxNTk5YTYzODg1ZTM0Y2QzNjQ2NTFmOTQ3NGMyNTk3NDU4YTgyZGQwMGEzNTdiZGQ2ZDYxMzZjYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNDE0MzY3NjZiMmY4YzRmZDcwNzZlOWE3YmUyZmIzYzI0NTcyODIyOGJjYjlkYzNhNzZmNTFhNWE0MGMxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjMmQ3YmI0OGUzZjY5MmQzOWUwYTYzZWJmNzc3M2VjODQyNDM0YzhkNmM5YjE2OWI4ZTkyODI5YmMxYmMyZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmMjkwYmJkOGFmZTA0MTY5MDk5MmU4N2M0ZGNjZTJkYjBlM2I4MzZkMGQ4YTQ5MDA3NzRlZTBjNmFjNWNlZDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d22ab5d8b0004592a9f8fe27bd97c0a4",
+      "statement": "SummaryStep is read-only: it shows the project name, the selected trace-link type, the inconsistencies flag as enabled/disabled, the file list with types, and a collapsible configuration preview that shows only the first three entries with a See More/See Less toggle and marks empty values as default/empty.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/summayStep/SummaryStep.tsx#L20-L77",
+          "version": "repo-lines-v1:sha256:58fccd5c37d7e92deda861c55afc27189a970b80b4733f9ce7462d998b670956:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5MWY4Y2EzZTlmMWQ3ZjM3MDgzZjE4MzMwNTcyN2Y4NWY0YzZkMDI5MGZjOGYyZWMwMzA3ODUwOWUzODhiMDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMTkyMmRjNjJjNzljMzg3NzhkMzk3YWZkMGRhMWIxZjAyZjRlNjk5OGNhNTFmNGI5ZTlmYzNkMzM3NTliODkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1OTM3Njc5MWU2OTQ3NmY3YTA3MTg5NmRjMjViOTEzN2VmODQyM2UzZTk2MzQwY2NmYWMzMzIzZDQyY2E1MWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_55dd35d3be5447148cb6e24207ba623d",
+      "statement": "The wizard's handleSubmit runs two fallible stages — fetchArdocoApi, then storing the submitted usedFiles via storeProjectFiles and metadata for all uploaded files via storeProjectMetadata under the returned requestId — and on success nextStep redirects to /view/{encodedRequestId}?type={traceLinkType}&inconsistencies={bool}; an API failure opens LoadingErrorModal while a storage failure opens the single-Okay ErrorModalFileUpload defined in the same file.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L163-L182",
+          "version": "repo-lines-v1:sha256:53866f5351e53d1701b16d42b03b74067281cdcd655d3ee33859bdab68ba1d3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhYTEwMTQ3YjQ5YjhkZDQ2NTdlMjhiNDVjMmRlN2MxNDE0ZmY1MWFlZGMzYjNhMDBjZmZhN2RlOGIzZDI1ZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NzI0ZjMxYjZiMDc4YWZiMzdlODI2YWFlNTM1Y2E5ZGFkOTZkMDEwMjAxYWFkNzNmMzAzZGRiZTA0OTk4ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyMjhlMTYxZWY5MzliMGQyNmU1ZmRhMzk2MDBkNTI1Mjk0N2YxNDg1ZDY2YTY5NjM1NWIzYjE5Y2QwNTZiOWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ1YTE3NjY1YmEyOThiMTM3MmE1Yjg0NTdkZTAyYTE5N2U5NGEyZDYyMTQ5MjY0MTQ2YTFhYmVhNjNjMGNhNmUifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L188-L222",
+          "version": "repo-lines-v1:sha256:7a0ac428e86bb8854cdaef6fe410c04308750e4c7f6329cfe8d8036f98f7303e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMzIxZWM4MmQyZWMwNWJiNWI1ZTJmYzYxNmFmNTg5ODllNjRiOTBjMmYyZjMzZjZhYjk3N2E2ODM4ZWY4Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkNWNhYjhkN2ZmOWRkNzhmODdkMjEyMjM5NDBiZWZlZjJmYmYyYTBmZGZiMjIwYTc3ZDAwMjRhZDA2NmY2M2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L61-L120",
+          "version": "repo-lines-v1:sha256:775d8cbadd3a629f43ba86e461a36eae47d3a44f70593187aa4207954d5f69f1:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMjUyZjZhN2RjYmI1NjI4YzYwODI2MzEyMjU1ZDAyNDZlN2NhNWJkOGMzODA4MTIwNzc3NWI0NmNkZTE1MDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNzhiMTI3YzhhOWFmM2QwZjJhZWMzMTIxYTc3ZTBhZDk2ZGE2YTc5MzdkY2RmMTU5NzNkODMwYjZkNmE5MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a2570df006c4642b64c9eb5a292f445",
+      "statement": "fetchArdocoApi builds the multipart submission per pipeline — projectName, an additionalConfigs JSON field with empty values filtered out, and pipeline-specific inputCode/inputText/inputArchitectureModel parts plus inputArchitectureModelFormat for PCM vs UML — posts to /api/{api_name lowercased}/start or to /api/find-inconsistencies/start when inconsistency detection is requested (permitted only for SAD_SAM), rejects a response without a requestId, and resolves with {jsonResult, usedFiles}.",
+      "evidence": [
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L12-L123",
+          "version": "repo-lines-v1:sha256:3d255509525186c5ab401ae054ed5ab7adf3cd200d651eb72a26437ead782bb3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1NzNmNTAwMzc4ZmVlN2MwYWNlM2FiNDM3NjFkNDJkMTU2MmU1YzdmODc2YmQ4NjQ3Y2NlM2U0Y2RjN2MxN2NhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2ZjI2ZmM3M2EwODg1MzdmOWRjMDI4NTRjOWNmY2NlYjVkMzRmMmUyMDQzM2ViNjZkZTJiMTM5NDdkNjZjMjBkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxODg5N2E1OWJiOGI4NmMzOGVjNTI5ZGFlMDYyYjc5MmQwZDZkOWY5YzMwNGM4MWU3ZDViNGM1ZmU5NTMyODFlIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_a42050236f5d452ea055651703a612fb",
+      "statement": "LoadingErrorModal is an overlay-click-immune dialog with two actions: Retry merely closes the modal (the user stays on the Summary step), while View Files Only closes the modal, re-runs handleSubmit (repeating both the API call and storage writes), and redirects to /view-provided/{requestId}; the same component is also used by the /view/[id] polling page.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx",
+          "version": "repo-file-v1:sha256:32c2b725af78411dbf31f33ac8fe9f6bd74e9937b8d7bad06a9339445ca32bfc"
+        },
+        {
+          "resource": "repo://src/components/LoadingErrorModal.tsx#L12-L47",
+          "version": "repo-lines-v1:sha256:3458baaa10d6eb96d073f2c18664e74f285020e4648a28f33c4fad88f000f8f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2NGEyODFhZDllY2NhMjU5OGQ3YjJmMDZhOWU4MDBkYjhlNTM4NWU2OWNkZGI1ODVlMThjNzBiMGNiYjUzYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmMTE1ZWViNDI3ZDRmMDYyMDBiMzdlMDM0OWY3ODA0ZjE2YWY1N2VjNTEwZDc2NDM0NzUxMDliYTkxZjQxODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L164-L176",
+          "version": "repo-lines-v1:sha256:8fcf8144b02f7b6ceecde5cecc5a7d90093be919066ef70e4489a687560a6d88:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjOTNlYmY4OTMwNjljZmY5NDlhNjM0OTI3Zjk5OGQwMDYxNzE5NmMzMThlZGM3Y2E1ZWU0NmJjNDNmMzQzMWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NzI0ZjMxYjZiMDc4YWZiMzdlODI2YWFlNTM1Y2E5ZGFkOTZkMDEwMjAxYWFkNzNmMzAzZGRiZTA0OTk4ZTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5OGM1YWRhMDg4ZWE0NjFjZmNjZDRlMzBjMzAwMGZiMjAxZjAwZTVjZjQ5NzdjYmYyOGE1MTgyODJhZTY1YWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQzYzM4ZGNiNGQ0NTEwZWI5MzhkMTk3MjNmMTEwMDY1ODIwNzU3NjAxMDMzOTBiMGIyYzFiNGFkNThmOGQ4YWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_045911e567f54e04a3459efcb57cb10b",
+      "statement": "MultiStepFormLoadProject reuses the Step contract for a single step validated by validateExistingProject and renders the same FileUploadStep (which is why all file types including trace-link/inconsistency JSON are allowed on that route); its Stepper prepends an empty label and offsets the current step, its final button is Visualize TraceLinks with the same disabled rule, and submission generates a uuidv4 storage id, stores files and metadata locally, and redirects to /view-provided/{id} with no backend call, logging storage errors without a modal.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L20-L25",
+          "version": "repo-lines-v1:sha256:d15ffd75f2bb835aab92d8207183d7fa3bb516b521601c89eb4f6b7bb9c9b65c:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5YWZlZDM0MGM3ZDcwMWNjNGE2ZGU3ZjdlMjhkZDkzZTc5YTUwZjc2NGMyYWNlZDUxODBjNzU2YTZjNWNhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE3OWY5ZGViNmI3MGY5YjI3NWJlZGVkNWI5NjA2MTE0ODI3YjRlNjM4MTVjNmFlMGY3OWJmMTFkNTVmZGI0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjJhYTZkZGVhNDE4YWNhY2ZhOTM1ZDdkMzM5Y2NiZmQ3OTU5YTJmZGVhZWU2OWEzMjNjZjA1OWIyNGI2Zjc2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ3OGIxMjdjOGE5YWYzZDBmMmFlYzMxMjFhNzdlMGFkOTZkYTZhNzkzN2RjZGYxNTk3M2Q4MzBiNmQ2YTkyYiJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L52-L64",
+          "version": "repo-lines-v1:sha256:e82db8bf805ac634ebc4fc57756932ede8e3d70e83270d95b4f793ce7ff89b52:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L85-L98",
+          "version": "repo-lines-v1:sha256:dfbf78c61e2f60aca8373c81c2ef452349c361225f3e5077d0379697393c6f54:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmMDk1OGFmMzEyZmM0OTQxYzU3MDYwZTYzMjIxZWUwYjA3MmQ5YTgxZDYxNTU4ZjUxNjljYjkxNjgyODc0Y2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNzE4NDEyZjRlMTRjYTE0MTJiZmM4Mjc3YjkyOTYyZTkxMjAyZmIzNTJkYzI4YzZlNjVjMDM5YzFjODYzNTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4MTIyZGJiODkyZWJiN2I5NjFiN2Q2MTU0YmY1Nzk3NGQ3YzIxOTYyNzlhZDRhYzVjY2FiYjIxNmJjM2FiNzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyMjhlMTYxZWY5MzliMGQyNmU1ZmRhMzk2MDBkNTI1Mjk0N2YxNDg1ZDY2YTY5NjM1NWIzYjE5Y2QwNTZiOWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2ee408937aee49c692e5b86198ca1540",
+      "statement": "Pipeline file-combination rules are enforced redundantly at three layers: FormValidation's per-type count caps, TraceLinkType.checkCondition gating the radio selection in ProjectDetailsStep, and fetchArdocoApi's per-pipeline required-file checks that throw before posting.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L22-L24",
+          "version": "repo-lines-v1:sha256:01d1fc3d9f072334486d89cd00b6f2727025d81e27f49b6d3a8b6fa98b38d8cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU2NzU1NmQ1MGY1NTE4MzZhMmIzM2YyZTQxOGQ0OTdkYzRiMWYyZDhkNjQ4MmE2NzRlZDRmYjRiYTM1MmE3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmUxNzUyMjhlZGIzOTM4NDM3OGM2OWZmNTY5OWU4MTkxNjUzM2MzNDQxNjljNmM3YmZiOWQ2NTdkNzg0MWNkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjJlZjZjYmRkNTgxZmU5ZjNlNmQ4YjQzZDQ3NGNlMTRkZmVjN2U1MzgxMjI0YmM5MDQ0MDkzMDIwMmJkYzQ4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzY5ODI4MDM4Y2ZmNjMzMTBiMWVkMTlhZmVjMmNjZGY2NzZiYzEyYjhhYzJhYWQ0MmZiMzkyMjE2MzlhNDg5MiJ9"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/FormValidation.tsx#L24-L35",
+          "version": "repo-lines-v1:sha256:0be350084270744c160eca7e72ff49017057bdc86d0855662349afba3d1b5379:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxODUzMDkzZGFiMWU4YjZmNWZmNTg3MzNjNTI4MTNmYWYyNTk4MTIyZmEyZWIxNGY2YmIzZjI0MTdmZjE4ZGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzEzNTkwNjY1NjMyM2QxYzVlYTQxNjU0ZWU2NmFmYjU4NWFjZGNmYWVhY2ExMjFkNWUzMGJmMTkzZWVkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBmZDg4ZDhhMWM5NDhiYmVmN2E3NTczNmE3MDAwNzg5M2E0N2VjZWUwYjcxMTg5MzIyNWZiMGY0NzY0ZjRmZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlMjQyNmM3OGQ1ODJiMzliNDU1YmY5YjRmNWM3M2EwZGFhYmYyMmExY2FiZDY5MmVjM2ZiNmY2NTM0M2Q3MGIifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L45-L99",
+          "version": "repo-lines-v1:sha256:b65353f452f79ffeb6b048d4eee640a3c5b2e94fc6344fa3528ceaf5e0fb15a4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYwOTNiMjMxMjA2OGMzZGZkYzBjYzQ2YWFhYzIwZTJiNDYyM2Y4OWQzN2Q5ZWM2ZWY4MWY2NGY2MzI1NDE5OTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwMDIzNTZiMWVjOWRkZDM4Y2NiOWJmMzE3OWRjNDYzNjFlMmM5ZWY5NGQwYzQ1Mzg5MjI3NTc2ODUxNDlkNzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyNGY1YTZhYTc2NTI3NWI3NDJhZTk0MWNjOTEzZTAyOTM3YjYzMzk3OTQ1ZmExMjRjN2EzYTkyZmNhMjUzNDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyMjZhZTE5Zjk1YjFkYTg3ZjA2NTFlMzVkOGQ1OTE2YTU3MTUwZmRmZWU2ZTYyOGZjZmQ5OGJjZjAxNzZmNzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c7f8597cbb94050986487193aa8d048",
+      "statement": "Inconsistency detection is pinned to the SAD_SAM pipeline at three layers: the context's updateFormData auto-reset of findInconsistencies, the Find Inconsistencies checkbox being disabled unless SAD_SAM is selected, and the find-inconsistencies endpoint guard in fetchArdocoApi.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep.tsx#L16-L16",
+          "version": "repo-lines-v1:sha256:6993a8a82a6c03e8bc42c3d12f6ee4883a1e0381f44d5026c7e5d43a00eddca7:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk5M2E4YTgyYTZjMDNlOGJjNDJjM2QxMmY2ZWU0ODgzYTFlMDM4MWY0NGQ1MDI2YzdlNWQ0M2EwMGVkZGNhNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjk5M2E4YTgyYTZjMDNlOGJjNDJjM2QxMmY2ZWU0ODgzYTFlMDM4MWY0NGQ1MDI2YzdlNWQ0M2EwMGVkZGNhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDhkMmM2M2JkNzFjNGI0MmM5YTg2ZTY4NDA2YzEyMDA0YmNmNDFlM2EwMDQ0MWFjYWJhNGI3NmRiMTc3MDJiMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM0ODQ2ODY0ZjBhYmRiZDIyZDM1MjRjMzYxZjI4YTdlNTJhZWNmNTZiYTFmZDQzNDU2NTlhZTgwMDIyNDRkOCJ9"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L92-L97",
+          "version": "repo-lines-v1:sha256:03c0762368c20737099950bbbb15ff9c7bb301f3609c5a304ea60d3949128773:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMyNzVlYzdjNmRjNmI0NzkzYjM2NGNhODc4MDZjODk4Mjc5ZWFlNmRhMjk0M2RkYmJkYjJiZWQ5ZTk4MTVmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE2MmZkY2Y1NjMzNmFhYWExOGYxODE5NDc5ZDBkNjYyYzBiNDA2NWY5MjYwYjkwZDE1ZGIxOTA2NWI3MjgxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQ2YjIzYjk2NDJkZDU5YTBhZTIwMTAzZDVhMjMzZmQ1OWNlNmIwYTU0MDQ1OGRjN2ExYzZhZWM0YjcwMDBhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWIxNGE5YzcyZDIyNWE1M2M4YjBjOTEyNWJjMTAzZDBjZmYwNWNmOTg2ZDBkYWFlNmNiZWY5Zjg0ZDViMDhhNyJ9"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L21-L28",
+          "version": "repo-lines-v1:sha256:f40f3932bfc2974018cb8d5412bfcc45d4c8bdee244088631657c2a8edcf0b2f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBlYzI5YTBkMjgyYzg5ZTUyZDBiM2MxMmRjNDJhZTcwMDRjOWEwN2RhYjBlN2JhNjM2Yjk4NjQ4Y2JlYzY2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU1NzAzOTZiMWIwOGVlYzY0MWM0OTBjNDZkM2JlNzkwOTBjODA2ZWQxOTY0NWExMzM3NjkzZTY1MzZjNmE5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg2NWY5YmFjNzBkNDVlODBmMDFlZDEzZjFiZmQyNzdlMGZhNmM1NjM2MzI2YTNjNGIzNTQ4MTJkZTBlNmQwMiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-19T12:26:44.589Z"
+  }
+}
