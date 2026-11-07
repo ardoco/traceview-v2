@@ -18,7 +18,7 @@ export const TraceLinkTypes: Record<string, TraceLinkType> = {
         name: "TransArC",
         alternative_name: "sad-sam-code",
         api_name: "TransArC",
-        info: "Finds transitive traceLinks between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
+        info: "Finds transitive trace links between Software Architecture Documentation (SAD) and the code via the Software Architecture Model (SAM)",
         checkCondition: (uploadedFiles: UploadedFile[]) =>
             hasArchitectureModel(uploadedFiles) && hasCodeModel(uploadedFiles) && hasArchitectureDocumentation(uploadedFiles),
         providedFiles: [FileType.DOCUMENTATION, FileType.ARCHITECTURE_MODEL_PCM, FileType.ARCHITECTURE_MODEL_UML, FileType.CODE_MODEL],
@@ -67,11 +67,17 @@ export function getTraceLinkTypeByName(name: string): TraceLinkType | undefined 
 }
 
 
-const hasArchitectureDocumentation = (files: UploadedFile[]): boolean =>
+export const hasArchitectureDocumentation = (files: UploadedFile[]): boolean =>
     files.some(file => file.fileType === FileType.DOCUMENTATION);
 
-const hasArchitectureModel = (files: UploadedFile[]): boolean =>
+export const hasArchitectureModel = (files: UploadedFile[]): boolean =>
     files.some(file => file.fileType === FileType.ARCHITECTURE_MODEL_PCM || file.fileType === FileType.ARCHITECTURE_MODEL_UML);
 
 const hasCodeModel = (files: UploadedFile[]): boolean =>
     files.some(file => file.fileType === FileType.CODE_MODEL);
+
+// Inconsistency detection needs the documentation (SAD) and the architecture model (SAM). It works for every
+// trace link type: for SWATTR the inconsistencies are part of the same run, for the other types they come from a
+// separate SAD-SAM analysis.
+export const canFindInconsistencies = (files: UploadedFile[]): boolean =>
+    hasArchitectureDocumentation(files) && hasArchitectureModel(files);

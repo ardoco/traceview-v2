@@ -112,8 +112,9 @@ export default function UMLViewer({umlComponents, umlEdges}: UMLViewerProps) {
                 <div
                     style={{
                         position: 'absolute',
-                        left: Math.min(svgRef.current.width.baseVal.value - 240, tooltip.x),
-                        top: Math.min(svgRef.current.height.baseVal.value - 150, tooltip.y),
+                        // the svg fills this container, so clamp the tooltip to the container size
+                        left: `min(calc(100% - 240px), ${tooltip.x}px)`,
+                        top: `min(calc(100% - 150px), ${tooltip.y}px)`,
                         background: 'white',
                         border: '1px solid #ccc',
                         borderRadius: '8px',
@@ -197,6 +198,10 @@ function processUMLData(umlComponents: AbstractComponent[], umlEdges: Edge[]) {
     };
 }
 
+interface SimNode extends d3.SimulationNodeDatum {
+    id: string;
+}
+
 function useForceLayout(nodes: AbstractComponent[], edges: Edge[]): {
     positions: { [id: string]: { x: number; y: number } };
     viewBox: string
@@ -205,16 +210,16 @@ function useForceLayout(nodes: AbstractComponent[], edges: Edge[]): {
     const [viewBox, setViewBox] = useState<string>("-10 -10 600 800");
 
     useEffect(() => {
-        const simNodes = nodes.map(d => ({...d}));
+        const simNodes: SimNode[] = nodes.map(d => ({...d}));
         const simLinks = edges.map(d => ({
             ...d,
             source: d.client,
             target: d.supplier
         }));
 
-        const simulation = d3.forceSimulation(simNodes as any)
-            .force('link', d3.forceLink(simLinks)
-                .id((d: any) => d.id)
+        const simulation = d3.forceSimulation(simNodes)
+            .force('link', d3.forceLink<SimNode, d3.SimulationLinkDatum<SimNode>>(simLinks)
+                .id((d) => d.id)
                 .distance(200)
                 .strength(2))
             .force('charge', d3.forceManyBody().strength(-400))
@@ -223,9 +228,9 @@ function useForceLayout(nodes: AbstractComponent[], edges: Edge[]): {
             .force('y', d3.forceY(window.innerHeight / 2).strength(0.05))
             .force('center', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
             .on('tick', () => {
-                const updated = {} as any;
+                const updated: { [id: string]: Position } = {};
                 simNodes.forEach(node => {
-                    updated[node.id] = {x: node.x, y: node.y};
+                    updated[node.id] = {x: node.x as number, y: node.y as number};
                 });
                 setPositions(updated);
             })

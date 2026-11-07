@@ -1,8 +1,8 @@
-import {HierarchyPointLink} from "d3";
+import {HierarchyLink, HierarchyPointLink} from "d3";
 import {ACMLayoutNode} from "@/components/traceLinksResultViewer/views/codeModel/viewer/ACMViewer";
 
 type ACMLinkProps = {
-    diagonal: (link: HierarchyPointLink<ACMLayoutNode>) => string | null;
+    diagonal: (link: HierarchyLink<ACMLayoutNode>) => string | null;
     link: HierarchyPointLink<ACMLayoutNode>;
     isHighlighted: boolean;
 };
@@ -10,7 +10,7 @@ type ACMLinkProps = {
 export default function ACMLink({diagonal, link, isHighlighted}: ACMLinkProps) {
     return (
         <path
-            d={diagonal(link as any)!}
+            d={diagonal(link)!}
             fill="none"
             stroke={isHighlighted ? "var(--color-highlight-tracelink)" : "#D3D3D3"}
             strokeWidth={isHighlighted ? 4 : 1.5}

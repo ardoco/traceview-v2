@@ -29,8 +29,6 @@ export default function UMLInterfaceNode({usedInterface, position, setTooltip, s
     const isTraceLinkHighlighted = highlightedTraceLinks.some(link => link.modelElementId === usedInterface.id);
     const isInconsistencyHighlighted = highlightedModelInconsistencies.some(inconsistency => inconsistency.id === usedInterface.id);
 
-    if (!svgRef.current) return null;
-
     return (
         <g
             transform={`translate(${position.x}, ${position.y})`}

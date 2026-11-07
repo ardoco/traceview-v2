@@ -32,4 +32,5 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm install
+          npx eslint .
           npm run build

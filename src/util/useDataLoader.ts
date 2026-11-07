@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 /**
  * Defines the return type of the loader function for the useDataLoader hook.
@@ -20,41 +20,52 @@ export interface LoaderResult<T> {
  * @returns An object containing the loaded data, raw file content, loading status, and any error.
  */
 export function useDataLoader<T>(id: string, loader: (id: string) => Promise<LoaderResult<T>>) {
-    const [data, setData] = useState<T | null>(null);
-    const [fileContent, setFileContent] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [isMounted, setIsMounted] = useState<boolean>(false);
+    // The outcome is stored together with the id it belongs to, so that "loading" can be derived
+    // during render (result is missing or belongs to another id) instead of being set in an effect.
+    const [outcome, setOutcome] = useState<{
+        id: string;
+        data: T | null;
+        fileContent: string | null;
+        error: string | null;
+    } | null>(null);
+
+    // Always call the latest loader without re-running the effect when its identity changes
+    // (callers pass inline functions).
+    const loaderRef = useRef(loader);
+    useEffect(() => {
+        loaderRef.current = loader;
+    });
 
     useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (!isMounted || !id) {
-            if (id) setIsLoading(false);
+        if (!id) {
             return;
         }
 
-        async function loadData() {
-            setIsLoading(true);
-            setError(null);
-            setData(null);
-            setFileContent(null);
-
-            try {
-                const result = await loader(id);
-                setData(result.data);
-                setFileContent(result.fileContent);
-            } catch (e: any) {
-                setError(`Failed to load or parse data: ${e.message}`);
-            } finally {
-                setIsLoading(false);
+        let cancelled = false;
+        loaderRef.current(id).then(
+            (result) => {
+                if (!cancelled) {
+                    setOutcome({id, data: result.data, fileContent: result.fileContent, error: null});
+                }
+            },
+            (e: unknown) => {
+                if (!cancelled) {
+                    const message = e instanceof Error ? e.message : String(e);
+                    setOutcome({id, data: null, fileContent: null, error: `Failed to load or parse data: ${message}`});
+                }
             }
-        }
+        );
 
-        loadData();
-    }, [id, isMounted]);
+        return () => {
+            cancelled = true;
+        };
+    }, [id]);
 
-    return {data, fileContent, isLoading, error};
+    const current = outcome !== null && outcome.id === id ? outcome : null;
+    return {
+        data: current?.data ?? null,
+        fileContent: current?.fileContent ?? null,
+        isLoading: current === null,
+        error: current?.error ?? null,
+    };
 }

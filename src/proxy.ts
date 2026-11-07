@@ -16,7 +16,7 @@ export function proxy(request: NextRequest) {
     let targetUrl;
     try {
         targetUrl = new URL(targetApiUrlString);
-    } catch (_) {
+    } catch {
         return new Response('Invalid URL format in X-Target-API header.', {status: 400});
     }
 

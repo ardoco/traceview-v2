@@ -5,7 +5,7 @@ import {useState} from "react";
 import FileUploadStep from "@/components/multiStepForm/steps/fileUploadStep/FileUploadStep";
 import ProjectDetailsStep from "@/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep";
 import SummaryStep from "@/components/multiStepForm/steps/summayStep/SummaryStep";
-import {redirect} from "next/navigation";
+import {useRouter} from "next/navigation";
 import FormLayout from "@/components/multiStepForm/FormLayout";
 import Stepper from "@/components/multiStepForm/stepProgressBar/Stepper";
 import StepContainer from "@/components/multiStepForm/steps/StepContainer";
@@ -17,7 +17,19 @@ import ConfigurationStep from "@/components/multiStepForm/steps/configurationSte
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
 import LoadingErrorModal from "@/components/LoadingErrorModal";
 import {Dialog, DialogPanel, DialogTitle} from '@headlessui/react';
+import {v4 as uuidv4} from "uuid";
 import {DisplayErrors} from "@/components/multiStepForm/steps/configurationStep/ErrorState";
+
+/**
+ * Value of the `inconsistencies` URL parameter of the result view:
+ * "true" = the inconsistencies are part of the trace link run (SWATTR), an id = separate inconsistency run,
+ * "failed" = the separate run could not be started, "false" = not requested.
+ */
+function inconsistenciesParam(requestId: string, inconsistencyRequestId?: string, inconsistencyError?: string): string {
+    if (inconsistencyError) return "failed";
+    if (!inconsistencyRequestId) return "false";
+    return inconsistencyRequestId === requestId ? "true" : inconsistencyRequestId;
+}
 
 export interface Step {
     stepperLabel: string;
@@ -29,7 +41,10 @@ export interface Step {
 export default function MultiStepFormNewProject() {
     const {formData} = useFormContext();
     const {apiAddress} = useApiAddressContext();
+    const router = useRouter();
     const [currentStep, setCurrentStep] = useState(0);
+    // furthest step the user has reached so far, used to allow jumping forward to completed steps
+    const [furthestStep, setFurthestStep] = useState(0);
     const [loading, setLoading] = useState(false);
     const [errorModalApiErrorOpen, setErrorModalApiErrorOpen] = useState(false);
     const [errorModalFileUpload, setErrorModalFileUpload] = useState(false);
@@ -42,12 +57,12 @@ export default function MultiStepFormNewProject() {
     }, {
         stepperLabel: "Project Details",
         title: "Project Details",
-        description: "Enter the project name and select the type of traceLinks you want to retrieve. To additionally find inconsistencies, check the corresponding box.",
-        validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null, formData.files),
+        description: "Enter the project name and select the type of trace links you want to retrieve. To additionally find inconsistencies, check the corresponding box.",
+        validation: () => FormValidation.validateProjectDetails(formData.projectName, formData.selectedTraceLinkType?.name || null),
     }, {
         stepperLabel: "Configuration",
-        title: "Configure ardoco",
-        description: "If you want you can adjust the default configuration for finding traceLinks, else proceed with the defaults.",
+        title: "Configure ARDoCo",
+        description: "If you want you can adjust the default configuration for finding trace links, else proceed with the defaults.",
         validation: () => [],
     }, {
         stepperLabel: "Summary",
@@ -58,7 +73,20 @@ export default function MultiStepFormNewProject() {
 
     const errors = steps[currentStep].validation();
 
+    // A step can be selected in the stepper if it is an earlier step or if it was already reached
+    // and all steps before it are valid.
+    const isStepReachable = (step: number) =>
+        step < currentStep || (step <= furthestStep && steps.slice(0, step).every((s) => s.validation().length === 0));
+
+    const goToStep = (step: number) => {
+        setCurrentStep(step);
+        setFurthestStep((furthest) => Math.max(furthest, step));
+    };
+
     const nextStep = async () => {
+        if (errors.length > 0) {
+            return;
+        }
         if (currentStep === steps.length - 1) {
             const summary_validation = steps[currentStep].validation()
             if (summary_validation && summary_validation.length > 0) {
@@ -69,25 +97,27 @@ export default function MultiStepFormNewProject() {
                     result = await handleSubmit();
                 } catch (error) {
                     console.error("Error during submission:", error);
-                    errors.push(`An error occurred while submitting the data. Please try again. Error: ${error}`);
                     setLoading(false);
+                    setErrorModalApiErrorOpen(true);
                     return;
                 }
-                const encodedId = encodeURIComponent(result.requestId);
-                const inconsistenciesParam = `&inconsistencies=${formData.findInconsistencies}`;
-                redirect(`/view/${encodedId}?type=${formData.selectedTraceLinkType?.name}${inconsistenciesParam}`);
+                if (!result) {
+                    return; // handleSubmit already shows the error
+                }
+                const requestId = result.jsonResult.requestId;
+                const params = new URLSearchParams({
+                    type: formData.selectedTraceLinkType?.name ?? "",
+                    inconsistencies: inconsistenciesParam(requestId, result.inconsistencyRequestId, result.inconsistencyError),
+                });
+                router.push(`/view/${encodeURIComponent(requestId)}?${params.toString()}`);
             }
         } else {
-            setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
+            goToStep(Math.min(currentStep + 1, steps.length - 1));
         }
     };
 
     const prevStep = () => {
-        if (currentStep === 0) {
-            redirect("/");
-        } else {
-            setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
-        }
+        setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
     };
 
     const handleSubmit = async () => {
@@ -107,7 +137,7 @@ export default function MultiStepFormNewProject() {
         try {
             // Store project files in the client storage
             await storeProjectFiles(jsonResult.requestId, result.usedFiles);
-            await storeProjectMetadata(jsonResult.requestId, formData.files)
+            await storeProjectMetadata(jsonResult.requestId, formData.files, {inconsistencyRequestId: result.inconsistencyRequestId})
         } catch (error) {
             console.error("Error storing project files:", error);
             setLoading(false);
@@ -116,14 +146,30 @@ export default function MultiStepFormNewProject() {
         }
 
 
-        return jsonResult;
+        return result;
+    };
+
+    // Show only the uploaded files (no API call), e.g. after the API request failed.
+    const viewFilesOnly = async () => {
+        setErrorModalApiErrorOpen(false);
+        const storageId = uuidv4();
+        try {
+            await storeProjectFiles(storageId, formData.files);
+            await storeProjectMetadata(storageId, formData.files);
+        } catch (error) {
+            console.error("Error storing project files:", error);
+            setErrorModalFileUpload(true);
+            return;
+        }
+        router.push(`/view-provided/${encodeURIComponent(storageId)}`);
     };
 
     return (<FormLayout>
         <Stepper
             steps={steps.map((step) => step.stepperLabel)}
             currentStep={currentStep}
-            onStepChange={(step: number) => setCurrentStep(step)}
+            onStepChange={goToStep}
+            isStepReachable={isStepReachable}
         />
 
         <div className="content-center flex flex-col w-full mt-8">
@@ -151,11 +197,11 @@ export default function MultiStepFormNewProject() {
 
         {/* Navigation buttons */}
         <div className="flex justify-between w-full mt-8">
-            <Button text={currentStep === 0 ? "Exit" : "Back"} onButtonClicked={prevStep}/>
+            {currentStep === 0 ? <span/> : <Button text="Back" onButtonClicked={prevStep}/>}
             <Button
-                text={currentStep === steps.length - 1 ? "Calculate TraceLinks" : "Next"}
+                text={currentStep === steps.length - 1 ? "Calculate Trace Links" : "Next"}
                 onButtonClicked={nextStep}
-                disabled={loading || currentStep == steps.length - 1 && errors.length > 0}
+                disabled={loading || errors.length > 0}
             >
 
             </Button>
@@ -167,12 +213,7 @@ export default function MultiStepFormNewProject() {
             onRetry={() => {
                 setErrorModalApiErrorOpen(false);
             }}
-            onViewFiles={async () => {
-                setErrorModalApiErrorOpen(false);
-                const storageId = await handleSubmit();
-                const encodedId = encodeURIComponent(storageId);
-                redirect(`/view-provided/${encodedId}`);
-            }}
+            onViewFiles={viewFilesOnly}
         />)}
 
         {errorModalFileUpload && (<ErrorModalFileUpload

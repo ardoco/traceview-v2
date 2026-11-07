@@ -53,8 +53,8 @@ export default function DisplayCodeModel({id}: ViewProps) {
             <TooltipInstruction
                 title="Instructions"
                 instructions={[
-                    {keyCombo: "Click", description: "Find traceLinks"},
-                    {keyCombo: "Ctrl + Click", description: "Collapse/Expand node"},
+                    {keyCombo: "Click", description: "Find trace links"},
+                    {keyCombo: "Ctrl/Cmd + Click", description: "Collapse/Expand node"},
                 ]}
             />
         </div>

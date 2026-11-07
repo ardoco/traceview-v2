@@ -18,7 +18,7 @@ export function displayOptionName(option: DisplayOption, traceLinkType: TraceLin
         case DisplayOption.ARCHITECTURE_MODEL:
             return "Architecture Model";
         case DisplayOption.TRACELINKS:
-            return traceLinkType.name + " (" + traceLinkType.alternative_name + ") TraceLinks";
+            return traceLinkType.name + " (" + traceLinkType.alternative_name + ") Trace Links";
         case DisplayOption.INCONSISTENCIES:
             return "Inconsistencies";
         default:

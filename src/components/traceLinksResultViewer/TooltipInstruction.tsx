@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useId, useState} from "react";
 
 interface Instruction {
     keyCombo?: string; // e.g., "Ctrl + Click"
@@ -11,11 +11,16 @@ interface TooltipInstructionProps {
     position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"; // Optional
 }
 
+/**
+ * A "?" button that shows usage instructions on hover, on focus and on click. Escape or leaving the button hides them.
+ */
 export default function TooltipInstruction({
                                                title = "Instructions",
                                                instructions,
                                                position = "bottom-right"
                                            }: TooltipInstructionProps) {
+    const [open, setOpen] = useState(false);
+    const tooltipId = useId();
     const positionClasses = {
         "top-left": "top-4 left-4",
         "top-right": "top-4 right-4",
@@ -25,11 +30,26 @@ export default function TooltipInstruction({
 
     return (
         <div className={`absolute ${positionClasses[position]} z-10 group`}>
-            <div className="w-6 h-6 rounded-full bg-gray-300 text-black text-center cursor-pointer leading-6 font-bold">
+            <button
+                type="button"
+                aria-label={title}
+                aria-describedby={tooltipId}
+                aria-expanded={open}
+                onFocus={() => setOpen(true)}
+                onClick={() => setOpen(true)}
+                onKeyDown={(e) => {
+                    if (e.key === "Escape") setOpen(false);
+                }}
+                onBlur={() => setOpen(false)}
+                className="w-6 h-6 rounded-full bg-gray-300 text-black text-center cursor-pointer leading-6 font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blau-500"
+            >
                 ?
-            </div>
+            </button>
             <div
-                className="absolute bottom-8 right-0 w-64 text-sm text-white bg-black bg-opacity-80 p-3 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                id={tooltipId}
+                role="tooltip"
+                className={`absolute bottom-8 right-0 w-64 text-sm text-white bg-black/80 p-3 rounded-md transition-opacity duration-300 pointer-events-none group-hover:opacity-100 ${open ? "opacity-100" : "opacity-0"}`}
+            >
                 <strong className="block font-semibold mb-2">{title}</strong>
                 {instructions.map((inst, idx) => (
                     <div key={idx}>

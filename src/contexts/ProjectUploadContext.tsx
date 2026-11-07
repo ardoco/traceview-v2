@@ -1,7 +1,7 @@
 'use client'
 
 import React, {createContext, useContext, useState} from 'react';
-import {TraceLinkType, TraceLinkTypes} from "@/components/dataTypes/TraceLinkTypes";
+import {canFindInconsistencies, TraceLinkType} from "@/components/dataTypes/TraceLinkTypes";
 import {UploadedFile} from "@/components/dataTypes/UploadedFile";
 import {FileType} from "@/components/dataTypes/FileType";
 import {useApiAddressContext} from "@/contexts/ApiAddressContext";
@@ -89,9 +89,8 @@ export function FormProvider({children, allowedFileTypes}: FormProviderProps) {
         setFormData((prevData) => {
             const newData = {...prevData, ...updatedData};
 
-            // If the selected trace link type is changing and it's not SAD_SAM,
-            // automatically reset the findInconsistencies flag to false.
-            if (newData.selectedTraceLinkType !== TraceLinkTypes.SAD_SAM) {
+            // Inconsistencies need documentation and an architecture model. Reset the flag if they are missing.
+            if (!canFindInconsistencies(newData.files)) {
                 newData.findInconsistencies = false;
             }
             return newData;

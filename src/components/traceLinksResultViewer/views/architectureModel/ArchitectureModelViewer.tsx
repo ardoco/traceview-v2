@@ -34,7 +34,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
                 } else {
                     throw new Error("Unknown architecture file type.");
                 }
-            } catch (e: any) {
+            } catch (e) {
                 console.error("Failed to parse architecture model:", e);
                 throw new Error("Failed to parse the architecture model. The file might be corrupted or in an invalid format.");
             }
@@ -69,7 +69,7 @@ export default function DisplayArchitectureModel({id}: ViewProps) {
             <TooltipInstruction
                 title="Instructions"
                 instructions={[
-                    {keyCombo: "Click", description: "Highlight traceLinks"},
+                    {keyCombo: "Click", description: "Highlight trace links"},
                     {keyCombo: "Hover over interface's name", description: "display details"},
                 ]}
             />

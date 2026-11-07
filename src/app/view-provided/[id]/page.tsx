@@ -32,7 +32,7 @@ export default function ViewProvided() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setIsLoading] = useState<boolean>(true);
 
-    const [traceLinkType, setTraceLinkType] = useState<any>(TraceLinkTypes.SAD_SAM_CODE);
+    const [traceLinkType, setTraceLinkType] = useState<TraceLinkType>(TraceLinkTypes.SAD_SAM_CODE);
     const [uploadedFileTypes, setUploadedFileTypes] = useState<FileType[]>([]);
 
 
@@ -47,7 +47,7 @@ export default function ViewProvided() {
                 data = parseTraceLinksFromJSON(rawJson.traceLinkType, rawJson.traceLinks)
                 traceLinkType = getTraceLinkTypeByName(rawJson.traceLinkType) || TraceLinkTypes.SAD_SAM_CODE;
 
-            } catch (e: any) {
+            } catch (e) {
                 console.error("Failed to parse trace links:", e);
                 throw new Error("Failed to parse the trace links. The file might be corrupted or in an invalid format.");
             }
@@ -63,7 +63,7 @@ export default function ViewProvided() {
             try {
                 const inconsistenciesJson = JSON.parse(result?.content);
                 data = parseInconsistenciesFromJSON(inconsistenciesJson.inconsistencies);
-            } catch (e: any) {
+            } catch (e) {
                 console.error("Failed to parse inconsistencies:", e);
                 throw new Error("Failed to parse the inconsistencies. The file might be corrupted or in an invalid format.");
             }
@@ -94,8 +94,8 @@ export default function ViewProvided() {
                     const result = await loadInconsistencies(uriDecodedId);
                     setInconsistencies(result);
                 }
-            } catch (e: any) {
-                setError(`Failed to load data: ${e.message}`);
+            } catch (e) {
+                setError(`Failed to load data: ${e instanceof Error ? e.message : String(e)}`);
             } finally {
                 setIsLoading(false);
             }

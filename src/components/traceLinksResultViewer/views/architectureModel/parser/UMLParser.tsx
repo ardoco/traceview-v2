@@ -10,6 +10,22 @@ import {
     UMLClass
 } from "@/components/traceLinksResultViewer/views/architectureModel/dataModel/ArchitectureDataModel";
 
+/**
+ * A parsed XML element. The shape depends on the element, so values are narrowed by the helpers below.
+ */
+type XmlElement = { [key: string]: unknown };
+
+/** Reads an attribute (or text value) of an XML element. */
+function str(element: XmlElement, key: string): string {
+    return element[key] as string;
+}
+
+/** Reads the child elements stored under a key, which fast-xml-parser returns as a single object or an array. */
+function children(element: XmlElement, key: string): XmlElement[] {
+    const value = element[key];
+    return (Array.isArray(value) ? value : [value]) as XmlElement[];
+}
+
 export interface EdgeTypes {
     usages: Edge[];
     providedInterfaces: Edge[];
@@ -40,7 +56,7 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     let components: AbstractComponent[] = [];
     const edges: Edge[] = [];
 
-    const elements = jsonModel["uml:Model"]["packagedElement"];
+    const elements = jsonModel["uml:Model"]["packagedElement"] as XmlElement[] | undefined;
     if (!elements) return {components, edges};
 
     for (const element of elements) {
@@ -63,8 +79,8 @@ export default function parseUMLModel(rawXML: string): { components: AbstractCom
     return {components, edges};
 }
 
-function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[] {
-    const type = element["@_xmi:type"];
+function extractPackagedElement(element: XmlElement, edges: Edge[]): AbstractComponent[] {
+    const type = str(element, "@_xmi:type");
 
     const addedEdges: EdgeTypes = addEdges(element, edges);
 
@@ -73,8 +89,8 @@ function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[
         case "uml:Class":
             return [
                 new UMLClass(
-                    element["@_xmi:id"],
-                    element["@_name"],
+                    str(element, "@_xmi:id"),
+                    str(element, "@_name"),
                     extractAttributes(element),
                     extractOperations(element)
                 )];
@@ -82,8 +98,8 @@ function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[
         case "uml:Component":
             return [
                 new Component(
-                    element["@_xmi:id"],
-                    element["@_name"],
+                    str(element, "@_xmi:id"),
+                    str(element, "@_name"),
                     extractAttributes(element),
                     extractOperations(element),
                     addedEdges.usages.map((usage) => usage.supplier),
@@ -93,24 +109,24 @@ function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[
         case "uml:Interface":
             return [
                 new Interface(
-                    element["@_xmi:id"],
-                    element["@_name"],
+                    str(element, "@_xmi:id"),
+                    str(element, "@_name"),
                     extractOperations(element)
                 )];
 
         case "uml:Package":
-            const components = Array.isArray(element["packagedElement"]) ? element["packagedElement"] : [element["packagedElement"]];
+            const components = children(element, "packagedElement");
             // Recursively extract components from the package
             const packagedElements: AbstractComponent[] = [];
             components
-                .filter((el: any) => el["@_xmi:type"] !== "uml:Usage")
-                .map((el: any) => extractPackagedElement(el, edges))
-                .forEach((el: any) => packagedElements.push(...el));
+                .filter((el) => el["@_xmi:type"] !== "uml:Usage")
+                .map((el) => extractPackagedElement(el, edges))
+                .forEach((el) => packagedElements.push(...el));
 
             return [
                 new Package(
-                    element["@_xmi:id"],
-                    element["@_name"],
+                    str(element, "@_xmi:id"),
+                    str(element, "@_name"),
                     packagedElements
                 )];
 
@@ -124,7 +140,7 @@ function extractPackagedElement(element: any, edges: Edge[]): AbstractComponent[
     return [];
 }
 
-function addEdges(element: any, edges: Edge[]): EdgeTypes {
+function addEdges(element: XmlElement, edges: Edge[]): EdgeTypes {
     const usages = extractUsage(element);
     const providedInterfaces = extractInterfaceRealizations(element);
 
@@ -135,27 +151,27 @@ function addEdges(element: any, edges: Edge[]): EdgeTypes {
     return {usages: usages, providedInterfaces: providedInterfaces} as EdgeTypes;
 }
 
-function extractOperations(element: any): Operation[] {
+function extractOperations(element: XmlElement): Operation[] {
     let operations: Operation[] = [];
     if (element["ownedOperation"]) {
-        const ops = Array.isArray(element["ownedOperation"]) ? element["ownedOperation"] : [element["ownedOperation"]];
-        operations = ops.map((operation: any) =>
-            new Operation(operation["@_xmi:id"], operation["@_name"] || "Unnamed")
+        const ops = children(element, "ownedOperation");
+        operations = ops.map((operation) =>
+            new Operation(str(operation, "@_xmi:id"), str(operation, "@_name") || "Unnamed")
         );
     }
     return operations;
 }
 
 
-function extractAttributes(element: any): Attribute[] {
+function extractAttributes(element: XmlElement): Attribute[] {
     let attributes: Attribute[] = [];
     if (element["ownedAttribute"]) {
-        const attrs = Array.isArray(element["ownedAttribute"]) ? element["ownedAttribute"] : [element["ownedAttribute"]];
-        attributes = attrs.map((attr: any) =>
+        const attrs = children(element, "ownedAttribute");
+        attributes = attrs.map((attr) =>
             new Attribute(
-                attr["@_xmi:id"],
-                attr["@_name"] || "Unnamed",
-                attr["@_type"] || "Unknown"
+                str(attr, "@_xmi:id"),
+                str(attr, "@_name") || "Unnamed",
+                str(attr, "@_type") || "Unknown"
             )
         );
     }
@@ -163,14 +179,14 @@ function extractAttributes(element: any): Attribute[] {
 }
 
 
-function extractGeneralizations(element: any): Edge[] {
+function extractGeneralizations(element: XmlElement): Edge[] {
     let generalizations: Edge[] = [];
     if (element["generalization"]) {
-        const gens = Array.isArray(element["generalization"]) ? element["generalization"] : [element["generalization"]];
-        generalizations = gens.map((gen: any) =>
+        const gens = children(element, "generalization");
+        generalizations = gens.map((gen) =>
             new Edge(
-                element["@_xmi:id"], // specification: e.g. Elephant
-                gen["general"], // generalization: e.g. Mammal
+                str(element, "@_xmi:id"), // specification: e.g. Elephant
+                str(gen, "general"), // generalization: e.g. Mammal
                 "uml:Generalization"
             )
         );
@@ -178,16 +194,16 @@ function extractGeneralizations(element: any): Edge[] {
     return generalizations;
 }
 
-function extractInterfaceRealizations(element: any): Edge[] {
+function extractInterfaceRealizations(element: XmlElement): Edge[] {
     let interfaceRealizations: Edge[] = [];
     if (element["interfaceRealization"]) {
-        const irs = Array.isArray(element["interfaceRealization"]) ? element["interfaceRealization"] : [element["interfaceRealization"]];
+        const irs = children(element, "interfaceRealization");
 
 
-        interfaceRealizations = irs.map((interfaceRealization: any) =>
+        interfaceRealizations = irs.map((interfaceRealization) =>
             new Edge(
-                interfaceRealization["@_client"], // client realizes supplied interface
-                interfaceRealization["@_supplier"], // id of the supplied interface
+                str(interfaceRealization, "@_client"), // client realizes supplied interface
+                str(interfaceRealization, "@_supplier"), // id of the supplied interface
                 "uml:InterfaceRealization"
             )
         );
@@ -195,16 +211,16 @@ function extractInterfaceRealizations(element: any): Edge[] {
     return interfaceRealizations;
 }
 
-function extractUsage(element: any): Edge[] {
+function extractUsage(element: XmlElement): Edge[] {
     let usages: Edge[] = [];
     if (element["packagedElement"]) {
-        const usagesArray = Array.isArray(element["packagedElement"]) ? element["packagedElement"] : [element["packagedElement"]];
+        const usagesArray = children(element, "packagedElement");
         usages = usagesArray
-            .filter((el: any) => el["@_xmi:type"] === "uml:Usage")
-            .map((usage: any) =>
+            .filter((el) => el["@_xmi:type"] === "uml:Usage")
+            .map((usage) =>
                 new Edge(
-                    usage["@_client"], // element that uses the target component
-                    usage["@_supplier"], // id of the component that is being used
+                    str(usage, "@_client"), // element that uses the target component
+                    str(usage, "@_supplier"), // id of the component that is being used
                     "uml:Usage" // type of the edge
                 )
             );
