@@ -3,15 +3,15 @@
 // specified in every page.
 
 import type {Metadata} from "next";
-import {IBM_Plex_Mono, IBM_Plex_Sans} from 'next/font/google' // same fonts as ardoco.de
+import {JetBrains_Mono, Space_Grotesk} from 'next/font/google' // same fonts as ardoco.de
 import './globals.css' // load the globals.css for every page we have
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import {ApiAddressProvider} from "@/contexts/ApiAddressContext";
 import {NavigationProvider} from "@/contexts/NavigationContext";
 
-const plexSans = IBM_Plex_Sans({subsets: ['latin'], variable: '--font-ibm-plex-sans'});
-const plexMono = IBM_Plex_Mono({subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-ibm-plex-mono'});
+const spaceGrotesk = Space_Grotesk({subsets: ['latin'], variable: '--font-space-grotesk'});
+const jetbrainsMono = JetBrains_Mono({subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-jetbrains-mono'});
 
 
 export const metadata: Metadata = { // those metadatas are the ones that are used for every page in the application. They can be overridden on a page by page basis.
@@ -28,7 +28,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className={`h-full relative ${plexSans.variable} ${plexMono.variable}`} suppressHydrationWarning>
+        <html lang="en" className={`h-full relative ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
         <body className="h-full font-sans" suppressHydrationWarning>
         <ApiAddressProvider>
             <NavigationProvider>

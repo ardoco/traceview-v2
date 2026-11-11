@@ -76,9 +76,9 @@
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 
-    /* IBM Plex as on ardoco.de; the variables are set by next/font in layout.tsx */
-    --font-sans: var(--font-ibm-plex-sans), system-ui, sans-serif;
-    --font-mono: var(--font-ibm-plex-mono), ui-monospace, "SF Mono", SFMono-Regular, monospace;
+    /* Space Grotesk and JetBrains Mono as on ardoco.de; the variables are set by next/font in layout.tsx */
+    --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", SFMono-Regular, monospace;
 
     --color-highlight-tracelink: var(--color-blau-800);
     /*--color-highlight-inconsistency: var(--color-lila-900);*/
