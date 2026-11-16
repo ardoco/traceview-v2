@@ -4,8 +4,8 @@ title: "Architecture"
 description: "TraceView client-side Next.js App Router architecture: routing, React contexts, backend integration, result rendering, and change navigation."
 tags: [architecture, nextjs, react-contexts, result-viewer]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-19T12:26:44.589Z
+  - by: openwiki/0.9.0
+    at: 2026-11-16T15:06:02.471Z
 sources:
   - id: openwiki-source-bb1ebe868e35e9e500714501
     resource: repo://Dockerfile
@@ -23,6 +23,10 @@ sources:
     resource: repo://src/app/view-provided/%5Bid%5D/page.tsx
   - id: openwiki-source-480c0862686116627e432a75
     resource: repo://src/app/view/%5Bid%5D/page.tsx
+  - id: openwiki-source-9d7a36e3958a5e4c93079ade
+    resource: repo://src/components/dataTypes/TraceLinkTypes.tsx
+  - id: openwiki-source-c787bb6d8d81efd9cd51689e
+    resource: repo://src/components/Footer.tsx
   - id: openwiki-source-c7cbbc82631cbb6c1b9eb17f
     resource: repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx
   - id: openwiki-source-88dce854b56324c05642b85c
@@ -47,7 +51,7 @@ sources:
     resource: repo://src/util/ArdocoApi.tsx
   - id: openwiki-source-e051603d633d250ba9408670
     resource: repo://src/util/ClientFileStorage.tsx
-generated: { by: "openwiki/0.7.2", at: "2026-10-19T12:26:44.589Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-16T15:06:02.471Z" }
 ---
 
 # Architecture
@@ -56,11 +60,13 @@ TraceView is a client-heavy Next.js App Router application (React 19 + TypeScrip
 
 ## App shell and global providers
 
-`src/app/layout.tsx` wraps every page in `ApiAddressProvider` -> `NavigationProvider` and renders `NavBar` above a fixed, scrollable content area. It also loads `globals.css`, the Inter font, and the global metadata ("ARDoCo TraceView"). Because the providers sit above `{children}`, the backend address and the navigation guard are available to every route without per-page wiring. Nearly all components are marked `'use client'`, so changes must respect client-side rendering constraints.
+`src/app/layout.tsx` wraps every page in `ApiAddressProvider` -> `NavigationProvider` and renders fixed chrome: a `NavBar` pinned to the top (h-16) above a fixed content area (`top-16` to `bottom-0`) whose scrollable `main` is followed by the `Footer`. It loads `globals.css`, the ardoco.de-style fonts (`Space_Grotesk` and `JetBrains_Mono` via `next/font/google`), and the global metadata ("ARDoCo TraceView" with the `/ardoco-logo.png` icon). Because the providers sit above `{children}`, the backend address and the navigation guard are available to every route without per-page wiring. Nearly all components are marked `'use client'`, so changes must respect client-side rendering constraints.
 
-`NavBar` (`src/components/NavBar.tsx`) shows the connected API address ("Connected API: …") with a pencil button that opens `EditApiAddressModal`, and links to New Project (`/new-project`), Load Project (`/load-project`), and external ARDoCo/GitHub pages. Desktop navigation is intercepted and routed through `NavigationContext.handleNavigation`, so the leave-project guard applies to nav clicks (the mobile dialog uses plain anchors).
+`NavBar` (`src/components/NavBar.tsx`) shows the ARDoCo logo (which routes to `/new-project` through the guard) and the connected API address ("Connected API: …") with a pencil button that opens `EditApiAddressModal`. Its navigation items are New Project (`/new-project`), Load Project (`/load-project`), and external links to ardoco.de and GitHub. Both desktop and mobile navigation clicks are intercepted and routed through `NavigationContext.handleNavigation`, so the leave-project guard applies to all nav clicks; the mobile menu closes itself before invoking the same handler.
 
-The landing page `/` (`src/app/page.tsx`) is a client component with a hero section and an ARDoCo description; its **Start** button is a link to `/new-project`, routing users into the wizard.
+`Footer` (`src/components/Footer.tsx`) is a slim ardoco.de-style strip: credits for the Modelling for Continuous Software Engineering group at KASTEL/KIT plus a link to the ARDoCo introduction video. All footer links open in a new tab (`target="_blank"`) so a running project is not lost.
+
+There is no landing page: `src/app/page.tsx` redirects `/` straight to `/new-project` so the app starts with the project wizard.
 
 ## Route map
 
@@ -68,17 +74,17 @@ The landing page `/` (`src/app/page.tsx`) is a client component with a hero sect
 
 | Route | Source | Behavior |
 | --- | --- | --- |
-| `/` | `src/app/page.tsx` | Landing page; Start button routes to `/new-project`. |
+| `/` | `src/app/page.tsx` | Redirects to `/new-project`; no landing page. |
 | `/new-project` | `src/app/new-project/page.tsx` | Wraps `MultiStepFormNewProject` in `FormProvider` with `allowedFileTypes` set to every `FileType` **except** `TRACELINKS` and `INCONSISTENCIES`. Four-step wizard that submits to ARDoCo. |
 | `/load-project` | `src/app/load-project/page.tsx` | Wraps `MultiStepFormLoadProject` in `FormProvider` with **all** file types allowed. Single-step flow that stores uploaded files (including trace-link/inconsistency JSON) locally and routes to the stored-project viewer. |
 | `/view/[id]` | `src/app/view/[id]/page.tsx` | Polls the backend for a completed run, then renders the result viewer. |
 | `/view-provided/[id]` | `src/app/view-provided/[id]/page.tsx` | Renders a locally stored project (from the load-project flow or a failed submission) without any backend call. |
 
-## `/api/*` handling: middleware rewrite to ARDoCo
+## `/api/*` handling: proxy rewrite to ARDoCo
 
-The repository defines **no local API route handlers**. Every `/api/*` URL the browser fetches is handled by the app-wide middleware in `src/proxy.ts` (Next.js proxy convention, matched by `config.matcher: '/api/:path*'`). `proxy()` reads the `X-Target-API` request header — supplied by the client from `ApiAddressContext` — and rewrites the request with `NextResponse.rewrite` to `` `${target.origin}/api/${path}` `` while preserving the original headers. The Next.js server therefore performs the actual cross-origin call, and the UI stays independent of the backend host as long as an address is configured.
+The repository defines **no local API route handlers**. Every `/api/*` URL the browser fetches is handled by the app-wide proxy in `src/proxy.ts` (matched by `config.matcher: '/api/:path*'`). `proxy()` reads the `X-Target-API` request header — supplied by the client from `ApiAddressContext` — and rewrites the request with `NextResponse.rewrite` to `` `${target.origin}/api/${path}` `` while preserving the original headers. The Next.js server therefore performs the actual cross-origin call, and the UI stays independent of the backend host as long as an address is configured.
 
-The middleware enforces the contract before rewriting:
+The proxy enforces the contract before rewriting:
 
 - missing `X-Target-API` header -> `400`
 - header that is not a parseable URL -> `400`
@@ -90,7 +96,7 @@ Client-side call sites that rely on this rewrite:
 | --- | --- | --- |
 | `src/contexts/ApiAddressContext.tsx` | `GET /api/health` | Validate a candidate backend address before saving it. |
 | `src/contexts/ProjectUploadContext.tsx` | `GET /api/configuration` | Load the default trace-link configuration for the wizard. |
-| `src/util/ArdocoApi.tsx` | `POST /api/{pipeline}/start` or `POST /api/find-inconsistencies/start` | Multipart project submission. |
+| `src/util/ArdocoApi.tsx` | `POST /api/{pipeline}/start` and optionally `POST /api/find-inconsistencies/start` | Multipart project submission. |
 | `src/app/view/[id]/page.tsx` | `GET /api/get-result/{id}` | Poll for the finished result. |
 
 The backend-side contract of these endpoints is documented in [ARDoCo backend API](integrations/ardoco-backend-api.md).
@@ -99,30 +105,34 @@ The backend-side contract of these endpoints is documented in [ARDoCo backend AP
 
 React contexts carry the cross-cutting client state (see [Project forms](architecture/project-forms.md) for the form-facing details):
 
-- **`ApiAddressContext`** (`src/contexts/ApiAddressContext.tsx`) holds the target ARDoCo backend address. It defaults to `https://rest.ardoco.de`, hydrates from `localStorage` key `apiAddress` on mount, and `setApiAddress` normalizes the input (strips any `/api/...` suffix and trailing slash), probes it with `GET /api/health` through the middleware, and only persists and applies the address when the probe succeeds. `NavBar` displays the address (`loading` until hydrated) and the edit modal reports "Could not connect to the API at this address." on failure.
-- **`ProjectUploadContext`** (`src/contexts/ProjectUploadContext.tsx`) owns the wizard form state: `projectName`, `selectedTraceLinkType`, `files`, `errors`, `traceLinkConfiguration`, and `findInconsistencies`. The `FormProvider` takes an `allowedFileTypes` prop from the route and fetches `/api/configuration` (with `X-Target-API`) whenever it mounts or `apiAddress` changes, exposing `configurationLoading`/`configurationError` and keeping the payload as both `originalTraceLinkConfiguration` and `formData.traceLinkConfiguration`. `updateFormData` automatically resets `findInconsistencies` to `false` whenever the resulting selected trace-link type is not `SAD_SAM`, mirroring the backend restriction that inconsistency detection exists only for that pipeline.
-- **`NavigationContext`** (`src/contexts/NavigationContext.tsx`) tracks the currently open project id and owns the leave-project lifecycle. When `currentProjectId` is set, `handleNavigation` opens `ConfirmNavigationModal` ("Navigating away will delete the current project's data from your browser"); confirming deletes the project's OPFS directory via `deleteProjectDirectory`, clears the id, aborts the shared `AbortController` used by in-flight requests, and only then navigates. The context exposes that `AbortController` so the polling fetch on `/view/[id]` can be cancelled on leave.
+- **`ApiAddressContext`** (`src/contexts/ApiAddressContext.tsx`) holds the target ARDoCo backend address. It defaults to `https://rest.ardoco.de` and reads the `localStorage` key `apiAddress` through `useSyncExternalStore` — the module-level subscriber set plus `window` `storage` events act as the external store, and the server snapshot returns `null` so the UI can show a "loading" placeholder during hydration. `setApiAddress` normalizes the input (strips any `/api/...` suffix and trailing slash), probes it with `GET /api/health` through the proxy, and only persists to `localStorage` (notifying all subscribers) and applies the address when the probe succeeds. `EditApiAddressModal` validates the URL format, keeps its input in sync with the current address, and only closes when the probe succeeds — otherwise it shows "Could not connect to the API at this address."
+- **`ProjectUploadContext`** (`src/contexts/ProjectUploadContext.tsx`) owns the wizard form state: `projectName`, `selectedTraceLinkType`, `files`, `errors`, `traceLinkConfiguration`, and `findInconsistencies`. The `FormProvider` takes an `allowedFileTypes` prop from the route and fetches `/api/configuration` (with `X-Target-API`) whenever it runs with an `apiAddress`, exposing `configurationLoading`/`configurationError` and keeping the payload as both `originalTraceLinkConfiguration` and `formData.traceLinkConfiguration`. `updateFormData` automatically resets `findInconsistencies` to `false` whenever `canFindInconsistencies` (`src/components/dataTypes/TraceLinkTypes.tsx`) reports that the uploaded files no longer contain documentation plus an architecture model — inconsistency detection needs exactly those two inputs.
+- **`NavigationContext`** (`src/contexts/NavigationContext.tsx`) tracks the currently open project id and owns the leave-project lifecycle. When `currentProjectId` is set, `handleNavigation` opens `ConfirmNavigationModal` ("Navigating away will delete the current project's data from your browser"); confirming deletes the project's OPFS directory via `deleteProjectDirectory`, clears the id, aborts the shared `AbortController` (replacing it with a fresh one for future use), and only then routes. Both result routes register the decoded project id via `setCurrentProjectId` so the guard applies while a result is open; `/view/[id]` clears it on unmount, while `/view-provided/[id]` leaves it set. The shared controller is exposed to consumers — the `/view-provided/[id]` error Retry button uses it — but the polling fetch on `/view/[id]` uses its own per-fetch controllers aborted on unmount and retry.
 - **`HighlightTracelinksContextType`** and **`HighlightInconsistencyContext`** (`src/contexts/`) coordinate cross-panel highlighting in the result viewer; see [Highlighting](architecture/highlighting.md).
 
 ## Project submission flow
 
-`src/components/multiStepForm/MultiStepFormNewProject.tsx` orchestrates the four-step wizard — Upload Files, Project Details, Configuration, Summary — with per-step validation from `src/components/multiStepForm/FormValidation.tsx` (at least two files, a type for every file, no more than one architecture model, project name and trace-link type required). On the final step ("Calculate TraceLinks") it:
+`src/components/multiStepForm/MultiStepFormNewProject.tsx` orchestrates the four-step wizard — Upload Files, Project Details, Configuration, Summary — with per-step validation from `src/components/multiStepForm/FormValidation.tsx` (at least two files, a type for every file, no more than one architecture model, project name and trace-link type required). On the final step ("Calculate Trace Links") it:
 
 1. calls `fetchArdocoApi` from `src/util/ArdocoApi.tsx` with the form state,
-2. stores the files actually submitted (`result.usedFiles`) plus metadata for all uploaded files in the browser under the returned `requestId`,
-3. redirects to `/view/{encodedRequestId}?type={traceLinkType}&inconsistencies={bool}`.
+2. stores the files actually submitted (`result.usedFiles`) plus metadata for all uploaded files — including the `inconsistencyRequestId` extra — in the browser under the returned `requestId`,
+3. redirects to `/view/{encodedRequestId}?type={traceLinkType}&inconsistencies={param}`, where the `inconsistencies` parameter is encoded by `inconsistenciesParam`: `"true"` when the inconsistencies come from the same run (SWATTR), the separate run's request id when a separate SAD-SAM inconsistency run was started, `"failed"` when that separate run could not be started, and `"false"` when no inconsistencies were requested.
 
-`fetchArdocoApi` builds the multipart request per pipeline: `projectName`, an `additionalConfigs` JSON field (empty values filtered out), and the type-specific `inputCode` / `inputText` / `inputArchitectureModel` fields plus `inputArchitectureModelFormat` (the PCM/UML discriminant). It posts to `/api/{api_name lowercased}/start` — e.g. `/api/transarc/start` for TransArC — or to `/api/find-inconsistencies/start` when `findInconsistencies` is set, which it only permits for `SAD_SAM`. Required file combinations per pipeline are validated explicitly, a missing `requestId` in the response is rejected, and the used files are returned for local storage. The pipeline catalog itself lives in `src/components/dataTypes/TraceLinkTypes.tsx` (see [Domain model](domain.md)).
+`fetchArdocoApi` builds the multipart request per pipeline: `projectName`, an `additionalConfigs` JSON field (empty values filtered out), and the type-specific `inputCode` / `inputText` / `inputArchitectureModel` fields plus `inputArchitectureModelFormat` (the PCM/UML discriminant). It posts to `/api/{api_name lowercased}/start` — e.g. `/api/transarc/start` for TransArC — or to `/api/find-inconsistencies/start` when `findInconsistencies` is set for SWATTR (whose run then returns trace links and inconsistencies together). For the other trace-link types with `findInconsistencies`, it starts a second SAD-SAM inconsistency run alongside the main run via `Promise.allSettled`, reusing the same documentation, architecture model, and configuration, and extends `usedFiles` with the documentation and architecture model so the result view can show them; a failure of the separate run is reported as `inconsistencyError` instead of failing the whole submission. Required file combinations per pipeline are validated explicitly, a missing `requestId` in the response is rejected, and the used files are returned for local storage. The pipeline catalog itself lives in `src/components/dataTypes/TraceLinkTypes.tsx` (see [Domain model](domain.md)).
 
-Failures are handled in the UI: an API error modal offers **Retry** or **View Files Only** — the latter stores the files locally under the `requestId` and routes to `/view-provided/{requestId}` so the artifacts remain inspectable without a backend result. A separate modal covers failures while writing to browser storage.
+Failures are handled in the UI: an API error modal offers **Retry** or **View Files Only** — the latter stores the files locally under a fresh uuid v4 storage id and routes to `/view-provided/{storageId}` so the artifacts remain inspectable without a backend result. A separate modal covers failures while writing to browser storage.
 
 The `/load-project` path (`MultiStepFormLoadProject`) is simpler: it generates a `uuid` v4 storage id, stores all uploaded files and metadata locally, and redirects to `/view-provided/{id}`.
 
 ## Result lifecycle: polling vs. stored projects
 
-`/view/[id]` owns the asynchronous backend run. Its `pollForResult` helper `GET`s `/api/get-result/{id}` (with `X-Target-API`) every 5 seconds for up to 240 seconds, using the shared `NavigationContext` `AbortController` signal: `status: "OK"` returns the payload, `"ACCEPTED"` keeps polling, any other status raises an error carrying the backend message, and the timeout raises a still-processing error. `AbortError`s are swallowed, so navigating away (which aborts the controller) ends polling silently. While waiting, a "Generating Trace-Links, please wait…" banner is shown. On completion the page parses `response.result.traceLinks` and — when the query parameter requested them and they are present — `response.result.inconsistencies`, wraps `ResultDisplay` in `HighlightProvider` and `InconsistencyProvider`, and registers the decoded project id in `NavigationContext` (cleared on unmount). The trace-link type comes from the `type` query parameter (falling back to `SAD_SAM_CODE`), and `displayOptions` are built as that type's `resultViewOptions` with `TRACELINKS` unshifted first and `INCONSISTENCIES` appended when requested. Polling errors surface in `LoadingErrorModal` with **Retry** or **View Files Only** (which renders the panels without parsed trace links).
+`/view/[id]` owns the asynchronous backend run. Its `pollForResult` helper `GET`s `/api/get-result/{id}` (with `X-Target-API`) every 5 seconds for up to 240 seconds: `status: "OK"` returns the payload, `"ACCEPTED"` keeps polling, any other status raises an error carrying the backend message, and the timeout raises a still-processing error. Each fetch attempt runs under its own `AbortController` — aborted on unmount and replaced on retry — and `AbortError`s are swallowed, so navigating away ends polling silently; a superseded (aborted) run must not touch the state of the run that replaced it. While waiting, a "Generating trace links, please wait…" banner is shown. Polling errors surface in `LoadingErrorModal` with **Retry** or **View Files Only** (which clears the error and renders the panels without parsed trace links).
 
-`/view-provided/[id]` reconstructs a result purely from browser storage: `loadProjectMetaData` returns the stored file types, a stored `TRACELINKS` JSON (`traceLinkType` + `traceLinks`) and/or `INCONSISTENCIES` JSON is parsed into typed models, and `displayOptions` are derived from the stored types via `getResultViewOption`. No backend call happens on this route.
+Inconsistency data on `/view/[id]` is resolved through an `InconsistencySource` model: the `inconsistencies` URL parameter maps to `"same"` (SWATTR run, value `"true"` or equal to the trace-link request id), `"separate"` (a distinct request id), `"failed"`, or `"none"`. When the parameter is absent, the page consults `loadInconsistencyRequestId` from the stored project metadata. Same-run inconsistencies are parsed from the trace-link response; a separate run is polled in parallel (again up to 240 seconds) using the same proxy, and only its inconsistencies are used — its SAD-SAM trace links are ignored. The separate outcome is tagged with the `apiAddress|requestId` key that produced it, so loading and error states are derived during render against the current source. A `"failed"` source renders the fixed message "Could not start the inconsistency detection."
+
+On completion the page parses `response.result.traceLinks` and — when the source requested them and they are present — `response.result.inconsistencies`, wraps `ResultDisplay` in `HighlightProvider` and `InconsistencyProvider`, and registers the decoded project id in `NavigationContext` (cleared on unmount). The trace-link type comes from the `type` query parameter (falling back to `SAD_SAM_CODE`), and `displayOptions` are built as that type's `resultViewOptions` with `TRACELINKS` unshifted first; when inconsistencies are shown, `ARCHITECTURE_MODEL` and `DOCUMENTATION` panels are added if missing (inconsistencies reference both artifacts) before `INCONSISTENCIES` is appended.
+
+`/view-provided/[id]` reconstructs a result purely from browser storage: `loadProjectMetaData` returns the stored file types, a stored `TRACELINKS` JSON (`traceLinkType` + `traceLinks`) and/or `INCONSISTENCIES` JSON is parsed into typed models, and `displayOptions` are derived from the stored types via `getResultViewOption`. No backend call happens on this route; parse failures surface as an error banner without retry.
 
 ## End-to-end data flow
 
@@ -155,7 +165,7 @@ sequenceDiagram
     UI->>UI: ResultDisplay renders results and stored artifacts
 ```
 
-*Request and data flow: the browser targets `/api/*`, the middleware in `src/proxy.ts` rewrites each call onto the ARDoCo backend named by `X-Target-API`, submission stores artifacts in OPFS, polling delivers only the result JSON, and the panels combine parsed results with OPFS-stored artifacts.*
+*Request and data flow: the browser targets `/api/*`, the proxy in `src/proxy.ts` rewrites each call onto the ARDoCo backend named by `X-Target-API`, submission stores artifacts in OPFS, polling delivers only the result JSON, and the panels combine parsed results with OPFS-stored artifacts.*
 
 The two result routes feed the same viewer from different sources:
 

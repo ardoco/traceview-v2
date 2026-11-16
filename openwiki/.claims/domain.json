@@ -1,24 +1,28 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b74c9b8731b6d71fef41197cdeb470be1eafcb12c320ae5768368f6ae6f21aef",
+  "pageVersion": "sha256:3ea3b667331a47f25fd5897f65fde64be830da0d5d5a34a812b0df9402a228d2",
   "claims": [
     {
       "id": "claim_aac8685b84d54622b3a14df7c5281d5c",
-      "statement": "The TraceLinkTypes record defines exactly four pipelines — SAD_SAM_CODE (TransArC), SAD_SAM (SWATTR), SAD_CODE (ArDoCode), SAM_CODE (ArCoTL) — each with a name, alternative_name, api_name, a checkCondition predicate over uploaded files controlling selectability, providedFiles, and resultViewOptions; architecture model presence is satisfied by either PCM or UML.",
+      "statement": "The TraceLinkTypes record defines exactly four pipelines — SAD_SAM_CODE (TransArC), SAD_SAM (SWATTR), SAD_CODE (ArDoCode), SAM_CODE (ArCoTL) — each with name, alternative_name, api_name, info, a checkCondition predicate over uploaded files controlling selectability, providedFiles, and resultViewOptions; architecture model presence is satisfied by either PCM or UML, and canFindInconsistencies (documentation + architecture model) is exported alongside the pipeline helpers.",
       "evidence": [
         {
-          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L16-L77",
-          "version": "repo-lines-v1:sha256:5bad882271f4c3b209cb2904aa813a334e5cde1f179ea844a0f705d555c18281:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxOTgxYThmMzY2NTEyZDgzODIzYTNjMzBhYmQ1OGRhZGJlMzA2Y2ZkNDg0ZWFiZjUwY2Q1OGQ0ZDNiZjUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNhOWIxYjYxZTU3ZmM2ZTk3YzYzZDYzNzgzZjc1ZDY0YjE0OTgxZjU0ZWE4N2Y4NmQ1NWI5ZmJiYmFlZDEzYjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3MDk5NDQ2OWRmMWExNzVkZjk4YTI5NzZlYWMyOTgwMDc3Y2U0MjkzZjllYjY3YTA3M2IyYWE0MTFhZTIwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L16-L83",
+          "version": "repo-lines-v1:sha256:4fbccbbc49d79155db26dacb05ee3488aac13e662dd49634a0a52ed1c8c32826:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxOTgxYThmMzY2NTEyZDgzODIzYTNjMzBhYmQ1OGRhZGJlMzA2Y2ZkNDg0ZWFiZjUwY2Q1OGQ0ZDNiZjUwMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2NThlMmM3MWM0ZjFjYWVmZDk3YjYwZmIzYTJhM2I5OTlhY2UxNjM2YjYxNDkzY2RhNzM2YzVlOGY2MjM3ZjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3MDk5NDQ2OWRmMWExNzVkZjk4YTI5NzZlYWMyOTgwMDc3Y2U0MjkzZjllYjY3YTA3M2IyYWE0MTFhZTIwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
     {
       "id": "claim_cc6409c7599d4d018efc6b0e636938c8",
-      "statement": "fetchArdocoApi re-enforces the pipeline matrix at request-build time: it switches on the selected type's name to assemble multipart inputs (inputText, inputCode, inputArchitectureModel, inputArchitectureModelFormat), throws on missing required files or unknown types, and posts to /api/<api_name lowercased>/start, or /api/find-inconsistencies/start for inconsistency runs.",
+      "statement": "fetchArdocoApi re-enforces the pipeline matrix at request-build time: it switches on the selected type's name to assemble multipart inputs (inputText, inputCode, inputArchitectureModel, inputArchitectureModelFormat), throws on missing required files or unknown types, and posts the main run to /api/<api_name lowercased>/start; a SWATTR run with findInconsistencies goes entirely to /api/find-inconsistencies/start, and the separate inconsistency run for other types also posts to /api/find-inconsistencies/start.",
       "evidence": [
         {
-          "resource": "repo://src/util/ArdocoApi.tsx#L25-L100",
-          "version": "repo-lines-v1:sha256:942b579b91c6ab0a0f48a0a2cc3ddcee8c843d29236828ed9cc74f2980caaeff:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyM2NkYTQ5NDYzZGZmYTY1ZTQ1YTBiZGZmMjQ4ZjY0ZmJiNjIxZTEyZjBjZGQ5ZGQ2NGQ3MTg5YmRlOWQ0MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyODY3MTczMzE5ZWQ4ZjVkZDRhMTBiYzE4NzNjZTg5ZmU3ZGU3Y2UxZDM2N2QwMTFkZGM3MGJiN2Q0NjhjMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzNzY5ZmM5NDdkODIyZjhkNWFiNWZiM2FjYmE0NDZhZWFkZmQ2ZmQwMDMzOGQyZGI5MmJhYjc4YjYyMWFiNGIifQ"
+          "resource": "repo://src/util/ArdocoApi.tsx#L29-L35",
+          "version": "repo-lines-v1:sha256:82173906c13b0e71f62b7edb4c3ec6234ea1b942d9b976d1bd5ef77fc33117d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI5MjJlNzBiZjU4NjBlODk2NGY1NzQxMDNhZDcwNTVjNzBiYjFmNWI0YjI3NTQwOTA4YjE5NTllYzIxMDc4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2EyYjdhYjM5MmY2MDQwYjMwYzJjYTE5OGUwNzNlOTkyZTNmNDJlN2VkMjBlZjRkZmM2YjBiY2ZkZWY3ZTg4YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzY2OTc0M2I2YjQzMzU0YjA4MTI5NTdkMDI3Mzg5YTdhY2YxNjU3MTJmYjAzMGE5ODVmODZkOWM2MzIyYTM5ZCJ9"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L39-L100",
+          "version": "repo-lines-v1:sha256:e53a039bead5718f509e556e6393cdc5d02848750981fb2141a8ff91109e79f6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2Njk3NDNiNmI0MzM1NGIwODEyOTU3ZDAyNzM4OWE3YWNmMTY1NzEyZmIwMzBhOTg1Zjg2ZDljNjMyMmEzOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3ZWZhNDQ3MTU3YTY0M2YwOTk2NjRjYmYyZGI2YWI5YmYwYTVlN2I0ODc0MjkwZWU0NDgxMmNhZWVkYWJmYjAifQ"
         }
       ]
     },
@@ -41,8 +45,8 @@
           "version": "repo-lines-v1:sha256:49d1e00402ee173540fb29497cd3c53fe2e7020d70b006f6755bd425ea7d3584:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY0ODIyNzFlZTBhOTRjMTYyMDdmYTBhZGY1NGFiZTYwNTk4ZDcxOGM1NWJjMDJmMTRmMmQ5ZDdiYWNjMjg2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjU2NjNkNDY0MmY3MzgwNTNiOTQ3Y2Q1MTgwYjdlMzE4NmNmZWE4M2I2ZTkzYjllMjkzMjg1YWM2YmJlOTljMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmVmYTBhZWJmZWY4ZGViYWRhNTUzYzk0MGVlNzk5NjIxMmI0NDRjNTQwNzBlMWE4MGJlOGFhNWE3ZDQ1MzQ5YSJ9"
         },
         {
-          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L4-L48",
-          "version": "repo-lines-v1:sha256:8eafe7ac547d2c836f6ecb09a0b7d47937d189302f50be87082a60a558dfda08:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMzNkMzE5MGJkNDg0MzdjNjRhMTk5ZDU4MTVhN2EyZWMzYmI4ODYxMWYwNTdjMjlhMDg0NDlmNjY0ODBlNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ZjJjNDkzNDU0NjhmYzZkYTM4MDEzYWUwZjkwMjU5NzRhNDZlYzU4ZGVkMDRhYzE0ZWZkZTlkNDAzNDFmNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlMGRhZWMxMjNmZDQ5NmE2OWE4ZDdkMTQ1NmEwNWRiYjc5MGEyYjViYWUxMjJlNzEwMjk3NDAyYjI3NmZjMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2ODljZmVjZDdhYjdmNDZhZGRlNGJiMjUyYTYxMmYzMjhiNWQzMmQ5YmNhNjE3N2JlNDVlZmUyZDRmZTMxZWIifQ"
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L4-L59",
+          "version": "repo-lines-v1:sha256:f87c17c78d9865a1fc98ff357ae8aa52863de910be39e0c760a3282bb5415262:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5ZjJjNDkzNDU0NjhmYzZkYTM4MDEzYWUwZjkwMjU5NzRhNDZlYzU4ZGVkMDRhYzE0ZWZkZTlkNDAzNDFmNGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlMGRhZWMxMjNmZDQ5NmE2OWE4ZDdkMTQ1NmEwNWRiYjc5MGEyYjViYWUxMjJlNzEwMjk3NDAyYjI3NmZjMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2ODljZmVjZDdhYjdmNDZhZGRlNGJiMjUyYTYxMmYzMjhiNWQzMmQ5YmNhNjE3N2JlNDVlZmUyZDRmZTMxZWIifQ"
         }
       ]
     },
@@ -51,8 +55,8 @@
       "statement": "The backend get-result payload (sample test-sadsam-json.json) has requestId, status, message, traceLinkType, and a traceLinks array with sentenceNumber, modelElementUid, and confidence per entry; the result page polls /api/get-result/<id> for up to 240 s at 5 s intervals until status is OK, keeps waiting on ACCEPTED, and otherwise surfaces the server message as an error.",
       "evidence": [
         {
-          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L21-L50",
-          "version": "repo-lines-v1:sha256:78fe7273ecd31616b768d8880ad20378ee329b0c1cca6e35375b3f7399558fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYWNmODk1OGU4YmMwMTE2NGU0NzlkMjZkMjI4Nzc0MTliZGM2MmVhZTJkZjBhZDBlNDk3ZGM3YmE0MzJiOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjM2MDIxZmRlNDQ0ZjlkNWI2MDY1Mjg4NzU0Njg4ZmFiNDYyNTRjMDZlNGUzZTdkMGY3ZDI1ZmVjMjgxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMifQ"
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L36-L56",
+          "version": "repo-lines-v1:sha256:8e80dd83b2cb4d4020d39366145ce8c259a14b9f3b539a405c5bf7e34f8a703f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxZDkxNWE2NDI2MTY4MDUyMmUxNTFkYmRjMDBkYWFhNjA5YzAzODViY2JlNGY5YjMyMjBjNmYzY2FjMmYyZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1N2E5ZjBjMWYzNThhZTA2MjY4MTQ2MjEzZjY2YTI2ZTMzYWRiMGRkNTQyZDQ4MzQ1Zjk4YjZlYjFhNzhmNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmOWY1YTM1NjZmNWQyNjQwMzYxYjM4MGU0ZjcxY2M3MTU5NzQxNzQ4YTIzNmNhNGEyMTlkMDY3NTFkZTFjODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4ZmUxMDM1ZDRhZWJkZjQ0NjAwMmE4MTQzMGNjMGFmZThjZWQzM2ZiYzY4MmIzNjkyMmM2MDU0M2U1ZWEzNzYifQ"
         },
         {
           "resource": "repo://test/test-sadsam-json.json#L1-L20",
@@ -71,24 +75,6 @@
       ]
     },
     {
-      "id": "claim_4846a816b8344ca78cb3715edb450d77",
-      "statement": "Inconsistency detection is restricted to the SAD_SAM (SWATTR) pipeline and enforced in three places: ProjectUploadContext.updateFormData resets findInconsistencies when the selected type is not SAD_SAM; fetchArdocoApi throws if inconsistencies are requested for another type; and the ProjectDetailsStep checkbox is disabled unless SAD_SAM is selected. Inconsistencies are parsed from the result only when the inconsistencies query flag is set and the payload contains them.",
-      "evidence": [
-        {
-          "resource": "repo://src/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep.tsx#L15-L51",
-          "version": "repo-lines-v1:sha256:1ebd70c618febd843da2ce6363301c9cbf509dd246d932878ef858279aff2ba3:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0YzU3ZWU2ZWU5ZjgyNmUzOTJmODEyMTE3NmI3YTU2YzYyNmYxNTAxYmQ4NDJhYTNlY2M2ZDZlZGEzODY5ZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhNDE0MzY3NjZiMmY4YzRmZDcwNzZlOWE3YmUyZmIzYzI0NTcyODIyOGJjYjlkYzNhNzZmNTFhNWE0MGMxZDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiY2I5NDg2YThlZGM3YTkyMmQ1NWRlMGQxNGIwMDAxODY2ZTlmMTcwMmU5ZjRlN2JiNzRkZGFkNWZlZTAwZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmMjkwYmJkOGFmZTA0MTY5MDk5MmU4N2M0ZGNjZTJkYjBlM2I4MzZkMGQ4YTQ5MDA3NzRlZTBjNmFjNWNlZDYifQ"
-        },
-        {
-          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L88-L99",
-          "version": "repo-lines-v1:sha256:167f8d7c989b7bf2900727ef0d081a2e15d3bebc418433a25d8b73e1e74428cc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNTNiYjE1ZWMzMmEwYmNiYTllNTVhYmJmMDE5NWI5YTZiNDRiMjI1N2RmZmQyMjJiOGZmYzQyMjk3NjA1MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzOTNjMTFiOGI0NTI2M2IyZWU1ODkyNDk2YTk1YzFjYWQxYTczYzg1ZmUzOGY3MDliYjlmNTMyYmQ5OGE2NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ZTVjZGMxZjFkOTdlZDY2YjRmYTlkNGU0MGU2YzI2YzY1MGIwNWVhNzk2OGRiYWJiNmQyOTU5ZmFjNzY1NTUifQ"
-        },
-        {
-          "resource": "repo://src/util/ArdocoApi.tsx#L21-L28",
-          "version": "repo-lines-v1:sha256:f40f3932bfc2974018cb8d5412bfcc45d4c8bdee244088631657c2a8edcf0b2f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzBlYzI5YTBkMjgyYzg5ZTUyZDBiM2MxMmRjNDJhZTcwMDRjOWEwN2RhYjBlN2JhNjM2Yjk4NjQ4Y2JlYzY2OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU1NzAzOTZiMWIwOGVlYzY0MWM0OTBjNDZkM2JlNzkwOTBjODA2ZWQxOTY0NWExMzM3NjkzZTY1MzZjNmE5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg2NWY5YmFjNzBkNDVlODBmMDFlZDEzZjFiZmQyNzdlMGZhNmM1NjM2MzI2YTNjNGIzNTQ4MTJkZTBlNmQwMiJ9"
-        }
-      ]
-    },
-    {
       "id": "claim_995cac8c152a4879a1efcb35f99fbdf8",
       "statement": "TraceLinkConfiguration is a string map fetched once per API address via GET /api/configuration (stored as originalTraceLinkConfiguration plus an editable copy in formData); at submission fetchArdocoApi filters out entries with empty-string values and sends the remaining config as the additionalConfigs multipart field.",
       "evidence": [
@@ -97,40 +83,108 @@
           "version": "repo-lines-v1:sha256:87a086583fed3ca910ac354e0b57fb519dd95b48e26232e9af0bdee296f3a416:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiN2YzZWFjNDczYTA1MDUzOTllZTE1NTE5Y2FiZjk4OGM1YzQxODkwNGJiM2U3NGIzY2MzZmFkOTk5OTZlYjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhY2U0MmNjMWY0NGE2OTNjOGM2Njg4ZmI1OTdkOGJmMDQ3YTZlMDc3ODIwYzdkNWYxMmYzOTFhZjExMjY3OTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4MWI1ZGI2M2RhMWYwNTdiMjYzYzdmZWM3Y2FjMGY5NzBhMDhlYTMwYTVmMTIxZWM0ZTcxNjIzYjRkNjAxMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjM2RhNDZiZDVkMzNlYmFkZDk1M2U2ODg3ZGMyMzE0NjhiZjVmNGViYWE0MjEzZWIxNWU2YzhkZDEyNjNmNjQifQ"
         },
         {
-          "resource": "repo://src/util/ArdocoApi.tsx#L33-L38",
-          "version": "repo-lines-v1:sha256:5a4e381e03eb4d75dc2215d76cf73fb4d68c609a23bd45e33a3bf821e5c82111:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjYwNTczODA1ZmEyYjljNGM0NTAwMWY0YjkyZjBmODM5ZGE0YmQ5ZjkyN2U5NGVkZWZhZDdiMTE4MjE3ZTNjNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWExNWMxN2Y3ZjU2MDUwZjA2YTVjZDk4NjMzMzRhNWI0MDU1MTJlZmYwMmM2NTRhZmMwOGFmYjkxMjZkNjJkMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTk2ZTEyYmFlMmIyMmRkMmY1NjNhMWQ0ZDBiNjA2NGJiNzliYzYzYjc4YjI0NThhMzBiNzM0Y2VhYjM0ZDQ0NyJ9"
+          "resource": "repo://src/util/ArdocoApi.tsx#L138-L147",
+          "version": "repo-lines-v1:sha256:a65c6994d3f81560137030ede3446ee9fa7fa7f5aeecbe60beb43f89e4f85086:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YTFmMWVmMjU3YTU2MTkwM2ViZmNkMjAyNDBiYjNkNDAzYTFmMzJkYjdmZTFlZWJmNzlkODhjY2M3ZmM1OWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmM2EzMThmYzllMjkwMjc0N2I0ZmExY2E5ZjliNzk0NTFkZDU4NmExMmQwOWU0MDAyYTA4ZTExMTUyZDk5ZDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0MTNlNDQzMGEyYzZiOGNiNTIxMWE3M2RjMjMyY2M1Njk4ODViYWEzOTQ3YmI1M2IxMTQ2ODgyMDc3MzI3M2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkZjYwM2E4NzQxZjMzOGQzNmM3N2Y2ZmRlNjU5NDVkMTc2ZDdlYTMwZWU5NDgzZjEwZjViYzVmNTJkOGNiNGQifQ"
         }
       ]
     },
     {
       "id": "claim_3da8fd94caa241f5882ade6bd0c705ee",
-      "statement": "Project identity comes in two kinds: the backend requestId returned by pipeline start (validated by fetchArdocoApi) used as the poll key and storage key, and a client-generated uuidv4 used as the storage id when visualizing pre-existing trace links. Either id keys the OPFS directory (storeProjectFiles/storeProjectMetadata write files plus project.meta.json under getDirectoryHandle(projectId)), and ids are URI-encoded into /view/<id> or /view-provided/<id> routes and decoded in the result page.",
+      "statement": "Project identity comes in two kinds: the backend requestId returned by pipeline start (validated by fetchArdocoApi) used as the poll key and storage key, and a client-generated uuidv4 used as the storage id when no backend run exists — both in MultiStepFormLoadProject.handleSubmit (visualizing pre-existing trace links) and MultiStepFormNewProject.viewFilesOnly (viewing uploaded files after an API failure). Either id keys the OPFS directory (storeProjectFiles/storeProjectMetadata write files plus project.meta.json under getDirectoryHandle(projectId)), and ids are URI-encoded into /view/<id> or /view-provided/<id> routes and decoded in the result page.",
       "evidence": [
         {
           "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L54-L67",
-          "version": "repo-lines-v1:sha256:196aff70d7c09f7d0f49cd19c34a6968ae8a31ffc080e968225c5b9f729c7fe4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4NzY0YTg0MTE5MzBiMmJlOGY4OTc0YmU0MTZmMGY5MDIwZTZlNTgyZjM0MGQxN2Q5MWEyN2VmMDU5N2U0MDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmYjM3ZGE5ZWYzZGZhYzA4OWM5ZDA1ZmE2OWZiNzk4Y2VjMDg0MWY3MGRmM2Q0YjZiMDUwOWJiMDU0MTdmOTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmNzZmYWRiY2RhMmZmNzY2MjQ5OTg1YmRjM2Q5N2U0NzkyZGIxYTczYTQ3ZGQzNGVjNDA4NzMwOWI2ZjM0MDMifQ"
+          "version": "repo-lines-v1:sha256:ba1725d5b647c70f76e2429f7059f35491b23db8e777aaf3437cab185a0bb953:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlMjNmYWRjOWE5NTVmOGUyOGUyNzY2NTg2YzVmNzgzYTc3MzU4ZDViMGRmMjkwZGI2OGIzN2ZjNjJiYjcxMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhZjIyY2YwNzMyNTkyYzI0NzE0MWNiZTYxZWZhMTEwMTI2MTJmNWEzMTIyYjlhZjliYmFmNTJmNTcyNGQxOTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3MzVkYjIyYjg4ZjJlZTFlZGYxNzY0OThmODYyZDhhYzQ4NTI0OGZjYTJhZWUzMjNhMTY1OGM4NzIwYWFlYmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5ZGQ1ZTkzZGM3ZTYxMzcwMjljNWNjNWU3MDQzMTQ4ZWFjNjExMGQ5OWQ3YzhjYzZkNDg5NDVkN2Y2M2ZlM2QifQ"
         },
         {
           "resource": "repo://src/components/multiStepForm/MultiStepFormLoadProject.tsx#L52-L64",
           "version": "repo-lines-v1:sha256:e82db8bf805ac634ebc4fc57756932ede8e3d70e83270d95b4f793ce7ff89b52:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjZDhkMzNiMmY2MmVkOTE4NGVjNDYyYTg2MGFiMzE4YTlkMmY2ZWU4MTUzMGZmMTkwZGIyNmNlZjcxMWJiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzN2U3NGE3NDZmM2U0ZmE5OGQ3Y2I5OGRiMDdkMzBiZmY2NWNlZjY3NmYxN2FiMWVhNDkzYWM0ODQ5MDY4MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzZjRhZDBlMzU4ODk2YTVmODc5ZWI2Nzc2MjBhNWY5NTQyY2YzYjgyZTk3NGQ2YTViNmE4ODExNDc1ZjYxMGIifQ"
         },
         {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L148-L164",
+          "version": "repo-lines-v1:sha256:deaac961265f664e0405fc3884044b73c911deae2fc758267e05ab6a68a785fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1OTNjZTUyZTJiY2NlOWE1Yzg5OTc2NmIzNTE5M2UzMzhiNDg5MWZhM2YzM2Q0YzJiZDA1MTUzOTRiODY1MWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzMzhmZDI4MWYxMDY0NzIxODQzZDM0ZjA3OGNjYzJjNGNjNjk4M2U1YzgyYmQ4MmJlZjk5MjYxZWQwNmNmMjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRjODY0YTExZTNiNWNkYTI4ZmI1NTgzYWM2MTgwNGJhNThiNGExNjA2YzhhYmJkY2U1ZTA3NWY4MjUxMTdjZjkifQ"
+        },
+        {
           "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L76-L110",
-          "version": "repo-lines-v1:sha256:d0bb407ff8598bb51db31c834e4a62817bfd3ae4b20de9259d4abd2656f78139:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ODM1OTEwYjcyODU3MGFhMWRiYWI5ZmNhMzZmZGU3MWEwM2E5OWVjNDAzNTMwYmVlNGVhZDA3ZmYxZDhhNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzZjVhZTZlOTI4MjM2Y2Y1NWZlOTQyZGViNTM2OWNlYmRhZjBiYzNlNjU0ZGQyYjlmOGI5ZjJhNTE1NWRjNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlYjgyODFhMTM2ZmJmNjQ2YTYzYTQyMWE0NWNiM2I5MWI1ZjM0YWZhM2VhM2NhODNkNWEwZTY4MGFmZDU0NTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0Mzc3N2I4YjNiZTlkOThjOTJiMjZkOGU5MWZlZTU3ZDhhYjNmZjI4NmM4M2U0MDgxYTkxZTYyOWM0ZmY5ODMifQ"
+          "version": "repo-lines-v1:sha256:4a1eed73f5615c77572bf9e28e814f413f55312c22c2aeb5b1d83709182efe72:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NWRkMDdmM2Q2ZWU5OTljYTE1Y2E3YzM5MDBmZGViMzdkNTlhYzhmYjQ1YjlhNjkzMmJmODBkNmJiZDgzMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2ZTY5ODUyZTYxOWQ1NWY5NGYzODc0ZmU5YmYzZDgyMTUyMzQxYWUxMzk5NGMyZjkwZTU0NmU0ZmFiYmZhNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRkNzhiMTI3YzhhOWFmM2QwZjJhZWMzMTIxYTc3ZTBhZDk2ZGE2YTc5MzdkY2RmMTU5NzNkODMwYjZkNmE5MmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxM2E5NzFiOGZmMWU3YWRmYjc4M2YxMTI0MWU5MzhjMWQxNTAzZWIyZmViZmE3YjcyZWU0OGFkZDc4NDU5MmYifQ"
         },
         {
           "resource": "repo://src/util/ArdocoApi.tsx#L102-L123",
-          "version": "repo-lines-v1:sha256:cb054b7a509f330baf8d761ecc4fd51395d818fa471b8e67dc822a41bb1b0bee:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExZGY4N2E0NzMxNmM3MDhjNTUwMjA5OGU5YWY2YzQ0NTM0ZWI4MGJlYWRjZjYwNjMwMjhlZmNhODU5MzdhYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZjZlOWQwZjQwMDE0MjEyZjVhY2VhZDE2ZWM2NDY5OGY0MDEwNWJjMTRjMWM3MTBmY2YxYWVkMzNhMmRmNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4ODk3YTU5YmI4Yjg2YzM4ZWM1MjlkYWUwNjJiNzkyZDBkNmQ5ZjljMzA0YzgxZTdkNWI0YzVmZTk1MzI4MWUifQ"
+          "version": "repo-lines-v1:sha256:29437729225a20672a41a64c0a12645e75c2ca57476bb1c4abcc7f546f50824b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmMzk4NTJmMDVlMzIwN2E5MzRkZmVhMTYxMWYyZTM4ZGE2MDA3MTNlMmJlMzVlZTA4ODFkMjI2MzBjMDE0NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyM2Y2ZjkwMzE2YWM0YzZjOTI3MjFmN2Y4YTc5ZTc1ZTFhNjg1MWU1YTZiMDU1MGRhMzU4OTE3MWQzN2I4ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZjZlOWQwZjQwMDE0MjEyZjVhY2VhZDE2ZWM2NDY5OGY0MDEwNWJjMTRjMWM3MTBmY2YxYWVkMzNhMmRmNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwNjA1ZDc0ODc2OTkwZDRhNDhhNDA5YzY3NWZjN2IzYjU0ZmVhMmMwMDc5MDlhZWM5NDRkOTA0NmExNGQ0MzcifQ"
         },
         {
           "resource": "repo://src/util/ClientFileStorage.tsx#L6-L39",
-          "version": "repo-lines-v1:sha256:25f82842de6fd09ebc083671e3de697ec0063afc859e0f9af6b82635ad67d35e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxMWFhMmNkNzM2MTdjZDEzZTVlMWFiNDlkZTRjN2M5YzkyNTY2MTM4NmRkY2Y5YmViYzQ4ZWFjZDA4NTBiYTUifQ"
+          "version": "repo-lines-v1:sha256:05bc132c7f333b96dcff051c153ff91eb5977bb70f340beeb5702e3763d62fb0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjZjdkMzIwYjFmNzU5NGNjZTFhMzljMGFkYjNjOWEzZjQxZGFjZGIyYmYzYTMzNmFlNTc3ZGE5MTJhOTU5ODEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a7cf9782a8b048ebbda64e4f40df4617",
+      "statement": "Inconsistency detection requires exactly documentation and an architecture model and is available for every pipeline: canFindInconsistencies (hasArchitectureDocumentation && hasArchitectureModel) is enforced by ProjectUploadContext.updateFormData resetting findInconsistencies when the artifact combination is lost, and by ProjectDetailsStep disabling the Find Inconsistencies checkbox; the InconsistencyCheckbox tooltip documents that SWATTR folds inconsistencies into its run while other approaches get them from a separate SAD-SAM analysis.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/dataTypes/TraceLinkTypes.tsx#L70-L77",
+          "version": "repo-lines-v1:sha256:b209267ba9a518ef9ac23c07c699596da5c06813d4052821b2e0d3e198b9f6bc:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU1MzM0ZTdkNzA5ZDdmZmU0YTg5MDM0OTU1OTgyZjhhNDY3NDYzOWUyODBmNDkwOGVjNmNjYWY5NGMzMmYyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2E5YjFiNjFlNTdmYzZlOTdjNjNkNjM3ODNmNzVkNjRiMTQ5ODFmNTRlYTg3Zjg2ZDU1YjlmYmJiYWVkMTNiNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDlmOTMwODNjMTk3MTIxYjk4MjcwMGJhOGFmYWJkMTcyMmNmMWQzZTc0MDQ1MDllODBlZmEyNzI0N2Y2MmYwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODU3OGQ4NGI4ZGU3Mzc3MDFiOGNhNzVhYTQ5NjM1ZjFlOTM0MTI3YTk0NTNmZmE1MWY3OGRiMjJmZWFhYmVhMSJ9"
+        },
+        {
+          "resource": "repo://src/components/inputComponents/InconsistencyCheckbox.tsx#L38-L48",
+          "version": "repo-lines-v1:sha256:08463c202eacfb46bf87af64595276342aa816c78cdc94660917c9cb63d6f505:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzYjgzNjgwNjY0MDUzZDcyNjA2Y2ZhMGI2MTZhZjg3M2M4OThlOGVlZjE1MjFhN2E4YTViOWQ5YWIzNTM2MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzMWI3MzkwZTY1NjEwZGZiY2NlNmFkNzkxMjlkMDQzOTUwZTNiMzU3MDViODY5ZWVmNGMyNzg5YjI3ZTNlNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxNzhkNDIyY2Q0MWQ5YzYwOGQwNGRhYzdjZjVkYWEyMjhhNjJkODZkZmNlYjUyMzIxZDFiNjAzMTkyYzYwZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5N2FmM2IzMjI0NGM1OWZkMmUzYTYwZGExOTk4ODM3ZjM1Mzc5NzNjN2E2ZDIwYmMzOGU5YTMxY2E3MDFmNjMifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/steps/projectDetailsStep/ProjectDetailsStep.tsx#L19-L50",
+          "version": "repo-lines-v1:sha256:5ab77b591ea82792d018963d100494870989160938dee74cacfeaf96fb525956:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhOTM0YzlmYzhiNjU0ZTAyZDdmMzg0NDRjMzRhOGM2MzBjY2VjNDc0YTMwZmExMThiNDE0MDA0MTUyNTc4MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiZGEwODlkZDk3YWUwNWI2NDJlMWQzZWUzMzA0NzcxOGEyYmFlMTY0YzMzZmE1NTM1YWE1YjZhNTMyMzIyYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3MzE4MjdmMWFmMzY3MzE3NzljOTg4NjA5OWMzZWRkMzBiNGZlZTlhMmNkODE2NDQwODYxZjRjYWU4YWVjYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5YWU0ZTg4M2RkZDRiMTM4ZjIwYjkwMzBjMjFlMTQxMjliODRmZjBjM2Q5YWM0Yjc4Yzc1Y2RhOTQxODI5MTMifQ"
+        },
+        {
+          "resource": "repo://src/contexts/ProjectUploadContext.tsx#L86-L99",
+          "version": "repo-lines-v1:sha256:f9af12e942c7e3048fda939589286b23d17908a38672ea1a26d314149028ce69:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhY2U0MmNjMWY0NGE2OTNjOGM2Njg4ZmI1OTdkOGJmMDQ3YTZlMDc3ODIwYzdkNWYxMmYzOTFhZjExMjY3OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyYmE3OTE4Mjk5M2MxNGQ3Mzc2ODYyYzNlZDJjOGE3OTI5NGExMjA0YTZjNzVhMTBjMzI1MGY5ZDljMTA2ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmMDgxYzdmNzI2NjM5MWQ5ZTY1ZjJhNjY1NjNhZDliYTBhYzE0MzBmYTcwN2E0N2M4MTI1NmRjYjk1YWVhYjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_10ff293aa4e44e7eb049e5e2745f48cc",
+      "statement": "For non-SWATTR trace-link types with findInconsistencies, fetchArdocoApi starts the main pipeline run and a separate SAD-SAM inconsistency run in parallel via Promise.allSettled, reusing the same documentation, architecture model, project name, and configuration; it adds the documentation and model to usedFiles if not already present, rethrows a rejected main run, and returns either inconsistencyRequestId (separate run started) or inconsistencyError (separate run failed to start, main result still returned).",
+      "evidence": [
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L104-L134",
+          "version": "repo-lines-v1:sha256:d3b57bb5f3e8d0329ebffb7fe9e55496b1c970840ac4ee92f52b741f997fca02:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMGRmNTgxOTBiNGM2MmE3YjgyMzc3YjYyZWFmZWFhZGEwMDdkZTc4OGUxOTg3MDVkZTU3ZDZlZDA1YzBmOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkZjY3NWFiYTVmOGZmYzVlZmNkZjk5N2JkZGRhNjYwZjFjYWY2ZWY4NjBkZWM0MzZmN2M0M2U4NmNlZDllOGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3ZWZhNDQ3MTU3YTY0M2YwOTk2NjRjYmYyZGI2YWI5YmYwYTVlN2I0ODc0MjkwZWU0NDgxMmNhZWVkYWJmYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0MTNlNDQzMGEyYzZiOGNiNTIxMWE3M2RjMjMyY2M1Njk4ODViYWEzOTQ3YmI1M2IxMTQ2ODgyMDc3MzI3M2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ec91c406abf34f988b15d1e92d4c78d7",
+      "statement": "The wizard encodes the inconsistency outcome into the /view route via inconsistenciesParam (requestId, inconsistencyRequestId, inconsistencyError -> 'true', separate run id, 'failed', or 'false') and persists inconsistencyRequestId in project metadata; the result page resolves an InconsistencySource from the URL parameter (falling back to loadInconsistencyRequestId when absent), parses same-run inconsistencies from response.result.inconsistencies, polls separate runs with the same 240 s pollForResult using only their inconsistencies (their SAD-SAM trace links are ignored), surfaces 'failed' as an error, and augments the display options with ARCHITECTURE_MODEL, DOCUMENTATION, and INCONSISTENCIES when inconsistencies are shown.",
+      "evidence": [
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L201-L222",
+          "version": "repo-lines-v1:sha256:c1f2f8f9437e7ef1437ed64e94dc2b1b399e19d4fb7a57622700e49cac5e3731:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjYWQxZjU0MzJiZWJiNmVhYWYzZmRhMjNkMzEzZTkzNDRmNGI4YTM3YzliOTgzZjI1MmIzNjg1MTEwMmYxYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViNTU1ZWE1ZDdlZGNkMTVmNTI0NzMzMThiMmNjZjM0NDZiODY0YTJmNzgwMWRlOWMyZTc1ZDg1N2JlMjU4NTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkOTIwMTE5ZWQ0ZWEzMDRkMDBmNzZmZWRjNWQ2MTBlNTc0MThiM2EzZWFjZTRkN2RiNWIwNjljNTY0ZTNlNGYifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L65-L76",
+          "version": "repo-lines-v1:sha256:4a4bd6f7d2cc119c226ae5d645142aea7e492121671955e78e0a01b4c25c3a46:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwMTRmMmZkMTRjMmZhZGM0MmVmY2MyOGNhZjIyMDczOWE2ZjQ2YzNlYTU5MzRhYjMwMmY5YTdlYWM5ZGNmYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3OTI5NGE4NDVlZGYyNTczYjhiYjk3NzlhNzNmYWRiMmRlNWRmMDdjMDM1ZjRkYmEzZWNlZmM4NDk5YmFjNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3MzEwN2FiOTg2ZDc1MjdkYTA0MWU2OTIzMWYwNThkOWM2MWFhODJmOTk0ZjZjYjBkZDEzMmM3Yzc1OGE5ZTEifQ"
+        },
+        {
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L96-L113",
+          "version": "repo-lines-v1:sha256:cd9e4a02c7196c3987c1daf9802867e3a44df0a23111576e1a0df1cbb24de4f2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmYjM3ZGE5ZWYzZGZhYzA4OWM5ZDA1ZmE2OWZiNzk4Y2VjMDg0MWY3MGRmM2Q0YjZiMDUwOWJiMDU0MTdmOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhOTY1MDhkOTQyZDY1NGMxNjEwYzVlNDJmYTlhOWFmYWJlM2VjNjg4N2Y4ZDgwZGJmZjgxMzdhZDk0ODc4ZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmNjZkNDk1MjlmOTM4MjFlNjQyN2ZlMDEyZmI2YWFmN2MxMDQyNjYzZDM2Njk0ZjlhZmZkZTk3Yzc4MjM4NTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMwOGRiMjI0YzMzYmM0MWU5N2YwNjE3YjBhMzI3ODYyM2QwNTJhNDIyNGRmYmZlM2ExN2EyYmMwMDU5NjlmN2EifQ"
+        },
+        {
+          "resource": "repo://src/components/multiStepForm/MultiStepFormNewProject.tsx#L24-L33",
+          "version": "repo-lines-v1:sha256:a3dc125391eef9d18ce1a0fb707ee323dfda3a34a08380ff4ce21269535129e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyYzhiMTU2YTJkNzU1OGM4ODc2MjBjM2QxNjcxY2I4ZTA3YmI2ZTgyMmJhMmY2OWJlYTU3MGQxMWU2MDIwNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5NDIwMzNmMGMzYzFlYjgzMDcwZjlhZTRmZGRlOGZlMzk4MjFjMjY0YmNhMWVhYjM1ZWZiYjk5OTZhNGNkOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkYWQ3NmViZmEyZTVhM2E5MTM5NTFhNjYxNWNiMDQzOGZhYTdlYjI5NWM3ZDU2ZWU3ODNkMjg1ZDBkYzk2ZTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc0263a7ec1e4ede96f33d57f8a2282c",
+      "statement": "parseInconsistenciesFromJSON maps RawInconsistency entries (type, reason, plus sentenceNumber or modelElementId) onto the two concrete inconsistency classes and drops unknown types with a console warning instead of throwing.",
+      "evidence": [
+        {
+          "resource": "repo://src/components/traceLinksResultViewer/views/inconsistencies/parser/InconsistencyParser.tsx#L23-L34",
+          "version": "repo-lines-v1:sha256:9a771d7d0912b62d2fef3033ed1b88a6acd76c2f9ea373b0d3b937d2ac9e34fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZGE4Y2JhYWQ2YTUwYzZjNGE3ZmQ1YmEzNjBlYWI3YTU0MzQ3YjIwMmE5Yzk1MDgxNDdjYjY0NDljZGZmZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlMTU1OTJlNzJkMTRiMzRlZjFmNzg1ZDhjMWVjMWYxNWM4MGU2MjJlYWY3MzlmYzA5ZDY4ZDIzM2I1MWU5ZmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.2",
-    "at": "2026-10-19T12:26:44.589Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-16T15:06:02.471Z"
   }
 }

@@ -4,8 +4,8 @@ title: "Operations"
 description: "TraceView development, build, lint, Docker, CI, and operational dependencies and risks."
 tags: [operations, build, docker, ci, dependencies]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-19T12:26:44.589Z
+  - by: openwiki/0.9.0
+    at: 2026-11-16T15:06:02.471Z
 sources:
   - id: openwiki-source-715dace563ef484b6e8bd1e2
     resource: repo://.dockerignore
@@ -25,6 +25,8 @@ sources:
     resource: repo://docker-compose-template.yml
   - id: openwiki-source-bb1ebe868e35e9e500714501
     resource: repo://Dockerfile
+  - id: openwiki-source-2fda883e9b76745f69f487f7
+    resource: repo://eslint.config.mjs
   - id: openwiki-source-50a18d054b596a7ed0eeffb0
     resource: repo://next.config.ts
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
@@ -41,13 +43,17 @@ sources:
     resource: repo://src/contexts/ApiAddressContext.tsx
   - id: openwiki-source-0326381582d5ae33b962835e
     resource: repo://src/contexts/NavigationContext.tsx
+  - id: openwiki-source-f34ac1e549d94dc3ac475ae4
+    resource: repo://src/proxy.ts
+  - id: openwiki-source-23142502da3ac732ed7c0575
+    resource: repo://src/util/ArdocoApi.tsx
   - id: openwiki-source-e051603d633d250ba9408670
     resource: repo://src/util/ClientFileStorage.tsx
   - id: openwiki-source-b60decb03ea1c257f6cfbbf7
     resource: repo://test/test-sadsam-json.json
   - id: openwiki-source-98d5ddb014a0fd4d678f6f2a
     resource: repo://tsconfig.json
-generated: { by: "openwiki/0.7.2", at: "2026-10-19T12:26:44.589Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-16T15:06:02.471Z" }
 ---
 
 # Operations
@@ -84,10 +90,9 @@ Type tooling: `tsconfig.json` compiles with `strict` enabled and maps the `@/*` 
 npm run lint
 ```
 
-This invokes `next lint --fix` from `package.json` — it mutates files in place rather than merely reporting, which is worth keeping in mind before wiring it into any automation. The ESLint setup in `.eslintrc.json` extends `eslint-config-next` (`next/core-web-vitals` and `next/typescript`) with only two rule overrides:
+`package.json` maps `lint` directly to `eslint --fix` — the older `next lint` command is gone from this version of Next.js, and the script runs the installed ESLint v10 binary with the `--fix` flag, so linting **mutates files in place** rather than only reporting issues. Keep that in mind before wiring it into any automation.
 
-- `no-console` at `error` level, allowing `console.warn` and `console.error`
-- `@typescript-eslint/no-explicit-any` at `warn`
+The ESLint configuration lives in `eslint.config.mjs` (flat config): it spreads `eslint-config-next/core-web-vitals` and `eslint-config-next/typescript` — preserving the same Next.js core-web-vitals and TypeScript rules as before — and uses `globalIgnores` to skip `.next/**`, `out/**`, `build/**`, and `next-env.d.ts`. It adds **no rule overrides**. The legacy `.eslintrc.json` file still exists at the root, but ESLint v10 resolves flat config by default, so that legacy file's rule overrides (a `no-console` error rule and a `@typescript-eslint/no-explicit-any` warning) do not apply. To change lint behavior, edit `eslint.config.mjs`, not `.eslintrc.json`.
 
 ## Docker
 
@@ -123,7 +128,7 @@ docker compose up -d
 
 Three workflows live in `.github/workflows/`, two of which delegate to the shared `ardoco/actions` repository workflows:
 
-- **`verify.yml` ("Build")** — the gate for code changes. It triggers on pull requests (`opened`, `synchronize`, `reopened`) and manual dispatch. A `fkirc/skip-duplicate-actions@v5` pre-job (`concurrent_skipping: 'same_content_newer'`, `skip_after_successful_duplicate: 'true'`) can skip the build for duplicate content; otherwise the build job checks out the repo, installs Node `lts/*` on `ubuntu-latest`, and runs `npm install` followed by `npm run build`. There is no lint or test step in CI, so a local `npm run build` mirrors the gate exactly.
+- **`verify.yml` ("Build")** — the gate for code changes. It triggers on pull requests (`opened`, `synchronize`, `reopened`) and manual dispatch. A `fkirc/skip-duplicate-actions@v5` pre-job (`concurrent_skipping: 'same_content_newer'`, `skip_after_successful_duplicate: 'true'`) can skip the build for duplicate content; otherwise the build job checks out the repo, installs Node `lts/*` on `ubuntu-latest`, and runs `npm install`, then `npx eslint .` (directly, bypassing the `--fix` lint script, so CI reports lint issues but never mutates files), then `npm run build`. With the lint step added, the gate is now: ESLint plus the production build.
 - **`docker.yml` ("Docker Push")** — on pushes to `main` and `v*` tags (plus manual dispatch), it delegates to the shared `ardoco/actions/.github/workflows/docker.yml@main` workflow with `image-name: traceview` and `push: true`; the compose template names the published image `ghcr.io/ardoco/traceview`. Pushes that only change `**.md` or `.github/**` paths skip this job.
 - **`openwiki.yml` ("OpenWiki Update")** — refreshes this wiki on a weekly schedule (`cron: "0 6 * * 1"`, Mondays 06:00 UTC) via the shared `ardoco/actions` openwiki workflow, granting `contents: write` and `pull-requests: write` and passing the `OPENROUTER_API_KEY` secret. Manual dispatch is also available.
 
@@ -133,30 +138,32 @@ Three workflows live in `.github/workflows/`, two of which delegate to the share
 flowchart TD
     PR["Pull request opened, synchronized, or reopened"] --> SKIP{"skip-duplicate-actions"}
     SKIP -->|"identical content already built"| OUT["Build skipped"]
-    SKIP -->|"new work"| BUILD["Build job on Node lts runs npm install and npm run build"]
+    SKIP -->|"new work"| INSTALL["Build job on Node lts runs npm install"]
+    INSTALL --> LINT["npx eslint . must pass"]
+    LINT --> BUILD["npm run build must pass"]
     MAIN["Push to main"] --> DK["docker.yml shared workflow"]
     TAG["Tag v*"] --> DK
     DK --> IMG["Publish traceview image"]
     CRON["Weekly cron Monday 06:00 UTC"] --> WIKI["openwiki.yml refreshes this wiki"]
 ```
 
-*What triggers what: pull requests hit the skip-duplicate build gate, only `main` and `v*` tag pushes publish the container image, and the wiki refreshes on a weekly schedule.*
+*What triggers what: pull requests hit the skip-duplicate ESLint-plus-build gate, only `main` and `v*` tag pushes publish the container image, and the wiki refreshes on a weekly schedule.*
 
 ## Tests and the manual fixture
 
-There is no unit or integration test harness: `package.json` has no `test` script, no test-runner configuration exists anywhere in the repository, and no `*.test.*` or `*.spec.*` files are present. Do not expect or add a Testing section beyond this reality — the validation practice is `npm run build` (mirroring the CI gate) plus `npm run lint` when UI code changes.
+There is no unit or integration test harness: `package.json` has no `test` script, no test-runner configuration exists anywhere in the repository, and no `*.test.*` or `*.spec.*` files are present. Do not expect or add a Testing section beyond this reality — the validation practice is `npm run build` (which together with ESLint makes up the CI gate) plus `npm run lint` when UI code changes.
 
-`test/test-sadsam-json.json` is the repository's only test material: a complete sample SAD_SAM `get-result` payload — top-level `requestId`, `status` (`"OK"`), `message`, `traceLinkType` (`"SAD_SAM"`), and a `traceLinks` array whose entries carry `sentenceNumber` (0-based on the wire; the parser adds 1 for display), `modelElementUid`, and `confidence`. Nothing in the source references it, and `.dockerignore` excludes `test/` from images. It serves as a manual fixture for the trace-link parse path — for example, loading it as the trace-links JSON through the `/load-project` flow exercises the stored-project viewer on realistic data without any backend.
+`test/test-sadsam-json.json` is the repository's only test material: a complete sample SAD_SAM `get-result` payload — top-level `requestId`, `status` (`"OK"`), `message`, `traceLinkType` (`"SAD_SAM"`), and a `traceLinks` array whose entries carry `sentenceNumber` (0-based on the wire; `parseTraceLinksFromJSON` adds 1 for display), `modelElementUid`, and `confidence`. Nothing in the source references it, and `.dockerignore` excludes `test/` from images. It serves as a manual fixture for the trace-link parse path — for example, loading it as the trace-links JSON through the `/load-project` flow exercises the stored-project viewer on realistic data without any backend. Its entry field names (`modelElementUid`) also differ from the parser's `RawTraceLink` interface fields (`modelElementId`/`modelElementName`/`codeElementId`/`codeElementName`), so it is a hand-written illustrative fixture rather than captured API output.
 
 ## Operational dependencies and risks
 
-- **A reachable ARDoCo backend is required.** The app talks to a REST backend for configuration, pipeline submission, and results; the address is runtime browser state owned by `ApiAddressContext`, defaulting to `https://rest.ardoco.de` and editable in the navbar via `EditApiAddressModal`. A candidate address is probed with `GET /api/health` through the proxy middleware and is persisted to `localStorage` only when the probe succeeds — a failed probe leaves the previously active address unchanged. The endpoint contract is documented in [ARDoCo backend API](integrations/ardoco-backend-api.md).
+- **A reachable ARDoCo backend is required.** The app talks to a REST backend for configuration, pipeline submission, and results; the address is runtime browser state owned by `ApiAddressContext`, defaulting to `https://rest.ardoco.de` and editable in the navbar via `EditApiAddressModal`. Every backend call routes through the `src/proxy.ts` middleware — any `fetch` to `/api/...` carries the selected backend address in an `X-Target-API` header, and the middleware rewrites the request to `{address}/api/{path}` or fails fast with a 400/403 error when the header is missing, malformed, or uses a non-HTTP/S protocol. A candidate address is probed with `GET /api/health` through that middleware and is persisted to `localStorage` only when the probe succeeds — a failed probe leaves the previously active address unchanged. The endpoint contract is documented in [ARDoCo backend API](integrations/ardoco-backend-api.md).
 - **Result polling waits up to 4 minutes.** The `/view/[id]` page polls `get-result` every 5 seconds for up to 240 seconds (`pollForResult`): `ACCEPTED` keeps polling, other backend statuses surface the backend's message as an error, and on timeout the user sees "The result is still processing. Please try again later." Long-running pipelines are part of normal operation, but a run that exceeds the 4-minute budget fails UI-side even if the backend eventually completes it.
 - **Project data lives in browser OPFS.** Uploaded artifacts and per-project metadata are stored in the browser's Origin Private File System (via `navigator.storage.getDirectory()` in `ClientFileStorage`), in directories keyed by the backend `requestId`; artifacts are not kept in any TraceView-owned server storage. Clearing site data therefore removes every stored project (and resets the backend address to the default). Additionally, closing a project through the navigation guard — `ConfirmNavigationModal`, wired through `NavigationContext` — immediately deletes that project's OPFS directory, as its message warns: "Navigating away will delete the current project's data from your browser." The storage contract is detailed in [Client-side project storage](architecture/client-storage.md).
 
 ## When changing operations-related code
 
-- Run `npm run build` — it mirrors the `verify.yml` gate — and add `npm run lint` when UI code changes; remember that `lint` mutates files in place.
+- Run `npm run build` and `npm run lint` before pushing — together they mirror the `verify.yml` gate (`npx eslint .` plus `npm run build`); remember that `lint` mutates files in place.
 - Keep the README and these operations notes aligned if build, run, or Docker details change.
 - Keep CI aligned with the Node/npm assumptions used locally: CI builds on Node `lts/*` and the image builds on `node:lts-alpine`, while nothing pins a Node version for local development (no `engines` or `packageManager` field in `package.json`).
 - Re-run the build after touching route, context, or request-building code, since those changes can break the deployment artifact even if the UI still compiles locally.

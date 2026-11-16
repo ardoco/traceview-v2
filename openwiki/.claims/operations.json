@@ -1,42 +1,50 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:754ca037f46de3926b52bcb677ae8ec0680e17dc795ec998536c4b046c91c681",
+  "pageVersion": "sha256:c6bc162c42f0114a9c24a3b770b974c0d4f381aa1133e7ea3dac514c3ee462ab",
   "claims": [
     {
       "id": "claim_1f092772521642ddbf02857ee1383b89",
-      "statement": "package.json defines four npm scripts — dev (next dev), build (next build), start (next start), and lint (next lint --fix) — and contains no test script; the lint script's --fix flag makes linting mutate files in place rather than only report issues.",
+      "statement": "package.json defines four npm scripts — dev (next dev), build (next build), start (next start), and lint (eslint --fix) — and contains no test script; the lint script runs the installed ESLint v10 binary directly with the --fix flag because next lint no longer exists in this Next.js version, so linting mutates files in place rather than only reporting issues.",
       "evidence": [
         {
           "resource": "repo://package.json#L5-L10",
-          "version": "repo-lines-v1:sha256:e7d267949022f2fe32e02fce7096c22a1ddfd6a9178c43a25baaba94dfb308b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWMxYjc4ODkyYjY5N2Q4MjE5NWUyNTYyOTA5NTQzNzRlZjQ2NWI1MjU1ZDI0MmUwNWZlOTE2NjZlMmEyZjg5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ0M2NhYWE2ZDQyYzQ2MzU4NjllODQ1MDMwNTEzODY1NTFhOGEzMzdhZjNmYTYxNzYzYTgxNmMxNWQxNTIxMSJ9"
+          "version": "repo-lines-v1:sha256:91fa6348b7e58776e496167d5835f3d7639194f625fec2cdc395e36ba17bcc61:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWMxYjc4ODkyYjY5N2Q4MjE5NWUyNTYyOTA5NTQzNzRlZjQ2NWI1MjU1ZDI0MmUwNWZlOTE2NjZlMmEyZjg5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ0M2NhYWE2ZDQyYzQ2MzU4NjllODQ1MDMwNTEzODY1NTFhOGEzMzdhZjNmYTYxNzYzYTgxNmMxNWQxNTIxMSJ9"
         }
       ]
     },
     {
       "id": "claim_623e3161fb0d4308a51a26f91c611e79",
-      "statement": "The repository has no unit or integration test harness: package.json has no test script, no test-runner configuration or test files exist anywhere, CI runs no test step, and test/test-sadsam-json.json is a manual fixture rather than automated test input (and is excluded from Docker images by .dockerignore). The validation practice is npm run build — which mirrors the verify.yml CI gate — plus npm run lint when UI code changes.",
+      "statement": "The repository has no unit or integration test harness: package.json has no test script, no test-runner configuration or test files exist anywhere, and CI runs no test step; test/test-sadsam-json.json is a manual fixture rather than automated test input and is excluded from Docker images by .dockerignore. The validation practice is npm run build plus npx eslint . — which together mirror the verify.yml CI gate — or npm run lint (which fixes in place) when UI code changes.",
       "evidence": [
         {
           "resource": "repo://.dockerignore#L24-L27",
           "version": "repo-lines-v1:sha256:dc8bcac55fc973abb31f66fb42c0bcfd41b6af5e1c4e1b2ca1677fb6acee6e1c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmY3MmNmYWM0NDg4OWVkZDA0ZThkOWEwMjEzZjJkNTQ0MDk3NDY2M2FmZjBhZGRmZmEyNTAyYjc4ZjI5ZWI0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJjYTFiYjZjN2U5MDdkMDZkYWZlNDY4N2U1NzlmY2U3NmIzN2U0ZTkzYjc2MDUwMjJkYTUyZTZjY2MyNmZkMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGZlYjNjYTMxYzE0YjFlMWE2YjlmYmM4Njg1ODA5Njc4MGU5NDkwMjM2YjllZjMxOTEyOGFlODVjMjA3MjA3OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDMwNDViYzgyNzk3ZmVmNGI1YzA5NWZkYTE3YzU0NTI3MmIyZDM0NGRhOGNlOTkxOTQ1MGVlOTI5NTNmZjAzZiJ9"
         },
         {
-          "resource": "repo://.github/workflows/verify.yml#L32-L35",
-          "version": "repo-lines-v1:sha256:05e3e93e272ae82d3b2ed1d07efd03d24fa57e0a4c70a5907aebbed60aa957a6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE0ZTcyZDljZmJhZmRlZTZiMTA4NzA1MzlhNjk4NTgwMzY1MzAzODJjZTViNzJjZTY0MGQ2MjM1NWI4NGFhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRkMWFmMWY1NGRkZjI3MTFkMDkxZDkwZjVmY2ViMTAzZDQwNjA4ZDFmZDMxZGZiNTk2Y2FjNmFjNTBmYTNlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y5ZWExYWI5YjQwMjFlYWFhYzg5M2MzMDVjNjBkZTNjZGE2NjQwZDEzYzhhNzAzODNlNDEzOWViYjZlNGU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+          "resource": "repo://.github/workflows/verify.yml#L32-L36",
+          "version": "repo-lines-v1:sha256:949e01fb787365519b139d10adef635611d4b18bca492a7a1af5b96f3567308b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE0ZTcyZDljZmJhZmRlZTZiMTA4NzA1MzlhNjk4NTgwMzY1MzAzODJjZTViNzJjZTY0MGQ2MjM1NWI4NGFhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRkMWFmMWY1NGRkZjI3MTFkMDkxZDkwZjVmY2ViMTAzZDQwNjA4ZDFmZDMxZGZiNTk2Y2FjNmFjNTBmYTNlNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Y5ZWExYWI5YjQwMjFlYWFhYzg5M2MzMDVjNjBkZTNjZGE2NjQwZDEzYzhhNzAzODNlNDEzOWViYjZlNGU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         },
         {
-          "resource": "repo://package.json",
-          "version": "repo-file-v1:sha256:27d43a5845ad2c9f65faa50a36b3280e5b7c77ee9d3d209be7886429d068808e"
+          "resource": "repo://package.json#L5-L10",
+          "version": "repo-lines-v1:sha256:91fa6348b7e58776e496167d5835f3d7639194f625fec2cdc395e36ba17bcc61:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ4MzNkNTk0OWMwM2E0MGNhOTUyNDkxNjEwYTY2NTk2NDRiM2FhNDY2MzYyZjc5OTAyMGRiZjE5ODE1NDdkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQ1Y2QyZmI0ZjNkZjg4NDUxNTI1NWIzOTUyM2YyZjhiNTQ3MmJlZWE5ZjU2NmZmY2EyMDRkYjgwMjU2MTA0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWMxYjc4ODkyYjY5N2Q4MjE5NWUyNTYyOTA5NTQzNzRlZjQ2NWI1MjU1ZDI0MmUwNWZlOTE2NjZlMmEyZjg5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjQ0M2NhYWE2ZDQyYzQ2MzU4NjllODQ1MDMwNTEzODY1NTFhOGEzMzdhZjNmYTYxNzYzYTgxNmMxNWQxNTIxMSJ9"
         }
       ]
     },
     {
       "id": "claim_cb87b9e0340941ca91698ae7d7b9be5b",
-      "statement": "The ESLint configuration extends eslint-config-next (next/core-web-vitals and next/typescript) and overrides exactly two rules: no-console at error level (allowing console.warn and console.error) and @typescript-eslint/no-explicit-any at warn.",
+      "statement": "The active ESLint configuration is the flat config in eslint.config.mjs: it spreads eslint-config-next/core-web-vitals and eslint-config-next/typescript and globally ignores .next/**, out/**, build/**, and next-env.d.ts without any rule overrides, so the Next.js core-web-vitals and TypeScript defaults apply unchanged. The legacy .eslintrc.json at the repository root still declares two rule overrides (no-console at error level allowing console.warn and console.error, and @typescript-eslint/no-explicit-any at warn), but the ESLint v10 binary that the lint script and CI invoke resolves flat config instead, so those legacy overrides have no effect and lint behavior must be changed in eslint.config.mjs.",
       "evidence": [
         {
-          "resource": "repo://.eslintrc.json",
-          "version": "repo-file-v1:sha256:cbd66c4f4c195845dff1077a725d0320337b214760002d49705975b78969f6db"
+          "resource": "repo://.eslintrc.json#L1-L18",
+          "version": "repo-lines-v1:sha256:cbd66c4f4c195845dff1077a725d0320337b214760002d49705975b78969f6db:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://eslint.config.mjs#L1-L9",
+          "version": "repo-lines-v1:sha256:813c12d29e0f5c6a686df358bea1488daca27f90ba8c267f0734576c37d60390:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkzOGJjMjdhMTBiMGQxMDEwNzdhNjBmN2VkZDYyOTI2ZjRjZDgyNWIyMTQxOWExZWQ1YjQzNWM4MTZkMWJhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVlMjZjZDkyMzY2ZjYwZDhlZDkyZDAyMzlmMDdmZWY3NGNhYzE0YWE2OWFkZGY5YzJjYzBkMTFlYjAwYTQ2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://package.json#L31-L31",
+          "version": "repo-lines-v1:sha256:2dea77b7f5d82966116848076d2f348ba89c0ee3ce57fb7a60fe73faeaec38b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRlYTc3YjdmNWQ4Mjk2NjExNjg0ODA3NmQyZjM0OGJhODljMGVlM2NlNTdmYjdhNjBmZTczZmFlYWVjMzhiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRlYTc3YjdmNWQ4Mjk2NjExNjg0ODA3NmQyZjM0OGJhODljMGVlM2NlNTdmYjdhNjBmZTczZmFlYWVjMzhiMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjJhZDA3OTRiNWU1YTU4YTQzOTU5Y2NmYTQ5N2U5N2FhZTNhZGM3MDc0NWFhMWI5MDM3OGQ5NjkyOWMwNTU3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTdhYWNiMmU5OWI1MDZkOGJmMmU3NjI4OTJhNDA1YmMzOWJiMjg1MGM0ZWE5ODU1Y2FkMmYzNTY1NmRkNmJhNSJ9"
         }
       ]
     },
@@ -104,11 +112,11 @@
     },
     {
       "id": "claim_b3c40ab56f7840f1a5a873477344dbd6",
-      "statement": ".github/workflows/verify.yml is the build gate for code changes: it triggers on pull requests (opened, synchronize, reopened) and manual dispatch, uses fkirc/skip-duplicate-actions@v5 (concurrent_skipping same_content_newer, skip_after_successful_duplicate true) to skip duplicate builds, and otherwise checks out the repository on ubuntu-latest, installs Node lts/*, and runs npm install followed by npm run build — with no lint or test step in CI.",
+      "statement": ".github/workflows/verify.yml is the build gate for code changes: it triggers on pull requests (opened, synchronize, reopened) and manual dispatch, uses fkirc/skip-duplicate-actions@v5 (concurrent_skipping same_content_newer, skip_after_successful_duplicate true) to skip duplicate builds, and otherwise checks out the repository on ubuntu-latest, installs Node lts/*, and runs npm install, npx eslint . (reporting lint issues without the --fix flag), and npm run build — with no test step in CI.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/verify.yml#L3-L35",
-          "version": "repo-lines-v1:sha256:08e925654589c293f595c5530e7353dc737d453c131e6f98ba40e3388ea7b713:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZDFhZjFmNTRkZGYyNzExZDA5MWQ5MGY1ZmNlYjEwM2Q0MDYwOGQxZmQzMWRmYjU5NmNhYzZhYzUwZmEzZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmMzM1YjIxNjYxNTEzOTMxZWEzY2JjY2I5MTZmYzUyNTE5ZTIyNWVmMDY1ZDA2MDJkMjFhZjAzMjJjMTI4NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://.github/workflows/verify.yml#L3-L36",
+          "version": "repo-lines-v1:sha256:cba14324feacbf0bfc2ad3e5a6e3373ce6d0b3df51b2d55d1371594b72e24b6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NmRjNDgxNDlmNWE4M2QxZWQ2ZGJiMzliYmM3ZTJiOTAyYWEzZDM0ZDZiZDVhZTRiMjkxYjY4ZGYwY2E3OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZDFhZjFmNTRkZGYyNzExZDA5MWQ5MGY1ZmNlYjEwM2Q0MDYwOGQxZmQzMWRmYjU5NmNhYzZhYzUwZmEzZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmMzM1YjIxNjYxNTEzOTMxZWEzY2JjY2I5MTZmYzUyNTE5ZTIyNWVmMDY1ZDA2MDJkMjFhZjAzMjJjMTI4NzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -144,29 +152,29 @@
     },
     {
       "id": "claim_d31af3bdfd8149d59b8891e3a34809cb",
-      "statement": "test/test-sadsam-json.json is a complete sample SAD_SAM get-result payload — top-level requestId, status \"OK\", message, traceLinkType \"SAD_SAM\", and a traceLinks array whose entries carry sentenceNumber (0-based on the wire; the parser adds 1 for display), modelElementUid, and confidence. No source code references it, so it serves as a manual fixture for the trace-link parsing path (for example via the /load-project stored-project flow), not as automated test input.",
+      "statement": "test/test-sadsam-json.json is a complete sample SAD_SAM get-result payload — top-level requestId, status \"OK\", message, traceLinkType \"SAD_SAM\", and a traceLinks array whose entries carry sentenceNumber (0-based on the wire; parseTraceLinksFromJSON adds 1 for display), modelElementUid, and confidence. Its entry field names (modelElementUid) differ from the parser's RawTraceLink interface fields (modelElementId/modelElementName/codeElementId/codeElementName), so it is a hand-written illustrative fixture, not captured API output; no source code references it, so it serves as a manual fixture for the trace-link parsing path (for example via the /load-project stored-project flow), not as automated test input.",
       "evidence": [
         {
-          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L37-L43",
-          "version": "repo-lines-v1:sha256:4731f2a45cf1bc923971643c91619e37e313fcab23beb46d9f0b9395727b7574:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjJlZDY0MzVjNDQyZjI1NDgwOGNkM2I4NTI1ZjJmZTBmNTkwYjRjN2VmNTc0NzFhM2YxNGUyNTM5ZTExOWE4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGU0NjJiZDg1ZWEzNTIyODIyYTlhZDNlYjI0MDk5YjAzMmExYjYyN2JlY2ZkN2M1ODMxZTk5MjdkNGJhYzQwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQzYWVhYTU4ZmQ0ZDEyNjEzNjdlZjEwZDI0ZDU0YTk0NDM4ZDI0YTAwOGIxOWY1ZGUyMjNmNGVjNTVmNmVmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTA4NmUwYzYyZmZhZjNjODJhODNjOGRjYTdhNDlhODJiYTBjOGY4ZTNjMzc1MjE1OGRmYmY2MTQ4MzZhZWYwMCJ9"
+          "resource": "repo://src/components/traceLinksResultViewer/views/tracelinks/parser/TraceLinkParser.tsx#L7-L25",
+          "version": "repo-lines-v1:sha256:a5f4dfeb6cf38076c69858b73b60b297132c879299610dfe0c2ae7bfe9440548:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjNDNmOTRkZTRhYjE2YmU4MjA4Mzk5YzJjMWIwMTFmZDY0ZTNhZjU3MzhjYzk1ZWExYzFjYWRjYTk4MDBhNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzYWE2YTgyNGUyM2UzMjdiOTA2MGI0MDJhMjQ2OWUxN2ZiMzcyOTVmNGI3NDVlMWNmZjBmZGUzNDcyMDRkZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2ZWE3NWI4YmY1Njc4OGM5ZDcwZDI0Mzc1NWZmOWZhNTdmMDEwM2UyYmY0M2E5ZmE4NThmNGQzYTUyYjY0MzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmYzY3MjAyMjI5NjAyZjA3YWIxOTFhMjVhMjg4MGVlOWVkMzRhMWUzNDQ3ZGIwYWQwZmJkNDBmMjQwOTk0ZTIifQ"
         },
         {
-          "resource": "repo://test/test-sadsam-json.json#L1-L5",
-          "version": "repo-lines-v1:sha256:6f24963a9bab3442e49bebda9fca79aa30678a6b2c10335c71ef1ed2bbbb05ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTZmYjA4ZmRhMWFjYjk1N2I2MTE2YmQzNzgxMWExZmU0MWEwMTYxMWMwNjMxZWRiZjc4NmQ2ODg5YTI3YTU1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJmZjI4NGMyODliNDU2MDc0MGI3ODg5YmZmMzYwNGU3MDcxYWMwMDZkNjg0M2Y3YTBkYWZjMmNkNWIxMWE1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzkzYTlmNWExZDMxZjFkNDZhMDI4ZDkwNTk4MGNhNGI1MjFkNGM3YjhiOWYzOTBjZGQ5ZjY0MGRiZTVkMzYyNSJ9"
+          "resource": "repo://test/test-sadsam-json.json#L1-L10",
+          "version": "repo-lines-v1:sha256:6be9851eda25be9d7e44be1f767226f12d202aeec5797f6a930a1a87ddff2778:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2ZmIwOGZkYTFhY2I5NTdiNjExNmJkMzc4MTFhMWZlNDFhMDE2MTFjMDYzMWVkYmY3ODZkNjg4OWEyN2E1NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0YzQwZDUzYTRhNGRmMWYwOGZlZWU4MWQxMGUwMjkyYmYxYjNjZTEyZThhNzdlNzU1MzJhN2VlODFiMzUxNWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1NDQxZjA3OWY4N2U4YjU1NzE5MjI5ZDc2YjBkMjAzZWVhNDE4MGMxODA4ZGMxZjE4YWZiYmMxNmM4MGVmNTQifQ"
         }
       ]
     },
     {
       "id": "claim_c9d961880a6f4c1085cc6c23bfbafa1c",
-      "statement": "TraceView requires a reachable ARDoCo REST backend at runtime: the backend address is browser state owned by ApiAddressContext, defaulting to https://rest.ardoco.de and hydrated from the localStorage key apiAddress, editable through the navbar's EditApiAddressModal; a candidate address is probed with GET /api/health through the proxy middleware and is persisted (and activated) only when the probe succeeds, so a failed probe leaves the previously active address unchanged.",
+      "statement": "TraceView requires a reachable ARDoCo REST backend at runtime: the backend address is browser state owned by ApiAddressContext, defaulting to https://rest.ardoco.de and hydrated from the localStorage key apiAddress (null on the server during hydration), editable through the navbar's ApiAddressDisplay/EditApiAddressModal; a candidate address is probed with GET /api/health through the proxy middleware and is persisted to localStorage (and activated) only when the probe succeeds, so a failed probe leaves the previously active address unchanged.",
       "evidence": [
         {
-          "resource": "repo://src/components/NavBar.tsx#L160-L160",
-          "version": "repo-lines-v1:sha256:c67560fe71c917a13d646ed5d2462747d33951623343743cc1e1ff2d573ccc0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzY3NTYwZmU3MWM5MTdhMTNkNjQ2ZWQ1ZDI0NjI3NDdkMzM5NTE2MjMzNDM3NDNjYzFlMWZmMmQ1NzNjY2MwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzY3NTYwZmU3MWM5MTdhMTNkNjQ2ZWQ1ZDI0NjI3NDdkMzM5NTE2MjMzNDM3NDNjYzFlMWZmMmQ1NzNjY2MwZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NkZWUxZjFhOTgwOWU2MmQxY2U5ZjhmYWFiZTMyZTAwMjJmZGY3NDc5NTk5YWJkZmNkZThmZGU4M2E5ODY3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmNiYWJiMGM2Mzk0NTFhMjhhNWQ4YmVlZmM0Y2YzYjdmZjRmYWQzNTY2ZmY0OGExMWRjN2VmMGMzM2RjMmYyZCJ9"
+          "resource": "repo://src/components/NavBar.tsx#L109-L110",
+          "version": "repo-lines-v1:sha256:ec68fb600efaa67b3446a6abdfd1d3b28e0643ff63b55c9e67921c838badd1de:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWE5NWUxM2IyMzlkZjk0MDJjMzVlMjNmZTE0MWRiM2Q4MDZkM2I3ZGQ5NzMxZWI3N2Y1ODc5ZjVjMDVmYWVkMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGUwMzdkMDdlYTNmNTY1ZTU3NzAwOGEyZDE1ODlmNzMxZTdmZTgyN2RlOGEzZGRjNzU1NTgwZDlhNjJlYjY5YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWY1ODI5ZjMxMjRkZDE4MGVmN2MwNWQwYzhhYjBkMWJkODMyODdjYmNkNjE2NGU0ODQ4ODAxNzE3MTJmNmNiNyJ9"
         },
         {
-          "resource": "repo://src/contexts/ApiAddressContext.tsx#L6-L53",
-          "version": "repo-lines-v1:sha256:029b5b17894bdfd65707e01164f73662357999840bebc44a70850732fb03894e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MzYwMzI4NTU1YzU0MWYwZGU1OWIxMjFhNjg4MTBkMmMwY2NjNDU4NGJjNGViOTliYjk1NjNkMTU4NjMyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkOWUxMjU0NjQyNTU3NmQzZGVhZThjOWI5ZGJmMTI4ZDVkNmRkYWY1ZDdmZTg1NzkzNDkyN2RlZmZhM2I5ZGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3OGI2YzZhMTgxZGExYmFmYzlhMDQ1MjMxZDQwNjk0ZmQyNzk0NjlkYTg5MTQ2MGM5MTVjYzEwNWIwMTI3NmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyOWE4YTZiYzI1NTk3NjlmYTRlYjI4YjcyZTUzNTY4NGIwNmYzOGE3NGI2OGNhMzE2NGYwOTBlYzJmMGI2ZDIifQ"
+          "resource": "repo://src/contexts/ApiAddressContext.tsx#L6-L64",
+          "version": "repo-lines-v1:sha256:70b11e288b4d4d1f72cb84ab2ec7c7b90fdea6cf5c5f162d4653164ae2ab59bb:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3MzYwMzI4NTU1YzU0MWYwZGU1OWIxMjFhNjg4MTBkMmMwY2NjNDU4NGJjNGViOTliYjk1NjNkMTU4NjMyOGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY5MzA2MGJkZDk2ZGY3Y2VhMzk4NjNjNmIyY2RhZjQ3N2IzYzM5YzkyNWNmZGY3NjFlZGIzMDk0NTA0MTY0MmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0ODllOTdhNmMwNjk4YTE4ZjAzMjY4OTc4ZGUwNTY2NDIyMWFkYWE1MGQxZDkyZWQ2MzRlM2ZiNjcxNWIwZTYifQ"
         }
       ]
     },
@@ -175,12 +183,12 @@
       "statement": "The /view/[id] page polls GET /api/get-result/{id} every 5 seconds for up to 240 seconds (4 minutes): status \"OK\" resolves the payload, \"ACCEPTED\" keeps polling, any other status throws an error carrying the backend's message verbatim, and exhausting the budget throws \"The result is still processing. Please try again later.\" — so a backend run lasting longer than 4 minutes fails in the UI even if it eventually completes.",
       "evidence": [
         {
-          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L21-L50",
-          "version": "repo-lines-v1:sha256:78fe7273ecd31616b768d8880ad20378ee329b0c1cca6e35375b3f7399558fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFlYWNmODk1OGU4YmMwMTE2NGU0NzlkMjZkMjI4Nzc0MTliZGM2MmVhZTJkZjBhZDBlNDk3ZGM3YmE0MzJiOWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlZjM2MDIxZmRlNDQ0ZjlkNWI2MDY1Mjg4NzU0Njg4ZmFiNDYyNTRjMDZlNGUzZTdkMGY3ZDI1ZmVjMjgxMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMDk3MDk4NGY3MmVhODNiMDY0ZWMzYTMyZjc2OTdlOTI5MGE0ZTcyMTM3ODZlMjI0NzlkNGJjMjYwNWU2MWMifQ"
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L149-L155",
+          "version": "repo-lines-v1:sha256:55e7fd3df456d3650b680337045dbbf4617a4a754817ddbb04e3d23727913196:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc3NjJmM2M5Y2YzN2MwN2YyZTI2NjFiYmMzZWQ4ZmU5YmI2YzhmYzgyNDI3MjJiN2NkODA3OGE0ZTA1NjBhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE5N2IyZTgwMjY5NTc3ODRiMTU1YzQ0YTg3NDVhMmQ5MTZhNGFmMDc4M2U4M2Q0OTQ2NjFjZGE4MzhkOThlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2Q2MmFmNzE5OTRiNzliNmNlZmIwNDRhNzFkYzVjNmU5NWUwNWFjYzRhMDc1N2QxMDQ5ZWMwM2NmNTQxOTY2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTY1NWFhNTNjMDM3MzIzZjgyNWU3OWFmMzBjMjhlNjMyMDVjYmJlMmM5YTQ2NzEyYzMxODkxYTI5MDUzZTg1MSJ9"
         },
         {
-          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L90-L96",
-          "version": "repo-lines-v1:sha256:99f8edac7f12380954870522bc24ea2a11a7a4cb28da35e36d085288a732d2b5:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RkODQ2OTEwYjFhMDlmNjgwYmM1NzY4MWM3MGQxZjAyZTEwMTFiYWVjZWNkYTVlM2RkNWI3Nzk2NjI2YThiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTIwNzJjNjdlMDcyMjQxYmY5YzIzNWJmYjUxMTcxYzBmODQ1NTk5NzcwYTIxYTA4OGJiOGExNjVjYjhhYmRjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmMyZTIwYWUxNDBlZDNlODdjNTkzNDViODllY2Y2YmQ5MTQzMjdkNTcyZjczZWFmNGVjODlmMDJjYzY3MzdmYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTgzYjE3ZmNhNDJjMmE2MzIyMmNjMmJjMjE5M2JiNTUxMDFjYTdjZWU5MWIxZTJhYTRiYjc5MTM4YjdkZmZjMSJ9"
+          "resource": "repo://src/app/view/%5Bid%5D/page.tsx#L36-L62",
+          "version": "repo-lines-v1:sha256:88e4d2909968967e5729d17a5bd42cdc0721cc39068c7446cb738ac301934ce0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxZDkxNWE2NDI2MTY4MDUyMmUxNTFkYmRjMDBkYWFhNjA5YzAzODViY2JlNGY5YjMyMjBjNmYzY2FjMmYyZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzZWIyMmMwMGJjZDExMjQ5NGY1NDJkMjJkMGUzOWYxYzljZDlkOWEzODllYWUwZmY5MTY3NmQxMGIwMzQwNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmOWY1YTM1NjZmNWQyNjQwMzYxYjM4MGU0ZjcxY2M3MTU5NzQxNzQ4YTIzNmNhNGEyMTlkMDY3NTFkZTFjODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZDM5NzkyOWY5ZjRkZGE5NWVlZDlmMmJhZTliYWZlODBiZTQyYTI5YjBlNWZiZDdhNmM4NDlhYzk3ODE3N2MifQ"
         }
       ]
     },
@@ -197,10 +205,28 @@
           "version": "repo-lines-v1:sha256:fcb9194401b3d13a547f0b25823d26ba6e3d7e05deefbdce03a36620ccefd7ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzOGZlZmVmYTgzY2EwYmI0MjIyY2YxODBiNTFkY2M4MTM4ZGUxYmM1N2Q5MTEwM2Y5ZjgzNzY3ZjEzOTFiMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRjMzY5ZWEwOWQ4OTdhNGQ3ZWVmNzRkN2ViZmIwNmE2NjM3ZTY5ZGE3ZWQ2NDFjNzRjYzcyZGMyZTZjMDUwZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExOWRiNDBkY2ZmMWQ4YjE0ZjFiMzZiOWI5NzA1ZGM1MDA1ZTk3M2QyMGZhMTRmZDJmMWJiOGI1ZjhlZTUyMGIifQ"
         }
       ]
+    },
+    {
+      "id": "claim_f7fdcb0ce05f4354bcbc49b291f66d07",
+      "statement": "All backend calls are proxied through the Next.js proxy middleware in src/proxy.ts, which is matched on every /api/:path* request: client fetches attach the selected backend base URL in an X-Target-API header (ArdocoApi.startRun and the ApiAddressContext health probe both do this), and the middleware rewrites the request to {target}/api/{path}; it fails fast with 400 when the header is missing, 400 when the header is not a valid URL, and 403 when the target protocol is not HTTP/S — so backend connectivity problems surface as these middleware errors or failed /api/health probes, not as build-time configuration.",
+      "evidence": [
+        {
+          "resource": "repo://src/contexts/ApiAddressContext.tsx#L38-L48",
+          "version": "repo-lines-v1:sha256:8c2742af45c1a97f5b989ecfb860661c4cf73150da81dff6e3be71fe806db2a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2MDdkNmUzZmVjN2JhNWU0MjA1ODhhMTAyNGFlNDhkYTc2YWM1MjExYjBhZDgzZjdmNzc4ZjRlODRhYzJkZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY0NTI0MjA5YWM5OGFhMmM4NGNlN2NhOGEzMTNjZTI3NjQyYjUzNGQ2NmQxMWY2MWYyNDQxMmE3OTQ4MWU5ZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2ZTZkODViNGNjY2M4M2M2MTVkZGNlZDgxMGI5ZTQzYzVlYzE1NTk5ODQxMjRiOGEzNmU0ZmZjZjNhMTgzNjYifQ"
+        },
+        {
+          "resource": "repo://src/proxy.ts#L5-L35",
+          "version": "repo-lines-v1:sha256:4257d2ae7d94feaee9ceaa8a692e8429a327deab2fee8a2a61c1b6ed27ca9344:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4ZmY3NzdmNGMyMjBjYTI2YWQyY2UzNmQ5ZWM4NTY1YmFlZjJlNmNiZWQ0ZjZkYzllNDM4NDkzMWQ4YTA2OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNDhmNTk3ZThjOTljNGRiMDlkMjNmNDJmNDg5MWM3MDgxOTY1NGY2NzU3MTlkZWU0MGNhY2VkMWY2OWM4Y2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/util/ArdocoApi.tsx#L157-L170",
+          "version": "repo-lines-v1:sha256:7f9d76d6c278477f74a7a75e8839d8edce93ae3ba898a112ea303833ac9c7120:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNjZkYTFlYjkzNDVlNWY2ZGIxNTljOTZlOGMzOWQ1MzVmMDNkOGZjYTA1ODE1OTE2MGJlYWUyZWRiZGY0ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhYTgxOGU0NGZiODE0Njc3ZWQ2MzM4ZDM1ZDNhYjliNjUyNTMzZGI5NmRiZWE1Nzg0M2Q4MjFjZTg3YzIyZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NGI1NmVjMTAzMDVmMDFjZmNmOTRlZWFjZjYyNDk0YzFiMDRiNGVkNThkY2E4MWNhM2EzZTM3ZTA5ZDgyNmUifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.2",
-    "at": "2026-10-19T12:26:44.589Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-16T15:06:02.471Z"
   }
 }
