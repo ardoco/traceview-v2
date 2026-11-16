@@ -1,11 +1,11 @@
 ---
 type: "Reference"
 title: "Client-side project storage"
-description: "How TraceView persists projects in the browser's Origin Private File System: one OPFS directory per project keyed by request id or uuid, project.meta.json metadata, the shared 'Architecture Model' stored name, load and delete semantics, and the navigation guard that deletes stored projects and aborts in-flight requests."
+description: "How TraceView persists projects in the browser's Origin Private File System: one OPFS directory per project keyed by request id or uuid, project.meta.json with per-file metadata plus the inconsistency request id, the shared 'Architecture Model' stored name, load and delete semantics, and the navigation guard that deletes stored projects and aborts in-flight requests."
 tags: [architecture, opfs, client-storage, persistence, navigation-guard]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-19T12:26:44.589Z
+  - by: openwiki/0.9.0
+    at: 2026-11-16T15:06:02.471Z
 sources:
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
     resource: repo://package.json
@@ -51,7 +51,7 @@ sources:
     resource: repo://src/util/useDataLoader.ts
   - id: openwiki-source-b60decb03ea1c257f6cfbbf7
     resource: repo://test/test-sadsam-json.json
-generated: { by: "openwiki/0.7.2", at: "2026-10-19T12:26:44.589Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-16T15:06:02.471Z" }
 ---
 
 # Client-side project storage
@@ -60,10 +60,10 @@ TraceView keeps every project artifact — documentation, architecture model, co
 
 ## Storage location and layout
 
-All storage functions start from the OPFS root via `navigator.storage.getDirectory()` and resolve one sub-directory per project with `getDirectoryHandle(projectId, {create: true})`. The project id is the storage key:
+All storage functions start from the OPFS root via `navigator.storage.getDirectory()` and resolve one sub-directory per project with `getDirectoryHandle(projectId, {create: true})` (the readers `loadProjectMetaData` and `loadInconsistencyRequestId` open the directory without `create`). The project id is the storage key, and there are three writers that choose it:
 
-- the **new-project wizard** keys the directory by the `requestId` returned by the backend start call,
-- the **load-project flow** keys it by a locally generated `uuidv4`.
+- the **new-project wizard's success path** keys the directory by the `requestId` returned by the backend start call,
+- the **new-project wizard's View-Files-Only fallback** and the **load-project flow** key it by a locally generated `uuidv4`.
 
 Ids are `encodeURIComponent`-encoded when placed into routes and `decodeURIComponent`-decoded again in the view pages, so the decoded route id always matches the directory name in OPFS.
 
@@ -80,22 +80,27 @@ OPFS root/
     └── Inconsistencies         (only present for loaded projects)
 ```
 
-`project.meta.json` is a JSON array with one entry per uploaded file, written with pretty-printing:
+`project.meta.json` is a JSON object written with pretty-printing. It contains a `files` array with one entry per uploaded file plus the optional `inconsistencyRequestId` extra:
 
 ```json
-[
-  {
-    "fileType": "PCM",
-    "storedFileName": "Architecture Model",
-    "originalName": "example.repository"
-  },
-  {
-    "fileType": "Documentation",
-    "storedFileName": "Documentation",
-    "originalName": "docs.txt"
-  }
-]
+{
+  "files": [
+    {
+      "fileType": "PCM",
+      "storedFileName": "Architecture Model",
+      "originalName": "example.repository"
+    },
+    {
+      "fileType": "Documentation",
+      "storedFileName": "Documentation",
+      "originalName": "docs.txt"
+    }
+  ],
+  "inconsistencyRequestId": "..."
+}
 ```
+
+The `inconsistencyRequestId` records the request id of the inconsistency detection: it equals the main project request id when inconsistencies come from the same SWATTR run, is a separate id when the wizard started a dedicated inconsistency detection, and is absent when none was requested or the separate run could not be started. `readMetadataFromFile` still accepts the older array-only format — a bare JSON array of file entries is wrapped as `{files: parsed}` on read — so projects stored by previous versions remain loadable.
 
 ### Stored-name rule
 
@@ -114,19 +119,22 @@ The shared `Architecture Model` name is the central convention of this subsystem
 Two invariants follow from the write design:
 
 - **Writes are not transactional.** `storeProjectFiles` and `storeProjectMetadata` are two independent calls; a failure between them can leave files without metadata, and a failure inside `storeProjectFiles` can leave a partial set of files.
-- **Metadata and file bodies can diverge in the new-project flow.** The wizard stores file bodies only for `result.usedFiles` (the files actually included in the multipart request) but writes metadata for all of `formData.files`, so metadata can list an artifact whose body was never stored.
+- **Metadata and file bodies can diverge in the new-project flow.** The wizard stores file bodies only for `result.usedFiles` (the files actually included in the multipart request(s)) but writes metadata for all of `formData.files`, so metadata can list an artifact whose body was never stored.
 
 ## The `ClientFileStorage` API
 
-`src/util/ClientFileStorage.tsx` exposes five async functions, all guarded against server execution:
+`src/util/ClientFileStorage.tsx` exposes six async functions, all guarded against server execution:
 
 | Function | Responsibility | Error behavior |
 | --- | --- | --- |
 | `storeProjectFiles(projectId, uploadedFiles)` | Creates the project directory and writes each file under `getStoredFileName(file.fileType)` via `createWritable()` | Throws on SSR; storage errors propagate to the caller |
-| `storeProjectMetadata(projectId, uploadedFiles)` | Writes `project.meta.json` with `fileType`, `storedFileName`, and `originalName` per file | Throws on SSR; storage errors propagate to the caller |
+| `storeProjectMetadata(projectId, uploadedFiles, extras?)` | Writes `project.meta.json` as `{files, ...extras}` with `fileType`, `storedFileName`, and `originalName` per file | Throws on SSR; storage errors propagate to the caller |
 | `loadProjectFile(projectId, fallbackType)` | Resolves the actual stored type/name from metadata, reads the file text, returns `{content, fileType}` | `NotFoundError` → `null`; other errors rethrow; SSR throws |
 | `loadProjectMetaData(projectId)` | Reads `project.meta.json` and returns the stored types as `FileType[]` via `convertStringToFileType` | Errors (including a missing directory) propagate; SSR throws |
+| `loadInconsistencyRequestId(projectId)` | Returns the stored `inconsistencyRequestId`, or `undefined` | SSR throws; any read failure is warned and returned as `undefined` |
 | `deleteProjectDirectory(projectId)` | `removeEntry(projectId, {recursive: true})` on the OPFS root | SSR is a warn-and-return no-op; all failures are logged and swallowed |
+
+Every function begins with a `typeof window === "undefined"` check: the store and load functions throw a dedicated `"This function must be executed on the client side."` error on the server, while `deleteProjectDirectory` only warns and returns — a deliberate asymmetry that makes the confirmed-navigation delete a no-op rather than a crash during SSR. Together with the swallowed removal failures inside `deleteProjectDirectory`, deletion is best-effort and never a precondition of navigation.
 
 ### Read semantics of `loadProjectFile`
 
@@ -134,7 +142,7 @@ Two invariants follow from the write design:
 
 1. computes the candidate stored name from the `fallbackType` argument,
 2. tries to read `project.meta.json` and looks up the entry whose `storedFileName` matches; if found, the actual type comes from the metadata's `fileType` (via `convertStringToFileType`) and the file name is re-derived from that type,
-3. falls back to the caller's `fallbackType` and its stored name when metadata is missing or unreadable (logged as a warning),
+3. falls back to the caller's `fallbackType` and its stored name when metadata is missing or unreadable (logged as a warning, not fatal),
 4. reads the file text and returns `{content, fileType}`, or `null` when the file lookup raises `NotFoundError`; any other error is rethrown.
 
 Two consequences matter for callers:
@@ -146,35 +154,45 @@ The architecture-model viewer depends on this resolution: it calls `loadProjectF
 
 ### Error asymmetry between the two readers
 
-`loadProjectFile` converts `NotFoundError` into `null` so viewers can render a "not found" fallback, but `loadProjectMetaData` performs no error handling at all: a missing project directory or unreadable meta file rejects its promise. The `/view-provided/[id]` page calls `loadProjectMetaData` outside its `try`/`catch` (which only wraps the trace-link and inconsistency parsing), so opening a stale or nonexistent stored-project URL leaves the page in its loading state instead of showing the error banner.
+`loadProjectFile` converts `NotFoundError` into `null` so viewers can render a "not found" fallback, but `loadProjectMetaData` performs no error handling at all: a missing project directory or unreadable meta file rejects its promise. The `/view-provided/[id]` page calls `loadProjectMetaData` outside its `try`/`catch` (which only wraps the trace-link and inconsistency parsing), so opening a stale or nonexistent stored-project URL leaves the page in its loading state instead of showing the error banner — and that banner's Retry button is rendered with `retryAllowed={false}` anyway. `loadInconsistencyRequestId` is the tolerant counterpart: it wraps the metadata read in a `try`/`catch` and degrades to `undefined`.
 
 ## Write paths: how projects get stored
 
-### New-project wizard (`MultiStepFormNewProject.handleSubmit`)
+### New-project wizard (`MultiStepFormNewProject`)
 
-On the final wizard step ("Calculate TraceLinks"), after `fetchArdocoApi` succeeds:
+On the final wizard step ("Calculate Trace Links"), `handleSubmit` first calls `fetchArdocoApi`, which decides which files are actually submitted to the backend and returns them as `usedFiles` (for non-SWATTR runs with requested inconsistencies, the documentation and architecture model are always included so the result view can display them alongside the inconsistencies). Only after the backend call succeeds:
 
-1. `storeProjectFiles(jsonResult.requestId, result.usedFiles)` stores the files that were actually submitted to the backend,
-2. `storeProjectMetadata(jsonResult.requestId, formData.files)` writes metadata for every uploaded file,
-3. the wizard redirects to `/view/{encodedRequestId}?type={traceLinkType}&inconsistencies={bool}`.
+1. `storeProjectFiles(jsonResult.requestId, result.usedFiles)` stores the submitted file bodies under the backend request id,
+2. `storeProjectMetadata(jsonResult.requestId, formData.files, {inconsistencyRequestId: result.inconsistencyRequestId})` writes metadata for **every** uploaded file plus the inconsistency request id,
+3. `nextStep` redirects to `/view/{encodedRequestId}?type={traceLinkType}&inconsistencies={param}`, where the `inconsistencies` param is `"failed"` when the separate run could not be started, `"false"` when none was requested, `"true"` for a same-run (SWATTR) detection, and the separate request id otherwise.
 
-Failures are surfaced distinctly: a backend error opens the `LoadingErrorModal`, and a storage error opens the single-button `ErrorModalFileUpload` and aborts the redirect. The API-error modal's **View Files Only** fallback re-runs the whole `handleSubmit` — retrying the backend call and the storage writes — and, when it succeeds, routes to `/view-provided/{requestId}` instead of `/view`, leaving the artifacts inspectable without a backend result.
+Failures are surfaced distinctly: a backend error opens the two-button `LoadingErrorModal` (Retry just closes it for a manual retry; View Files Only runs the fallback below), while a storage error opens the single-button `ErrorModalFileUpload` and aborts the redirect.
+
+The **View Files Only** fallback (`viewFilesOnly`) does not retry the backend call. It generates a **fresh `uuidv4()` storage id**, stores **all** `formData.files` with plain metadata (no inconsistency extras — a View-Files-Only project therefore has no stored `inconsistencyRequestId`), and routes to `/view-provided/{storageId}`. The artifacts remain inspectable without a backend result, keyed by a new id rather than the failed request id.
 
 ### Load-project flow (`MultiStepFormLoadProject.handleSubmit`)
 
 The single-step load-project flow generates `storageId = uuidv4()`, stores **all** uploaded files (the `/load-project` route allows every `FileType`, including `TraceLinks` and `Inconsistencies` JSON) plus metadata, and redirects to `/view-provided/{storageId}`. Storage errors here are only logged: the flow still returns the storage id and navigates, so a partially stored project can reach the viewer.
 
-One validation gap is visible at the storage layer: the new-project validator rejects files whose type was never selected (`FileType.NONE`), but `validateExistingProject` for load-project does not. An untyped file in the load flow is therefore stored under the literal `NONE` value `"Select file type"`, comes back from `loadProjectMetaData` as `FileType.NONE`, and has no `getResultViewOption` panel mapping on `/view-provided`.
+One validation gap is visible at the storage layer: the new-project validator rejects files whose type was never selected (`FileType.NONE`), but `validateExistingProject` for load-project does not. An untyped file in the load flow is therefore stored under the literal `NONE` value `"Select file type"`, comes back from `loadProjectMetaData` as `FileType.NONE`, and makes `getResultViewOption` throw during the `/view-provided` render since no panel mapping exists for it.
 
 ## Read paths: how the viewer loads stored data
 
-`/view-provided/[id]` reconstructs a result purely from storage, with no backend call:
+### `/view-provided/[id]` reconstructs a result purely from storage
+
+No backend call is involved:
 
 1. `loadProjectMetaData(id)` returns the stored `FileType[]`,
 2. the types drive the viewer panels through `getResultViewOption` (Documentation, Architecture Model, Code Model, TraceLinks, Inconsistencies),
-3. a stored `TraceLinks` JSON (`traceLinkType` + `traceLinks`) and/or `Inconsistencies` JSON is loaded with `loadProjectFile` and parsed into the typed viewer models.
+3. a stored `TraceLinks` JSON (`traceLinkType` + `traceLinks`) and/or `Inconsistencies` JSON is loaded with `loadProjectFile` and parsed into the typed viewer models; parse failures set the error banner.
 
 An id-handling quirk: the metadata call uses the raw route param `id` while the file loads use the decoded `uriDecodedId`. For ids that survive URI encoding unchanged the two are the same string; an id containing characters that get percent-encoded would look up metadata and file bodies in different OPFS directories.
+
+### `/view/[id]` consults the stored inconsistency request id
+
+When the `inconsistencies` URL parameter is absent (for example on a refreshed or shared link to a backend-polled result), the page calls `loadInconsistencyRequestId(uriDecodedId)` and derives the inconsistency source from the stored metadata: same-run, separate run, or none — mirroring the `inconsistencies` param semantics the wizard encoded into the URL.
+
+### The artifact viewers read from OPFS on both pages
 
 The three artifact viewers — `DocumentationViewer`, `ArchitectureModelViewer`, and `CodeModelViewer` — load their inputs through the `useDataLoader` hook plus `loadProjectFile`, keyed by the route id. They run identically on `/view/[id]` and `/view-provided/[id]`, which means the panels of a backend-polled result also read the artifacts from the OPFS directory that the wizard stored under the same `requestId`. When a file is missing (`loadProjectFile` → `null`), the viewers render their empty/raw-content fallbacks instead of panel content.
 
@@ -193,7 +211,7 @@ Because `deleteProjectDirectory` swallows and only logs failures, a confirmed na
 
 ### Abort wiring
 
-The shared controller's signal is consumed by `/view/[id]`: its `pollForResult` loop `GET`s `/api/get-result/{id}` with that signal every 5 seconds for up to 240 seconds, and `fetchResult` swallows `AbortError`, so a confirmed leave ends polling silently. The modal's **Retry** path, however, creates its own local `AbortController`, so a retried poll is no longer cancelled by a later confirmed leave.
+The shared controller still exists, but it no longer drives the polling pages. `/view/[id]` runs its `pollForResult` loop (`GET /api/get-result/{id}` every 5 seconds for up to 240 seconds) and its separate inconsistency poll on **local per-effect `AbortController`s** whose cleanup aborts them when the effect re-runs or the page unmounts; `fetchResult` swallows `AbortError`. A confirmed leave therefore ends polling through page **unmount** (the route change triggers the effect cleanup), not through the shared abort. The modal's **Retry** path creates its own local controller that the guard cannot cancel. The only remaining consumer of the shared controller is `/view-provided`'s error banner, whose Retry button passes `controller.signal` but renders with `retryAllowed={false}`.
 
 ### Project-id registration asymmetry
 
@@ -204,7 +222,7 @@ Both result pages register their decoded id via `setCurrentProjectId` on mount, 
 
 ### Coverage boundaries of the guard
 
-Only callers of `handleNavigation` are guarded: the desktop navigation links and the ARDoCo logo route through it (`NavBar` intercepts and prevents the default anchor behavior). The mobile menu renders plain anchors and browser back/forward navigation bypasses `handleNavigation` entirely, so those paths leave a stored project in place without prompting.
+Only callers of `handleNavigation` are guarded, but `NavBar` routes every internal link through it: the desktop navigation links and ARDoCo logo, **and** the mobile menu's links and logo, all prevent the default anchor behavior and call `handleNavigation` (the mobile wrapper additionally closes the menu before doing so). Browser back/forward navigation and tab close bypass `handleNavigation` entirely, so those paths leave a stored project in place without prompting.
 
 ## Project lifecycle
 
@@ -221,7 +239,7 @@ stateDiagram-v2
 
 *Lifecycle of a locally stored project: either form stores the artifacts under a project id, the viewer registers the id in `NavigationContext`, and the project leaves existence either by a confirmed navigation (explicit recursive delete) or by the browser discarding the storage.*
 
-Paths that bypass the guard (mobile menu links, browser back, tab close, reload) leave the project in the `Stored` state; it then survives until a later confirmed navigation deletes it or the browser discards the data.
+Paths that bypass the guard (browser back, tab close, reload) leave the project in the `Stored` state; it then survives until a later confirmed navigation deletes it or the browser discards the data.
 
 The confirmed-navigation interaction across components:
 
@@ -232,7 +250,6 @@ sequenceDiagram
     participant CTX as NavigationContext
     participant MOD as ConfirmNavigationModal
     participant FS as ClientFileStorage OPFS
-    participant POLL as view page polling fetch
     participant RTR as Next router
 
     NAV->>CTX: handleNavigation(path)
@@ -244,13 +261,12 @@ sequenceDiagram
         MOD->>CTX: confirmAndNavigate
         CTX->>FS: deleteProjectDirectory(projectId) recursive
         CTX->>CTX: setCurrentProjectId(null)
-        CTX->>POLL: controller.abort with leave reason
-        CTX->>CTX: install a fresh AbortController
+        CTX->>CTX: abort shared controller and install a fresh one
         CTX->>RTR: router.push(nextPath)
     end
 ```
 
-*Confirmed navigation: the guard deletes the OPFS project directory, disarms itself, aborts in-flight backend requests, and then performs the route change; cancelling leaves everything untouched.*
+*Confirmed navigation: the guard deletes the OPFS project directory, disarms itself, aborts through the shared controller, and then performs the route change; cancelling leaves everything untouched.*
 
 ## Failure semantics and operational implications
 
@@ -264,6 +280,7 @@ sequenceDiagram
 - [Architecture](../architecture.md) — overall routing, contexts, and the end-to-end data flow around this storage layer.
 - [Project forms](project-forms.md) — the wizard steps, validation, and configuration editing that feed `handleSubmit`.
 - [Result viewer](result-viewer.md) — the panels that consume `loadProjectFile` and the parsed result JSON.
+- [ARDoCo backend API](../integrations/ardoco-backend-api.md) — the backend contract (`requestId`, `usedFiles`, inconsistency runs) that decides what gets stored.
 - [Domain model](../domain.md) — artifact types, pipeline combinations, and project identity.
 - [Workflows](../workflows.md) — the user journeys that create, view, and abandon stored projects.
 - [Operations](../operations.md) — build, deployment, and the note that clearing browser storage affects the provided-project flow.

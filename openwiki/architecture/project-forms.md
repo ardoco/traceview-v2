@@ -4,17 +4,21 @@ title: "Project forms and wizard"
 description: "The multiStepForm subsystem: the four-step new-project wizard and the single-step load-project form, the Step contract, FormValidation rules, file-type preselection, the three-source Configuration step, and the error modal family."
 tags: [forms, wizard, validation, file-upload, configuration, error-handling]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-19T12:26:44.589Z
+  - by: openwiki/0.9.0
+    at: 2026-11-16T15:06:02.471Z
 sources:
   - id: openwiki-source-0d5b307dc3c3ba953f2497f6
     resource: repo://src/app/load-project/page.tsx
   - id: openwiki-source-3ed66b307fcc49620809979f
     resource: repo://src/app/new-project/page.tsx
+  - id: openwiki-source-a1639c9a3e7858fc041e3486
+    resource: repo://src/app/view-provided/%5Bid%5D/page.tsx
   - id: openwiki-source-480c0862686116627e432a75
     resource: repo://src/app/view/%5Bid%5D/page.tsx
   - id: openwiki-source-9d7a36e3958a5e4c93079ade
     resource: repo://src/components/dataTypes/TraceLinkTypes.tsx
+  - id: openwiki-source-58a989078badcc121bff57c6
+    resource: repo://src/components/inputComponents/RadioInput.tsx
   - id: openwiki-source-becd25491b260c26a078a2a7
     resource: repo://src/components/LoadingErrorModal.tsx
   - id: openwiki-source-eeb0a8745afbccaaef2fd631
@@ -53,7 +57,7 @@ sources:
     resource: repo://src/contexts/ProjectUploadContext.tsx
   - id: openwiki-source-23142502da3ac732ed7c0575
     resource: repo://src/util/ArdocoApi.tsx
-generated: { by: "openwiki/0.7.2", at: "2026-10-19T12:26:44.589Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-16T15:06:02.471Z" }
 ---
 
 # Project forms and wizard
@@ -67,7 +71,7 @@ The two form routes differ only in how they parameterize `FormProvider` (`src/co
 - `/new-project` (`src/app/new-project/page.tsx`) mounts `MultiStepFormNewProject` with `allowedFileTypes` set to every `FileType` **except** `TRACELINKS` and `INCONSISTENCIES` — a new submission cannot include result files.
 - `/load-project` (`src/app/load-project/page.tsx`) mounts `MultiStepFormLoadProject` with **all** `FileType` values, because loading an existing project requires the trace-link and inconsistency JSON.
 
-The provider owns the `FormData` record — `projectName`, `selectedTraceLinkType`, `files` (an `UploadedFile` list pairing each `File` with a `FileType`), `errors`, `traceLinkConfiguration`, and `findInconsistencies` — plus `configurationLoading`, `configurationError`, `originalTraceLinkConfiguration`, and the route-provided `allowedFileTypes`. `updateFormData` merges partial updates and enforces one invariant on every write: unless the resulting `selectedTraceLinkType` is `SAD_SAM`, `findInconsistencies` is reset to `false`.
+The provider owns the `FormData` record — `projectName`, `selectedTraceLinkType`, `files` (an `UploadedFile` list pairing each `File` with a `FileType`), `errors`, `traceLinkConfiguration`, and `findInconsistencies` — plus `configurationLoading`, `configurationError`, `originalTraceLinkConfiguration`, and the route-provided `allowedFileTypes`. `updateFormData` merges partial updates and enforces one invariant on every write: the `findInconsistencies` flag is reset to `false` unless the resulting file set satisfies `canFindInconsistencies`, which requires both a documentation file and an architecture model (PCM or UML) regardless of which trace-link type is selected.
 
 On mount — and again whenever `apiAddress` changes — the provider fetches `GET /api/configuration` with the `X-Target-API` header, which the app middleware rewrites onto the configured backend (see [Architecture](../architecture.md)). A non-OK response sets `configurationError`; success stores the payload twice, as the immutable `originalTraceLinkConfiguration` baseline and as the editable `formData.traceLinkConfiguration`. `allowedFileTypes` gates both the per-file type dropdown and the JSON name heuristics described below.
 
@@ -82,13 +86,13 @@ On mount — and again whenever `apiAddress` changes — the provider fetches `G
 | 3 | Configuration | always empty (the step cannot fail) |
 | 4 | Summary | `FormValidation.validateSummary` |
 
-The current step's validation runs on every render and its errors are rendered beneath the step body via `DisplayErrors` (exported from the configuration-step folder but used by both form shells). Navigation works as follows:
+The current step's validation runs on every render and its errors are rendered beneath the step body via `DisplayErrors` (exported from the configuration-step folder but used by both form shells). Navigation is gated, not free:
 
-- `Stepper` dots and step titles are clickable and set the step index directly, so users can jump between steps without gating.
-- The left button is **Exit** on the first step (routing back to `/`) and **Back** afterwards, stepping one step down.
-- The right button is **Next**, or **Calculate TraceLinks** on the final step.
+- `Stepper` step titles are clickable only for **reachable** steps. A step is reachable when it is earlier than the current one, or when the user has already reached it and every step before it currently validates cleanly (`isStepReachable` re-checks all prior validators on each render).
+- The left button is **Back** from step 2 onward, stepping one step down; the first step renders no back control.
+- The right button is **Next**, or **Calculate Trace Links** on the final step, disabled while a submission is in flight or while the current step's validation reports errors.
 
-Validation is enforced only at the end. The final button is disabled while a submission is in flight or while the Summary step's validation reports errors, and `nextStep` re-runs `validateSummary` before submitting as a second guard. Intermediate Next clicks are not blocked by step errors — invalid input can be carried forward, and the Summary step's aggregate validation catches it at the end.
+Because `isStepReachable` re-validates all earlier steps, later steps stay clickable only while their prerequisites remain valid: editing the file list so that step 1 no longer validates immediately locks the Configuration and Summary entries in the stepper until the files are fixed again.
 
 ```mermaid
 flowchart TD
@@ -96,22 +100,20 @@ flowchart TD
     STEP1 -- "Next" --> STEP2["Step 2 Project Details"]
     STEP2 -- "Next" --> STEP3["Step 3 Configuration"]
     STEP3 -- "Next" --> STEP4["Step 4 Summary"]
-    STEP4 -- "Calculate TraceLinks" --> GATE{"validateSummary reports errors"}
-    GATE -- "yes" --> BLOCKED["Calculate disabled, step errors shown"]
-    BLOCKED -- "fix inputs" --> STEP4
-    GATE -- "no" --> SUBMIT["handleSubmit"]
+    STEP4 -- "Calculate Trace Links" --> SUBMIT["handleSubmit"]
     SUBMIT --> APICALL{"fetchArdocoApi succeeds"}
     APICALL -- "no" --> APIMODAL["LoadingErrorModal"]
-    APIMODAL -- "Retry" --> SUBMIT
-    APIMODAL -- "View Files Only" --> RERUN["handleSubmit rerun and store under requestId"]
-    RERUN --> PROVIDED["redirect to /view-provided/id"]
-    APICALL -- "yes" --> STORE{"OPFS storage succeeds"}
+    APIMODAL -- "Retry" --> STEP4
+    APIMODAL -- "View Files Only" --> STORE2["store under uuidv4 id"]
+    STORE2 -- "ok" --> PROVIDED["redirect to /view-provided/id"]
+    STORE2 -- "storage error" --> STORERR2["ErrorModalFileUpload"]
+    APICALL -- "yes" --> STORE{"store files and metadata under requestId"}
     STORE -- "no" --> STORERR["ErrorModalFileUpload with Okay"]
     STORERR -- "back to Summary" --> STEP4
     STORE -- "yes" --> RESULT["redirect to /view/id with type and inconsistencies parameters"]
 ```
 
-*New-project wizard control flow: ungated step navigation, the summary validation gate, and the two error-modal branches.*
+*New-project wizard control flow: gated stepper navigation, the summary validation gate, the two error-modal branches, and the View Files Only escape hatch.*
 
 ## Step 1 — Upload Files
 
@@ -154,7 +156,9 @@ Its `projectName` and `selectedTraceLinkType` parameters are accepted but unused
 
 `ProjectDetailsStep` renders the project-name `TextInput` and a radio group (`MultiOptionSelectWithInfo` from `inputComponents/RadioInput`) listing the four pipeline types from `TraceLinkTypes`. Selectability is delegated to each type's `checkCondition(uploadedFiles)`: the shared predicates test for architecture documentation, an architecture model (PCM or UML), and a code model, so a pipeline option becomes selectable only when the current file set can satisfy its required combination.
 
-The **Find Inconsistencies** checkbox (`InconsistencyCheckbox`) is disabled unless the selected type is `SAD_SAM` (SWATTR). This mirrors the context-level auto-reset of `findInconsistencies` and the endpoint guard in `fetchArdocoApi`, so inconsistency detection is pinned to that pipeline at every layer.
+The radio group also **preselects automatically**: whenever the uploaded files change and the current selection is empty or no longer satisfies its `checkCondition`, the first valid pipeline is selected — or the selection is cleared to `null` when no pipeline's combination is satisfiable. A disabled option renders greyed out with an info tooltip.
+
+The **Find Inconsistencies** checkbox (`InconsistencyCheckbox`) is disabled unless the uploaded files include both a documentation file and an architecture model (`canFindInconsistencies`), and the context-level `updateFormData` reset plus the endpoint guard in `fetchArdocoApi` mirror the same file-based condition, so inconsistency availability is enforced at every layer by the file combination rather than by a single pipeline. The checkbox tooltip explains that for pipelines other than SWATTR the inconsistencies come from a separate SAD-SAM analysis and may differ slightly from the shown trace links.
 
 ## Step 3 — Configuration
 
@@ -189,24 +193,28 @@ flowchart TD
 
 On the Summary step, `nextStep` re-validates and calls `handleSubmit`, which runs two fallible stages:
 
-1. **Backend submission.** `fetchArdocoApi` (`src/util/ArdocoApi.tsx`) builds the multipart request for the selected pipeline — `projectName`, an `additionalConfigs` JSON field with empty values filtered out, and the pipeline-specific `inputCode` / `inputText` / `inputArchitectureModel` parts plus the `inputArchitectureModelFormat` PCM/UML discriminant — and posts it to `/api/{api_name lowercased}/start`, or to `/api/find-inconsistencies/start` when inconsistency detection is requested (permitted only for `SAD_SAM`). A response without a `requestId` is rejected as invalid. It resolves with `{jsonResult, usedFiles}`; the endpoint contract is specified in [ARDoCo backend API](../integrations/ardoco-backend-api.md).
-2. **Local persistence.** On success the wizard stores `result.usedFiles` (only the files actually submitted) via `storeProjectFiles` and metadata for all uploaded files via `storeProjectMetadata`, keyed by the returned `requestId` in the browser's OPFS (see [Client-side project storage](client-storage.md)).
+1. **Backend submission.** `fetchArdocoApi` (`src/util/ArdocoApi.tsx`) builds the multipart request for the selected pipeline — `projectName`, an `additionalConfigs` JSON field with empty values filtered out, and the pipeline-specific `inputCode` / `inputText` / `inputArchitectureModel` parts plus the `inputArchitectureModelFormat` PCM/UML discriminant — and posts it to `/api/{api_name lowercased}/start`. A response without a `requestId` is rejected as invalid. It resolves with `{jsonResult, usedFiles}`; the endpoint contract is specified in [ARDoCo backend API](../integrations/ardoco-backend-api.md).
+2. **Local persistence.** On success the wizard stores `result.usedFiles` (only the files actually submitted) via `storeProjectFiles` and metadata for all uploaded files via `storeProjectMetadata`, keyed by the returned `requestId` in the browser's OPFS (see [Client-side project storage](client-storage.md)). The metadata extras record the `inconsistencyRequestId` from the API response.
 
-Success redirects to `/view/{encodedRequestId}?type={traceLinkType}&inconsistencies={bool}`, which drives the polling result page. The two failure branches use different modals:
+Success redirects to `/view/{encodedRequestId}?type={traceLinkType}&inconsistencies={param}`, which drives the polling result page. The `inconsistencies` parameter is encoded by the wizard's `inconsistenciesParam` helper: `"true"` when the inconsistency request id equals the trace-link request id (SWATTR same-run detection), the separate request id when a distinct run was started, `"failed"` when the separate run could not be started, and `"false"` when no inconsistencies were requested. The `/view/[id]` page interprets exactly these four values.
 
-- **API failure** opens `LoadingErrorModal` (`src/components/LoadingErrorModal.tsx`), an overlay-click-immune dialog with two actions. **Retry** merely closes the modal — the user stays on the Summary step and can press Calculate again. **View Files Only** closes the modal, re-runs `handleSubmit` (repeating both the API call and the storage writes), and routes to `/view-provided/{requestId}` so the artifacts remain inspectable without a backend result. If that second attempt also fails, `handleSubmit` resolves without a result and the redirect proceeds with an undefined id. The same modal component is reused by the `/view/[id]` polling page.
+The two failure branches use different modals:
+
+- **API failure** opens `LoadingErrorModal` (`src/components/LoadingErrorModal.tsx`), an overlay-click-immune dialog with two actions. **Retry** merely closes the modal — the user stays on the Summary step and can press Calculate again. **View Files Only** closes the modal and takes a purely local escape hatch: it generates a fresh `uuidv4` storage id, stores **all** uploaded files plus metadata under it (no second API call is made), and routes to `/view-provided/{storageId}` so the artifacts remain inspectable without a backend result. A storage failure on this path opens `ErrorModalFileUpload` instead of redirecting. The same modal component is reused by the `/view/[id]` polling page.
 - **Storage failure** (after a successful API call) opens `ErrorModalFileUpload`, defined alongside the wizard component: a single-Okay dialog that only dismisses itself. The user remains on the Summary step and can retry the submission manually.
 
 ## The load-project form
 
-`MultiStepFormLoadProject` reuses the `Step` contract for a single step ("Upload Files") whose validation is `validateExistingProject`, and renders the same `FileUploadStep` — which is why all file types, including trace-link and inconsistency JSON, are allowed on this route and the JSON name heuristics can preselect them. Its `Stepper` prepends an empty label so the lone step renders as the second position of the progress bar, and its final button is labeled "Visualize TraceLinks" with the same disabled rule as the wizard.
+`MultiStepFormLoadProject` reuses the `Step` contract for a single step ("Upload Files") whose validation is `validateExistingProject`, and renders the same `FileUploadStep` — which is why all file types, including trace-link and inconsistency JSON, are allowed on this route and the JSON name heuristics can preselect them. Its `Stepper` prepends an empty label so the lone step renders as the second position of the progress bar, passes `isStepReachable={() => false}` so no other dot is clickable, and its final button is labeled "Visualize Trace Links" with the same disabled rule as the wizard.
+
+The left button is **Exit** on the (only) step and routes back to `/new-project`, giving users a one-click path into the wizard when they realize they need a fresh pipeline run instead of visualizing existing results.
 
 Submission is purely local: `handleSubmit` generates a `uuidv4` storage id, calls `storeProjectFiles` and `storeProjectMetadata` under it, and the form redirects to `/view-provided/{encodedId}`. No backend call is made. Storage errors are only logged — no modal is shown — and the redirect happens regardless of whether the writes succeeded.
 
 ## Invariants and change notes
 
-- **File-combination rules are enforced redundantly at three layers:** `FormValidation`'s count caps, `TraceLinkType.checkCondition` gating the radio selection, and `fetchArdocoApi`'s per-pipeline required-file checks that throw before posting. Changing a pipeline's inputs means updating all three.
-- **Inconsistency detection is pinned to `SAD_SAM` at three layers:** the context's `updateFormData` auto-reset, the disabled checkbox in `ProjectDetailsStep`, and the guard in `fetchArdocoApi`. Supporting another pipeline requires touching all three plus the backend.
+- **File-combination rules are enforced redundantly at three layers:** `FormValidation`'s per-type count caps, `TraceLinkType.checkCondition` gating the radio selection in `ProjectDetailsStep`, and `fetchArdocoApi`'s per-pipeline required-file checks that throw before posting. Changing a pipeline's inputs means updating all three.
+- **Inconsistency detection is gated by the file combination, not by a single pipeline:** documentation plus an architecture model enables the checkbox (`canFindInconsistencies`), the context auto-reset, and the `fetchArdocoApi` guard. For SWATTR the inconsistencies are part of the same run; for every other pipeline a second SAD-SAM run is started against `/api/find-inconsistencies/start`, and the result view distinguishes the two via the `inconsistencies` URL parameter.
 - **Adding a wizard step** means adding a `Step` entry (label, title, description, validation) and rendering its component in the step switch; steps that cannot fail can return an empty validation list, as the Configuration step does.
 - **New file types** need an entry in `FileType`, a branch in `preselectFileType`, and inclusion in the per-route `allowedFileTypes` lists.
-- The wizard's per-step errors are derived state recomputed on each render; keep heavy validation cheap, since it runs on every keystroke-triggered re-render of the form shell.
+- The wizard's per-step errors are derived state recomputed on each render; keep heavy validation cheap, since it runs on every keystroke-triggered re-render of the form shell (and `isStepReachable` re-runs every earlier validator too).
