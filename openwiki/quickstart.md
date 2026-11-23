@@ -5,7 +5,7 @@ description: "Entry point to the ARDoCo TraceView wiki: what the client is, how 
 tags: [quickstart, navigation, traceview]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-16T15:06:02.471Z
+    at: 2026-11-23T17:35:55.991Z
 sources:
   - id: openwiki-source-1bc83e59b3e3c64091f68169
     resource: repo://.github/workflows/docker.yml
@@ -23,6 +23,8 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
+  - id: openwiki-source-cc2828785988d51226a4241e
+    resource: repo://renovate.json
   - id: openwiki-source-8d46e58add4326fa55236087
     resource: repo://src/app/layout.tsx
   - id: openwiki-source-0d5b307dc3c3ba953f2497f6
@@ -63,7 +65,7 @@ sources:
     resource: repo://src/util/ClientFileStorage.tsx
   - id: openwiki-source-b60decb03ea1c257f6cfbbf7
     resource: repo://test/test-sadsam-json.json
-generated: { by: "openwiki/0.9.0", at: "2026-11-16T15:06:02.471Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-23T17:35:55.991Z" }
 ---
 
 # Quickstart
@@ -172,6 +174,7 @@ npm run lint     # eslint --fix (flat config in eslint.config.mjs)
 - The `Dockerfile` is a three-stage build (deps → builder → runner): `npm ci`, one `npm run build` with `output: 'standalone'`, then a non-root runtime serving the standalone `server.js` on port 3000.
 - `docker-compose-template.yml` provides a compose file for `ghcr.io/ardoco/traceview:latest` publishing `127.0.0.1:3000`; the public instance runs at [tv.ardoco.de](https://tv.ardoco.de).
 - `openwiki.yml` refreshes the generated `openwiki/` pages weekly (Mondays 06:00 UTC) via the reusable ardoco OpenWiki workflow.
+- Dependency automation is Renovate, not Dependabot: `renovate.json` only extends the shared `local>ArDoCo/actions:renovate-preset` preset, so update schedules and conventions live in the `ardoco/actions` repository, and there is no `.github/dependabot.yml` in this repository — see [Operations](operations.md).
 
 ## Notes for future changes
 

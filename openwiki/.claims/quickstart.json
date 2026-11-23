@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b5dac348dfb982450458c0d97fa122461d0903d56557536bace91fae9c22655a",
+  "pageVersion": "sha256:3ef3ba2b58fedfc9385c9f3175eb0d70d3fe620ad26d4dd6747608585a6b01e6",
   "claims": [
     {
       "id": "claim_8e09ffa7347d45e1a3a6b5bcf8b3fef1",
@@ -353,14 +353,24 @@
           "version": "repo-lines-v1:sha256:3e544a49fb446727d59221c3826687ac6d04c83a09d7acb5c7ca7fdea6f4e4e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5Zjc4NzE0ODkzYWE3Nzk0MmNlYTFjNGEyZTAyMzFkYmI3ZmEyYTQxYTcwYzgxNDYwYTNjNjc1NjJkYTNhYWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxOTgyZGU3Yjg3MTRkNzA2OGIxZDE5NmE4NzY1ODYyODU2MjAyMTAzNjRhYzJiOGYyMTAzZTY5ZDg0NDc0ZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiMWJlZDJjMWUxNzY1ZDc4M2UxMmNhMjIwZDNiZGQ1OWNkODdlOTVjYWY4OWQ4OWQ5YzIzOTVmMDVhYzBhNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://package.json#L17-L19",
-          "version": "repo-lines-v1:sha256:dacb23505e17e997bb378eab5dd74e5da8dadd6d7b3e39d8620a2ab7777636ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2IxOGNhYzZlN2ExMWQ1NTQwMThlOWY4MDdkMzkwZTM1ZGM0ZTc0MzE0NzQ0M2IxMzFiYjJkZDBiNDUwMjJjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTgxNTI0NGJlNzVlZWU2YzUyOWE5YjA3MjExNjhhYjBlZmJhNDEzYzQ2ZGM3MjJiMjY2YzM4ZGM2MGM5NDg3NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQwNjJlZjQ2MTJlN2IzZDQ1ZDE4MjVjZjg2NjI3NGM5MjU5YmNjYTA2MGRlNGNmMzE3MTZmN2U5NzIzOTllZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGI0ZmZlNjhkOTkyZjlkYmZjZDM2NWFjZmE3YTgyNDY2YjE5YTQzYWFjNTM3MmQzNzVkZTY0ZGU3NDc5MmUxYyJ9"
+          "resource": "repo://package.json#L11-L22",
+          "version": "repo-lines-v1:sha256:9e97cb5b29a516ccd3259a29e1007fd2936d15072dffd9e7dbb2c9969dc0b96a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhM2I0NjlkOWUwOTc1NzIyNDY2NjczNGM5ZWY3YjI1NGQ4ODUzNGY1ZDViYjcwOTg5NjA4MDVjNTUzZGMzMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0NDI0ZWMxNjU0NTY3MThlMGQyNTQ0NjNiMjUwNDA5MjRmM2Q2M2Y5Nzk5MmFmYmFiNzRjYWJkMWJjY2QxOWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzNDk4NDk4YWExZDAyNzJjOTYyMzlkYzE3YjFkN2M2NTVjOGU2ZjI4MTMxMzlkOWM5OWJlOWNjYmY4ZTczMGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkMGM2MWNiZjNiZTgzZjQwMzRmOTE0NWIyNjQ4NWM3MDdmNzc1NjhiMDUyYjE0NjJmYWY2NDc0MTAzM2NlMTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_80ec5eac2d34427e8dc9df7545e1b268",
+      "statement": "Dependency automation in the repository is Renovate, not Dependabot: `renovate.json` contains only the Renovate JSON-schema reference and `extends: [\"local>ArDoCo/actions:renovate-preset\"]`, so update schedules, ecosystems, and commit-message conventions are defined by that shared preset in the ardoco/actions repository, and there is no `.github/dependabot.yml`.",
+      "evidence": [
+        {
+          "resource": "repo://renovate.json#L1-L4",
+          "version": "repo-lines-v1:sha256:44b93d1dfd3c9890be5b8e5985f97433835824b2e6dcf2c8ace114a46c6b786b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTZmYjA4ZmRhMWFjYjk1N2I2MTE2YmQzNzgxMWExZmU0MWEwMTYxMWMwNjMxZWRiZjc4NmQ2ODg5YTI3YTU1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-16T15:06:02.471Z"
+    "at": "2026-11-23T17:35:55.991Z"
   }
 }

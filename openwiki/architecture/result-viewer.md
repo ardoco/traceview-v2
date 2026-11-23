@@ -4,8 +4,8 @@ title: "Result viewer"
 description: "The traceLinksResultViewer subsystem: resizable panel layout and chrome, the five view modules (documentation, architecture model, code model, trace links, inconsistencies) with their parsers and data models, OPFS-backed data loading through useDataLoader, and the JSON export buttons."
 tags: [architecture, result-viewer, trace-links, inconsistencies, d3, panels]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-19T12:26:44.589Z
+  - by: openwiki/0.9.0
+    at: 2026-11-23T17:35:55.991Z
 sources:
   - id: openwiki-source-a1639c9a3e7858fc041e3486
     resource: repo://src/app/view-provided/%5Bid%5D/page.tsx
@@ -15,6 +15,8 @@ sources:
     resource: repo://src/components/dataTypes/DisplayOption.tsx
   - id: openwiki-source-9d7a36e3958a5e4c93079ade
     resource: repo://src/components/dataTypes/TraceLinkTypes.tsx
+  - id: openwiki-source-becd25491b260c26a078a2a7
+    resource: repo://src/components/LoadingErrorModal.tsx
   - id: openwiki-source-07a6410ee1291975b8263431
     resource: repo://src/components/multiStepForm/steps/configurationStep/ManualInputSection.tsx
   - id: openwiki-source-67aba87ca787d158efcad462
@@ -45,6 +47,8 @@ sources:
     resource: repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/LollipopEdges.tsx
   - id: openwiki-source-132533efc1e0e81e149c8a82
     resource: repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLComponentNode.tsx
+  - id: openwiki-source-6518434bb402eed18d45dd92
+    resource: repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLEdge.tsx
   - id: openwiki-source-1958ed4bdfa8433efb9601b3
     resource: repo://src/components/traceLinksResultViewer/views/architectureModel/viewer/UMLViewer.tsx
   - id: openwiki-source-bd745522a282f598a7544259
@@ -91,7 +95,7 @@ sources:
     resource: repo://src/util/DownloadFileComponent.tsx
   - id: openwiki-source-b2674f11a5f554c55297d247
     resource: repo://src/util/useDataLoader.ts
-generated: { by: "openwiki/0.7.2", at: "2026-10-19T12:26:44.589Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-23T17:35:55.991Z" }
 ---
 
 # Result viewer
@@ -104,45 +108,48 @@ The viewer is mounted by [two result routes](../architecture.md): `/view/[id]` (
 
 The most important data-sourcing fact about this subsystem is a split that is easy to miss:
 
-- **The backend result is only two arrays.** On `/view/[id]`, the page polls `GET /api/get-result/{id}`, parses `response.result.traceLinks` with `parseTraceLinksFromJSON` and — when the query parameter requested them and they are present — `response.result.inconsistencies` with `parseInconsistenciesFromJSON`, and hands the arrays to the two highlight providers. No other result data comes from the backend.
+- **The backend result is only two arrays.** On `/view/[id]`, the page polls `GET /api/get-result/{id}` (the polling lifecycle itself is described in [Workflows](../workflows.md)), parses `response.result.traceLinks` with `parseTraceLinksFromJSON` and — when the response carries them — `response.result.inconsistencies` with `parseInconsistenciesFromJSON`, and hands the arrays to the two highlight providers. No other result data comes from the backend. Inconsistencies can arrive through a second, separately polled run; see [The inconsistency source on `/view/[id]`](#the-inconsistency-source-on-viewid) below. While the run is in flight the page shows a top banner (`Generating trace links, please wait...`), and polling failures surface in a modal offering Retry and View Files Only (the latter keeps the panels usable without results).
 - **Every artifact panel re-reads its file from browser storage.** The documentation, architecture-model, and code-model panels load their inputs themselves from the Origin Private File System directory keyed by the project id, via the generic `useDataLoader` hook plus `loadProjectFile`. On `/view-provided/[id]` even the trace-link and inconsistency JSON is parsed from stored files (`FileType.TRACELINKS` / `FileType.INCONSISTENCIES`) instead of from a backend response.
 
 Because the wizard stores the submitted artifacts under the same `requestId` it later redirects to (see [Client-side project storage](client-storage.md)), the panels of a backend-polled result read exactly the files that were uploaded — the backend never echoes artifacts back.
 
 The panel list itself is derived per route:
 
-- `/view/[id]` builds `displayOptions` as the selected pipeline's `resultViewOptions` (from `TraceLinkTypes` in `src/components/dataTypes/TraceLinkTypes.tsx`) with `DisplayOption.TRACELINKS` unshifted first and `DisplayOption.INCONSISTENCIES` appended when inconsistency detection was requested.
+- `/view/[id]` builds `displayOptions` as the selected pipeline's `resultViewOptions` (from `TraceLinkTypes` in `src/components/dataTypes/TraceLinkTypes.tsx`) with `DisplayOption.TRACELINKS` unshifted first. When inconsistency detection applies (from the `inconsistencies` URL parameter or stored metadata), the page appends the missing `ARCHITECTURE_MODEL` and `DOCUMENTATION` panels — inconsistencies refer to those two artifacts — and then `DisplayOption.INCONSISTENCIES`.
 - `/view-provided/[id]` maps the stored file types from `loadProjectMetaData` through `getResultViewOption(fileType)` in `src/components/dataTypes/DisplayOption.tsx`, so a stored project shows exactly the panels whose artifacts exist.
 
 ## Panel composition and chrome
 
 `ResultDisplay` (`src/components/traceLinksResultViewer/ResultDisplay.tsx`) is the root component. It receives `id`, `traceLinkType`, and `displayOptions`, and composes:
 
-- a horizontal `react-resizable-panels` `Group` with up to **three** `ResultPanel`s (`displayOptions.slice(0, 3)`) and a green `Separator` between adjacent panels; only the **first and last** panels are collapsible (`collapsible={index === 0 || index === length - 1}`, `collapsedSize={0}`),
+- a horizontal `react-resizable-panels` `Group` with up to **three** `ResultPanel`s (`displayOptions.slice(0, 3)`) and a green `Separator` between adjacent panels; only the **first and last** panels are collapsible (`collapsible={index === 0 || index === panelsToRender.length - 1}`, `collapsedSize={0}`),
 - one `FullScreenResultDialog` driven by shared `selectedDialogView` state,
 - one `SearchResultMessage` toast (see [Highlighting](highlighting.md) for its `MessageSource`/timestamp arbitration).
 
 Because `displayOptions` can be longer than three (TransArC with inconsistencies yields five: `TRACELINKS, CODE_MODEL, ARCHITECTURE_MODEL, DOCUMENTATION, INCONSISTENCIES`), options beyond the first three are not lost — every `ResultPanel`'s dropdown lists **all** `displayOptions`, and the fullscreen dialog has a tab per option. Which panel shows what initially follows the option order: each `ResultPanel` seeds its local state from its `defaultView` prop (its index's option).
 
-`ResultPanel` (`ResultPanel.tsx`) is a resizable `Panel` (`minSize={10}`) whose sticky header holds a Headless UI `Select` over all `displayOptions` — labels come from `displayOptionName(option, traceLinkType)`, where the tracelinks option is rendered as `"<name> (<alternative_name>) TraceLinks"`, e.g. `TransArC (sad-sam-code) TraceLinks` — plus a fullscreen button that opens the dialog for the panel's currently selected view. The panel body is `getResultPanel(selectedPanel, id, 10)`: the `headerOffset=10` keeps the viewer-internal sticky bars (sort/filter headers) below the panel dropdown.
+`ResultPanel` (`ResultPanel.tsx`) is a resizable `Panel` (`minSize={10}`) whose sticky header holds a Headless UI `Select` over all `displayOptions` — labels come from `displayOptionName(option, traceLinkType)`, where the tracelinks option is rendered as `"<name> (<alternative_name>) Trace Links"`, e.g. `TransArC (sad-sam-code) Trace Links` — plus a fullscreen button (`ArrowsPointingOutIcon`) that opens the dialog for the panel's currently selected view. The panel body is `getResultPanel(selectedPanel, id, 10)`: the `headerOffset=10` keeps the viewer-internal sticky bars (sort/filter headers) below the panel dropdown.
 
-`FullScreenResultDialog` (`FullScreenResult.tsx`) is a fixed-position Headless UI `Dialog` with a manual `TabGroup`: one `Tab` per display option, a close (`XMarkIcon`) button, and one `TabPanel` per option rendering `getResultPanel(option, id, 0)` — header offset 0, since there is no panel dropdown above. Tab changes flow back into `selectedDialogView`, so reopening the dialog keeps the last selected view.
+`FullScreenResultDialog` (`FullScreenResult.tsx`) is a fixed-position Headless UI `Dialog` with a manual `TabGroup`: one `Tab` per display option (labeled with `displayOptionName`), a close (`XMarkIcon`) button, and one `TabPanel` per option rendering `getResultPanel(option, id, 0)` — header offset 0, since there is no panel dropdown above. Tab changes flow back into `selectedDialogView` via `onSelectView(displayOptions[index])`, so reopening the dialog keeps the last selected view.
 
-Two small shared chrome pieces round out the subsystem: `Loading.tsx` provides `LoadingMessage` (centered gray title text) and `ErrorMessage` (red "An error occurred: …" text), and `TooltipInstruction` renders an absolutely positioned "?"-badge whose hover tooltip lists key-combo → explanation pairs (positioned bottom-right by default; each viewer supplies its own instructions).
+Two small shared chrome pieces round out the subsystem: `Loading.tsx` provides `LoadingMessage` (centered gray title text) and `ErrorMessage` (red `An error occurred: <error>` text), and `TooltipInstruction` renders an absolutely positioned "?"-badge whose hover/focus/click tooltip lists key-combo → explanation pairs (positioned bottom-right by default; each viewer supplies its own instructions; Escape or blur closes it).
 
 ```mermaid
 flowchart TD
-    V["/view/[id] page polls ARDoCo result"] -->|"parseTraceLinksFromJSON"| HP["HighlightProvider trace-link context"]
-    V -->|"parseInconsistenciesFromJSON"| IP["InconsistencyProvider context"]
-    VP["/view-provided/[id] page reads stored OPFS JSON"] -->|"parseTraceLinksFromJSON"| HP
+    V["/view/[id] polls the backend result"] -->|"parseTraceLinksFromJSON"| HP["HighlightProvider trace-link context"]
+    V -->|"same-run inconsistencies"| IP["InconsistencyProvider context"]
+    V -->|"parallel poll of the separate run"| SR["Separate outcome keyed by apiAddress and requestId"]
+    SR -->|"parsed inconsistencies"| IP
+    VP["/view-provided/[id] reads stored OPFS JSON"] -->|"parseTraceLinksFromJSON"| HP
     VP -->|"parseInconsistenciesFromJSON"| IP
-    RD["ResultDisplay up to 3 resizable panels"] --> RP["ResultPanel sticky view dropdown plus fullscreen"]
-    RP -->|"getResultPanel per DisplayOption"| VIEWS
-    subgraph VIEWS["Five view modules in views/"]
+    RD["ResultDisplay up to 3 resizable panels"] --> RP["ResultPanel sticky view dropdown plus fullscreen button"]
+    RP -->|"getResultPanel with headerOffset 10"| VIEWS
+    FD["FullScreenResultDialog one tab per option"] -->|"getResultPanel with headerOffset 0"| VIEWS
+    subgraph VIEWS["Five view modules under views/"]
         DOC["DocumentationParser to Sentence list"]
         ARC["PCMParser or UMLParser to ArchitectureDataModel"]
         CODE["ACMParser to CodeModelUnit tree"]
-        TLV["TracelinkViewer sort and download"]
+        TLV["TraceLinkView sort and download"]
         INV["InconsistencyViewer filter and download"]
     end
     DOC -->|"useDataLoader with loadProjectFile"| OPFS["OPFS project directory keyed by id"]
@@ -152,7 +159,7 @@ flowchart TD
     IP -->|"highlightedInconsistencies"| VIEWS
 ```
 
-*Panel composition and data flow: both result routes parse only trace-link/inconsistency arrays into the highlight contexts, artifact panels load their own files from OPFS through `useDataLoader`, and the viewers both render data and feed the highlight state.*
+*Panel composition and data flow: both result routes parse only trace-link/inconsistency arrays into the highlight contexts (the backend route additionally polls a separate inconsistency run in parallel), artifact panels load their own files from OPFS through `useDataLoader`, and the viewers both render data and feed the highlight state.*
 
 ## The single DisplayOption → viewer mapping
 
@@ -168,21 +175,35 @@ flowchart TD
 
 When adding a panel, update this switch plus the `DisplayOption` enum and its `displayOptionName` label; depending on the route, also extend the pipeline's `resultViewOptions` in `TraceLinkTypes` and/or the `getResultViewOption` file-type mapping. Unknown options return `null`. `ViewProps` is the shared artifact-viewer prop shape (`{ id: string }`).
 
+## The inconsistency source on `/view/[id]`
+
+The backend result page derives a four-state `InconsistencySource` from the `inconsistencies` URL query parameter:
+
+| Parameter value | State | Meaning |
+| --- | --- | --- |
+| `"true"` or the trace-link request id | `same` | The run itself contains inconsistencies (SWATTR); `response.result.inconsistencies` is parsed together with the trace links. |
+| any other id | `separate` | A separate SAD-SAM inconsistency run was started under that request id. |
+| `"failed"` | `failed` | The separate run could not be started; the panel shows `Could not start the inconsistency detection.` |
+| `"false"` (or any other falsy value) | `none` | Not requested. |
+
+When the URL parameter is absent entirely, the state starts as `null` and the page consults the stored project metadata via `loadInconsistencyRequestId` to decide. The separate run is polled **in parallel** with the trace-link run (only its inconsistencies are used; its SAD-SAM trace links are ignored), and its outcome is stored tagged with the key `` `${apiAddress}|${requestId}` `` — `loading` and `error` are derived during render by comparing the stored key against the current one, so a superseded poll can never be mistaken for the active one. The providers receive the merged result: `same` uses the page-wide `loading`, `separate` uses the derived `separateLoading`/`separateError` (defaulting to `The inconsistency detection failed.` on error), and `failed` only sets the error.
+
 ## Shared data loading: `useDataLoader` + `loadProjectFile`
 
 `src/util/useDataLoader.ts` is the generic loader hook every artifact panel uses:
 
-1. It guards on mount: a first effect flips `isMounted`, and the loading effect runs only when `isMounted && id`; with a falsy `id` it just stops loading. This prevents storage access during server rendering/hydration.
-2. For each `id` change it resets `data`/`fileContent`/`error`, sets `isLoading`, and calls the panel-supplied `loader(id)`.
-3. The loader returns a `LoaderResult<T> = { data, fileContent }` — parsed model plus raw file text — and the hook surfaces `{ data, fileContent, isLoading, error }`; any loader throw becomes the error string `Failed to load or parse data: <message>`.
+1. **The outcome is stored keyed by the requested id.** The hook keeps `{ id, data, fileContent, error }` in one state value; `isLoading` is derived during render — true until an outcome whose `id` matches the current id exists. There is no mounted-guard effect and no separate loading flag: a result belonging to a previous id simply does not count.
+2. **A `loaderRef` always calls the latest loader.** Callers pass inline loader functions, so the hook keeps them in a ref updated on every render and the loading effect only depends on `id` — a loader identity change never re-triggers loading, but a re-run always uses the newest closure.
+3. **A falsy `id` never loads.** The effect returns early, so the panel stays in the derived "loading" state until a real id arrives.
+4. **Loaders return `LoaderResult<T> = { data, fileContent }`** — parsed model plus raw file text — and the hook surfaces `{ data, fileContent, isLoading, error }`; any loader rejection becomes the error string `Failed to load or parse data: <message>`.
 
-The three artifact loaders all shape their work the same way:
+The three artifact loaders all shape their work the same way over `loadProjectFile`:
 
-- `DisplayDocumentation` loads `FileType.DOCUMENTATION`, parses with `parseDocumentationText` into `Sentence[]`.
-- `DisplayArchitectureModel` loads with fallback `FileType.ARCHITECTURE_MODEL_UML` and — because both architecture variants share the stored name `Architecture Model` (see [Client-side project storage](client-storage.md)) — dispatches on the metadata-resolved `result.fileType`: `ARCHITECTURE_MODEL_PCM` → `parsePCM`, `ARCHITECTURE_MODEL_UML` → `parseUMLModel`, anything else throws `Unknown architecture file type.`
-- `DisplayCodeModel` loads `FileType.CODE_MODEL` and parses with `parseACMFile` into a `CodeModelUnit` tree.
+- `DisplayDocumentation` loads `FileType.DOCUMENTATION`, parses with `parseDocumentationText` into `Sentence[]`, and shows `Loading documentation...` while loading (its parse-failure message nevertheless says "the code model" — a copy-paste artifact).
+- `DisplayArchitectureModel` loads with fallback `FileType.ARCHITECTURE_MODEL_UML` and — because both architecture variants share the stored name `Architecture Model` (see [Client-side project storage](client-storage.md)) — dispatches on the metadata-resolved `result.fileType`: `ARCHITECTURE_MODEL_PCM` → `parsePCM`, `ARCHITECTURE_MODEL_UML` → `parseUMLModel`, anything else throws `Unknown architecture file type.` While loading it shows `Loading code model...` (the title string is shared with the code-model panel).
+- `DisplayCodeModel` loads `FileType.CODE_MODEL`, parses with `parseACMFile` into a `CodeModelUnit` tree, and shows `Loading code model...`.
 
-Failure semantics are split by layer: a **missing** file (`loadProjectFile` → `null` on `NotFoundError`) is *not* an error — the loader returns `{data: null, fileContent: null}` and the viewer renders its fallback (empty sentence list; code-model raw-content `<div>`; "Architecture model not found or could not be loaded." message). A **parse** failure is thrown inside the loader and surfaces as the red `ErrorMessage` via the hook. The tracelinks and inconsistencies viewers use none of this — they render the shared highlight-context state and have their own `loading` flags fed by the result page.
+Failure semantics are split by layer: a **missing** file (`loadProjectFile` → `null` on `NotFoundError`) is *not* an error — the loader returns `{data: null, fileContent: null}` and the viewer renders its fallback (empty sentence list for documentation; the code model renders a raw-content `<div>`, which is empty when the file is missing; `Architecture model not found or could not be loaded.` when the architecture model has neither a parsed model nor raw content). A **parse** failure is thrown inside the loader and surfaces as the red `ErrorMessage` via the hook. The tracelinks and inconsistencies viewers use none of this — they render the shared highlight-context state and take their `loading`/`error` flags from the result page.
 
 ## The five view modules
 
@@ -212,8 +233,8 @@ Failure semantics are split by layer: a **missing** file (`loadProjectFile` → 
 **Viewer.** `UMLViewer` (`views/architectureModel/viewer/UMLViewer.tsx`) is d3-powered SVG rendering:
 
 - `processUMLData` simplifies the graph before layout: an interface that is provided exactly once and used exactly once becomes a **pass-through** — it is removed from node rendering and replaced by a `virtual:mergedEdge` between provider and user, drawn by `UMLEdge` as paired provided/required **lollipop** symbols (`LollipopEdges.tsx`) labeled with the interface name and connected by a dashed line. Interfaces with exactly one attached edge are hidden as nodes and their edges drawn as short links.
-- Positions come from a d3 force simulation (`forceLink` distance 200, `forceManyBody` −400, `forceCollide` radius 120, weak centering); on `end` the simulation computes a padded bounding box and the SVG `viewBox` is set to it, so the layout auto-fits. `d3.zoom` allows pan/zoom.
-- Component boxes (`UMLComponentNode.tsx`) are canvas-measured, camelCase-wrapped label rectangles with the `<<component>>` stereotype and a component glyph, filled with a trace-link/inconsistency highlight gradient when applicable. Interfaces render as lollipop-style nodes whose hovered name opens the interface tooltip (`InterfaceTooltip.tsx`: provided/required label plus operations — note the operations list branch is inverted, so an interface *with* operations displays a "-" placeholder).
+- Positions come from a d3 force simulation in the `useForceLayout` hook (`forceLink` distance 200, `forceManyBody` −400, `forceCollide` radius 120, weak centering); on `end` the simulation computes a padded bounding box and the SVG `viewBox` is set to it, so the layout auto-fits. `d3.zoom` allows pan/zoom.
+- Component boxes (`UMLComponentNode.tsx`) are canvas-measured, camelCase-wrapped label rectangles with the `<<component>>` stereotype and a component glyph, filled with a trace-link/inconsistency highlight gradient when applicable. Interface nodes render as plain text labels (names longer than 20 characters are truncated with an ellipsis) whose hovered name opens the interface tooltip (`InterfaceTooltip.tsx`: provided/required label plus operations — note the operations list branch is inverted, so an interface *with* operations displays a "-" placeholder, and every current call site labels the tooltip "Provided"). The lollipop symbols themselves are drawn by `UMLEdge` on the edges touching interfaces, not on the interface nodes.
 - Every click path (component, interface, merged edge) calls `highlightElement(id, DisplayOption.ARCHITECTURE_MODEL)` plus `highlightInconsistencyWithModelId(id)`, wiring the model panel into the cross-panel highlight engine.
 
 When no parsed model is available the panel falls back to raw/not-found text; parse errors surface as `ErrorMessage`.
@@ -229,9 +250,9 @@ When no parsed model is available the panel falls back to raw/not-found text; pa
 5. single-child `CodePackage` chains are collapsed, joining names with `/`;
 6. the root is chosen (synthetic "Code Model" root when several top-level entries exist, the single child otherwise) and `setCodeModelUnitPaths` recomputes absolute paths.
 
-**Viewer.** `ACMViewer` (`views/codeModel/viewer/ACMViewer.tsx`) renders the tree as a d3 cluster/tree layout (`nodeSize` 10 × 200): initially collapsed below depth 2, but a full-tree copy is kept in a ref so highlight computation always sees the complete hierarchy. `d3.zoom` is installed and an initial transform fits the drawn bounding box into the SVG (scale clamped to 0.1–1.5, 50 px padding).
+**Viewer.** `ACMViewer` (`views/codeModel/viewer/ACMViewer.tsx`) renders the tree as a d3 tree layout (`nodeSize` 18 × 240): children of depth-2 nodes start collapsed, but `buildInitialTrees` also builds a full-tree copy once, and that expanded copy is what highlight computation and the bounding-box code see. `d3.zoom` (scale extent 0.05–8) is installed and an initial transform fits the drawn bounding box into the SVG (scale clamped to 1–1.5 so labels stay readable, 50 px padding; if the whole tree fits at that scale it is centered, otherwise the view starts at the root).
 
-Interactions: a plain click on `ACMNode` calls `highlightElement(node.data.id, DisplayOption.CODE_MODEL)`; **Ctrl+Click** toggles the node's subtree between `children` (visible) and `_children` (collapsed) in the tree state and forces a re-render via a copied reference. When trace links are highlighted (matched by `codeElementId`), every ancestor path edge of the matching nodes is drawn as a thick highlighted `ACMLink`, and an effect auto-expands any collapsed ancestors of the highlighted nodes so the matched elements become visible.
+Interactions: a plain click on `ACMNode` calls `highlightElement(node.data.id, DisplayOption.CODE_MODEL)`; **Ctrl/Cmd+Click** toggles the node's subtree between `children` (visible) and `_children` (collapsed) in the tree state and forces a re-render via a copied reference — with an extra `contextmenu` handler because macOS browsers turn Ctrl+Click into a right-click event. When trace links are highlighted (matched by `codeElementId` against the full tree), every ancestor path edge of the matching nodes is drawn as a thick highlighted `ACMLink`, and a render-time check auto-expands any collapsed ancestors of the highlighted nodes in the visible tree so the matched elements become visible.
 
 ### Tracelinks
 
@@ -240,7 +261,7 @@ Interactions: a plain click on `ACMNode` calls `highlightElement(node.data.id, D
 | Pipeline (`traceLinkType.name`) | Parsed fields |
 | --- | --- |
 | `ArDoCode` (SAD_CODE) | sentence number (backend +1), code element |
-| `ArCoTL` (SAM_CODE) | model element, code element (`sentenceNumber: null`) |
+| `ArCoTL` (SAM_CODE) | model element, code element (`sentenceNumber: null`) — note the code element values are passed into the model element parameters and vice versa, so the `TraceLink` fields end up swapped for this pipeline |
 | `TransArC` (SAD_SAM_CODE) | sentence number (+1), model element, code element |
 | `SWATTR` (SAD_SAM) | sentence number (+1), model element |
 
@@ -248,17 +269,17 @@ Unknown types log an error and yield an empty list; exceptions are caught and al
 
 **Viewer.** `TraceLinkView` reads `traceLinks`, `traceLinkType`, `highlightedTraceLinks`, and `loading` from the trace-link context — it holds no own data loading. Its sticky header (top offset `headerOffset`) offers:
 
-- type-dependent sort options: `Code`, `Model`, and `Sentence` comparators exist, but per pipeline the irrelevant one is removed (SAD_SAM has no code, SAD_CODE no model, SAM_CODE no sentence); comparisons fall back to element ids, and sentence sort treats missing numbers as largest;
-- a **Highlights** toggle — when active, re-sorting (which also re-runs via an effect whenever `traceLinks` or the sort method changes) moves currently highlighted links to the top;
+- type-dependent sort options: `Code`, `Model`, and `Sentence` comparators exist, but per pipeline the irrelevant one is removed (SAD_SAM has no code, SAD_CODE no model, SAM_CODE no sentence); comparisons fall back to element ids, and sentence sort treats missing numbers as largest. The dropdown offers `None` plus the applicable comparators;
+- a **Highlights** toggle — when active, re-sorting (which also re-runs via a memo whenever `traceLinks`, the sort method, or the toggle changes) moves currently highlighted links to the top;
 - `DownloadFileComponent` exporting `tracelinks.json`.
 
-The sorting dropdown also resets to `"Sort By"` whenever a new `traceLinks` array arrives. Rows (`TraceLinkItem`) show Code / Model / Sentence fields driven by the same type flags, carry the element id as a title tooltip, and on click reset the inconsistency highlight then call `highlightSingleTraceLink(link)`. While `loading`, the panel shows "Generating traceLinks, this may take a few moments..."; an empty result set shows "No traceLinks found."
+The sorting dropdown also resets to `"Sort By"` whenever a new `traceLinks` array arrives (checked during render, not in an effect). Rows (`TraceLinkItem`) show Code / Model / Sentence fields driven by the same type flags, carry the element id as a title tooltip, and on click reset the inconsistency highlight then call `highlightSingleTraceLink(link)`. While `loading`, the panel shows "Generating trace links, this may take a few moments..."; an empty result set shows "No trace links found."
 
 ### Inconsistencies
 
 **Parser.** `parseInconsistenciesFromJSON` (`views/inconsistencies/parser/InconsistencyParser.tsx`) maps each raw entry into one of two concrete classes by `type`: `TextEntityAbsentFromModelInconsistency` (`reason`, `sentenceNumber`) or `ModelEntityAbsentFromTextInconsistency` (`reason`, `modelElementId`). Unknown types log a warning and are dropped. The data model (`views/inconsistencies/dataModel/Inconsistency.tsx`) gives every inconsistency an id of `` `${type}-${reason}` `` extended by sentence number or model element id, plus `equals` used for comparisons in the viewer.
 
-**Viewer.** `InconsistencyViewer` reads `inconsistencies` and `loading` from the inconsistency context. Its sticky header offers:
+**Viewer.** `InconsistencyViewer` reads `inconsistencies`, `loading`, and `error` from the inconsistency context. Its sticky header offers:
 
 - a type filter (`All Types`, the two `InconsistencyType` values);
 - `DownloadFileComponent` exporting `inconsistencies.json`.
@@ -280,8 +301,8 @@ The tracelinks export reflects the current sort order (the sorted array), while 
 ## Operational notes
 
 - **No cross-panel search coupling in the panels themselves:** the tracelinks and inconsistencies panels render whatever the highlight contexts hold, and `SearchResultMessage` is the only feedback surface for match counts (see [Highlighting](highlighting.md)).
-- **Empty results are statuses, not errors:** missing artifact files render fallbacks, empty trace-link/inconsistency arrays render dedicated "No … found" messages, and highlight mutators no-op on empty collections — only storage exceptions and parse failures become `ErrorMessage`s.
-- **The viewer is client-only:** all storage access happens behind the mounted guard of `useDataLoader` (and `loadProjectFile`'s own server-side guard), so the panels are safe under Next.js server rendering but always load after hydration.
+- **Empty results are statuses, not errors:** missing artifact files render fallbacks, empty trace-link/inconsistency arrays render dedicated "No … found" messages, and highlight mutators no-op on empty collections. `ErrorMessage` output is reserved for loader failures (storage exceptions and parse failures wrapped as `Failed to load or parse data: …`) and for an error carried by the inconsistency context — e.g. a failed separate inconsistency run on `/view/[id]`.
+- **The viewer is client-only:** `useDataLoader` performs all storage access inside effects, which never run during Next.js server rendering, and `loadProjectFile` additionally throws on a `typeof window === "undefined"` guard, so the panels are safe under SSR but always load after hydration.
 
 ## Change checklist: adding or altering a panel
 

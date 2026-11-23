@@ -5,14 +5,12 @@ description: "TraceView development, build, lint, Docker, CI, and operational de
 tags: [operations, build, docker, ci, dependencies]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-16T15:06:02.471Z
+    at: 2026-11-23T17:35:55.991Z
 sources:
   - id: openwiki-source-715dace563ef484b6e8bd1e2
     resource: repo://.dockerignore
   - id: openwiki-source-f7227b16f747f948f606ace6
     resource: repo://.eslintrc.json
-  - id: openwiki-source-79b37831c9c81206da1d88ec
-    resource: repo://.github/dependabot.yml
   - id: openwiki-source-1bc83e59b3e3c64091f68169
     resource: repo://.github/workflows/docker.yml
   - id: openwiki-source-6d3ac2bdfb0e76882a670989
@@ -21,6 +19,8 @@ sources:
     resource: repo://.github/workflows/verify.yml
   - id: openwiki-source-ea70eb6c045047448e446296
     resource: repo://.gitignore
+  - id: openwiki-source-8037e2358a2c4f9b2c722a11
+    resource: repo://AGENTS.md
   - id: openwiki-source-f6bd4a15f7529778120ad013
     resource: repo://docker-compose-template.yml
   - id: openwiki-source-bb1ebe868e35e9e500714501
@@ -33,6 +33,8 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
+  - id: openwiki-source-cc2828785988d51226a4241e
+    resource: repo://renovate.json
   - id: openwiki-source-480c0862686116627e432a75
     resource: repo://src/app/view/%5Bid%5D/page.tsx
   - id: openwiki-source-b667c765083db63ac4342e49
@@ -53,7 +55,7 @@ sources:
     resource: repo://test/test-sadsam-json.json
   - id: openwiki-source-98d5ddb014a0fd4d678f6f2a
     resource: repo://tsconfig.json
-generated: { by: "openwiki/0.9.0", at: "2026-11-16T15:06:02.471Z" }
+generated: { by: "openwiki/0.9.0", at: "2026-11-23T17:35:55.991Z" }
 ---
 
 # Operations
@@ -70,6 +72,8 @@ npm run dev
 ```
 
 The app runs on the Next.js dev server (`next dev`) and is expected to be opened at `http://localhost:3000`. Note that the ARDoCo backend address is runtime browser configuration rather than build configuration (see [Operational dependencies and risks](#operational-dependencies-and-risks)).
+
+**Read the bundled Next.js docs before writing Next.js code.** The repository runs Next.js 16 (`next@^16.4.2`) with React 19, and `AGENTS.md` carries a generated block (re-added by `next dev`) warning that this Next.js version has breaking changes — APIs, conventions, and file structure may all differ from older Next.js knowledge — and instructing contributors to read the relevant guide in `node_modules/next/dist/docs/` (available after `npm install`) before writing any code. The block is re-created automatically if removed from a diff; committing it with your work keeps the tree clean.
 
 ## Production build and run
 
@@ -132,7 +136,7 @@ Three workflows live in `.github/workflows/`, two of which delegate to the share
 - **`docker.yml` ("Docker Push")** — on pushes to `main` and `v*` tags (plus manual dispatch), it delegates to the shared `ardoco/actions/.github/workflows/docker.yml@main` workflow with `image-name: traceview` and `push: true`; the compose template names the published image `ghcr.io/ardoco/traceview`. Pushes that only change `**.md` or `.github/**` paths skip this job.
 - **`openwiki.yml` ("OpenWiki Update")** — refreshes this wiki on a weekly schedule (`cron: "0 6 * * 1"`, Mondays 06:00 UTC) via the shared `ardoco/actions` openwiki workflow, granting `contents: write` and `pull-requests: write` and passing the `OPENROUTER_API_KEY` secret. Manual dispatch is also available.
 
-`.github/dependabot.yml` adds monthly dependency-update PRs for the `github-actions`, `npm`, and `docker` ecosystems, all using the "Dependency" commit-message prefix with scope.
+Dependency automation is Renovate, not Dependabot: `renovate.json` contains only the Renovate JSON-schema reference and `extends: ["local>ArDoCo/actions:renovate-preset"]`, so dependency-update behavior — schedule, ecosystems, commit-message conventions — is defined by that shared preset in the `ardoco/actions` repository rather than by any file in this repository. There is no `.github/dependabot.yml` in the repository; Dependabot is not used.
 
 ```mermaid
 flowchart TD
