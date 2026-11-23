@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:c6bc162c42f0114a9c24a3b770b974c0d4f381aa1133e7ea3dac514c3ee462ab",
+  "pageVersion": "sha256:327279738e2ff41c4c06b7c1cf22c7b255e4b37075e72894b672f44a6eabc603",
   "claims": [
     {
       "id": "claim_1f092772521642ddbf02857ee1383b89",
@@ -32,7 +32,7 @@
     },
     {
       "id": "claim_cb87b9e0340941ca91698ae7d7b9be5b",
-      "statement": "The active ESLint configuration is the flat config in eslint.config.mjs: it spreads eslint-config-next/core-web-vitals and eslint-config-next/typescript and globally ignores .next/**, out/**, build/**, and next-env.d.ts without any rule overrides, so the Next.js core-web-vitals and TypeScript defaults apply unchanged. The legacy .eslintrc.json at the repository root still declares two rule overrides (no-console at error level allowing console.warn and console.error, and @typescript-eslint/no-explicit-any at warn), but the ESLint v10 binary that the lint script and CI invoke resolves flat config instead, so those legacy overrides have no effect and lint behavior must be changed in eslint.config.mjs.",
+      "statement": "The active ESLint configuration is the flat config in eslint.config.mjs: it spreads eslint-config-next/core-web-vitals and eslint-config-next/typescript and globally ignores .next/**, out/**, build/**, and next-env.d.ts without any rule overrides, so the Next.js core-web-vitals and TypeScript defaults apply unchanged. The legacy .eslintrc.json at the repository root still declares two rule overrides (no-console at error level allowing console.warn and console.error, and @typescript-eslint/no-explicit-any at warn), but the ESLint v10 binary that the lint script (package.json line 9) and CI invoke resolves flat config instead, so those legacy overrides have no effect and lint behavior must be changed in eslint.config.mjs.",
       "evidence": [
         {
           "resource": "repo://.eslintrc.json#L1-L18",
@@ -43,8 +43,8 @@
           "version": "repo-lines-v1:sha256:813c12d29e0f5c6a686df358bea1488daca27f90ba8c267f0734576c37d60390:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzkzOGJjMjdhMTBiMGQxMDEwNzdhNjBmN2VkZDYyOTI2ZjRjZDgyNWIyMTQxOWExZWQ1YjQzNWM4MTZkMWJhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVlMjZjZDkyMzY2ZjYwZDhlZDkyZDAyMzlmMDdmZWY3NGNhYzE0YWE2OWFkZGY5YzJjYzBkMTFlYjAwYTQ2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         },
         {
-          "resource": "repo://package.json#L31-L31",
-          "version": "repo-lines-v1:sha256:2dea77b7f5d82966116848076d2f348ba89c0ee3ce57fb7a60fe73faeaec38b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRlYTc3YjdmNWQ4Mjk2NjExNjg0ODA3NmQyZjM0OGJhODljMGVlM2NlNTdmYjdhNjBmZTczZmFlYWVjMzhiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmRlYTc3YjdmNWQ4Mjk2NjExNjg0ODA3NmQyZjM0OGJhODljMGVlM2NlNTdmYjdhNjBmZTczZmFlYWVjMzhiMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjJhZDA3OTRiNWU1YTU4YTQzOTU5Y2NmYTQ5N2U5N2FhZTNhZGM3MDc0NWFhMWI5MDM3OGQ5NjkyOWMwNTU3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTdhYWNiMmU5OWI1MDZkOGJmMmU3NjI4OTJhNDA1YmMzOWJiMjg1MGM0ZWE5ODU1Y2FkMmYzNTY1NmRkNmJhNSJ9"
+          "resource": "repo://package.json#L9-L9",
+          "version": "repo-lines-v1:sha256:4699823e3bbfb580506384a963800938ba1e512e2e3a371aa8de228327b06088:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDY5OTgyM2UzYmJmYjU4MDUwNjM4NGE5NjM4MDA5MzhiYTFlNTEyZTJlM2EzNzFhYThkZTIyODMyN2IwNjA4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDY5OTgyM2UzYmJmYjU4MDUwNjM4NGE5NjM4MDA5MzhiYTFlNTEyZTJlM2EzNzFhYThkZTIyODMyN2IwNjA4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzhmNDM3OGQ4NWNjZjdkNjk4YmFmNTcxNmFkMWU5M2ZmYWU2OTQyYmE1ZmIzY2I4ZDhlOGE2YjRiN2FjYTkyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI3NDJiNjk1NmU2Y2U0ZmJlYjFlYmIxMzViN2ZlMDkyNjVjN2IyZGRhZmQ2Nzc4YjA1Yjg3OGVkMDVjOGU4ZiJ9"
         }
       ]
     },
@@ -141,16 +141,6 @@
       ]
     },
     {
-      "id": "claim_8fc6d8758c794be4b6c3243056a261b0",
-      "statement": "Dependabot is configured for monthly dependency-update PRs across the github-actions, npm, and docker ecosystems, all using the 'Dependency' commit-message prefix with scope included.",
-      "evidence": [
-        {
-          "resource": "repo://.github/dependabot.yml",
-          "version": "repo-file-v1:sha256:0f7b5e330b8d064a1c86e2eb0b7c1a7368cdde17fd6c3928620073f8cf1e0a40"
-        }
-      ]
-    },
-    {
       "id": "claim_d31af3bdfd8149d59b8891e3a34809cb",
       "statement": "test/test-sadsam-json.json is a complete sample SAD_SAM get-result payload — top-level requestId, status \"OK\", message, traceLinkType \"SAD_SAM\", and a traceLinks array whose entries carry sentenceNumber (0-based on the wire; parseTraceLinksFromJSON adds 1 for display), modelElementUid, and confidence. Its entry field names (modelElementUid) differ from the parser's RawTraceLink interface fields (modelElementId/modelElementName/codeElementId/codeElementName), so it is a hand-written illustrative fixture, not captured API output; no source code references it, so it serves as a manual fixture for the trace-link parsing path (for example via the /load-project stored-project flow), not as automated test input.",
       "evidence": [
@@ -223,10 +213,34 @@
           "version": "repo-lines-v1:sha256:7f9d76d6c278477f74a7a75e8839d8edce93ae3ba898a112ea303833ac9c7120:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNjZkYTFlYjkzNDVlNWY2ZGIxNTljOTZlOGMzOWQ1MzVmMDNkOGZjYTA1ODE1OTE2MGJlYWUyZWRiZGY0ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhYTgxOGU0NGZiODE0Njc3ZWQ2MzM4ZDM1ZDNhYjliNjUyNTMzZGI5NmRiZWE1Nzg0M2Q4MjFjZTg3YzIyZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NGI1NmVjMTAzMDVmMDFjZmNmOTRlZWFjZjYyNDk0YzFiMDRiNGVkNThkY2E4MWNhM2EzZTM3ZTA5ZDgyNmUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_cc40654205aa4beca4e9481a1f289e34",
+      "statement": "Dependency automation is Renovate, not Dependabot: renovate.json contains only a Renovate JSON-schema reference and extends the shared preset local>ArDoCo/actions:renovate-preset, so dependency-update behavior (schedule, ecosystems, commit-message conventions) is defined by that shared preset in the ardoco/actions repository rather than by any file in this repository; .github/dependabot.yml no longer exists and Dependabot is not used.",
+      "evidence": [
+        {
+          "resource": "repo://renovate.json#L1-L4",
+          "version": "repo-lines-v1:sha256:44b93d1dfd3c9890be5b8e5985f97433835824b2e6dcf2c8ace114a46c6b786b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTZmYjA4ZmRhMWFjYjk1N2I2MTE2YmQzNzgxMWExZmU0MWEwMTYxMWMwNjMxZWRiZjc4NmQ2ODg5YTI3YTU1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0258b4f3726d4ee6ba0dda7b0609bab7",
+      "statement": "AGENTS.md carries a generated 'This is NOT the Next.js you know' block (written and re-added by next dev) warning that the repository's Next.js version (next ^16.4.2 with React 19) has breaking changes — APIs, conventions, and file structure may differ from older Next.js knowledge — and instructing contributors to read the relevant guide in node_modules/next/dist/docs/ before writing any Next.js code; committing the block with one's work keeps the working tree clean.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L15-L25",
+          "version": "repo-lines-v1:sha256:c92e8df177d3e1eb46e915f8ab1fb1b321b668c2812e261d9d5ce9eb146d4e92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIwNzk0NTRhMGVhNzVkZjkzMzI1NTM0Y2M1ZTZjZWE5YWI3OTE4ZjIyZmJmOTJhZDA3MTUwZWJmZmIzODc2YmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxOTgyZGU3Yjg3MTRkNzA2OGIxZDE5NmE4NzY1ODYyODU2MjAyMTAzNjRhYzJiOGYyMTAzZTY5ZDg0NDc0ZDEifQ"
+        },
+        {
+          "resource": "repo://package.json#L17-L17",
+          "version": "repo-lines-v1:sha256:7b18cac6e7a11d554018e9f807d390e35dc4e743147443b131bb2dd0b45022c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2IxOGNhYzZlN2ExMWQ1NTQwMThlOWY4MDdkMzkwZTM1ZGM0ZTc0MzE0NzQ0M2IxMzFiYjJkZDBiNDUwMjJjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2IxOGNhYzZlN2ExMWQ1NTQwMThlOWY4MDdkMzkwZTM1ZGM0ZTc0MzE0NzQ0M2IxMzFiYjJkZDBiNDUwMjJjNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGJmNDQ2ODliNmVlZDAwZWUxZTY3MThiZDUyYzYxZDI1ZmYyNGE1NzRhOWZiN2IxMmYzNGY2YWNjMGY3M2RjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmVhMzBhMTY5NGU1N2QwZDFiNjY0MmUzOGE0MjVhZTQ0Y2FkZmI2Y2ZkYmVmYjUwZTM2ZTNhN2ZhY2JlMjRjNyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-16T15:06:02.471Z"
+    "at": "2026-11-23T17:35:55.991Z"
   }
 }
